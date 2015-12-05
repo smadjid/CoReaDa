@@ -1,9 +1,9 @@
 {
-  "name": "mean",
-  "description": "MEAN.io: A fullstack JavaScript framework powered by MongoDB, ExpressJS, AngularJS, NodeJS.",
+  "name": "coreada",
+  "description": "CoReaDa dashboard",
   "version": "0.5.5",
   "private": false,
-  "author": "Linnovate <mean@linnovate.net>",
+  "author": "Madjid SADALLAH <madjid.sadallah@gmail.com>",
   "contributors": "https://github.com/linnovate/mean/graphs/contributors",
   "mean": "0.5.5",
   "repository": {
