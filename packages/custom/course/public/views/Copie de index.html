@@ -1,4 +1,6 @@
-   <div id="1page-wrapper" data-ng-controller="courseController">
+<div data-ng-controller="courseController">
+
+  <div id="page-wrapper">
 
         <div class="container-fluid">            
             <div class="row">
@@ -20,7 +22,7 @@
                                             </a>
                                         </div>
                                     </th>                                    
-
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,7 +37,7 @@
                                             <a data-indicator='1' class="badge badge-warning">33 warn.</a>
                                         </div>
                                     </th>
-
+                                    
                                     <td ng-repeat="part in partdata">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons" >
                                             <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -49,7 +51,7 @@
                                         </div>
 
                                     </td>
-
+                                    
                                 </tr>
                                 <tr>
                                     <th class="indicators_group">
@@ -61,7 +63,7 @@
                                             <a data-indicator='2' class="badge badge-warning">33 warn.</a>
                                         </div>
                                     </th>
-
+                                   
                                     <td ng-repeat="part in partdata">
                                         <div class="btn-group-vertical disabled" role="group" data-toggle="buttons">
                                             <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -75,7 +77,7 @@
                                         </div>
 
                                     </td>
-
+                                    
                                 </tr>
                                 <tr>
                                     <th class="indicators_group">
@@ -100,7 +102,7 @@
                                             </button>
                                         </div>
                                     </td>
-
+                                    
                                 </tr>
                                 <tr>
                                     <th class="indicators_group">
@@ -128,34 +130,34 @@
                             </tbody>
                         </table>
                         <div class="col-xs-12 col-md-12 inspector-container">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <i class="fa fa-tasks fa-2x"></i>
-                                        </div>
-                                        <div class="col-xs-9 text-right">
-                                            <div class="fat">Inspector</div>
-                                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tasks fa-2x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="fat">Inspector</div>
                                     </div>
                                 </div>
-                                <div class="panel-body">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
-                                    </p>
-                                </div>
-                                <a href="#">
-                                    <div class="panel-footer">
-                                        <span class="pull-left">View Details</span>
-                                        <span class="pull-right">
-                                            <i class="fa fa-arrow-circle-right"></i>
-                                        </span>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </a>
                             </div>
-
+                            <div class="panel-body">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+                                </p>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
                         </div>
+
+                    </div>
 
                     </div>
                     <div class="col-lg-3">
@@ -170,129 +172,78 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-body" ng-controller="ToDoController">
-                                <div    >
+                            <div class="panel-body" ng-controller="appCtrl">
 
-                                    <!-- Form Starts Here -->
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="task">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" ng-click="addTask()"><span
-                                                class="glyphicon glyphicon-plus"></span> </button>
-                                            </span>
-                                        </div><!-- /input-group -->
-                                        <hr/>
-                                        <!-- Form Ends Here -->
+                                        <header>
+                <div id="add_items" class="rounded">
+                    <!-- Add item -->
+                    <i class="fa fa-plus fa-sm btn" ng-click="addItem(newItem)"></i>
+                    <input id="addItemInput" type="text" placeholder="Add Item" class="rounded" ng-model="newItem" ng-keypress="keyboardHandler($event, newItem)">
+                </div>
+                <!-- Edit Items Button -->
+                <div class="btn" id="edit_items" ng-click="toggleEdit()">
+                    <i ng-hide="edit" class="fa fa-edit fa-sm"></i>
+                    <p ng-hide="edit">Edit Items</p>
+                    <i ng-show="edit" class="fa fa-check fa-sm"></i>
+                    <p ng-show="edit">Done</p>
+                </div>
+                
+            </header>
+            <main>
 
-                                        <!-- Task List Starts Here -->
-                                        <ul class="list-group" ng-show="tasks.length > 0">
-                                            <li class="list-group-item clearfix task" ng-repeat="todo in tasks" ng-class="{disabled: todo.done}"> 
-                                                <p editable-textarea="todo.task" buttons="no" class="lead">{{todo.task}}</p>
-                                                <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" 
-                                                    ng-click="deleteTask($index)"></span></button>
-                                                    <div>
-                                                        <span class="pull-right">
-
-
-
-
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <!-- Task List Ends Here -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                        </div>
-                                        <a href="#">
-                                            <div class="panel-footer">
-                                                <span class="pull-left">View All tasks</span>
-                                                <span class="pull-right">
-                                                    <i class="fa fa-arrow-circle-right"></i>
-                                                </span>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- /.row --> </div>
-
-                                <!-- /.container-fluid --> </div>
-                                <!-- /#page-wrapper --> </div>
-
-
-
-
-
-                            </div>
-
-<button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
-                        <script type="text/ng-template" id="myModalContent.html" >
-                         <div class="modal fade" id="issues-dialog">
-                            <div class="modal-dialog">
-
-                                <!-- Modal content-->
-                                <div class="modal-content">
-
-
-
-                                    <div class="modal-body" id="errors-display">
-                                        <div class="list-group">
-                                            <a href="#" class="list-error-item"><span class="glyphicon glyphicon-remove"></span>
-                                                Error <span class="badge badge-danger">14</span></a>  
-                                                <a href="#" class="list-error-item"><span class="glyphicon glyphicon-remove"></span>
-                                                    Error <span class="badge badge-danger">14</span></a>  
-                                                </div>
-                                                <div class="list-group">
-                                                    <a href="#" class="list-warning-item"><span class="glyphicon glyphicon-warning-sign"></span>
-                                                        Warning</a>  
-                                                        <a href="#" class="list-warning-item"><span class="glyphicon glyphicon-warning-sign"></span>
-                                                            Warning</a>  
-                                                            </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">
-                                                            <span class="glyphicon glyphicon-remove"></span>
-                                                            Close
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-                        </script>
-
-
+                <!-- incomplete items -->
+                <section id="incomplete_list">
+                    <div class="item" ng-repeat="item in items | incomplete">
+                        <input type="text" ng-show="edit" ng-model="item.name" ng-value="item.name" class="rounded">
+                        <div ng-click="itemClicked(item)" ng-hide="edit">{{item.name}}</div>
+                        <div ng-show="edit" class="delete btn" ng-click="deleteItem(item)">
+                            <i class="fa fa-trash fa-md"></i>
                         </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <!-- completed items -->
+                <section id="completed_list">
+                    <div class="item completed" ng-repeat="item in items | complete">
+                        <input type="text" ng-show="edit" ng-model="item.name" ng-value="item.name" class="rounded">
+                        <div ng-click="itemClicked(item)" ng-hide="edit">{{item.name}}</div>
+                        <div ng-show="edit" class="delete btn" ng-click="deleteItem(item)">
+                            <i class="fa fa-trash fa-md"></i>
+                        </div>
+                    </div>
+                </section>
+                <div id="clean" class="btn" ng-click="clean()">Clean Slate</div>
+            </main>
+
+                                
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View All tasks</span>
+                                    <span class="pull-right">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    
+
+                    <!-- /.row --> </div>
+
+                <!-- /.container-fluid --> </div>
+            <!-- /#page-wrapper --> </div>
+    
 
 
 
+
+</div>
+
+
+
+</div>

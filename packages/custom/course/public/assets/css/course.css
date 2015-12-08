@@ -1,10 +1,7 @@
 
 /* Global Styles */
-   
-body {
-    margin-top: 100px;
-    background-color: #252830
-}
+
+
 
 @media(min-width:768px) {
     body {
@@ -738,5 +735,38 @@ a.list-warning-item:hover {
   padding:0;
   margin: 0;
 }
+
+.btn {
+  cursor: pointer;
+  color: #8c8c91; }
+  .btn:hover {
+    color: #b4b4b9; }
+
+.item {
+  cursor: pointer; }
+
+.rounded {
+  border-radius: 5px; }
+
+#add_items {
+  border: 1px solid #8c8c91;
+  background-color: white; }
+  #add_items input {
+    background-color: transparent; }
+
+hr {
+  border: 1px solid #f0f0f5; }
+
+.completed {
+  color: #b4b4b9; }
+
+.item input {
+  border: none;
+  background-color: #f8f8fa; }
+
 /**************************************************/
 /**************************************************/
+
+.container{
+    width:90%;
+}
