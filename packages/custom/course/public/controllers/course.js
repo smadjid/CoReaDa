@@ -21,21 +21,47 @@ courseModule.controller('courseController', ['$scope', '$uibModal', 'Global', 'C
 
 
   $scope.animationsEnabled = true;
+
     $scope.open = function () {
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: 'myModalContent.html',
       controller: 'ModalInstanceCtrl'      
-    });
-
-  
+    });  
   };
 
- 
+ $scope.dynamicPopover = {
+    content: 'Hello, World!',
+    templateUrl: 'myPopoverTemplate.html',
+    title: 'Title'
+  };
 
-  }
+  $scope.doDisplay=function(size){
+
+    var part_index =($('th').eq($(this).closest('td').index()) ).index();
+    var indicator_index =$(this).closest('tr').index() ;
+
+//    prepareIssuesDlg(indicator_index, part_index);
+
+
+
+  };
+  ///////////////////////ROUTINE FUNCTIONS///////////////////////////////////////
+var prepareIssuesDlg  = function(indicator_index, part_index){  
+  $(document).scrollTop(0);
+  $('td').addClass('overlayed');
+  $('th').addClass('overlayed');
+  $('.indicators_group').addClass('overlayed');
+
+   
+    if(indicator_index!=-1) $('.indicators_group').eq(indicator_index).addClass('highlighted');
+    if(part_index!=-1) $('thead th').eq(part_index).addClass('highlighted');
+
+
+}
+}
 ]);
-
+/*************************************************************************************/
 courseModule.controller('appCtrl', function ($scope, $http) {
     $scope.edit = false;
     $scope.items = '';
@@ -152,63 +178,4 @@ courseModule.controller('ToDoController', ['$scope', function ($scope) {
   $scope.deleteTask = function (index) {
     $scope.tasks.splice(index, 1);
   }
-  }]);
-
-courseModule.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
- 
- $(document).scrollTop(0);
-  $('td').addClass('overlayed');
-  $('th').addClass('overlayed');
-  $('.indicators_group').addClass('overlayed');
-
-   var part_index =($('th').eq($(this).closest('td').index()) ).index();
-    var indicator_index =$(this).closest('tr').index() ;
-
-    if(indicator_index!=-1) $('.indicators_group').eq(indicator_index).addClass('highlighted');
-    if(part_index!=-1) $('thead th').eq(part_index).addClass('highlighted');
-
-    var pos_top = $('thead').offset().top;
-    var height = 0;
-    $('.indicators_group').each(function(index) {
-        height += parseInt($(this).outerHeight(), 10);
-
-    });
-
-
-var bottom = $('table').height + $('table').offset().top;
-var width = 0;
-$('.part_index').each(function(index) {
-    width += parseInt($(this).outerWidth(), 10);
-});
-
-var pos_left = $('.part_index:first').offset().left; // HERE
-
-modal_top = pos_top + $('thead').outerHeight();
-modal_left = pos_left ;
-
-$("#issues-dialog").css('top',modal_top);
-$("#issues-dialog").css('left',modal_left);
-$(".modal-content").css('width',width);
-$(".modal-content").css('height',height);
-
-  $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-
-
-
-
-
-
-  
-});
-
-
-
-
-
+  }]); 

@@ -571,28 +571,6 @@ td {
     border-bottom: 1px solid #eee;
 }
 
-.overlay
- {
-     position: absolute;
-     top: 100px;
-     left: 20px;
-     right: 0;
-     bottom: 0;
-     background-color: rgba(0, 0, 0, 0.85);
-     z-index: 9999;
-     color: white;
-     display: inline-block;
- }
-
- .modal, .modal.fade.in, .modal-dialog {
-    top: 0; /* was 10% */
-    left: 0; /* was 10% */
-    margin: 0!important;
-}
-
-.modal-backdrop.in {
-    opacity: 0.2;
-}
 
 .overlayed{
 	opacity: .4;
