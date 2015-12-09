@@ -25,18 +25,22 @@ Course.register(function(app, auth, database) {
   });
   
   Course.aggregateAsset('css', 'course.css');
+  
+  Course.aggregateAsset('css', '../lib/angular-xeditable/dist/css/xeditable.css');
+  Course.aggregateAsset('js', '../lib/angular-xeditable/dist/js/xeditable.js');
+
 
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
     // Save settings with callback
-    // Use this for saving data from administration pages
+    // Use this for saving data from administration pages*/
     Course.settings({
-        'someSetting': 'some value'
+        'theme': 'bs3'
     }, function(err, settings) {
         //you now have the settings object
     });
 
-    // Another save settings example this time with no callback
+   /** // Another save settings example this time with no callback
     // This writes over the last settings.
     Course.settings({
         'anotherSettings': 'some value'

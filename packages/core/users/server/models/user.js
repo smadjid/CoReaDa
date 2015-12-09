@@ -180,3 +180,4 @@ UserSchema.methods = {
 };
 
 mongoose.model('User', UserSchema);
+

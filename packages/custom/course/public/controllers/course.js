@@ -1,9 +1,12 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.course').controller('courseController', ['$scope', 'Global', 'Course',
-  function($scope, Global, Course) {
+var courseModule = angular.module('mean.course', ['xeditable','ui.bootstrap']);
+
+courseModule.controller('courseController', ['$scope', '$uibModal', 'Global', 'Course',
+  function($scope, $uibModal, Global, Course) {
     $scope.global = Global;
+    $scope.test = "test";
     $scope.package = {
       name: 'course'
     };
@@ -14,10 +17,26 @@ angular.module('mean.course').controller('courseController', ['$scope', 'Global'
     {id:3, total_error:56, total_warning:63,reading_error:12, reading_warning:7,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4},
     {id:4, total_error:56, total_warning:63, reading_error:12, reading_warning:7,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4}
     ];
+
+
+
+  $scope.animationsEnabled = true;
+    $scope.open = function () {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl'      
+    });
+
+  
+  };
+
+ 
+
   }
 ]);
 
-angular.module('mean.course').controller('appCtrl', function ($scope, $http) {
+courseModule.controller('appCtrl', function ($scope, $http) {
     $scope.edit = false;
     $scope.items = '';
     
@@ -107,7 +126,7 @@ angular.module('mean.course').controller('appCtrl', function ($scope, $http) {
     }
 });
 
-angular.module('mean.course').controller('ToDoController', ['$scope', function ($scope) {
+courseModule.controller('ToDoController', ['$scope', function ($scope) {
   $scope.tasks = [];
   $scope.editIndex = false;
   $scope.addTask = function () {
@@ -133,4 +152,63 @@ angular.module('mean.course').controller('ToDoController', ['$scope', function (
   $scope.deleteTask = function (index) {
     $scope.tasks.splice(index, 1);
   }
-  }])
+  }]);
+
+courseModule.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+ 
+ $(document).scrollTop(0);
+  $('td').addClass('overlayed');
+  $('th').addClass('overlayed');
+  $('.indicators_group').addClass('overlayed');
+
+   var part_index =($('th').eq($(this).closest('td').index()) ).index();
+    var indicator_index =$(this).closest('tr').index() ;
+
+    if(indicator_index!=-1) $('.indicators_group').eq(indicator_index).addClass('highlighted');
+    if(part_index!=-1) $('thead th').eq(part_index).addClass('highlighted');
+
+    var pos_top = $('thead').offset().top;
+    var height = 0;
+    $('.indicators_group').each(function(index) {
+        height += parseInt($(this).outerHeight(), 10);
+
+    });
+
+
+var bottom = $('table').height + $('table').offset().top;
+var width = 0;
+$('.part_index').each(function(index) {
+    width += parseInt($(this).outerWidth(), 10);
+});
+
+var pos_left = $('.part_index:first').offset().left; // HERE
+
+modal_top = pos_top + $('thead').outerHeight();
+modal_left = pos_left ;
+
+$("#issues-dialog").css('top',modal_top);
+$("#issues-dialog").css('left',modal_left);
+$(".modal-content").css('width',width);
+$(".modal-content").css('height',height);
+
+  $scope.ok = function () {
+    $uibModalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+
+
+
+
+
+
+  
+});
+
+
+
+
+

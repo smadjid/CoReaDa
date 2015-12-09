@@ -51,7 +51,8 @@
     "serve-favicon": "latest",
     "shelljs": "latest",
     "swig": "latest",
-    "view-helpers": "latest"
+    "view-helpers": "latest",
+    "view-helpers": "xeditable"
   },
   "devDependencies": {
     "connect-modrewrite": "latest",
