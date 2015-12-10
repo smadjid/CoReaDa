@@ -6,7 +6,6 @@ var courseModule = angular.module('mean.course', ['xeditable','ui.bootstrap']);
 courseModule.controller('courseController', ['$scope', '$uibModal', 'Global', 'Course',
   function($scope, $uibModal, Global, Course) {
     $scope.global = Global;
-    $scope.test = "test";
     $scope.package = {
       name: 'course'
     };
@@ -22,59 +21,53 @@ courseModule.controller('courseController', ['$scope', '$uibModal', 'Global', 'C
 
   $scope.animationsEnabled = true;
 
-    $scope.open = function () {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: 'myModalContent.html',
-      controller: 'ModalInstanceCtrl'      
-    });  
+    
+   $scope.show = false;
+  $scope.hideIssuesDialog = function(){$scope.show=false;}
+
+  $scope.doDisplay=function(obj, type){
+    
+    var _currentPart = -1;
+    var _currentIndicator = -1;
+   if(typeof obj.part != "undefined") _currentPart = obj.part.id;
+    prepareIssuesDlg(_currentPart , type - 1);
+    $scope.show = true;
   };
 
-<<<<<<< HEAD
+  
 
-  $scope.doDisplay=function(item){
-=======
- $scope.dynamicPopover = {
-    content: 'Hello, World!',
-    templateUrl: 'myPopoverTemplate.html',
-    title: 'Title'
-  };
-
-  $scope.doDisplay=function(size){
->>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
-
-    var part_index =($('th').eq($(this).closest('td').index()) ).index();
-    var indicator_index =$(this).closest('tr').index() ;
-
-<<<<<<< HEAD
-    var modalInstance = $uibModal.open({
-      animation: true,
-      templateUrl: 'myModalContent.html',
-      controller: 'ModalInstanceCtrl'      
-    });  
-
-    prepareIssuesDlg(indicator_index, part_index);
-=======
-//    prepareIssuesDlg(indicator_index, part_index);
->>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
-
-
-
-  };
+$scope.$watch('show', function(newValue, oldValue) {
+        if (!newValue) {
+                $('.highlighted').removeClass('highlighted');
+                $('.overlayed').removeClass('overlayed');
+        }
+    });
+           
   ///////////////////////ROUTINE FUNCTIONS///////////////////////////////////////
-var prepareIssuesDlg  = function(indicator_index, part_index){  
+var prepareIssuesDlg  = function(part_index , indicator_index){  
   $(document).scrollTop(0);
+ $(document).scrollTop(0);
   $('td').addClass('overlayed');
   $('th').addClass('overlayed');
   $('.indicators_group').addClass('overlayed');
 
    
-    if(indicator_index!=-1) $('.indicators_group').eq(indicator_index).addClass('highlighted');
-    if(part_index!=-1) $('thead th').eq(part_index).addClass('highlighted');
+    if(indicator_index!=-1) {
+    
+    $('.indicators_group').not(indicator_index).removeClass('highlighted');
+    $('.indicators_group').eq(indicator_index).addClass('highlighted');
 
-<<<<<<< HEAD
+    
+  }
+
+    if(part_index!=-1) {
+    $('thead th').not(part_index).removeClass('highlighted');
+    $('thead th').eq(part_index).addClass('highlighted');
+
+  }
+
     var pos_top = $('thead').offset().top;
-    var height = 0;
+    var height = 0;  
     $('.indicators_group').each(function(index) {
         height += parseInt($(this).outerHeight(), 10);
 
@@ -91,14 +84,13 @@ var pos_left = $('.part_index:first').offset().left; // HERE
 
 var modal_top = pos_top + $('thead').outerHeight();
 var modal_left = pos_left ;
-
+$("#issues-dialog").css('position','absolute');
 $("#issues-dialog").css('top',modal_top);
 $("#issues-dialog").css('left',modal_left);
-$(".modal-content").css('width',width);
-$(".modal-content").css('height',height);
-=======
->>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
+$("#issues-dialog").css('width',width);
+$("#issues-dialog").css('height',height);
 
+$scope.show = false;
 }
 }
 ]);
@@ -167,7 +159,7 @@ courseModule.controller('appCtrl', function ($scope, $http) {
     }
     $scope.addItem = function(item){
         var newItem = { "name" : item, "complete" : false };
-        console.log();
+     
             if ( item != undefined && /[A-Za-z]/g.test(item) ){
                 $scope.items.unshift(newItem);
             }
@@ -219,33 +211,5 @@ courseModule.controller('ToDoController', ['$scope', function ($scope) {
   $scope.deleteTask = function (index) {
     $scope.tasks.splice(index, 1);
   }
-<<<<<<< HEAD
   }]); 
-/**************************************************************************************/
-courseModule.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
- 
 
-  $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-
-
-
-
-
-
-  
-});
-
-
-
-
-
-=======
-  }]); 
->>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
