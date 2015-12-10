@@ -532,22 +532,22 @@ th {
   
 }
 thead {
-	background: none;
-	border-top: 0px!important;
-	border-color: none!important;	
-	box-shadow: none!important;
+  background: none;
+  border-top: 0px!important;
+  border-color: none!important; 
+  box-shadow: none!important;
 }
 thead > tr:first-child > th:first-child {
-	background: none;
-	border: 0!important;
-	border-color: none!important;	
-	box-shadow: none!important;
+  background: none;
+  border: 0!important;
+  border-color: none!important; 
+  box-shadow: none!important;
 }
 thead > tr:first-child {
-	background: none;
-	border: 0!important;
-	border-color: none!important;	
-	box-shadow: none!important;
+  background: none;
+  border: 0!important;
+  border-color: none!important; 
+  box-shadow: none!important;
 }
 tr {
   border-bottom: 1px solid #cccccc;
@@ -595,12 +595,12 @@ td {
 }
 
 .overlayed{
-	opacity: .4;
+  opacity: .4;
 }
 
 .highlighted{
-	opacity :1;
-	background-color: green;
+  opacity :1;
+  background-color: green;
 }
 td,tr,th{
     -webkit-transition: all 0.5s ease;
@@ -609,11 +609,11 @@ td,tr,th{
     transition: all 0.5s ease;
 }
 .part-issues{
-	display: inline-flex;
-	margin-top:7px;
+  display: inline-flex;
+  margin-top:7px;
 }
 .inspector-container{
-	padding: 0;
+  padding: 0;
 }
 
 #issues-dialog .modal-content{  
@@ -622,13 +622,13 @@ td,tr,th{
 /*********************************/
 
 .well-danger {
-	padding: 10px;
+  padding: 10px;
     margin-bottom: 10px;
     
     border: none;
     border-radius: 2px;
 
-	
+  
     background-color: #f2dede;
     
 }
@@ -652,7 +652,7 @@ td,tr,th{
     border-radius: .25em;
 }
 .list-error-item {
-	text-decoration: none;
+  text-decoration: none;
     position: relative;
     display: block;
     padding: 5px 10px;
@@ -664,7 +664,7 @@ td,tr,th{
     width:70%;
 }
 a.list-error-item:hover {
-	text-decoration: none;
+  text-decoration: none;
     color:#fff;background-color:#a94442;
     border-color:#a94442
 }
@@ -672,7 +672,7 @@ a.list-error-item:hover {
 
 
 .list-warning-item {
-	text-decoration: none;
+  text-decoration: none;
     position: relative;
     display: block;
     padding: 5px 10px;
@@ -686,7 +686,7 @@ a.list-error-item:hover {
 }
 
 a.list-warning-item:hover {
-	text-decoration: none;
+  text-decoration: none;
     
     color:#fff;background-color:#8a6d3b;border-color:#8a6d3b
 }
@@ -701,15 +701,15 @@ a.list-warning-item:hover {
 
 /****************D3 Graphics***************************/
 #graphic-panel {  
-	margin : 0;
-	margin-bottom: 20px;
+  margin : 0;
+  margin-bottom: 20px;
     background-color: #fff;
     border: 1px solid transparent;
     border-radius: 1px;
     padding: 0;
 }
 #graphic-panel .panel-body{  
-	padding: 5px; 
+  padding: 5px; 
 }
 .axis path,
 .axis line {

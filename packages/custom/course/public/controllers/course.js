@@ -30,12 +30,23 @@ courseModule.controller('courseController', ['$scope', '$uibModal', 'Global', 'C
     });  
   };
 
+<<<<<<< HEAD
 
   $scope.doDisplay=function(item){
+=======
+ $scope.dynamicPopover = {
+    content: 'Hello, World!',
+    templateUrl: 'myPopoverTemplate.html',
+    title: 'Title'
+  };
+
+  $scope.doDisplay=function(size){
+>>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
 
     var part_index =($('th').eq($(this).closest('td').index()) ).index();
     var indicator_index =$(this).closest('tr').index() ;
 
+<<<<<<< HEAD
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: 'myModalContent.html',
@@ -43,6 +54,9 @@ courseModule.controller('courseController', ['$scope', '$uibModal', 'Global', 'C
     });  
 
     prepareIssuesDlg(indicator_index, part_index);
+=======
+//    prepareIssuesDlg(indicator_index, part_index);
+>>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
 
 
 
@@ -58,6 +72,7 @@ var prepareIssuesDlg  = function(indicator_index, part_index){
     if(indicator_index!=-1) $('.indicators_group').eq(indicator_index).addClass('highlighted');
     if(part_index!=-1) $('thead th').eq(part_index).addClass('highlighted');
 
+<<<<<<< HEAD
     var pos_top = $('thead').offset().top;
     var height = 0;
     $('.indicators_group').each(function(index) {
@@ -81,6 +96,8 @@ $("#issues-dialog").css('top',modal_top);
 $("#issues-dialog").css('left',modal_left);
 $(".modal-content").css('width',width);
 $(".modal-content").css('height',height);
+=======
+>>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e
 
 }
 }
@@ -202,6 +219,7 @@ courseModule.controller('ToDoController', ['$scope', function ($scope) {
   $scope.deleteTask = function (index) {
     $scope.tasks.splice(index, 1);
   }
+<<<<<<< HEAD
   }]); 
 /**************************************************************************************/
 courseModule.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
@@ -228,3 +246,6 @@ courseModule.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance
 
 
 
+=======
+  }]); 
+>>>>>>> b6afbe1ebc8ae7219d46d6623f2c9ea9aff5f45e

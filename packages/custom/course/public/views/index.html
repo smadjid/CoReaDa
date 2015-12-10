@@ -250,18 +250,24 @@
 
                             </div>
 
-<button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
-                        <script type="text/ng-template" id="myModalContent.html" >
-                         <div class="modal fade" id="issues-dialog">
-                            <div class="modal-dialog">
-
-                                <!-- Modal content-->
-                                <div class="modal-content">
 
 
 
-                                    <div class="modal-body" id="errors-display">
-                                        <div class="list-group">
+
+
+<button uib-popover-template="dynamicPopover.templateUrl" popover-title="{{dynamicPopover.title}}" type="button" class="btn btn-default">Popover With Template</button>
+
+    <script type="text/ng-template" id="myPopoverTemplate.html">
+
+
+
+
+
+
+
+
+
+<div class="list-group">
                                             <a href="#" class="list-error-item"><span class="glyphicon glyphicon-remove"></span>
                                                 Error <span class="badge badge-danger">14</span></a>  
                                                 <a href="#" class="list-error-item"><span class="glyphicon glyphicon-remove"></span>
@@ -279,20 +285,10 @@
                                                             <span class="glyphicon glyphicon-remove"></span>
                                                             Close
                                                         </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
+</div>
 
 
                         </script>
 
 
                         </div>
-
-
-
