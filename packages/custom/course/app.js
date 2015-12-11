@@ -52,5 +52,6 @@ Course.register(function(app, auth, database) {
     });
     */
 
+
   return Course;
 });

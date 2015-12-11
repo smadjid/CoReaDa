@@ -170,44 +170,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-body" ng-controller="ToDoController">
+                            <div class="tasks-panel panel-body" ng-controller="ToDoController">
                                 <div    >
 
                                     <!-- Form Starts Here -->
                                     <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="task">
+                                        <input type="text" class="form-control" ng-model="formData.text">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" ng-click="addTask()"><span
                                                 class="glyphicon glyphicon-plus"></span> </button>
                                             </span>
-                                        </div><!-- /input-group -->
-                                        <hr/>
+                                        </div>
                                         <!-- Form Ends Here -->
 
                                         <!-- Task List Starts Here -->
                                         <ul class="list-group" ng-show="tasks.length > 0">
                                             <li class="list-group-item clearfix task" ng-repeat="todo in tasks" ng-class="{disabled: todo.done}"> 
-                                                <p editable-textarea="todo.task" buttons="no" class="lead">{{todo.task}}</p>
-                                                <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" 
-                                                    ng-click="deleteTask($index)"></span></button>
+                                                <span editable-textarea="todo.text" buttons="no" >{{todo.text}}
+                                                <span class="glyphicon glyphicon-remove pull-right" 
+                                                    ng-click="deleteTask(todo._id)"></span></span>
                                                     <div>
                                                         <span class="pull-right">
-
-
-
-
                                                         </span>
                                                     </div>
                                                 </li>
                                             </ul>
                                             <!-- Task List Ends Here -->
-
-
-
-
-
-
                                         </div>
+
                                         <a href="#">
                                             <div class="panel-footer">
                                                 <span class="pull-left">View All tasks</span>

@@ -770,3 +770,23 @@ hr {
 .container{
     width:90%;
 }
+
+.tasks-panel{
+  padding:10px;
+}
+
+.tasks-panel .input-group{
+  margin-bottom:5px;
+}
+
+.task{
+  padding:5px;
+}
+
+.editable-click, a.editable-click {
+    text-decoration: none;
+    color: #428bca;
+    border-bottom: none;
+    cursor: pointer; cursor: hand;
+    width:100%;
+}
