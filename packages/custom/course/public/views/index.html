@@ -185,18 +185,18 @@
 
 
 
-<table class="table table-bordered table-hover table-condensed">
+<table class="table table-bordered table-hover table-condensed" >
     <tr ng-repeat="todo in tasks">
       <td>
         <!-- editable username (text with validation) -->
-        <span editable-text="todo.text" e-name="name" e-form="rowform" e-required>
+        <span editable-text="todo.text"  e-name="name" e-form="rowform" e-required>
           {{ todo.text || 'empty' }}
         </span>
       </td>
       <td style="    width: 1px;">
         <!-- form -->
 
-        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == todo">
+        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == todo" blur="cancel">
 
           <a role="button"  ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
           <a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
