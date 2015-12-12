@@ -768,7 +768,7 @@ hr {
 /**************************************************/
 
 .container{
-    width:90%;
+    width:100%;
 }
 
 .tasks-panel{
@@ -789,4 +789,20 @@ hr {
     border-bottom: none;
     cursor: pointer; cursor: hand;
     width:100%;
+}
+.editable-buttons {
+    display: inline-block;
+    vertical-align: middle;
+}
+/* customize xeditable css */
+a.editable-click { 
+    color: green;
+    border-bottom: dotted 2px green;
+}
+a.editable-click:hover { 
+    color: #47a447;
+    border-bottom-color: #47a447;
+}
+.editable-text{
+  width:100%;
 }

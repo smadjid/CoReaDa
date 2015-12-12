@@ -183,19 +183,33 @@
                                         </div>
                                         <!-- Form Ends Here -->
 
-                                        <!-- Task List Starts Here -->
-                                        <ul class="list-group" ng-show="tasks.length > 0">
-                                            <li class="list-group-item clearfix task" ng-repeat="todo in tasks" ng-class="{disabled: todo.done}"> 
-                                                <span editable-textarea="todo.text" buttons="no" >{{todo.text}}
-                                                <span class="glyphicon glyphicon-remove pull-right" 
-                                                    ng-click="deleteTask(todo._id)"></span></span>
-                                                    <div>
-                                                        <span class="pull-right">
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <!-- Task List Ends Here -->
+
+
+<table class="table table-bordered table-hover table-condensed">
+    <tr ng-repeat="todo in tasks">
+      <td>
+        <!-- editable username (text with validation) -->
+        <span editable-text="todo.text" e-name="name" e-form="rowform" e-required>
+          {{ todo.text || 'empty' }}
+        </span>
+      </td>
+      <td style="    width: 1px;">
+        <!-- form -->
+
+        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == todo">
+
+          <a role="button"  ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
+          <a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
+        </form>
+        <div class="buttons pull-right" ng-show="!rowform.$visible">
+          <a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
+          <a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(todo._id)"></a>
+        </div>  
+      </td>
+    </tr>
+  </table>
+
+                  <!-- Task List Ends Here -->
                                         </div>
 
                                         <a href="#">
@@ -208,6 +222,8 @@
                                             </div>
                                         </a>
                                     </div>
+
+
                                 </div>
 
 

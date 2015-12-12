@@ -3,6 +3,12 @@
 /* jshint -W098 */
 var courseModule = angular.module('mean.course', ['xeditable','ui.bootstrap']);
 
+courseModule.run(function(editableOptions, editableThemes) {
+  editableThemes.bs3.inputClass = 'input-sm';
+  editableThemes.bs3.buttonsClass = 'btn-xs';
+  editableOptions.theme = 'bs3';
+});
+
 courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course',
   function($scope, $uibModal, $http, Global, Course) {
     $scope.global = Global;
