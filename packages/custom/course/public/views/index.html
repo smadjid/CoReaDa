@@ -38,11 +38,11 @@
 
                                     <td ng-repeat="part in partdata">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons" data-indicator='1'>
-                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 <span class="badge badge-danger">{{part.reading_error}}</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
                                                 <span class="badge badge-warning">{{part.reading_warning}}</span>
                                             </button>
@@ -64,11 +64,11 @@
 
                                     <td ng-repeat="part in partdata">
                                         <div class="btn-group-vertical disabled" role="group" data-toggle="buttons" >
-                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 <span class="badge badge-danger" disabled="disabled">{{part.reeading_error}}</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
                                                 <span class="badge badge-warning">{{part.rereading_warning}}</span>
                                             </button>
@@ -90,11 +90,11 @@
                                     </th>
                                     <td ng-repeat="part in partdata">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons">
-                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 <span class="badge badge-danger">{{part.transition_error}}</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
                                                 <span class="badge badge-warning">{{part.transition_warning}}</span>
                                             </button>
@@ -114,11 +114,11 @@
                                     </th>
                                     <td ng-repeat="part in partdata">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons">
-                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
                                                 <span class="badge badge-danger">{{part.stop_error}}</span>
                                             </button>
-                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
+                                            <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
                                                 <span class="badge badge-warning">{{part.stop_warning}}</span>
                                             </button>
@@ -128,7 +128,7 @@
                             </tbody>
                         </table>
                         <div class="col-xs-12 col-md-12 inspector-container">
-                            <div class="panel panel-primary">
+                            <div class="panel panel-red">
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-xs-3">
@@ -159,7 +159,7 @@
 
                     </div>
                     <div class="col-lg-3">
-                        <div class="panel panel-green">
+                        <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">

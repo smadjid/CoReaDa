@@ -190,6 +190,7 @@ ul.alert-dropdown {
     border-color: #d9534f;
     color: #fff;
     background-color: #d9534f;
+    padding:5px;
 }
 
 .panel-red > a {
@@ -208,6 +209,7 @@ ul.alert-dropdown {
     border-color: #f0ad4e;
     color: #fff;
     background-color: #f0ad4e;
+    padding:5px;
 }
 
 .panel-yellow > a {
@@ -738,7 +740,7 @@ a.list-warning-item:hover {
 
 .btn {
   cursor: pointer;
-  color: #8c8c91; }
+  }
   .btn:hover {
     color: #b4b4b9; }
 

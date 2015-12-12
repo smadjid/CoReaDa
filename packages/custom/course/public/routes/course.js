@@ -2,8 +2,8 @@
 
 angular.module('mean.course').config(['$stateProvider',
   function($stateProvider) {
-    $stateProvider.state('course example page', {
-      url: '/course/example',
+    $stateProvider.state('course study', {
+      url: '/course',
       templateUrl: 'course/views/index.html'
     });
   }
