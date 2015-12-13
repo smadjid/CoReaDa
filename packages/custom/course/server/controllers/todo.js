@@ -4,6 +4,7 @@
  * Module dependencies. 
  */
 var mongoose = require('mongoose'),
+    Part = mongoose.model('Part'),
     Todo = mongoose.model('Todo'),
     config = require('meanio').loadConfig(),
     _ = require('lodash');
@@ -17,6 +18,12 @@ function getTodos(res){
 
             res.json(todos); // return all todos in JSON format
         });
+};
+
+function seedData(res){
+ var todo =  Todo.create({  text : "seed",done : false})
+ var part =  Part.create({id : 166 ,part_id : 1, title : 'titre', todos : [todo]})
+ 
 };
 
 function getOneTodo(res){
@@ -79,6 +86,13 @@ module.exports = function(Todos) {
         all: function(req, res) {
             // use mongoose to get all todos in the database
             getTodos(res);
+            
+
+        },
+
+        seed: function(req, res) {
+            // use mongoose to get all todos in the database
+            seedData(res);
             
 
         }

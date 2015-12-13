@@ -11,7 +11,13 @@ var mongoose = require('mongoose'),
  * Todos Schema
  */
 var TodoSchema = new Schema({	
-text : {type : String, default: ''}
+part_id:{
+		type: Schema.Types.ObjectId,
+		ref: 'Part'
+	},  
+associated_fact_class : {type : String, default: 'None'},
+//associated_fact_type : {type : String, default: 'None'},
+text : {type : String, default: 'Review...'}
 });
 
 

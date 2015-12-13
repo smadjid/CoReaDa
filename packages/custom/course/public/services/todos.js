@@ -9,6 +9,9 @@ angular.module('mean.course').factory('Todos', ['$http',function($http) {
 			},
 			delete : function(id) {
 				return $http.delete('/api/todos/' + id);
+			},
+			seed : function(id) {
+				return $http.get('/api/seed');
 			}
 		}
 	}]);

@@ -8,6 +8,11 @@
 module.exports = function(Todos, app, auth, database) { 
   var todos = require('../controllers/todo')(Todos);
   // api ---------------------------------------------------------------------
+    
+// seed
+    app.route('/api/seed')
+      .get(todos.seed);
+
     // get all todos
     app.route('/api/todos')
       .get(todos.all)
@@ -19,5 +24,6 @@ module.exports = function(Todos, app, auth, database) {
 
     // delete a todo
   
+    
     
 };

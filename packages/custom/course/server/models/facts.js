@@ -11,15 +11,16 @@ var mongoose = require('mongoose'),
  * Facts Schema
  */
 var FactSchema = new Schema({
-	/*part:{
+	part_id:{
 		type: Schema.Types.ObjectId,
-		ref: 'Parts'
-	},  */
-  part:{
-    type: Number,
-    ref: 'Parts'
-  },
+		ref: 'Part'
+	},  
+  
   name: {
+    type: String,
+    required: true
+  },
+  type: {
     type: String,
     required: true
   },
