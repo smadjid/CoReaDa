@@ -1,7 +1,7 @@
 'use strict';
 
 /* jshint -W098 */
-var courseModule = angular.module('mean.course', ['xeditable','ui.bootstrap']);
+var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap']);
 
 courseModule.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-sm';
@@ -9,12 +9,37 @@ courseModule.run(function(editableOptions, editableThemes) {
   editableOptions.theme = 'bs3';
 });
 
-courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course',
-  function($scope, $uibModal, $http, Global, Course) {
+courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course', 'CoursesDB',
+  function($scope, $uibModal, $http, Global, Course,CoursesDB) {
     $scope.global = Global;
     $scope.package = {
       name: 'course'
     };
+
+    ;
+
+//CoursesDB.seed()
+    CoursesDB.get()
+      .success(function(data) {
+        $scope.studiedCourse = data;
+        console.log(data);
+        //var part_data = data;
+        $scope.apart = data[0].parts;
+        $scope.allIssues = [];
+        angular.forEach(data[0].parts, function(part) {
+            angular.forEach(part.facts, function(fact) {
+                $scope.allIssues.push(
+                    fact
+                );
+                
+            });
+        });
+
+        //alert(data[0].parts)
+      })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
     
     $scope.partdata=[
     {id:1, total_error:56, total_warning:63, reading_error:1, reading_warning:4,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4},

@@ -42,3 +42,16 @@ angular.module('mean.course').filter('complete', function() {
         return result;
     }
 });
+angular.module('mean.course').factory('CoursesDB', ['$http',function($http) {
+    return {
+      /*get : function(id) {
+        return $http.get('/api/courses/'+id);
+      },*/
+      get : function() {
+        return $http.get('/api/course/node');
+      },
+      seed : function() {
+        return $http.get('/api/courses/seed');
+      }
+    }
+  }]);

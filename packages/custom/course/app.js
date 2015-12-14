@@ -18,7 +18,7 @@ Course.register(function(app, auth, database) {
 
   //We are adding a link to the main menu for all authenticated users
   Course.menus.add({
-    title: 'course example page',
+    title: 'course study',
     link: 'course example page',
     roles: ['authenticated'],
     menu: 'main'
