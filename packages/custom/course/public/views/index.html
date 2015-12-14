@@ -8,15 +8,15 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th class="part_index" ng-repeat="part in partdata">
-                                        {{part.id}}
+                                    <th class="part_index" ng-repeat="part in apart">
+                                        {{part.title}}
                                         <br/>
                                         <div class="part-issues">
                                             <a data-part='1' class="badge badge-danger" ng-click='doDisplay(this,0)'>
-                                                <span class="glyphicon glyphicon-remove">{{part.total_error}}</span>
+                                                <span class="glyphicon glyphicon-remove">{{(part.facts | filter:search:strict | filter:{'type':'issue'}).length}}</span>
                                             </a>
                                             <a data-part='1' class="badge badge-warning" ng-click='doDisplay(this,0)'>
-                                                <span class="glyphicon glyphicon-warning-sign">{{part.total_warning}}</span>
+                                                <span class="glyphicon glyphicon-warning-sign">{{(part.facts | filter:search:strict | filter:{'type':'warning'}).length}}</span>
                                             </a>
                                         </div>
                                     </th>                                    
@@ -31,20 +31,24 @@
 
                                         <br/>
                                         <div class="total-indicator">
-                                            <a data-indicator='1' class="badge badge-danger" ng-click='doDisplay(this,1)'>45 issues</a>
+
+                                        
+
+                                            <a data-indicator='1' class="badge badge-danger" ng-click='doDisplay(this,1)'>
+                                            {{(apart.facts | filter:search:strict | filter:{'classof':'reading','type':'issue'}).length}}</a>
                                             <a data-indicator='1' class="badge badge-warning" ng-click='doDisplay(this,1)'>33 warn.</a>
                                         </div>
                                     </th>
 
-                                    <td ng-repeat="part in partdata">
+                                    <td ng-repeat="part in apart">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons" data-indicator='1'>
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
-                                                <span class="badge badge-danger">{{part.reading_error}}</span>
+                                                <span class="badge badge-danger">{{(part.facts | filter:search:strict | filter:{'classof':'reading','type':'issue'}).length}}</span>
                                             </button>
                                             <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
-                                                <span class="badge badge-warning">{{part.reading_warning}}</span>
+                                                <span class="badge badge-warning">{{(part.facts | filter:search:strict | filter:{'classof':'reading','type':'warning'}).length}}</span>
                                             </button>
                                         </div>
 
@@ -62,15 +66,15 @@
                                         </div>
                                     </th>
 
-                                    <td ng-repeat="part in partdata">
+                                    <td ng-repeat="part in apart">
                                         <div class="btn-group-vertical disabled" role="group" data-toggle="buttons" >
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
-                                                <span class="badge badge-danger" disabled="disabled">{{part.reeading_error}}</span>
+                                                <span class="badge badge-danger" disabled="disabled">{{(part.facts | filter:search:strict | filter:{'classof':'rereading','type':'issue'}).length}}</span>
                                             </button>
                                             <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
-                                                <span class="badge badge-warning">{{part.rereading_warning}}</span>
+                                                <span class="badge badge-warning">{{(part.facts | filter:search:strict | filter:{'classof':'rereading','type':'warning'}).length}}</span>
                                             </button>
                                         </div>
 
@@ -88,15 +92,15 @@
                                             <a data-indicator='3' class="badge badge-warning" ng-click='doDisplay(this,3)'>4 warn.</a>
                                         </div>
                                     </th>
-                                    <td ng-repeat="part in partdata">
+                                    <td ng-repeat="part in apart">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons">
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
-                                                <span class="badge badge-danger">{{part.transition_error}}</span>
+                                                <span class="badge badge-danger">{{(part.facts | filter:search:strict | filter:{'classof':'transition','type':'issue'}).length}}</span>
                                             </button>
                                             <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
-                                                <span class="badge badge-warning">{{part.transition_warning}}</span>
+                                                <span class="badge badge-warning">{{(part.facts | filter:search:strict | filter:{'classof':'transition','type':'warning'}).length}}</span>
                                             </button>
                                         </div>
                                     </td>
@@ -112,15 +116,15 @@
                                             <a data-indicator='4'  class="badge badge-warning" ng-click='doDisplay(this,4)'>4 warn.</a>
                                         </div>
                                     </th>
-                                    <td ng-repeat="part in partdata">
+                                    <td ng-repeat="part in apart">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons">
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
-                                                <span class="badge badge-danger">{{part.stop_error}}</span>
+                                                <span class="badge badge-danger">{{(part.facts | filter:search:strict | filter:{'classof':'stop','type':'issue'}).length}}</span>
                                             </button>
                                             <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-warning-sign"></span>
-                                                <span class="badge badge-warning">{{part.stop_warning}}</span>
+                                                <span class="badge badge-warning">{{(part.facts | filter:search:strict | filter:{'classof':'stop','type':'warning'}).length}}</span>
                                             </button>
                                         </div>
                                     </td>
@@ -262,6 +266,19 @@
                                                             </div>
                                                     </div>
 
+
+
+ <!--<p>Critical Events: {{(apart | filter:search:strict | filter:{'type':'issue'})}}</p>
+
+ <div ng-repeat="part in apart ">
+     <h5>{{part.id}}</h5>
+       <p>Number of Critical Events: {{(part.facts | filter:search:strict | filter:{'type':'issue'}).length}}</p>
+       <hr/>
+    </div>
+
+<p>Number of Critical Events: {{(apart | filter:search:strict | filter:{'type':'issue'}).length}}</p>-->
+
+ 
 
     </div>
 

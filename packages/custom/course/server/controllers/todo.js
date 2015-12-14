@@ -4,7 +4,6 @@
  * Module dependencies. 
  */
 var mongoose = require('mongoose'),
-    Part = mongoose.model('Part'),
     Todo = mongoose.model('Todo'),
     config = require('meanio').loadConfig(),
     _ = require('lodash');

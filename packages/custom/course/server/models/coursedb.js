@@ -57,7 +57,7 @@ var FactSchema = new Schema({
     required: true
   },
   value: {
-    type: Number,
+    type: String,
     required: true
   },
   suggestion : [TodoSchema]
@@ -73,7 +73,6 @@ var PartSchema = new Schema({
     required: true
   },
   part_id: {
-
     type: Number,
     required: true
   },
@@ -81,9 +80,9 @@ var PartSchema = new Schema({
     type: String,
     required: true
   },
-  updated: {
+ /* updated: {
     type: Array
-  },
+  },*/
   facts: [FactSchema]
 });
 
@@ -91,14 +90,14 @@ var PartSchema = new Schema({
  * Course Schema
  */
 var CourseSchema = new Schema({
-  author:{
+  /*author:{
     type: Schema.Types.ObjectId,
     ref: 'Author'
   },
   created: {
     type: Date,
     default: Date.now
-  },
+  },*/
   title: {
     type: String,
     required: true,
@@ -109,15 +108,16 @@ var CourseSchema = new Schema({
     required: true
   },
   
-  permissions: {
+ /* permissions: {
     type: Array
   },
   updated: {
     type: Array
-  },
+  },*/
+  parts: [PartSchema],
   facts: [FactSchema],
   todos: [TodoSchema]
 });
 
 
-mongoose.model('Part', PartSchema);
+mongoose.model('CourseDB', CourseSchema);
