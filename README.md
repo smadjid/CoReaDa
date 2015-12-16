@@ -1,10 +1,7 @@
-[![Build Status](https://travis-ci.org/linnovate/mean.svg)](https://travis-ci.org/linnovate/mean)
-[![Dependencies Status](https://david-dm.org/linnovate/mean.svg)](https://david-dm.org/linnovate/mean)
-[![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/linnovate/mean?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # [![CoReaDa Logo](logo.png)](http://mean.io/) CoReaDa Dashboard
 
-CoReaDa is a tool  built  with [MongoDB](https://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](https://angularjs.org/) based applications. I
+CoReaDa aims to expose to authors a tool to analysis how their documents are being consumed. This tool is  built  with [MongoDB](https://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](https://angularjs.org/). The tool needs other pre-resquisites, to be described later.
 
 <dl class="dl-horizontal">
 <dt>MongoDB</dt>
@@ -18,4 +15,4 @@ CoReaDa is a tool  built  with [MongoDB](https://www.mongodb.org/), [Node.js](ht
 </dl>
 
 ## License
-We believe that coreada  should be free and easy to integrate within your existing projects so we chose [The MIT License](http://opensource.org/licenses/MIT)
+We believe that such tools  should be free and easy to integrate within existing projects so we chose [The MIT License](http://opensource.org/licenses/MIT)
