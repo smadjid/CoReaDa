@@ -8,7 +8,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th class="part_index" ng-repeat="part in apart">
+                                    <th class="part_index" ng-repeat="part in studiedCourse.parts">
                                         {{part.title}}
                                         <br/>
                                         <div class="part-issues">
@@ -31,16 +31,13 @@
 
                                         <br/>
                                         <div class="total-indicator">
-
-                                        
-
                                             <a data-indicator='1' class="badge badge-danger" ng-click='doDisplay(this,1)'>
-                                            {{(apart.facts | filter:search:strict | filter:{'classof':'reading','type':'issue'}).length}}</a>
-                                            <a data-indicator='1' class="badge badge-warning" ng-click='doDisplay(this,1)'>33 warn.</a>
+                                            {{(allIssues | filter:search:strict | filter:{'classof':'reading','type':'issue'}).length}} warn.</a>
+                                            <a data-indicator='1' class="badge badge-warning" ng-click='doDisplay(this,1)'>{{(allIssues | filter:search:strict | filter:{'classof':'reading','type':'warning'}).length}} warn.</a>
                                         </div>
                                     </th>
 
-                                    <td ng-repeat="part in apart">
+                                    <td ng-repeat="part in studiedCourse.parts">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons" data-indicator='1'>
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='1' ng-href='#here' ng-click='doDisplay(this,1)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
@@ -61,12 +58,12 @@
                                         <span class="fat" style="padding:10px">Rereading</span>
                                         <br/>
                                         <div style="display: inline-flex;margin-top:7px;">
-                                            <a data-indicator='2' class="badge badge-danger" ng-click='doDisplay(this,2)'>45 issues</a>
-                                            <a data-indicator='2' class="badge badge-warning" ng-click='doDisplay(this,2)'>33 warn.</a>
+                                            <a data-indicator='2' class="badge badge-danger" ng-click='doDisplay(this,2)'> {{(allIssues | filter:search:strict | filter:{'classof':'rereading','type':'issue'}).length}} issues</a>
+                                            <a data-indicator='2' class="badge badge-warning" ng-click='doDisplay(this,2)'> {{(allIssues | filter:search:strict | filter:{'classof':'rereading','type':'warning'}).length}} warn.</a>
                                         </div>
                                     </th>
 
-                                    <td ng-repeat="part in apart">
+                                    <td ng-repeat="part in studiedCourse.parts">
                                         <div class="btn-group-vertical disabled" role="group" data-toggle="buttons" >
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='2' ng-href='#here' ng-click='doDisplay(this,2)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
@@ -88,11 +85,11 @@
                                         <br/>
                                         <div style="display: inline-flex;margin-top:7px;">
 
-                                            <a data-indicator='3'  class="badge badge-danger" ng-click='doDisplay(this,3)'>4 issues</a>
-                                            <a data-indicator='3' class="badge badge-warning" ng-click='doDisplay(this,3)'>4 warn.</a>
+                                            <a data-indicator='3'  class="badge badge-danger" ng-click='doDisplay(this,3)'> {{(allIssues | filter:search:strict | filter:{'classof':'transition','type':'issue'}).length}} issues</a>
+                                            <a data-indicator='3' class="badge badge-warning" ng-click='doDisplay(this,3)'> {{(allIssues | filter:search:strict | filter:{'classof':'reading','type':'warning'}).length}} warn.</a>
                                         </div>
                                     </th>
-                                    <td ng-repeat="part in apart">
+                                    <td ng-repeat="part in studiedCourse.parts">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons">
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='3' ng-href='#here' ng-click='doDisplay(this,3)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
@@ -112,11 +109,11 @@
                                         <span class="fat"  style="padding:10px">Stops</span>
                                         <br/>
                                         <div style="display: inline-flex;margin-top:7px;">
-                                            <a data-indicator='4'  class="badge badge-danger" ng-click='doDisplay(this,4)'>4 issues</a>
-                                            <a data-indicator='4'  class="badge badge-warning" ng-click='doDisplay(this,4)'>4 warn.</a>
+                                            <a data-indicator='4'  class="badge badge-danger" ng-click='doDisplay(this,4)'> {{(allIssues | filter:search:strict | filter:{'classof':'stop','type':'issue'}).length}} issues </a>
+                                            <a data-indicator='4'  class="badge badge-warning" ng-click='doDisplay(this,4)'> {{(allIssues | filter:search:strict | filter:{'classof':'stop','type':'warning'}).length}} warn.</a>
                                         </div>
                                     </th>
-                                    <td ng-repeat="part in apart">
+                                    <td ng-repeat="part in studiedCourse.parts">
                                         <div class="btn-group-vertical" role="group" data-toggle="buttons">
                                             <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover" data-indicator='4' ng-href='#here' ng-click='doDisplay(this,4)' aria-expanded="false" aria-controls="collapseExample">
                                                 <span class="glyphicon glyphicon-remove"></span>
@@ -144,9 +141,11 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
-                                    </p>
+                                    <ul>
+                                        <li>Le cours comporte 8 parties
+                                        <li>51 problèmes de lecture détectés
+                                        <li>70 autres remarques à considérer                                        
+                                    </ul>
                                 </div>
                                 <a href="#">
                                     <div class="panel-footer">
@@ -174,7 +173,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tasks-panel panel-body" ng-controller="ToDoController">
+                            <div class="tasks-panel panel-body" > <!--ng-controller="ToDoController">-->
                                 <div    >
 
                                     <!-- Form Starts Here -->
@@ -188,19 +187,18 @@
                                         <!-- Form Ends Here -->
 
 
-<a role="button" class="glyphicon glyphicon-minus" ng-click="seedData()"></a>
+<!--<a role="button" class="glyphicon glyphicon-minus" ng-click="seedData()"></a>--> 
 <table class="table table-bordered table-hover table-condensed" >
-    <tr ng-repeat="todo in tasks">
+    <tr ng-repeat="task in Tasks">
       <td>
-        <!-- editable username (text with validation) -->
-        <span editable-text="todo.text"  e-name="name" e-form="rowform" e-required>
-          {{ todo.text || 'empty' }}
+        <span editable-text="task.todo"  e-name="name" e-form="rowform" e-required>
+          {{ task.todo || 'empty' }} 
         </span>
       </td>
       <td style="    width: 1px;">
         <!-- form -->
 
-        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == todo" blur="cancel">
+        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == task.todo" blur="cancel" ><!--onaftersave="saveTable()"-->
 
           <a role="button"  ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
           <a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>

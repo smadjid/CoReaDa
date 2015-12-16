@@ -9,7 +9,33 @@ var mongoose = require('mongoose'),
     _ = require('lodash');
 
 
+function getTodos(res){
+    Todo.find(function(err, todos) {
 
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+
+            res.json(todos); // return all todos in JSON format
+        });
+};
+
+function seedData(res){
+ var todo =  Todo.create({  text : "seed",done : false})
+ var part =  Part.create({id : 166 ,part_id : 1, title : 'titre', todos : [todo]})
+ 
+};
+
+function getOneTodo(res){
+    Todo.find(function(err, todos) {
+
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+
+            res.json(todos); // return all todos in JSON format
+        });
+};
 
 
 module.exports = function(Courses) {
@@ -23,11 +49,113 @@ module.exports = function(Courses) {
             if (err)
                 res.send(err)
 
-            res.json(course); // return the course in JSON format
+            res.json(course); // return the course in JSON format 
         });
             
 
         },
+
+
+        /**
+         * get todos
+         */
+        getTodos: function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+        	if(err) return next("Error finding the course.");	
+        	
+        	if(req.params.partId==0){
+        		res.json(_course.todos); 
+        	}
+        	else{
+        		var part = _course.parts.id(req.params.partId);
+        		res.json(_part.todos); 
+        	}        	
+        	
+        	})
+        },
+
+        /**
+         * Create a todo
+         */
+        addTodo: function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+        	if(err) return next("Error finding the course.");	
+        	
+        	if(req.params.partId==0){
+        		_course.todos.push(req.body);
+        		_course.save();
+        	}
+        	else{
+        		var part = _course.parts.id(req.params.partId);
+        		part.todos.push(req.body);
+        		part.save();	
+        		_course.save();
+        	}        	
+        	
+
+        	res.json(_course);
+        	})
+        },
+        /**
+         * Edit a todo
+         */
+        editTodo: function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+        	if(err) return next("Error finding the course.");	
+        	
+        	if(req.params.courseId==0){
+        		_course.todos.replaceOne({'_id':req.params.todoId},req.body);
+        	}
+        	else{
+        		var part = _course.parts.id(req.params.partId);
+        		part.todos.push(req.body);
+        		part.todos.replaceOne({'_id':req.params.todoId},req.body);
+        		part.save();	
+        	}
+        	
+        	_course.save();
+        	})
+        },
+        // delete a todo
+        destroyTodo:function(req, res) {
+            console.log(req.params.todoId);
+            Todo.remove({
+            _id : req.params.todoId
+        }, function(err, todo) {
+            if (err)
+                res.send(err);
+
+            getTodos(res);
+        });
+
+        },
+        /**
+         * Get a Todo
+         */
+        locateTodo: function(req, res) {
+            // use mongoose to get all todos in the database
+            getOneTodo(res);
+            
+
+        },
+       /**
+         * List of Todos
+         */
+        allTodos: function(req, res) {
+            // use mongoose to get all todos in the database
+            getTodos(res);
+            
+
+        },
+
+        seedTodos: function(req, res) {
+            // use mongoose to get all todos in the database
+            seedData(res);
+            
+
+        },
+
+  
        
 
         seed: function(req, res) {
@@ -665,7 +793,7 @@ module.exports = function(Courses) {
 
         });
 
-            
+          
 
         }
     };

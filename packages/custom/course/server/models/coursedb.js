@@ -83,6 +83,7 @@ var PartSchema = new Schema({
  /* updated: {
     type: Array
   },*/
+  todos: [TodoSchema],
   facts: [FactSchema]
 });
 

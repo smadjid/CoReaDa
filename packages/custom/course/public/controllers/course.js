@@ -1,4 +1,4 @@
-'use strict';
+'use strict'; 
 
 /* jshint -W098 */
 var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap']);
@@ -9,8 +9,8 @@ courseModule.run(function(editableOptions, editableThemes) {
   editableOptions.theme = 'bs3';
 });
 
-courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course', 'CoursesDB',
-  function($scope, $uibModal, $http, Global, Course,CoursesDB) {
+courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','Todos',
+  function($scope, $uibModal, $http, Global, Course,CoursesDB, Todos) {
     $scope.global = Global;
     $scope.package = {
       name: 'course'
@@ -18,32 +18,40 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
 
     ;
 
-//CoursesDB.seed()
+
+$scope.formData = {};
+$scope.editIndex = false;
+$scope.loading = false;
+$scope.animationsEnabled = true;
+$scope.show = false;
+
+//CoursesDB.seed() 
     CoursesDB.get()
       .success(function(data) {
-        $scope.studiedCourse = data;
-        console.log(data);
-        //var part_data = data;
-        $scope.apart = data[0].parts;
-        //alert(data[0].parts)
+        $scope.studiedCourse = data[0];        
+        $scope.allIssues = [];
+
+        
+        $scope.studiedElement = $scope.studiedCourse;
+        $scope.studiedIndicators = "All";
+
+        angular.forEach(data[0].parts, function(part) {
+            angular.forEach(part.facts, function(fact) {
+                $scope.allIssues.push(
+                    fact
+                );
+                
+            });
+        
+        });
+
+        
       })
         .error(function(data) {
             console.log('Error: ' + data);
         });
     
-    $scope.partdata=[
-    {id:1, total_error:56, total_warning:63, reading_error:1, reading_warning:4,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4},
-    {id:2, total_error:56, total_warning:63,reading_error:9, reading_warning:5,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4},
-    {id:3, total_error:56, total_warning:63,reading_error:12, reading_warning:7,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4},
-    {id:4, total_error:56, total_warning:63, reading_error:12, reading_warning:7,rereading_error:1, rereading_warning:4,transition_error:1, transition_warning:4,stop_error:1, stop_warning:4}
-    ];
 
-
-
-  $scope.animationsEnabled = true;
-
-    
-   $scope.show = false;
   $scope.hideIssuesDialog = function(){$scope.show=false;}
 
   $scope.doDisplay=function(obj, type){
@@ -52,6 +60,7 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
     var _currentIndicator = -1;
    if(typeof obj.part != "undefined") _currentPart = obj.part.id;
     prepareIssuesDlg(_currentPart , type - 1);
+    updateContexte(_currentPart , type - 1);
     $scope.show = true;
   };
 
@@ -61,13 +70,83 @@ $scope.$watch('show', function(newValue, oldValue) {
         if (!newValue) {
                 $('.highlighted').removeClass('highlighted');
                 $('.overlayed').removeClass('overlayed');
+                updateContexte(0,0);
         }
     });
 
-$scope.seedData=function(){
+$scope.$watch('studiedElement', function(newValue, oldValue) {
+        $scope.Tasks = Todos.filterTasks($scope.studiedElement,$scope.studiedIndicator)
+        $scope.loading = false;
+        $scope.formData = {};
 
-  };  
+        
+    });
+$scope.$watch('studiedIndicator', function(newValue, oldValue) {
+       $scope.Tasks = Todos.filterTasks($scope.studiedElement,$scope.studiedIndicator)
+        $scope.loading = false;
+        $scope.formData = {};
+        
+    });
+
+
+/////////////////////////////// TODOS ////////////////////////
+
+
+$scope.addTask = function () {
+    
+    if( $scope.editIndex === false){    
+      // validate the formData to make sure that something is there
+      // if form is empty, nothing will happen
+      if ($scope.formData.text != undefined) {
+        $scope.loading = true;
+
+        Todos.addTask($scope.studiedCourse._id,$scope.studiedElement._id, {type:'edition', todo:$scope.formData.text})
+        .success(function(data) {
+                $scope.studiedCourse = data; // assign our new list of todos
+                 $scope.Tasks = Todos.filterTasks($scope.studiedElement,$scope.studiedIndicator)
+                 $scope.loading = false;
+                 $scope.formData = {};
+                
+              });
+      }
+
+
+    } 
+    else {
+      $scope.tasks[$scope.editIndex].task = $scope.task;
+    }
+    $scope.editIndex = false;
+    $scope.task = '';
+  }
+    
+  $scope.editTask = function (index) {
+    $scope.task = $scope.tasks[index].task;
+    $scope.editIndex = index;
+  }
+  $scope.doneTask = function (index) {
+    $scope.tasks[index].done = true;
+  }
+  $scope.unDoneTask = function (index) {
+    $scope.tasks[index].done = false;
+  }
+  $scope.deleteTask = function (index) {
+    //$scope.tasks.splice(index, 1);
+    Todos.delete(index)
+          .success(function(data) {
+            $scope.loading = false;
+            $scope.formData = {}; // clear the form so our user is ready to enter another
+            $scope.tasks = data; // assign our new list of todos
+          });
+
+  }
+
+
   ///////////////////////ROUTINE FUNCTIONS///////////////////////////////////////
+var updateContexte   = function(part_index , indicator_index){  
+    if(part_index>0) $scope.studiedElement = $scope.studiedCourse.parts[part_index - 1]
+        else $scope.studiedElement = $scope.studiedCourse;
+};
+
 var prepareIssuesDlg  = function(part_index , indicator_index){  
   $(document).scrollTop(0);
  $(document).scrollTop(0);
@@ -118,62 +197,4 @@ $scope.show = false;
 }
 }
 ]);
-/*************************************************************************************/
-courseModule.controller('appCtrl', function ($scope, $http) {
-    $scope.edit = false;
-    $scope.items = '';
-    
-        $scope.items = [
-    {
-        "name"      : "Tent",
-        "complete"  : false
-    }
-];
-    
-    $scope.toggleEdit = function(){
-        if($scope.edit){
-            $scope.edit = false;
-        } else {
-            $scope.edit = true;
-        }
-    }
-    $scope.itemClicked = function(clicked){
-        
-        for ( var i = 0; i < $scope.items.length; i++ ) {
-            if ( clicked.name === $scope.items[i].name ) {
-                if ( $scope.items[i].complete === false ){
-                    $scope.items[i].complete = true;
-                } else {
-                    $scope.items[i].complete = false;
-                }
-            }
-        }
-    }
-    $scope.addItem = function(item){
-        var newItem = { "name" : item, "complete" : false };
-     
-            if ( item != undefined && /[A-Za-z]/g.test(item) ){
-                $scope.items.unshift(newItem);
-            }
-        //document.getElementById('addItemInput').value = '';
-        $scope.newItem = '';
-    }
-    $scope.keyboardHandler = function(keyEvent, item){
-        if(keyEvent.which === 13){
-            $scope.addItem(item);
-        }
-    }
-    $scope.deleteItem = function(clicked){
-        for ( var i = 0; i < $scope.items.length; i++ ) {
-            if ( clicked.name === $scope.items[i].name ) {
-                $scope.items.splice(i, 1);
-            }
-        }
-    }
-    $scope.clean = function(){
-        for ( var i = 0; i < $scope.items.length; i++ ) {
-            $scope.items[i].complete = false;
-        }
-    }
-});
 
