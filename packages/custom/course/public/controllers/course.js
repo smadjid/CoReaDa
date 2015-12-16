@@ -79,6 +79,14 @@ $scope.$watch('studiedElement', function(newValue, oldValue) {
         $scope.loading = false;
         $scope.formData = {};
 
+        $scope.inspectorcours = $scope.studiedCourse.title;
+        $scope.inspectorelement = $scope.studiedElement.title;
+        $scope.inspectorerrors = $scope.studiedElement.facts.filter(function(value) { return value.type === 'issue' }).length;
+        $scope.inspectorwarnings = $scope.studiedElement.facts.filter(function(value) { return value.type === 'warning' }).length;
+        $scope.inspectortasks = $scope.studiedElement.todos.length;
+        //scope.studiedElement.facts.length
+        
+
         
     });
 $scope.$watch('studiedIndicator', function(newValue, oldValue) {
