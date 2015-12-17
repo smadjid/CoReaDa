@@ -246,40 +246,7 @@
 
 
 
-<div class="panel panel-default" id="issues-dialog" ng-show="show" onshow="console.log('ok')" onhide="onClose()">
-    <div class=" ">
-        <button type="button" class="btn btn-danger pull-right" ng-click="hideIssuesDialog()" >
-            <span class="glyphicon glyphicon-remove"></span>
-        </button>
-    </div>            
- <div class="list-group">
-                                            <a href="#" class="list-error-item"><span class="glyphicon glyphicon-remove"></span>
-                                                Error <span class="badge badge-danger">14</span></a>  
-                                                <a href="#" class="list-error-item"><span class="glyphicon glyphicon-remove"></span>
-                                                    Error <span class="badge badge-danger">14</span></a>  
-                                                </div>
-                                                <div class="list-group">
-                                                    <a href="#" class="list-warning-item"><span class="glyphicon glyphicon-warning-sign"></span>
-                                                        Warning</a>  
-                                                        <a href="#" class="list-warning-item"><span class="glyphicon glyphicon-warning-sign"></span>
-                                                            Warning</a>  
-                                                            </div>
-                                                    </div>
 
-
-
- <!--<p>Critical Events: {{(apart | filter:search:strict | filter:{'type':'issue'})}}</p>
-
- <div ng-repeat="part in apart ">
-     <h5>{{part.id}}</h5>
-       <p>Number of Critical Events: {{(part.facts | filter:search:strict | filter:{'type':'issue'}).length}}</p>
-       <hr/>
-    </div>
-
-<p>Number of Critical Events: {{(apart | filter:search:strict | filter:{'type':'issue'}).length}}</p>-->
-
- 
-
-    </div>
+<div class="panel panel-default" id="issues-dialog" ng-show="show" onshow="console.log('ok')" onhide="onClose()"  data-ng-include src="'course/views/issues-panel.html'"></div>
 
 

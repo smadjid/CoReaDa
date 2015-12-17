@@ -1,0 +1,30 @@
+<div class=" ">
+    <button type="button" class="btn btn-danger pull-right" ng-click="hideIssuesDialog()" >
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+</div>            
+<div class="list-group">
+    <a href="#" class="list-error-item" ng-repeat="fact in studiedElement">
+        <span class="glyphicon glyphicon-remove"></span>
+        {{fact.value}} 
+        <!--<span class="badge badge-danger">14</span>-->
+    </a>  
+</div>
+<div class="list-group">
+    <a href="#" class="list-warning-item" ng-repeat="fact in studiedElement">
+        <span class="glyphicon glyphicon-remove"></span>
+        {{fact.value}} 
+       <!-- <span class="badge badge-danger">14</span>-->
+    </a>  
+</div>
+
+<!--    <div class="list-group">
+        <a href="#" class="list-warning-item">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            Warning
+        </a>  
+       
+    </div>
+
+
+  -->
