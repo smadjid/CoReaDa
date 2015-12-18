@@ -618,8 +618,8 @@ td,tr,th{
   padding: 0;
 }
 
-#issues-dialog .modal-content{  
-     border-radius: 0px; 
+#issues-dialog{  
+     overflow: scroll;
 }
 /*********************************/
 

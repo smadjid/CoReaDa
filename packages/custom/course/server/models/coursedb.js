@@ -59,6 +59,9 @@ var FactSchema = new Schema({
   value: {
     type: String,
     required: true
+  },  
+  priority: {
+    type: String
   },
   suggestion : [TodoSchema]
 });

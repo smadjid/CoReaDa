@@ -1,30 +1,95 @@
-<div class=" ">
+<!--<div class=" ">
     <button type="button" class="btn btn-danger pull-right" ng-click="hideIssuesDialog()" >
         <span class="glyphicon glyphicon-remove"></span>
     </button>
-</div>            
-<div class="list-group">
-    <a href="#" class="list-error-item" ng-repeat="fact in studiedElement">
-        <span class="glyphicon glyphicon-remove"></span>
-        {{fact.value}} 
-        <!--<span class="badge badge-danger">14</span>-->
-    </a>  
-</div>
-<div class="list-group">
-    <a href="#" class="list-warning-item" ng-repeat="fact in studiedElement">
-        <span class="glyphicon glyphicon-remove"></span>
-        {{fact.value}} 
-       <!-- <span class="badge badge-danger">14</span>-->
-    </a>  
-</div>
+</div>            -->
 
-<!--    <div class="list-group">
-        <a href="#" class="list-warning-item">
-            <span class="glyphicon glyphicon-warning-sign"></span>
-            Warning
-        </a>  
-       
-    </div>
+<!--
+ <uib-accordion close-others="true">   
+    <uib-accordion-group is-open="status.open" panel-class="panel-danger" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="item in studiedElement">
+      <uib-accordion-heading>
+      <span class="glyphicon glyphicon-remove"></span>
+        <b>{{fact.name}} </b> : {{fact.value}}
+        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+      This is just some content to illustrate fancy headings.
+    </uib-accordion-group> 
+    
+ 
+   <uib-accordion-group is-open="status.open" panel-class="panel-warning" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="item in studiedElement">
+      <uib-accordion-heading>
+      <span class="glyphicon glyphicon-remove"></span>
+        <b>{{fact.name}} </b> : {{fact.value}}
+        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+      This is just some content to illustrate fancy headings.
+    </uib-accordion-group> 
+ 
+  </uib-accordion>
+-->
+<!-- Modal content-->
+                <div class="modal-content">
+                <div class='row' style="margin:0;height:100%; background-color: #1C383F">
+                    <div class="modal-body col-xs-6" id="errors-display" style="margin:0;height:100%">
+                    <div class="btn-group btn-group-justified" data-toggle="buttons"> 
+                    	<label class="btn btn-xs btn-danger active">
+    						<input type="checkbox" id="displayErrors" autocomplete="off" checked> <span class="glyphicon glyphicon-remove" aria-hidden="true" style=" color:white"></span> Issues
+  						</label>
+  						<label class="btn btn-xs btn-warning active">
+  							<input type="checkbox" id="displayWarnings" autocomplete="off" checked> <span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style=" color:white"></span> Warnings
+  						</label>
+  					</div>
 
 
-  -->
+
+
+
+
+                        <div class="list-group" id="erros-list-group" style="height: 100%; margin-top:5px">
+							 <uib-accordion close-others="true">   
+							    <uib-accordion-group is-open="status.open" panel-class="panel-danger" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="item in studiedElement">
+							      <uib-accordion-heading>
+							      <span class="glyphicon glyphicon-remove"></span>
+							        <b>{{fact.name}} </b> : {{fact.value}}
+							        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+							      </uib-accordion-heading>
+							      This is just some content to illustrate fancy headings.
+							    </uib-accordion-group> 
+							  </uib-accordion>    
+							  
+                        </div>
+                        
+                        <div class="list-group" id="warnings-list-group">
+							 <uib-accordion close-others="true">   
+							   <uib-accordion-group is-open="status.open" panel-class="panel-warning" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="item in studiedElement">
+							      <uib-accordion-heading>
+							      <span class="glyphicon glyphicon-remove"></span>
+							        <b>{{fact.name}} </b> : {{fact.value}}
+							        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+							      </uib-accordion-heading>
+							      This is just some content to illustrate fancy headings.
+							    </uib-accordion-group> 
+							 
+							  </uib-accordion>
+
+                        
+                        </div>
+                    </div>
+                    <div class="modal-body  pull-right col-xs-6" id="graph-display" style="margin:0;height:100%;"> 
+                    	<div class="panel panel-chart" id="graphic-panel" style="margin:0;height:90%">
+	    						<div class="panel-heading">
+	                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Area Chart</h3>
+	                            </div>
+    						<div class="panel-body">
+        						<svg id="graph"></svg>
+    						</div>
+						</div>	
+					
+                    </div>
+	                <button type="button" class="btn btn-xs pull-right" data-dismiss="modal" style="position:absolute;bottom:3px;right:3px;height:8%">
+	                	<span class="glyphicon glyphicon-remove"></span>
+	                    	Close
+	                </button>
+                </div>    
+                
+                </div>
