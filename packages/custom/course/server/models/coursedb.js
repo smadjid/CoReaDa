@@ -60,6 +60,9 @@ var FactSchema = new Schema({
     type: String,
     required: true
   },  
+  explanation: {
+    type: String
+  }, 
   priority: {
     type: String
   },

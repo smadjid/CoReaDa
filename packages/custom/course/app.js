@@ -29,6 +29,10 @@ Course.register(function(app, auth, database) {
   Course.aggregateAsset('css', '../lib/angular-xeditable/dist/css/xeditable.css');
   Course.aggregateAsset('js', '../lib/angular-xeditable/dist/js/xeditable.js');
 
+  Course.aggregateAsset('css',"../lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css");
+  Course.aggregateAsset('js',"../lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js");
+  Course.aggregateAsset('js',"../lib/ng-scrollbars/dist/scrollbars.min.js");
+
 
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above

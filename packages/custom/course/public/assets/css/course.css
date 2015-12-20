@@ -618,8 +618,9 @@ td,tr,th{
   padding: 0;
 }
 
-#issues-dialog{  
-     overflow: scroll;
+#errors-display{  
+  
+     height:100%;
 }
 /*********************************/
 
@@ -699,6 +700,47 @@ a.list-warning-item:hover {
     float: right;
 }
 
+
+
+
+
+.error-item {
+  border: 1px solid #ddd;
+  color: #a94442;
+  background-color: #ebcccc;
+  
+
+    
+}
+.error-item.panel-open .panel-heading , .error-item .panel-heading:hover {
+  text-decoration: none;
+    color:#fff;background-color:#a94442;
+    border-color:#a94442
+}
+
+.warning-item {
+    border: 1px solid #ddd;
+    color:#8a6d3b;
+    background-color:#fcf8e3;
+}
+
+.warning-item.panel-open .panel-heading , .warning-item .panel-heading:hover {
+  text-decoration: none;
+    color:#fff;background-color:#8a6d3b;
+    border-color:#8a6d3b
+}
+
+
+.error-item>.badge, .warning-item>.badge {
+    float: right;
+}
+
+.warning-item> .panel-heading, .error-item> .panel-heading {
+    padding: 5px 10px;
+    border-bottom: 1px solid transparent;
+    border-top-right-radius: -1;
+    border-top-left-radius: -1;
+}
 
 
 /****************D3 Graphics***************************/
@@ -807,4 +849,24 @@ a.editable-click:hover {
 }
 .editable-text{
   width:100%;
+}
+
+
+
+.btn-group-xs>.btn, .btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+/*************SCROLL BAR **************************/
+.mCSB_container_wrapper, .mCSB_container, .mCSB_container_wrapper>.mCSB_container {
+  padding: 0px; 
+  padding-right:10px!important;
+   margin:0!important;
+   width:100%!important;
+}
+.mCSB_container_wrapper>.mCSB_container {
+    padding: 0px; 
 }

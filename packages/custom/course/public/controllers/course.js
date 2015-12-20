@@ -1,7 +1,7 @@
 'use strict'; 
 
 /* jshint -W098 */
-var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap']);
+var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap','ngScrollbars']);
 
 courseModule.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-sm';
@@ -16,14 +16,30 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
       name: 'course'
     };
 
-    ;
 
 
 $scope.formData = {};
 $scope.editIndex = false;
 $scope.loading = false;
 $scope.animationsEnabled = true;
-$scope.show = false;
+$scope.factspanel = false;
+
+
+
+
+
+// scrollbar config
+$scope.scrollconfig = {
+    autoHideScrollbar: false,
+    theme: 'light',
+    scrollButtons:{enable:true,scrollType:"stepped"},
+    advanced:{
+        updateOnContentResize: true
+    },
+        setHeight: 200,
+        scrollInertia: 0
+    }
+;
 
 //CoursesDB.seed() 
     CoursesDB.get()
@@ -32,8 +48,11 @@ $scope.show = false;
         $scope.allIssues = [];
 
         
-        $scope.studiedElement = $scope.studiedCourse;
-        $scope.studiedIndicators = "All";
+        $scope.focusStudy =  {
+                    type:'course',
+                    studiedIndicator:'ALL',
+                    studiedElt : $scope.studiedCourse 
+                }; 
 
         angular.forEach(data[0].parts, function(part) {
             angular.forEach(part.facts, function(fact) {
@@ -52,45 +71,47 @@ $scope.show = false;
         });
     
 
-  $scope.hideIssuesDialog = function(){$scope.show=false;}
+  $scope.hideIssuesDialog = function(){$scope.factspanel=false;}
 
-  $scope.doDisplay=function(obj, type){
+  $scope.doDisplay=function(focus, obj, type){
     
     var _currentPart = -1;
     var _currentIndicator = -1;
+   //if(typeof obj.part != "undefined") _currentPart = obj.part.id;
    if(typeof obj.part != "undefined") _currentPart = obj.part.id;
     prepareIssuesDlg(_currentPart , type - 1);
-    updateContexte(_currentPart , type - 1);
-    $scope.show = true;
+    updateContexte(focus,_currentPart , type - 1);
+    $scope.factspanel = true;
   };
 
   
 
-$scope.$watch('show', function(newValue, oldValue) {
-        if (!newValue) {
+$scope.$watch('factspanel', function(value) {   
+        if (!value) {
                 $('.highlighted').removeClass('highlighted');
                 $('.overlayed').removeClass('overlayed');
-                updateContexte(0,0);
+                updateContexte('course',0,0);
         }
     });
 
-$scope.$watch('studiedElement', function(newValue, oldValue) {
-        $scope.Tasks = Todos.filterTasks($scope.studiedElement,$scope.studiedIndicator)
+$scope.$watch('focusStudy.studiedElt', function() {
+        $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
         $scope.loading = false;
         $scope.formData = {};
 
         $scope.inspectorcours = $scope.studiedCourse.title;
-        $scope.inspectorelement = $scope.studiedElement.title;
-        $scope.inspectorerrors = $scope.studiedElement.facts.filter(function(value) { return value.type === 'issue' }).length;
-        $scope.inspectorwarnings = $scope.studiedElement.facts.filter(function(value) { return value.type === 'warning' }).length;
-        $scope.inspectortasks = $scope.studiedElement.todos.length;
-        //scope.studiedElement.facts.length
+        $scope.inspectorelement = $scope.focusStudy.studiedElt.title;
+        $scope.inspectorerrors = $scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length;
+        $scope.inspectorwarnings = $scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length;
+        $scope.inspectortasks = $scope.focusStudy.studiedElt.todos.length;
+        //scope.focusStudy.facts.length
         
 
         
     });
-$scope.$watch('studiedIndicator', function(newValue, oldValue) {
-       $scope.Tasks = Todos.filterTasks($scope.studiedElement,$scope.studiedIndicator)
+$scope.$watch('studiedIndicator', function() {
+     
+       $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt,$scope.studiedIndicator)
         $scope.loading = false;
         $scope.formData = {};
         
@@ -108,10 +129,10 @@ $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
 
-        Todos.addTask($scope.studiedCourse._id,$scope.studiedElement._id, {type:'edition', todo:$scope.formData.text})
+        Todos.addTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, {type:'edition', todo:$scope.formData.text})
         .success(function(data) {
                 $scope.studiedCourse = data; // assign our new list of todos
-                 $scope.Tasks = Todos.filterTasks($scope.studiedElement,$scope.studiedIndicator)
+                 $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt,$scope.studiedIndicator)
                  $scope.loading = false;
                  $scope.formData = {};
                 
@@ -150,12 +171,46 @@ $scope.addTask = function () {
 
 
   ///////////////////////ROUTINE FUNCTIONS///////////////////////////////////////
-var updateContexte   = function(part_index , indicator_index){  
-    if(part_index>0) $scope.studiedElement = $scope.studiedCourse.parts[part_index - 1]
-        else $scope.studiedElement = $scope.studiedCourse;
+/*var updateContexte   = function(focus, part_index , indicator_index){  
+    if(part_index>0)
+      $scope.focusStudy =  {
+                    type:'part',
+                    studiedIndicator:'ALL',
+                    studiedElt :$scope.studiedCourse.parts[part_index - 1]
+                }
+    else      
+      $scope.focusStudy =  {
+                    type:'course',
+                    studiedIndicator:'ALL',
+                    studiedElt :$scope.studiedCourse
+                }; 
+                console.log(part_index);
+    
+};*/
+
+var updateContexte   = function(focus, part_index , indicator_index){  
+  
+ 
+    $scope.focusStudy.type = focus;
+    if(focus=='course') 
+      {$scope.focusStudy.studiedElt = $scope.studiedCourse; }
+
+    if(focus=='part-head') 
+      {$scope.focusStudy.studiedElt = $scope.studiedCourse.parts[part_index - 1]; }
+    
+    if(focus=='indicator-head') 
+      {$scope.focusStudy.studiedIndicator = indicator_index; }
+
+    if(focus=='cell') 
+      {
+        $scope.focusStudy.studiedElt = $scope.studiedCourse.parts[part_index - 1]; 
+        $scope.focusStudy.studiedIndicator = indicator_index;
+      }
+    
 };
 
 var prepareIssuesDlg  = function(part_index , indicator_index){  
+  
   $(document).scrollTop(0);
  $(document).scrollTop(0);
   $('td').addClass('overlayed');
@@ -201,7 +256,8 @@ $("#issues-dialog").css('left',modal_left);
 $("#issues-dialog").css('width',width);
 $("#issues-dialog").css('height',height);
 
-$scope.show = false;
+
+
 }
 }
 ]);

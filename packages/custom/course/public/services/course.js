@@ -70,10 +70,11 @@ angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
       deleteTask : function(elt_id, fact_id) {
          
       },
-      filterTasks : function(studiedPart, studiedIndicator) {
+      filterTasks : function(studiedPart) {
         
        //alert(studiedPart.id)
-          return studiedPart.todos
+
+          return studiedPart.todos;alert(studiedPart.title);
        
         //return $http.post('/api/tasks/add/'+courseId+'/'+partId, todoData);
       }
