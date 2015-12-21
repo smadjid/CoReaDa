@@ -56,6 +56,50 @@ angular.module('mean.course').factory('CoursesDB', ['$http',function($http) {
     }
   }]);
 
+angular.module('mean.course').factory('focusStudyManager', [function() {
+    return {
+      initialize : function(elt) {
+        var result = 
+          {
+                    type:'course',
+                    studiedIndicator:'ALL',
+                    studiedElt : elt
+                }; 
+                return result;
+
+        
+      },
+      update : function(course, focusElt, focus, part_index , indicator) {
+
+        var elt = focusElt;
+        elt.type = focus;
+        
+        if(focus=='course') 
+          {elt.studiedElt = course; return(elt);}
+        if(focus=='part-head' && indicator=='ALL') 
+          {elt.studiedElt = course.parts[part_index - 1]; return elt;}
+        if (focus=='indicator-head' && part_index<1)
+         {elt.studiedElt.facts = $.grep(elt.studiedElt.facts, function(e){ return  e.classof == indicator }); return elt;}
+        
+        
+          var result = course.parts[part_index - 1]; 
+          result.facts = $.grep(result.facts, function(e){ return  e.classof == indicator });
+
+          
+          elt.studiedIndicator=indicator;
+          elt.studiedElt = result;
+
+
+                return(elt);
+          //return result;
+
+        
+        
+        
+      }
+    }
+  }]);
+
 angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
     return {
       addTask : function(courseId, partId, todoData) {
@@ -74,7 +118,7 @@ angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
         
        //alert(studiedPart.id)
 
-          return studiedPart.todos;alert(studiedPart.title);
+          return studiedPart.todos;
        
         //return $http.post('/api/tasks/add/'+courseId+'/'+partId, todoData);
       }

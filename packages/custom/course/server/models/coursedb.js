@@ -79,8 +79,7 @@ var PartSchema = new Schema({
     required: true
   },
   part_id: {
-    type: Number,
-    required: true
+    type: Number
   },
   title: {
     type: String,

@@ -9,13 +9,14 @@ courseModule.run(function(editableOptions, editableThemes) {
   editableOptions.theme = 'bs3';
 });
 
-courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','Todos',
-  function($scope, $uibModal, $http, Global, Course,CoursesDB, Todos) {
+courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','focusStudyManager','Todos',
+  function($scope, $uibModal, $http, Global, Course,CoursesDB,focusStudyManager,Todos) {
     $scope.global = Global;
     $scope.package = {
       name: 'course'
     };
 
+$scope.indicators=['Reading','Rereading','Transition','Stop'];
 
 
 $scope.formData = {};
@@ -47,13 +48,15 @@ $scope.scrollconfig = {
         $scope.studiedCourse = data[0];        
         $scope.allIssues = [];
 
-        
-        $scope.focusStudy =  {
+        $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
+/* $scope.focusStudy =  {
                     type:'course',
                     studiedIndicator:'ALL',
                     studiedElt : $scope.studiedCourse 
                 }; 
-
+*/
+        
+        
         angular.forEach(data[0].parts, function(part) {
             angular.forEach(part.facts, function(fact) {
                 $scope.allIssues.push(
@@ -77,10 +80,15 @@ $scope.scrollconfig = {
     
     var _currentPart = -1;
     var _currentIndicator = -1;
+    var indicator = 'ALL';
+    if(type!=0) indicator = $scope.indicators[type - 1]
    //if(typeof obj.part != "undefined") _currentPart = obj.part.id;
    if(typeof obj.part != "undefined") _currentPart = obj.part.id;
-    prepareIssuesDlg(_currentPart , type - 1);
-    updateContexte(focus,_currentPart , type - 1);
+    prepareIssuesDlg(_currentPart , type - 1); 
+    
+    $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), focus,_currentPart , indicator);
+
+
     $scope.factspanel = true;
   };
 
@@ -90,7 +98,7 @@ $scope.$watch('factspanel', function(value) {
         if (!value) {
                 $('.highlighted').removeClass('highlighted');
                 $('.overlayed').removeClass('overlayed');
-                updateContexte('course',0,0);
+                $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),'course',0, 'ALL');
         }
     });
 
@@ -107,13 +115,6 @@ $scope.$watch('focusStudy.studiedElt', function() {
         //scope.focusStudy.facts.length
         
 
-        
-    });
-$scope.$watch('studiedIndicator', function() {
-     
-       $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt,$scope.studiedIndicator)
-        $scope.loading = false;
-        $scope.formData = {};
         
     });
 
@@ -186,7 +187,7 @@ $scope.addTask = function () {
                 }; 
                 console.log(part_index);
     
-};*/
+};
 
 var updateContexte   = function(focus, part_index , indicator_index){  
   
@@ -208,7 +209,7 @@ var updateContexte   = function(focus, part_index , indicator_index){
       }
     
 };
-
+*/
 var prepareIssuesDlg  = function(part_index , indicator_index){  
   
   $(document).scrollTop(0);

@@ -25,9 +25,9 @@
 
                 <br/>
                 <div class="total-indicator">
-                    <a data-indicator='1' class="badge badge-danger" ng-click='doDisplay("indicator-head",,this,1)'>
+                    <a data-indicator='1' class="badge badge-danger" ng-click='doDisplay("indicator-head",this,1)'>
                     {{(allIssues | filter:search:strict | filter:{'classof':'reading','type':'issue'}).length}} warn.</a>
-                    <a data-indicator='1' class="badge badge-warning" ng-click='doDisplay("indicator-head"this,1)'>{{(allIssues | filter:search:strict | filter:{'classof':'reading','type':'warning'}).length}} warn.</a>
+                    <a data-indicator='1' class="badge badge-warning" ng-click='doDisplay("indicator-head",this,1)'>{{(allIssues | filter:search:strict | filter:{'classof':'reading','type':'warning'}).length}} warn.</a>
                 </div>
             </th>
 

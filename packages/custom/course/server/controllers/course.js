@@ -156,9 +156,78 @@ module.exports = function(Courses) {
         },
 
   
-       
+       seed: function(req, res) {
+        var fs = require("fs");
+        var course = Course.create( {
+            title : "Nodejs",
+            version : 1.0,
+            parts:[],
+            facts: [],  
+            todos: []
+        });
+        var contents = fs.readFileSync("facts.json");
+        var jsonContent = JSON.parse(contents);
+       // jsonContent = JSON.stringify(jsonContent);
 
-        seed: function(req, res) {
+
+
+        //course
+        var partCount = 0;
+       var parts=[]
+        for(var key in jsonContent) 
+            {partCount = Math.max(partCount, jsonContent[key].id)}
+      
+       var initiatePart= function(p){
+        var part = {
+                'id':1
+            }
+        parts.push(part);
+       }
+       for (var i = 1; i <=partCount ; i++) initiatePart(i);
+
+
+        function searchById(arr,id) {
+             for (var i = 0, l = arr.length; i < l; i++){
+                    if (arr[i]['id'] === id) {
+                    return arr[i];
+                }        
+            }
+            return false;
+        }
+
+        for(var key in jsonContent) {
+            //console.log("key:"+exKey+", value:"+exjson[exKey]);
+            var idf = searchById(parts,jsonContent[key].id);
+            if(idf){
+                parts[i].title=jsonContent[key].part_title;
+                var fact={
+                    'name':jsonContent[key].content,
+                    'classof':jsonContent[key].classe,
+                    'type':jsonContent[key].type
+                }
+                parts[i].facts.push()
+            }
+
+
+
+        }
+            /*
+        {
+
+                //console.log("key:"+exKey+", value:"+jsonContent[exKey]);
+            }*/
+
+       /*  var fs = require("fs");
+ console.log("\n *START* \n");
+ var contents = fs.readFileSync("facts.json");
+ var jsonContent = JSON.parse(contents);
+
+console.log(jsonContent);*/
+console.log("\n *FINISH* \n");
+
+       },
+
+        populatedb: function(req, res) {
            Course.create({  
             title : "Nodejs",
             version : 1.0,
