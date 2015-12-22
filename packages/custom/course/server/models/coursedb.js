@@ -13,12 +13,10 @@ var mongoose = require('mongoose'),
  */
 var SuggestionSchema = new Schema({ 
   name: {
-    type: String,
-    required: true
+    type: String
   },
   value: {
-    type: Number,
-    required: true
+    type: Number
   }
 });
 
@@ -45,20 +43,16 @@ var TodoSchema = new Schema({
  */
 var FactSchema = new Schema({ 
   name: {
-    type: String,
-    required: true
+    type: String
   },
   classof: {
-    type: String,
-    required: true
+    type: String
   },
   type: {
-    type: String,
-    required: true
+    type: String
   },
   value: {
-    type: String,
-    required: true
+    type: String
   },  
   explanation: {
     type: String
@@ -75,15 +69,13 @@ var FactSchema = new Schema({
  */
 var PartSchema = new Schema({
   id: {
-    type: Number,
-    required: true
+    type: Number
   },
   part_id: {
     type: Number
   },
   title: {
-    type: String,
-    required: true
+    type: String
   },
  /* updated: {
     type: Array
@@ -106,12 +98,10 @@ var CourseSchema = new Schema({
   },*/
   title: {
     type: String,
-    required: true,
     trim: true
   },
   version: {
-    type: Number,
-    required: true
+    type: Number
   },
   
  /* permissions: {

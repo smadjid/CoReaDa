@@ -158,13 +158,8 @@ module.exports = function(Courses) {
   
        seed: function(req, res) {
         var fs = require("fs");
-        var course = Course.create( {
-            title : "Nodejs",
-            version : 1.0,
-            parts:[],
-            facts: [],  
-            todos: []
-        });
+        //var course = 
+        
         var contents = fs.readFileSync("facts.json");
         var jsonContent = JSON.parse(contents);
        // jsonContent = JSON.stringify(jsonContent);
@@ -173,60 +168,72 @@ module.exports = function(Courses) {
 
         //course
         var partCount = 0;
-       var parts=[]
+       var courseParts=[];
         for(var key in jsonContent) 
             {partCount = Math.max(partCount, jsonContent[key].id)}
       
        var initiatePart= function(p){
         var part = {
-                'id':1
+                'id':p,
+                'title':'part',
+                'facts':[]
             }
-        parts.push(part);
+        courseParts.push(part);
        }
-       for (var i = 1; i <=partCount ; i++) initiatePart(i);
+       
 
-
-        function searchById(arr,id) {
+        var searchByKey = function (arr,field,value) {
              for (var i = 0, l = arr.length; i < l; i++){
-                    if (arr[i]['id'] === id) {
-                    return arr[i];
+                
+                    if (arr[i][field] === value) {
+                    return i;
                 }        
             }
             return false;
         }
-
+        for (var i = 1; i <=partCount ; i++) initiatePart(i);
+            
         for(var key in jsonContent) {
-            //console.log("key:"+exKey+", value:"+exjson[exKey]);
-            var idf = searchById(parts,jsonContent[key].id);
-            if(idf){
-                parts[i].title=jsonContent[key].part_title;
+            
+
+            var idf = searchByKey(courseParts,'id',jsonContent[key].id);
+            
+            
+            
+                
+                courseParts[idf]['title']=jsonContent[key].part_title;
+               
                 var fact={
                     'name':jsonContent[key].content,
                     'classof':jsonContent[key].classe,
                     'type':jsonContent[key].type
                 }
-                parts[i].facts.push()
-            }
+                courseParts[idf].facts.push(fact);
+                
+            
 
 
 
         }
-            /*
-        {
-
-                //console.log("key:"+exKey+", value:"+jsonContent[exKey]);
-            }*/
-
-       /*  var fs = require("fs");
- console.log("\n *START* \n");
- var contents = fs.readFileSync("facts.json");
- var jsonContent = JSON.parse(contents);
-
-console.log(jsonContent);*/
+        var course = new Course( {
+            title : "Des applications ultra-rapides avec Node.js",
+            version : 1.0,
+            parts:courseParts,
+            facts: [],  
+            todos: []
+        });
+        course.save(function(err){
+            if (err){
+                console.log("erreur d'écriture: "+ err)
+            }
+            else{
+                console.log("enregistrement effectué");
+            }
+        });
+         
 console.log("\n *FINISH* \n");
 
        },
-
         populatedb: function(req, res) {
            Course.create({  
             title : "Nodejs",

@@ -1,3 +1,4 @@
+
 'use strict'; 
 
 /* jshint -W098 */
@@ -33,15 +34,36 @@ $scope.factspanel = false;
 $scope.scrollconfig = {
     autoHideScrollbar: false,
     theme: 'light',
+    live: true,
     scrollButtons:{enable:true,scrollType:"stepped"},
     advanced:{
-        updateOnContentResize: true
+        updateOnContentResize: true,
+                autoExpandHorizontalScroll: true,
+                autoExpandVerticalScroll: true,
+                updateOnSelectorChange: true
     },
         setHeight: 200,
         scrollInertia: 0
     }
 ;
 
+$scope.table_scrollconfig = {
+            
+            theme: "minimal",
+            live: true,
+            advanced:{
+                updateOnContentResize: true,
+                autoExpandHorizontalScroll: true,
+                autoExpandVerticalScroll: true,
+                updateOnSelectorChange: true
+            },
+            scrollButtons: {
+                enable: true,
+                scrollAmount: 'auto'
+            },
+            axis: 'yx',
+            autoHideScrollbar: false
+        };
 //CoursesDB.seed() 
     CoursesDB.get()
       .success(function(data) {
@@ -168,6 +190,8 @@ $scope.addTask = function () {
             $scope.tasks = data; // assign our new list of todos
           });
 
+
+
   }
 
 
@@ -247,19 +271,18 @@ $('.part_index').each(function(index) {
     width += parseInt($(this).outerWidth(), 10);
 });
 
-var pos_left = $('.part_index:first').offset().left; // HERE
+var pos_left = $('.part_index:first').position().left; // HERE
 
-var modal_top = pos_top + $('thead').outerHeight();
+var modal_top = $('thead').outerHeight();
 var modal_left = pos_left ;
 $("#issues-dialog").css('position','absolute');
 $("#issues-dialog").css('top',modal_top);
 $("#issues-dialog").css('left',modal_left);
-$("#issues-dialog").css('width',width);
-$("#issues-dialog").css('height',height);
+$("#issues-dialog").css('bottom',0);
+$("#issues-dialog").css('right',0);
 
 
 
 }
 }
 ]);
-
