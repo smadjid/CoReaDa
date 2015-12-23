@@ -98,17 +98,66 @@ $scope.table_scrollconfig = {
 
   $scope.hideIssuesDialog = function(){$scope.factspanel=false;}
 
-  $scope.doDisplay=function(focus, obj, type){
+  $scope.doDisplay=function($event){
     
-    var _currentPart = -1;
-    var _currentIndicator = -1;
-    var indicator = 'ALL';
-    if(type!=0) indicator = $scope.indicators[type - 1]
-   //if(typeof obj.part != "undefined") _currentPart = obj.part.id;
-   if(typeof obj.part != "undefined") _currentPart = obj.part.id;
-    prepareIssuesDlg(_currentPart , type - 1); 
+    var indicator = $($event.currentTarget).find('span').attr('data-indicator');
+    var part = $($event.currentTarget).find('span').attr('data-part');
+    var fact = $($event.currentTarget).find('span').attr('data-fact');
+
+
+
+    /*
+
+    $(document).scrollTop(0);
+ $(document).scrollTop(0);
+  $('td').addClass('overlayed');
+  $('th').addClass('overlayed');
+  $('.indicators_group').addClass('overlayed');*/
+
+
+
+   
+    if(indicator!='ALL') {
+    $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
+    $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');
     
-    $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), focus,_currentPart , indicator);
+    
+  }
+  
+    if(part!=-1) {
+    $('thead th').has('span[data-part!='+part+']').removeClass('highlighted').addClass('overlayed');
+    $('thead th').has('span[data-part='+part+']').addClass('highlighted').removeClass('overlayed');
+  }
+  
+
+    var pos_top = $('thead').offset().top;
+    var height = 0;  
+    $('.indicators_group').each(function(index) {
+        height += parseInt($(this).outerHeight(), 10);
+
+    });
+
+
+var bottom = $('table').height + $('table').offset().top;
+var width = 0;
+$('.part_index').each(function(index) {
+    width += parseInt($(this).outerWidth(), 10);
+});
+
+var pos_left = $('.part_index:first').position().left; // HERE
+
+var modal_top = $('thead').outerHeight();
+var modal_left = pos_left ;
+$("#issues-dialog").css('position','absolute');
+$("#issues-dialog").css('top',modal_top);
+$("#issues-dialog").css('left',modal_left);
+$("#issues-dialog").css('bottom',0);
+$("#issues-dialog").css('right',0);
+
+
+    
+    $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), 
+      focus,part , indicator);
 
 
     $scope.factspanel = true;
@@ -234,55 +283,6 @@ var updateContexte   = function(focus, part_index , indicator_index){
     
 };
 */
-var prepareIssuesDlg  = function(part_index , indicator_index){  
-  
-  $(document).scrollTop(0);
- $(document).scrollTop(0);
-  $('td').addClass('overlayed');
-  $('th').addClass('overlayed');
-  $('.indicators_group').addClass('overlayed');
 
-   
-    if(indicator_index!=-1) {
-    
-    $('.indicators_group').not(indicator_index).removeClass('highlighted');
-    $('.indicators_group').eq(indicator_index).addClass('highlighted');
-
-    
-  }
-
-    if(part_index!=-1) {
-    $('thead th').not(part_index).removeClass('highlighted');
-    $('thead th').eq(part_index).addClass('highlighted');
-
-  }
-
-    var pos_top = $('thead').offset().top;
-    var height = 0;  
-    $('.indicators_group').each(function(index) {
-        height += parseInt($(this).outerHeight(), 10);
-
-    });
-
-
-var bottom = $('table').height + $('table').offset().top;
-var width = 0;
-$('.part_index').each(function(index) {
-    width += parseInt($(this).outerWidth(), 10);
-});
-
-var pos_left = $('.part_index:first').position().left; // HERE
-
-var modal_top = $('thead').outerHeight();
-var modal_left = pos_left ;
-$("#issues-dialog").css('position','absolute');
-$("#issues-dialog").css('top',modal_top);
-$("#issues-dialog").css('left',modal_left);
-$("#issues-dialog").css('bottom',0);
-$("#issues-dialog").css('right',0);
-
-
-
-}
 }
 ]);
