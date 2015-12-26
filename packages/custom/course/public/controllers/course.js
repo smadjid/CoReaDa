@@ -96,13 +96,17 @@ $scope.table_scrollconfig = {
         });
     
 
-  $scope.hideIssuesDialog = function(){$scope.factspanel=false;}
+  $scope.hideIssuesDialog = function(){
+    $scope.studiedElt = $scope.studiedCourse;
+    $scope.factspanel=false;
+  }
 
   $scope.doDisplay=function($event){
     
     var indicator = $($event.currentTarget).find('span').attr('data-indicator');
     var part = $($event.currentTarget).find('span').attr('data-part');
     var fact = $($event.currentTarget).find('span').attr('data-fact');
+    //alert(fact);
 
 
 
@@ -144,7 +148,7 @@ $('.part_index').each(function(index) {
     width += parseInt($(this).outerWidth(), 10);
 });
 
-var pos_left = $('.part_index:first').position().left; // HERE
+var pos_left = $('.indicators_group').outerWidth();
 
 var modal_top = $('thead').outerHeight();
 var modal_left = pos_left ;
@@ -156,8 +160,7 @@ $("#issues-dialog").css('right',0);
 
 
     
-    $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), 
-      focus,part , indicator);
+    $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
 
 
     $scope.factspanel = true;
@@ -169,7 +172,7 @@ $scope.$watch('factspanel', function(value) {
         if (!value) {
                 $('.highlighted').removeClass('highlighted');
                 $('.overlayed').removeClass('overlayed');
-                $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),'course',0, 'ALL');
+                $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
         }
     });
 

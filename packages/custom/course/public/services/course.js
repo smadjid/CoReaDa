@@ -69,22 +69,34 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
 
         
       },
-      update : function(course, focusElt, focus, part_index , indicator) {
+      update : function(course, focusElt, part_index , indicator) {
 
         var elt = focusElt;
         elt.type = focus;
         
-        if(focus=='course') 
-          {elt.studiedElt = course; return(elt);}
-        if(focus=='part-head' && indicator=='ALL') 
-          {elt.studiedElt = course.parts[part_index - 1]; return elt;}
-        if (focus=='indicator-head' && part_index<1)
-         {elt.studiedElt.facts = $.grep(elt.studiedElt.facts, function(e){ return  e.classof == indicator }); return elt;}
-        
-        
-          var result = course.parts[part_index - 1]; 
-          result.facts = $.grep(result.facts, function(e){ return  e.classof == indicator });
+        if((part_index==-1) && (indicator=='ALL'))
+          {
+            elt.studiedElt = course; 
+            return(elt);
+          }
 
+        if(indicator=='ALL') 
+          {
+            elt.studiedElt = course.parts[part_index - 1]; 
+            return elt;
+          }
+          if(part_index==-1) 
+          {
+            // TODO
+            // elt.studiedElt.facts = $.grep(elt.studiedElt.facts, function(e){ return  e.classof == indicator }); return elt;
+            return elt;
+          }
+        
+  
+          var result = course.parts[part_index - 1]; 
+//          console.log(result);
+          result.facts = $.grep(result.facts, function(e){ return  e.classof == indicator });
+console.log(result.facts)      ;
           
           elt.studiedIndicator=indicator;
           elt.studiedElt = result;
