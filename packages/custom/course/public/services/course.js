@@ -88,7 +88,26 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
           if(part_index==-1) 
           {
             // TODO
-            // elt.studiedElt.facts = $.grep(elt.studiedElt.facts, function(e){ return  e.classof == indicator }); return elt;
+            // elt.studiedElt.facts 
+            //var res= $.grep(course.parts, function(e){ return  e.classof == indicator }); alert(res);
+            var res=[];
+            for (var i = 0; i < course.parts.length; i++) {
+              var p_res = $.grep(course.parts[i].facts, function(e){ 
+                e.part_id=course.parts[i].id;
+                return  e.classof == indicator
+              }
+                );
+              
+             // console.log(p_res);
+             angular.forEach(p_res, function (i) {
+              //if(p_res.length>0)
+                res.push(i);  
+              })
+
+        }
+
+      //  console.log(res);
+        elt.studiedElt.facts= res;
             return elt;
           }
         
@@ -115,7 +134,6 @@ console.log(result.facts)      ;
 angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
     return {
       addTask : function(courseId, partId, todoData) {
-        console.log('HERE')
         if(courseId == partId) partId=0;
         return $http.post('/api/tasks/add/'+courseId+'/'+partId, todoData);
       },

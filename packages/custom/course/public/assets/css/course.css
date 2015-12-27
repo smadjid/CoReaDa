@@ -872,6 +872,11 @@ a.editable-click:hover {
     padding: 0px; 
 }
 
+.todoDialog{
+    padding: 10px;
+    margin:0;height:100%
+
+}
 
 /*************FIXED 1st COLUMN **************************/
 [fixed-first-column] {position:relative}
