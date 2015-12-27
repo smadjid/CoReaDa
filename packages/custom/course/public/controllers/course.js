@@ -27,7 +27,7 @@ $scope.animationsEnabled = true;
 $scope.factspanel = false;
 
 
-
+$scope.inspector={'type':'Course', 'title':'Nodejs', 'nIssues':0, 'nWarn':0,'nTasks':0,'description':''};
 
 
 // scrollbar config
@@ -180,12 +180,13 @@ $scope.$watch('focusStudy.studiedElt', function() {
         $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
         $scope.loading = false;
         $scope.formData = {};
-
-        $scope.inspectorcours = $scope.studiedCourse.title;
-        $scope.inspectorelement = $scope.focusStudy.studiedElt.title;
-        $scope.inspectorerrors = $scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length;
-        $scope.inspectorwarnings = $scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length;
-        $scope.inspectortasks = $scope.focusStudy.studiedElt.todos.length;
+        
+        $scope.inspector={'type':'Course', 'title':$scope.focusStudy.studiedElt.title, 
+        'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
+        'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
+        'nTasks':$scope.focusStudy.studiedElt.todos.length,
+        'description':''};
+        //$scope.inspector = {'cours' = $scope.studiedCourse.title;
         //scope.focusStudy.facts.length
         
 

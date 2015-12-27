@@ -203,18 +203,18 @@ ul.alert-dropdown {
 }
 
 .panel-yellow {
-    border-color: #f0ad4e;
+    border-color: #3E4651;
 }
 
 .panel-yellow > .panel-heading {
-    border-color: #f0ad4e;
+    border-color: #3E4651;
     color: #fff;
-    background-color: #f0ad4e;
+    background-color: #3E4651;
     padding:5px;
 }
 
 .panel-yellow > a {
-    color: #f0ad4e;
+    color: #3E4651;
 }
 
 .panel-yellow > a:hover {
@@ -603,7 +603,7 @@ td {
 
 .highlighted{
   opacity :1;
-  background-color: green;
+  background-color: #3E4651;
 }
 td,tr,th{
     -webkit-transition: all 0.5s ease;
@@ -728,12 +728,15 @@ a.list-warning-item:hover {
 .warning-item.panel-open .panel-heading , .warning-item .panel-heading:hover {
   text-decoration: none;
     color:#fff;background-color:#8a6d3b;
-    border-color:#8a6d3b
+    border-color:#8a6d3b;
 }
 
 
 .error-item>.badge, .warning-item>.badge {
     float: right;
+}
+.warning-item .panel-title, .error-item .panel-title{
+  font-size: 14px;
 }
 
 .warning-item> .panel-heading, .error-item> .panel-heading {
@@ -864,7 +867,7 @@ a.editable-click:hover {
 /*************SCROLL BAR **************************/
 .mCSB_container_wrapper, .mCSB_container, .mCSB_container_wrapper>.mCSB_container {
   padding: 0px; 
-  padding-right:10px!important;
+/**  padding-right:10px!important; **/
    margin:0!important;
    width:100%!important;
 }
@@ -878,6 +881,10 @@ a.editable-click:hover {
 
 }
 
+.navbar {
+  min-height: 40px;
+  margin-bottom: 5px;
+}
 /*************FIXED 1st COLUMN **************************/
 [fixed-first-column] {position:relative}
 [fixed-first-column]>.table-responsive {margin-left:135px;}
