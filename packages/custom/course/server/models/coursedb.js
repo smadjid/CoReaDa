@@ -63,6 +63,19 @@ var FactSchema = new Schema({
   suggestion : [TodoSchema]
 });
 
+/**
+ * Description Schema
+ */
+var DescriptionSchema = new Schema({
+  property: {
+    type: String,
+    trim: true
+  },
+  value: {
+    type: Number
+  }
+
+ });
 
 /**
  * Part Schema
@@ -80,6 +93,7 @@ var PartSchema = new Schema({
  /* updated: {
     type: Array
   },*/
+  properties: [DescriptionSchema],
   todos: [TodoSchema],
   facts: [FactSchema]
 });
@@ -87,6 +101,7 @@ var PartSchema = new Schema({
 /**
  * Course Schema
  */
+ 
 var CourseSchema = new Schema({
   /*author:{
     type: Schema.Types.ObjectId,
@@ -110,6 +125,7 @@ var CourseSchema = new Schema({
   updated: {
     type: Array
   },*/
+  properties: [DescriptionSchema],
   parts: [PartSchema],
   facts: [FactSchema],
   todos: [TodoSchema]

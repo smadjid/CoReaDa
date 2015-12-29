@@ -1,0 +1,38 @@
+Course:
+
+- Nombre de parties
+- Nombre de visites
+- Nombre de lecteurs distincts
+- Nombre de sessions anonymes
+- Temps moyen de lecture
+- Taux moyen de relecture
+- Taux moyen d'abandon
+- nbIssues, nbWarn, nbTasks
+
+----------------
+Part:
+
+- Nombre de visites
+- Nombre de lecteurs distincts
+- Nombre de sessions anonymes
+- Temps moyen de lecture 
+- Taux de relecture
+- Taux d'abandon
+- nbIssues, nbWarn, nbTasks
+
+
+
+----------------
+Indicator:
+
+- Nombre de visites
+- Nombre de lecteurs distincts
+- Nombre de sessions anonymes
+- Temps moyen de lecture 
+- Taux de relecture
+- Taux d'abandon
+- nbIssues, nbWarn, nbTasks
+
+
+
+

@@ -160,8 +160,11 @@ module.exports = function(Courses) {
         var fs = require("fs");
         //var course = 
         
-        var contents = fs.readFileSync("facts.json");
-        var jsonContent = JSON.parse(contents);
+        var facts = fs.readFileSync("facts.json");
+        var jsonContent = JSON.parse(facts);
+
+        var coursedata = fs.readFileSync("CourseStats.json");
+        var jsonCoursedata = JSON.parse(coursedata);
        // jsonContent = JSON.stringify(jsonContent);
 
 
@@ -219,6 +222,7 @@ module.exports = function(Courses) {
             title : "Des applications ultra-rapides avec Node.js",
             version : 1.0,
             parts:courseParts,
+            properties:jsonCoursedata,
             facts: [],  
             todos: []
         });
@@ -230,7 +234,7 @@ module.exports = function(Courses) {
                 console.log("enregistrement effectué");
             }
         });
-         
+         console.log(jsonCoursedata[0]);
 console.log("\n *FINISH* \n");
 
        },
