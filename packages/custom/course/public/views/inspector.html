@@ -17,6 +17,9 @@
                     <li>{{inspector.nIssues}} problèmes de lecture détectés. {{inspector.nWarn}} autres remarques à considérer. 
                         <li>{{inspector.nTasks}} tâches planifiées   
         </ul>
+        <ul>
+            <li ng-repeat="property in inspector.description"><b>{{property.property}}</b>: {{property.value}}
+        </ul>
         </div>
                     <a href="#">
                         <div class="panel-footer">

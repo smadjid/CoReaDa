@@ -185,7 +185,7 @@ $scope.$watch('focusStudy.studiedElt', function() {
         'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
         'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
         'nTasks':$scope.focusStudy.studiedElt.todos.length,
-        'description':''};
+        'description':$scope.focusStudy.studiedElt.properties};
         //$scope.inspector = {'cours' = $scope.studiedCourse.title;
         //scope.focusStudy.facts.length
         
