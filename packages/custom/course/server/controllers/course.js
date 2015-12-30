@@ -155,8 +155,7 @@ module.exports = function(Courses) {
 
         },
 
-  
-       seed: function(req, res) {
+        old_seed: function(req, res) {
         var fs = require("fs");
         //var course = 
         
@@ -235,6 +234,105 @@ module.exports = function(Courses) {
             }
         });
          console.log(jsonCoursedata[0]);
+console.log("\n *FINISH* \n");
+
+       },
+
+  ////////////////////////  FOR TEST
+       seed: function(req, res) {
+        var fs = require("fs");
+        //var course = 
+        
+        var facts = fs.readFileSync("facts.json");
+        var jsonFacts = JSON.parse(facts);
+
+        var coursedata = fs.readFileSync("CourseStats.json");
+        var jsonCoursedata = JSON.parse(coursedata);
+        var partsdata = fs.readFileSync("PartsData.json");
+        var jsonPartsdata = JSON.parse(partsdata);
+
+
+
+        //course
+        var partCount = 0;
+       var courseParts=[];
+        for(var key in jsonPartsdata) 
+            {partCount = Math.max(partCount, jsonPartsdata[key].id)}
+      
+       var subsetByField = function (arr,field,value) {
+        var objectArray = [];
+             for (var i = 0, l = arr.length; i < l; i++){
+                
+                    if (arr[i][field] === value) {
+                     objectArray.push(arr[i]);
+                }        
+            }
+            return objectArray;
+        }
+
+        var computePart = function(p, part_data, part_facts){
+        var part = {
+                'id':part_data[0]['id'],
+                'title':part_data[0]['part_title'],
+                'properties':[],
+                'facts':[]
+            };
+            for (var i = 0, l = part_data.length; i < l; i++){
+                var prop ={
+                    property : part_data[i]['variable'],
+                    value : part_data[i]['value']
+                } 
+                part.properties.push(prop);
+                console.log(part_data[i]);
+            };
+            for (var i = 0, l = part_facts.length; i < l; i++){              
+                var fact={
+                    'name':part_facts[i].content,
+                    'classof':part_facts[i].classe,
+                    'type':part_facts[i].type
+                }
+
+                part.facts.push(fact);
+            };
+
+        courseParts.push(part);
+       }
+       
+
+        
+       for (var i = 1; i <=partCount ; i++){ 
+            var partProps = subsetByField(jsonPartsdata, 'id', 10);
+            var partFacts = subsetByField(jsonFacts, 'id', 10);
+            computePart(10, partProps, partFacts);
+            
+       //     partProp = subsetByField()
+
+            //initiatePart(i)
+
+
+        };
+           
+        
+        var course = new Course( {
+            title : "Des applications ultra-rapides avec Node.js",
+            version : 1.0,
+            parts:courseParts,
+            properties:jsonCoursedata,
+            facts: [],  
+            todos: []
+        });
+
+        
+        
+        course.save(function(err){
+            if (err){
+                console.log("erreur d'écriture: "+ err)
+            }
+            else{
+                console.log("enregistrement effectué");
+            }
+        });
+        
 console.log("\n *FINISH* \n");
 
        },
