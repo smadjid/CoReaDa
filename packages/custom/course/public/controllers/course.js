@@ -175,6 +175,56 @@ $scope.$watch('factspanel', function(value) {
                 $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
         }
     });
+var tabsFn = (function() {
+  
+  function init() {
+    setHeight();
+  }
+  
+  function setHeight() {
+    var $tabPane = $('.tab-pane'),
+        tabsHeight = $('.nav-tabs').height();
+    
+    $tabPane.css({
+      height: tabsHeight
+    });
+  }
+    
+  $(init);
+})();
+
+var computeInspectorProperties = function(properties){
+  var prop = {'property':'', 'value':''};
+  console.log(properties.filter(function(value) { return value.property === 'mean.readers'})[0].value);
+   return [
+      {'property':'Nombre moyen de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value},   
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}, 
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
+      {'property':'Nombre median de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}  
+
+  ]
+
+};
 
 $scope.$watch('focusStudy.studiedElt', function() {
         $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
@@ -185,7 +235,7 @@ $scope.$watch('focusStudy.studiedElt', function() {
         'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
         'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
         'nTasks':$scope.focusStudy.studiedElt.todos.length,
-        'description':$scope.focusStudy.studiedElt.properties};
+        'description':computeInspectorProperties($scope.focusStudy.studiedElt.properties)};
         //$scope.inspector = {'cours' = $scope.studiedCourse.title;
         //scope.focusStudy.facts.length
         
