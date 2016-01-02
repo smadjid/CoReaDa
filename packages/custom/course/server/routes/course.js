@@ -1,7 +1,7 @@
 'use strict';
 
 /* jshint -W098 */
-// The Package is past automatically as first parameter
+// The Package is past automatically as first parameter 
 module.exports = function(Courses, app, auth, database) {
 
  var courses = require('../controllers/course')(Courses);
@@ -22,5 +22,7 @@ module.exports = function(Courses, app, auth, database) {
       .post(courses.addTodo);
       
     app.route('/api/tasks/edit/:courseId/:partId/:todoId')
-      .post(courses.editTodo)
+      .post(courses.editTodo);
+    app.route('/api/tasks/delete/:courseId/:partId/:todoId')
+      .delete(courses.removeTodo);
 };

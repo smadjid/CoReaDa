@@ -9,11 +9,64 @@
             </div>
         </div>
     </div>
-    <div class="panel-body">
+    <div class="panel-body inspector-body">
         
  
- <tabset class="tabs-left">
+ <tabset class="tabs-left inspector-tab">
     <tab heading="Overview">
+
+        <ul>
+            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
+              
+                    <li>{{inspector.nIssues}} problèmes de lecture détectés. {{inspector.nWarn}} autres remarques à considérer. 
+                    <li>{{inspector.nTasks}} tâches planifiées   
+        </ul>
+        <ul>
+            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
+        </ul>
+
+    </tab>
+    <tab heading="Reading">
+    <ul>
+            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
+    </ul>
+    <ul>
+            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
+        </ul>
+    </tab>
+    <tab heading="Rereading">
+    <ul>
+            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
+    </ul>
+    <ul>
+            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
+        </ul>
+    </tab>
+    <tab heading="Transitions">
+    <ul>
+            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
+    </ul>
+    <ul>
+            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
+        </ul>
+    </tab>  
+    <tab heading="Stops">
+    <ul>
+            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
+    </ul>
+    <ul>
+            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
+        </ul>
+    </tab>
+</tabset>
+
+        </div>
+
+    <div class="panel-body inspector-body">
+        
+ 
+ <tabset class="tabs-left inspector-tab" style='display: none'>
+    <tab heading="Résumé sur la partie">
 
         <ul>
             <!--<li><strong><i>Cours</i> :{{inspectorcours}} </strong>-->
@@ -27,20 +80,13 @@
         </ul>
 
     </tab>
+    <tab heading="Vertical B">Reading</tab>
+    <tab heading="Vertical B">Vertical content B</tab>
     <tab heading="Vertical B">Vertical content B</tab>
 </tabset>
 
         </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right">
-                                <i class="fa fa-arrow-circle-right"></i>
-                            </span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-        </div>
+            
 
 
 </div>

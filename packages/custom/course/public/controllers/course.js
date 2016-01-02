@@ -193,36 +193,36 @@ var tabsFn = (function() {
   $(init);
 })();
 
-var computeInspectorProperties = function(properties){
+var computeInspectorCourseProperties = function(properties){
   var prop = {'property':'', 'value':''};
-  console.log(properties.filter(function(value) { return value.property === 'mean.readers'})[0].value);
-   return [
+  console.log(properties);
+   return ({
+   'overview':[
+      {'property':'Nombre de parties', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},
+        {'property':'Nombre de jours d\'observation', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},
+        {'property':'Nombre de lecteurs distincts', 
+        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}
+    ],
+  'reading':[
       {'property':'Nombre moyen de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value},   
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}, 
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},  
-      {'property':'Nombre median de lecteurs distincts par partie', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}  
+        'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value}
+   ],
+   'rereading':[
+      {'property':'Nombre moyen de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value}
+   ],
+   'transitions':[
+      {'property':'Nombre moyen de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value}
+   ],
+   'stops':[
+      {'property':'Nombre moyen de lecteurs distincts par partie', 
+        'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value}
+   ]
 
-  ]
+  })
 
 };
 
@@ -235,7 +235,9 @@ $scope.$watch('focusStudy.studiedElt', function() {
         'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
         'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
         'nTasks':$scope.focusStudy.studiedElt.todos.length,
-        'description':computeInspectorProperties($scope.focusStudy.studiedElt.properties)};
+        'description':computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties)};
+
+        //console.log(computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties));
         //$scope.inspector = {'cours' = $scope.studiedCourse.title;
         //scope.focusStudy.facts.length
         
@@ -253,11 +255,12 @@ $scope.addTask = function () {
 
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
+        var addedTask = $scope.formData.text;
 
-        Todos.addTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, {type:'edition', todo:$scope.formData.text})
+        Todos.addTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, {type:'edition', todo:addedTask})
         .success(function(data) {
-                $scope.studiedCourse = data; // assign our new list of todos
-                 $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt,$scope.studiedIndicator)
+                $scope.studiedCourse = data; 
+                $scope.Tasks.unshift({'type':'edition','todo':addedTask}); 
                  $scope.loading = false;
                  $scope.formData = {};
                 
@@ -272,27 +275,37 @@ $scope.addTask = function () {
     $scope.editIndex = false;
     $scope.task = '';
   }
+
+$scope.editTask = function (todoId, data) {
     
-  $scope.editTask = function (index) {
-    $scope.task = $scope.tasks[index].task;
-    $scope.editIndex = index;
+  
+        Todos.editTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, todoId, {type:'edition', todo:data})
+        .success(function(res) {
+           //  alert('ok')
+            $scope.studiedCourse = data; 
+           return res;
+                
+              });
+      
+
+
+    
   }
-  $scope.doneTask = function (index) {
+    
+ $scope.doneTask = function (index) {
     $scope.tasks[index].done = true;
   }
   $scope.unDoneTask = function (index) {
     $scope.tasks[index].done = false;
   }
-  $scope.deleteTask = function (index) {
-    //$scope.tasks.splice(index, 1);
-    Todos.delete(index)
-          .success(function(data) {
-            $scope.loading = false;
-            $scope.formData = {}; // clear the form so our user is ready to enter another
-            $scope.tasks = data; // assign our new list of todos
-          });
-
-
+  $scope.deleteTask = function (todoId, index) {
+   Todos.deleteTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, todoId)
+        .success(function(res) {
+           $scope.Tasks.splice(index, 1);
+          $scope.studiedCourse = res; 
+          return res;
+                
+              });
 
   }
 

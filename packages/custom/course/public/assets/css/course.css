@@ -985,7 +985,7 @@ a.editable-click:hover {
 .tabs-left > .nav-tabs {
     float: left;
     margin-right: 19px;
-    border-right: 1px solid #ddd;
+    /*border-right: 1px solid #ddd;*/
 }
 
 .tabs-left > .nav-tabs > li > a {
@@ -997,7 +997,7 @@ a.editable-click:hover {
 
 .tabs-left > .nav-tabs > li > a:hover,
 .tabs-left > .nav-tabs > li > a:focus {
-    border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+    /*border-color: #eeeeee #dddddd #eeeeee #eeeeee;*/
 }
 
 .tabs-left > .nav-tabs .active > a,
@@ -1005,6 +1005,7 @@ a.editable-click:hover {
 .tabs-left > .nav-tabs .active > a:focus {
     border-color: #ddd transparent #ddd #ddd;
     *border-right-color: #ffffff;
+    border:none;
 }
 
 .tabs-right > .nav-tabs {
@@ -1032,4 +1033,12 @@ a.editable-click:hover {
     border-left-color: #ffffff;
 }
 /***********************************************************************/
+.inspector-body{
+  padding:0;
+  margin:0;
+}
+.inspector-tab{
+  margin-top: 0;
+  margin-bottom: 0;
+}
 /***********************************************************************/

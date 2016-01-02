@@ -82,12 +82,12 @@ module.exports = function(Courses) {
         	if(err) return next("Error finding the course.");	
         	
         	if(req.params.partId==0){
-        		_course.todos.push(req.body);
+        		_course.todos.unshift(req.body);
         		_course.save();
         	}
         	else{
         		var part = _course.parts.id(req.params.partId);
-        		part.todos.push(req.body);
+        		part.todos.unshift(req.body);
         		part.save();	
         		_course.save();
         	}        	
@@ -100,33 +100,43 @@ module.exports = function(Courses) {
          * Edit a todo
          */
         editTodo: function(req, res) {
-        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
         	if(err) return next("Error finding the course.");	
-        	
-        	if(req.params.courseId==0){
-        		_course.todos.replaceOne({'_id':req.params.todoId},req.body);
+        	console.log(_course.todos);
+        	if(req.params.partId==0){
+               var todo =  _course.todos.id(req.params.todoId);
+               todo.todo = req.body.todo;
+               todo.save();
         	}
         	else{
         		var part = _course.parts.id(req.params.partId);
-        		part.todos.push(req.body);
-        		part.todos.replaceOne({'_id':req.params.todoId},req.body);
-        		part.save();	
+                var todo =  part.todos.id(req.params.todoId);
+        		part.todos.unshift(req.body);
+        		todo.todo = req.body.todo;
+        		todo.save();
         	}
         	
         	_course.save();
+            res.json(_course);
         	})
         },
         // delete a todo
-        destroyTodo:function(req, res) {
-            console.log(req.params.todoId);
-            Todo.remove({
-            _id : req.params.todoId
-        }, function(err, todo) {
-            if (err)
-                res.send(err);
-
-            getTodos(res);
-        });
+        removeTodo:function(req, res) {
+          Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");   
+            console.log(_course.todos);
+            if(req.params.partId==0){
+               _course.todos.id(req.params.todoId).remove();
+            }
+            else{
+                var part = _course.parts.id(req.params.partId);
+                part.todos.id(req.params.todoId).remove();
+                part.save();
+            }
+            
+            _course.save();
+            res.json(_course);
+            })
 
         },
         /**

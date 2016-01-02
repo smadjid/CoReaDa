@@ -141,12 +141,17 @@ angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
       if(courseId == partId) partId=0;      
         return $http.get('/api/tasks/get/'+courseId+'/'+partId)
         },
-      deleteTask : function(elt_id, fact_id) {
-         
+      editTask : function(courseId, partId, taskId, todoData) {  
+      if(courseId == partId) partId=0;            
+        return $http.post('/api/tasks/edit/'+courseId+'/'+partId+'/'+taskId, todoData);
+        },
+      deleteTask : function(courseId, partId, taskId) {
+         if(courseId == partId) partId=0;            
+        return $http.delete('/api/tasks/delete/'+courseId+'/'+partId+'/'+taskId);         
       },
       filterTasks : function(studiedPart) {
         
-       //alert(studiedPart.id)
+//       alert(studiedPart.todos)
 
           return studiedPart.todos;
        
