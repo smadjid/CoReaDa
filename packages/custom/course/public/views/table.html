@@ -40,7 +40,8 @@
     <span data-indicator='Reading' data-part='{{part.id}}' data-fact="issue" > {{(part.facts | filter:search:strict | filter:{'classof':"Reading",'type':'issue'}).length}}</span>
                     </button>
                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Reading' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':"Reading",'type':'warning'}).length}}</span>
+    <span data-indicator='Reading' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':"Reading",'type':'warning'}).length}}
+    </span>
                     </button>
                 </div>
 

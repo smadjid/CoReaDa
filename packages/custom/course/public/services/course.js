@@ -56,12 +56,13 @@ angular.module('mean.course').factory('CoursesDB', ['$http',function($http) {
     }
   }]);
 
-angular.module('mean.course').factory('focusStudyManager', [function() {
+angular.module('mean.course').factory('focusStudyManager', [function() { 
     return {
       initialize : function(elt) {
         var result = 
           {
                     type:'course',
+                    studiedPart:-1,
                     studiedIndicator:'ALL',
                     studiedElt : elt
                 }; 
@@ -73,6 +74,7 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
 
         var elt = focusElt;
         elt.type = focus;
+        elt.studiedPart = part_index;
         
         if((part_index==-1) && (indicator=='ALL'))
           {

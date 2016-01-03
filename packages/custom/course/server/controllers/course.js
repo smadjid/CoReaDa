@@ -268,7 +268,7 @@ console.log("\n *FINISH* \n");
        var courseParts=[];
         for(var key in jsonPartsdata) 
             {partCount = Math.max(partCount, jsonPartsdata[key].id)}
-      
+         
        var subsetByField = function (arr,field,value) {
         var objectArray = [];
              for (var i = 0, l = arr.length; i < l; i++){
@@ -311,9 +311,9 @@ console.log("\n *FINISH* \n");
 
         
        for (var i = 1; i <=partCount ; i++){ 
-            var partProps = subsetByField(jsonPartsdata, 'id', 10);
-            var partFacts = subsetByField(jsonFacts, 'id', 10);
-            computePart(10, partProps, partFacts);
+            var partProps = subsetByField(jsonPartsdata, 'id', i);
+            var partFacts = subsetByField(jsonFacts, 'id', i);
+            computePart(i, partProps, partFacts);
             
        //     partProp = subsetByField()
 

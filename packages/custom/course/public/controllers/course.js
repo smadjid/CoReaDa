@@ -67,7 +67,8 @@ $scope.table_scrollconfig = {
 //CoursesDB.seed() 
     CoursesDB.get()
       .success(function(data) {
-        $scope.studiedCourse = data[0];        
+        $scope.studiedCourse = data[0];  
+        console.log($scope.studiedCourse);      
         $scope.allIssues = [];
 
         $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
@@ -260,7 +261,10 @@ $scope.addTask = function () {
         Todos.addTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, {type:'edition', todo:addedTask})
         .success(function(data) {
                 $scope.studiedCourse = data; 
-                $scope.Tasks.unshift({'type':'edition','todo':addedTask}); 
+                $scope.Taks = Todos.filterTasks($scope.focusStudy.studiedElt);
+                $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), 
+                  angular.copy($scope.focusStudy), $scope.focusStudy.studiedPart , $scope.focusStudy.studiedIndicator);
+             //   $scope.Tasks.unshift({'type':'edition','todo':addedTask}); 
                  $scope.loading = false;
                  $scope.formData = {};
                 
@@ -282,7 +286,7 @@ $scope.editTask = function (todoId, data) {
         Todos.editTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, todoId, {type:'edition', todo:data})
         .success(function(res) {
            //  alert('ok')
-            $scope.studiedCourse = data; 
+            $scope.studiedCourse = res; 
            return res;
                 
               });
