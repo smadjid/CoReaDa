@@ -97,7 +97,11 @@ $scope.table_scrollconfig = {
   }
 
   $scope.doDisplay=function($event){
-    
+$(':focus').blur();
+
+$('.display-issues-btn').hide();
+
+
     var indicator = $($event.currentTarget).find('span').attr('data-indicator');
     var part = $($event.currentTarget).find('span').attr('data-part');
     var fact = $($event.currentTarget).find('span').attr('data-fact');
@@ -154,6 +158,7 @@ $scope.$watch('factspanel', function(value) {
                 $('.highlighted').removeClass('highlighted');
                 $('.overlayed').removeClass('overlayed');
                 $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+                $('.display-issues-btn').show();
         }
     });
 var tabsFn = (function() {

@@ -1,8 +1,10 @@
+<div class='course_title'><i>Votre cours</i> :  <b>Des applications ultra-rapides avec Node.js</b></div>
         <div class="container-fluid" data-ng-controller="courseController">            
             <div class="row">
                 <div class="container-fluid">
 
-                    <div class="col-xs-12 col-md-9 table-responsive" style=" padding-right: 0" fixed-first-column>
+                <div class="col-xs-12 col-md-9 table-responsive" style=" padding-right: 0">
+                    <div class="col-xs-12 col-md-12 table-responsive" style=" padding-right: 0" fixed-first-column>
                         
 
                       
@@ -10,21 +12,26 @@
                         <div class="panel panel-default" id="issues-dialog" ng-show="factspanel"  data-ng-include src="'course/views/issues-panel.html'"></div>
 
 
+
                     </div>
+                     <div class="col-xs-12 col-md-12 inspector-container"  data-ng-include src="'course/views/inspector.html'"></div>
+                     </div>
+                    
+
                     <div class="col-lg-3" >
                         <div class="panel panel-yellow"  data-ng-include src="'course/views/todo.html'"></div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+         
                 <div class="container-fluid">
-                    <div class="col-xs-12 col-md-9 inspector-container"  style="overflow-x: scroll;" data-ng-include src="'course/views/inspector.html'"></div>
+                   
 
 
 
 
 
-                            </div>
+         
  </div>
  </div>
 

@@ -218,7 +218,10 @@ module.exports = function(Courses) {
                 var fact={
                     'name':jsonContent[key].content,
                     'classof':jsonContent[key].classe,
-                    'type':jsonContent[key].type
+                    'type':jsonContent[key].type,                   
+                    'value':jsonContent[key].value,
+                    'norm_description':jsonContent[key].norm_description,
+                    'norm_value':jsonContent[key].norm_value
                 }
                 courseParts[idf].facts.push(fact);
                 
@@ -298,8 +301,11 @@ console.log("\n *FINISH* \n");
             for (var i = 0, l = part_facts.length; i < l; i++){              
                 var fact={
                     'name':part_facts[i].content,
+                    'value':part_facts[i].value,
                     'classof':part_facts[i].classe,
-                    'type':part_facts[i].type
+                    'type':part_facts[i].type,
+                    'norm_description':part_facts[i].norm_description,
+                    'norm_value':part_facts[i].norm_value
                 }
 
                 part.facts.push(fact);

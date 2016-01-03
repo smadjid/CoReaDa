@@ -1,4 +1,4 @@
-  <div class='row' style="margin:0;height:100%; background-color: #1C383F">  
+  <div class='row' style="margin:0;height:100%; background-color: #1C383F; z-index:9">  
     <div class="todoDialog"style="margin:0;height:100%">
 
       <div class="btn-group btn-group-justified" data-toggle="buttons"> 
@@ -21,7 +21,11 @@
        <b>{{fact.name}} </b> 
        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
      </uib-accordion-heading>
-     {{fact.explanation}}
+     <ul>
+<li><u>Observation reportée</u> : <b>{{fact.value}} </b>
+<li>Cette valeur n'est pas dans les normes des valeurs observées pour ce contexte
+<li>{{fact.norm_description}} étant : <b>{{fact.norm_value}}</b>
+</ul>
    </uib-accordion-group> 
  </uib-accordion>
 
@@ -36,9 +40,9 @@
  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
 </uib-accordion-heading>
 <ul>
-<li>Observation reportée : {{fact}}
+<li><u>Observation reportée</u> : <b>{{fact.value}} </b>
 <li>Cette valeur n'est pas dans les normes des valeurs observées pour ce contexte
-<li>{{fact.norm_description}} : {{fact.norm_value}}
+<li>{{fact.norm_description}} étant : <b>{{fact.norm_value}}</b>
 </ul>
 </uib-accordion-group> 
 
