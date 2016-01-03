@@ -19,28 +19,28 @@
     </thead>
     <tbody>
         <tr>
-            <th class="indicators_group" data-indicator='Reading'>
+            <th class="indicators_group" data-indicator='Readings'>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat"  style="padding:10px">Reading</span>
 
                 <br/>
                 <div style="display: inline-flex;margin-top:7px;">
                     <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Reading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':"Reading",'type':'issue'}).length}} issues</span> 
+                        <span data-indicator='Readings' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Readings','type':'issue'}).length}} issues</span> 
                     </a>
                     <a   class="badge badge-warning" ng-click='doDisplay($event)'> 
-                     <span data-indicator='Reading' data-fact="warning"  data-part='-1'> {{(allIssues | filter:search:strict | filter:{'classof':"Reading",'type':'warning'}).length}} warn.</span>
+                     <span data-indicator='Readings' data-fact="warning"  data-part='-1'> {{(allIssues | filter:search:strict | filter:{'classof':'Readings','type':'warning'}).length}} warn.</span>
                     </a>
                 </div>
             </th>
 
             <td ng-repeat="part in studiedCourse.parts">
-                <div class="btn-group-vertical" role="group" data-toggle="buttons" data-indicator='Reading'>
+                <div class="btn-group-vertical" role="group" data-toggle="buttons" data-indicator='Readings'>
                     <button type="button" class="btn btn-danger btn-xs display-issues-btn glyphicon glyphicon-remove" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Reading' data-part='{{part.id}}' data-fact="issue" > {{(part.facts | filter:search:strict | filter:{'classof':"Reading",'type':'issue'}).length}}</span>
+    <span data-indicator='Readings' data-part='{{part.id}}' data-fact="issue"> {{(part.facts  | filter:{'type':'issue'}| filter:{'classof':'Readings'}).length}}</span>
                     </button>
                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Reading' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':"Reading",'type':'warning'}).length}}
+    <span data-indicator='Readings' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':'Readings','type':'warning'}).length}}
     </span>
                     </button>
                 </div>
@@ -55,10 +55,10 @@
                 <br/>
                 <div style="display: inline-flex;margin-top:7px;">
                     <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Rereading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':"Rereading",'type':'issue'}).length}} issues</span> 
+                        <span data-indicator='Rereading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Rereading','type':'issue'}).length}} issues</span> 
                     </a>
                     <a   class="badge badge-warning" ng-click='doDisplay($event)'> 
-                     <span data-indicator='Rereading' data-fact="warning" data-part='-1'> {{(allIssues | filter:search:strict | filter:{'classof':"Rereading",'type':'warning'}).length}} warn.</span>
+                     <span data-indicator='Rereading' data-fact="warning" data-part='-1'> {{(allIssues | filter:search:strict | filter:{'classof':'Rereading','type':'warning'}).length}} warn.</span>
                     </a>
                 </div>
             </th>
@@ -66,10 +66,10 @@
             <td ng-repeat="part in studiedCourse.parts">
                 <div class="btn-group-vertical disabled" role="group" data-toggle="buttons" >
                     <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Rereading' data-part='{{part.id}}' data-fact="issue" class="glyphicon glyphicon-remove"> {{(part.facts | filter:search:strict | filter:{'classof':"Rereading",'type':'issue'}).length}}</span>
+    <span data-indicator='Rereading' data-part='{{part.id}}' data-fact="issue" class="glyphicon glyphicon-remove"> {{(part.facts | filter:search:strict | filter:{'classof':'Rereading','type':'issue'}).length}}</span>
                     </button>
                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Rereading' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':"Rereading",'type':'issue'}).length}}</span>
+    <span data-indicator='Rereading' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':'Rereading','type':'issue'}).length}}</span>
                     </button>
                 </div>
 
@@ -84,20 +84,20 @@
                 <div style="display: inline-flex;margin-top:7px;">
 
                     <a class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Transition' data-fact="issue"  data-part='-1'  >{{(allIssues | filter:search:strict | filter:{'classof':"Transition",'type':'issue'}).length}} issues</span>
+                        <span data-indicator='Transition' data-fact="issue"  data-part='-1'  >{{(allIssues | filter:search:strict | filter:{'classof':'Transition','type':'issue'}).length}} issues</span>
                     </a>
                     <a   class="badge badge-warning" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Transition' data-fact="warning"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':"Transition",'type':'warning'}).length}} warn.</span>
+                        <span data-indicator='Transition' data-fact="warning"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Transition','type':'warning'}).length}} warn.</span>
                     </a>
                 </div>
             </th>
             <td ng-repeat="part in studiedCourse.parts">
                 <div class="btn-group-vertical" role="group" data-toggle="buttons">
                     <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Transition' data-part='{{part.id}}' data-fact="issue" class="glyphicon glyphicon-remove"> {{(part.facts | filter:search:strict | filter:{'classof':"Transition",'type':'issue'}).length}}</span>
+    <span data-indicator='Transition' data-part='{{part.id}}' data-fact="issue" class="glyphicon glyphicon-remove"> {{(part.facts | filter:search:strict | filter:{'classof':'Transition','type':'issue'}).length}}</span>
                     </button>
                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Transition' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':"Transition",'type':'warning'}).length}}</span>
+    <span data-indicator='Transition' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':'Transition','type':'warning'}).length}}</span>
                     </button>
                 </div>
             </td>
@@ -110,20 +110,20 @@
                 <br/>
                 <div style="display: inline-flex;margin-top:7px;">
                     <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Stop' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':"Stop",'type':'issue'}).length}} issues </span>
+                        <span data-indicator='Stop' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Stop','type':'issue'}).length}} issues </span>
                     </a>
                     <a   class="badge badge-warning" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Stop' data-fact="warning"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':"Stop",'type':'warning'}).length}} warn.</span>
+                        <span data-indicator='Stop' data-fact="warning"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Stop','type':'warning'}).length}} warn.</span>
                     </a>
                 </div>
             </th>
             <td ng-repeat="part in studiedCourse.parts">
                 <div class="btn-group-vertical" role="group" data-toggle="buttons">
                     <button type="button" class="btn btn-danger btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Stop' data-part='{{part.id}}' data-fact="issue" class="glyphicon glyphicon-remove"> {{(part.facts | filter:search:strict | filter:{'classof':"Stop",'type':'issue'}).length}}</span>
+    <span data-indicator='Stop' data-part='{{part.id}}' data-fact="issue" class="glyphicon glyphicon-remove"> {{(part.facts | filter:search:strict | filter:{'classof':'Stop','type':'issue'}).length}}</span>
                     </button>
                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' aria-expanded="false" aria-controls="collapseExample">
-    <span data-indicator='Stop' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':"Stop",'type':'warning'}).length}}</span>
+    <span data-indicator='Stop' data-part='{{part.id}}' data-fact="warning" class="glyphicon glyphicon-warning-sign"> {{(part.facts | filter:search:strict | filter:{'classof':'Stop','type':'warning'}).length}}</span>
                     </button>
                 </div>
             </td>

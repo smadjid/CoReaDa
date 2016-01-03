@@ -18,7 +18,7 @@
        <uib-accordion-group is-open="status.open" panel-class="error-item" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="fact in focusStudy.studiedElt.facts | filter: {type: 'issue'}" >
        <uib-accordion-heading panel-class="error-item">
        <span class="glyphicon glyphicon-remove"></span>
-       <b>{{fact.name}} </b> : {{fact.value}}
+       <b>{{fact.name}} </b> 
        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
      </uib-accordion-heading>
      {{fact.explanation}}
@@ -32,10 +32,14 @@
  <uib-accordion-group is-open="status.open" panel-class="warning-item" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="fact in focusStudy.studiedElt.facts | filter: {type: 'warning'}">
  <uib-accordion-heading>
  <span class="glyphicon glyphicon-remove"></span>
- <b>{{fact.name}} </b> : {{fact.value}}
+ <b>{{fact.name}} </b> 
  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
 </uib-accordion-heading>
-This is just some content to illustrate fancy headings.
+<ul>
+<li>Observation reportée : {{fact}}
+<li>Cette valeur n'est pas dans les normes des valeurs observées pour ce contexte
+<li>{{fact.norm_description}} : {{fact.norm_value}}
+</ul>
 </uib-accordion-group> 
 
 </uib-accordion>

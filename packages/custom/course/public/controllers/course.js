@@ -17,7 +17,7 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
       name: 'course'
     };
 
-$scope.indicators=['Reading','Rereading','Transition','Stop'];
+$scope.indicators=['Readings','Rereading','Transition','Stop'];
 
 
 $scope.formData = {};
@@ -72,12 +72,6 @@ $scope.table_scrollconfig = {
         $scope.allIssues = [];
 
         $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
-/* $scope.focusStudy =  {
-                    type:'course',
-                    studiedIndicator:'ALL',
-                    studiedElt : $scope.studiedCourse 
-                }; 
-*/
         
         
         angular.forEach(data[0].parts, function(part) {
@@ -107,20 +101,6 @@ $scope.table_scrollconfig = {
     var indicator = $($event.currentTarget).find('span').attr('data-indicator');
     var part = $($event.currentTarget).find('span').attr('data-part');
     var fact = $($event.currentTarget).find('span').attr('data-fact');
-    //alert(fact);
-
-
-
-    /*
-
-    $(document).scrollTop(0);
- $(document).scrollTop(0);
-  $('td').addClass('overlayed');
-  $('th').addClass('overlayed');
-  $('.indicators_group').addClass('overlayed');*/
-
-
-
    
     if(indicator!='ALL') {
     $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
@@ -206,7 +186,7 @@ var computeInspectorCourseProperties = function(properties){
         {'property':'Nombre de lecteurs distincts', 
         'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}
     ],
-  'reading':[
+  'readings':[
       {'property':'Nombre moyen de lecteurs distincts par partie', 
         'value':properties.filter(function(value) { return value.property === 'mean.readers'})[0].value}
    ],
