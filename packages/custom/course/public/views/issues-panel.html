@@ -1,5 +1,5 @@
   <div class='row' style="margin:0;height:100%; background-color: #1C383F; z-index:9">  
-    <div class="todoDialog"style="margin:0;height:100%">
+    <div class="todoDialog"style="margin:0;height:100%"> 
 
       <div class="btn-group btn-group-justified" data-toggle="buttons"> 
         <label class="btn btn-xs btn-danger" >
@@ -11,8 +11,7 @@
         </label>
         </div>
 
-  <div id="errors-display" ng-scrollbars ng-scrollbars-config="scrollconfig">
-  
+  <div id="errors-display" ng-scrollbars ng-scrollbars-config="scrollconfig">  
       <div class="list-group" id="erros-list-group" style="height: 100%; margin-top:5px" ng-hide="toggleerrors">
        <uib-accordion close-others="true"> 
        <uib-accordion-group is-open="status.open" panel-class="error-item" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="fact in focusStudy.studiedElt.facts | filter: {type: 'issue'}" >

@@ -165,6 +165,16 @@ ul.alert-dropdown {
     font-size: 40px;
 }
 
+.panel-flat{
+    border-color:  #34495E
+  }
+  .panel-flat > .panel-heading {
+    border-color: #34495E;
+    color: #fff;
+    background-color: #34495E;
+    padding:5px;
+}
+
 .panel-green {
     border-color: #5cb85c;
 }
@@ -617,6 +627,9 @@ td,tr,th{
 }
 .inspector-container{
   padding: 0;
+  padding-top:10px;
+  margin-top:10px;
+  width:99%;
 }
 
 #errors-display{  

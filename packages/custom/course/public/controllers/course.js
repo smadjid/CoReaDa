@@ -27,7 +27,7 @@ $scope.animationsEnabled = true;
 $scope.factspanel = false;
 
 
-$scope.inspector={'type':'Course', 'title':'Nodejs', 'nIssues':0, 'nWarn':0,'nTasks':0,'description':''};
+
 
 
 // scrollbar config
@@ -72,6 +72,7 @@ $scope.table_scrollconfig = {
         $scope.allIssues = [];
 
         $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
+        $scope.inspector={'type':'Course', 'title':$scope.studiedCourse.title, 'nIssues':0, 'nWarn':0,'nTasks':0,'description':''};
         
         
         angular.forEach(data[0].parts, function(part) {
@@ -149,6 +150,8 @@ $("#issues-dialog").css('right',0);
 
 
     $scope.factspanel = true;
+    $('#erros-list-group').show();
+
   };
 
   
@@ -185,11 +188,11 @@ var computeInspectorCourseProperties = function(properties){
    return ({
    'overview':[
       {'property':'Nombre de parties', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},
+        'value':$scope.studiedCourse.parts.length},
         {'property':'Nombre de jours d\'observation', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value},
+        'value':'72 jours'},
         {'property':'Nombre de lecteurs distincts', 
-        'value':properties.filter(function(value) { return value.property === 'XXX'})[0].value}
+        'value':1230}
     ],
   'readings':[
       {'property':'Nombre moyen de lecteurs distincts par partie', 
@@ -212,16 +215,41 @@ var computeInspectorCourseProperties = function(properties){
 
 };
 
+var computeInspectorPartProperties = function(properties){
+  var prop = {'property':'', 'value':''};  
+   return ({
+   'overview':[
+      {'property':'Nombre de lecteurs distinct', 
+        'value':properties.filter(function(value) { return value.property === 'Readers'})[0].value},
+        {'property':'Durée médiane de lecture (s)', 
+        'value':properties.filter(function(value) { return value.property === 'median.duration'})[0].value},
+        {'property':'Nombre de lectures', 
+        'value':properties.filter(function(value) { return value.property === 'Readings'})[0].value}
+    ]
+
+  })
+
+};
+
 $scope.$watch('focusStudy.studiedElt', function() {
         $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
         $scope.loading = false;
         $scope.formData = {};
-        
-        $scope.inspector={'type':'Course', 'title':$scope.focusStudy.studiedElt.title, 
+
+       
+        if($scope.focusStudy.studiedElt.id)  {
+          $scope.inspector={'type':'Partie', 'title':$scope.focusStudy.studiedElt.title, 
         'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
         'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
         'nTasks':$scope.focusStudy.studiedElt.todos.length,
-        'description':computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties)};
+        'description':computeInspectorPartProperties($scope.focusStudy.studiedElt.properties)}
+        }        
+        else {$scope.inspector={'type':'Course', 'title':$scope.focusStudy.studiedElt.title, 
+                'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
+                'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
+                'nTasks':$scope.focusStudy.studiedElt.todos.length,
+                'description':computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties)}
+        }   ;
 
         //console.log(computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties));
         //$scope.inspector = {'cours' = $scope.studiedCourse.title;

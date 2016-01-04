@@ -1,4 +1,4 @@
-<div class="panel panel-red">
+<div class="panel panel-flat">
     <div class="panel-heading">
         <div class="row">
             <div class="col-xs-3">
@@ -13,25 +13,22 @@
         
  
  <tabset class="tabs-left inspector-tab">
-    <tab heading="Overview">
+    <tab heading="En résumé">
 
+        
         <ul>
-            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
-              
-                    <li>{{inspector.nIssues}} problèmes de lecture détectés. {{inspector.nWarn}} autres remarques à considérer. 
-                    <li>{{inspector.nTasks}} tâches planifiées   
-        </ul>
-        <ul>
+        <li><strong><i>{{inspector.type}}</i> : {{inspector.title}} </strong>
             <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
         </ul>
 
     </tab>
-    <tab heading="Stats">
+    <tab heading="Statistiques">
     <ul>
-            <li><strong><i>Cours</i> : {{inspector.title}} </strong>
-    </ul>
-    <ul>
-            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
+            <li><strong><i>{{inspector.type}}</i> : {{inspector.title}} </strong>
+              
+                    <li>{{inspector.nIssues}} problèmes de lecture détectés. 
+                    <li>{{inspector.nWarn}} autres remarques à considérer. 
+                    <li>{{inspector.nTasks}} tâches planifiées   
         </ul>
     </tab>
     
