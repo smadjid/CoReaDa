@@ -6,16 +6,14 @@
       <div class="list-group" id="erros-list-group" style="height: 100%; margin-top:5px" ng-hide="toggleerrors">
        <uib-accordion close-others="true"> 
        <uib-accordion-group is-open="status.open" panel-class="error-item" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="fact in focusStudy.studiedElt.facts | filter: {type: 'issue'}" >
-       <uib-accordion-heading panel-class="error-item">
-       <span class="glyphicon glyphicon-remove"></span>
-       <b>{{fact.name}} </b> 
-       <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+       <uib-accordion-heading panel-class="error-item">       
+       <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) : {{fact.description}} 
+       
+        <span uib-popover="dynamicPopover.content" popover-title="Suggestion" popover-append-to-body="true" class=" pull-right"><span class="glyphicon glyphicon-tasks" aria-hidden="true" uib-tooltip="Suggestion"  tooltip-append-to-body="true"></span></span>
+       
      </uib-accordion-heading>
-     <ul>
-<li><u>Observation reportée</u> : <b>{{fact.value}} </b>
-<li>{{fact.description}} 
-<li>Cette valeur n'est pas dans les normes des valeurs observées
-</ul>
+
+     <div class="suggestion"> </div>
    </uib-accordion-group> 
  </uib-accordion>
 
@@ -24,12 +22,5 @@
 
 </div>
 </div>
-<!--<button type="button" class="btn btn-xs pull-right" ng-click="hideIssuesDialog()" style="position:absolute;bottom:3px;right:3px;height:8%">
-<span class="glyphicon glyphicon-remove"></span>
-Close
-</button>
--->
+
 </div>
-
-
-  

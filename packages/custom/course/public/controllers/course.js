@@ -26,7 +26,7 @@ $scope.formData = {};
 $scope.editIndex = false;
 $scope.loading = false;
 $scope.animationsEnabled = true;
-$scope.factspanel = false;
+$scope.issuesInspectorShow = false;
 
 
 
@@ -74,21 +74,6 @@ $scope.scrollconfig = {
           if(val>=4) return 'white';
         }
         angular.forEach($scope.studiedCourse.parts, function(part) {        
-     /*     part.color={
-          'reading':scale(part.facts.filter(function(value) { return value.classof === 'Readings' }).length /5).hex(),
-          'rereading':scale(part.facts.filter(function(value) { return value.classof === 'Rerading' }).length / 5).hex(),
-          'transition':scale(part.facts.filter(function(value) { return value.classof === 'Transition' }).length / 5).hex(),
-          'stop':scale(part.facts.filter(function(value) { return value.classof === 'Stop' }).length / 5).hex()
-        };*/
-
-        part.color={
-          'reading':part.facts.filter(function(value) { return value.classof == 'Readings' }).length,
-          'rereading':part.facts.filter(function(value) { return value.classof == 'Rereading' }).length,
-          'transition':part.facts.filter(function(value) { return value.classof == 'Transition' }).length,
-          'stop':part.facts.filter(function(value) { return value.classof == 'Stop' }).length
-        };
-        console.log(part.color);
-          
             angular.forEach(part.facts, function(fact) {
                 $scope.allIssues.push(
                     fact
@@ -107,14 +92,14 @@ $scope.scrollconfig = {
 
   $scope.hideIssuesDialog = function(){
     $scope.studiedElt = $scope.studiedCourse;
-    $scope.factspanel=false;
+    $scope.issuesInspectorShow=false;
   }
 
-  $scope.doDisplay=function($event){
+$scope.displayIssue=function($event){
 $(':focus').blur();
+$('.highlighted').removeClass('highlighted');
 
-if(($($event.currentTarget).parent().hasClass('chosenPart'))){
-  $('.highlighted').removeClass('highlighted');
+if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
   $('.overlayed').removeClass('overlayed');
   $('.chosenPart').removeClass('chosenPart');
   $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
@@ -125,12 +110,12 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
 
     var indicator = $($event.currentTarget).attr('data-indicator');
     var part = $($event.currentTarget).attr('data-part');
-    var fact = $($event.currentTarget).attr('data-fact');
+    var fact = $($event.currentTarget).attr('data-fact');    
+    $('.part_index[data-part='+part+']').addClass('highlighted');
    
     if(indicator!='ALL') {
     $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
-    $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');
-    
+    $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
     
   }
   
@@ -139,14 +124,73 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
     $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
 
 
-    $scope.factspanel = true;
+    $scope.issuesInspectorShow = true;
+ //   $('#erros-list-group').show();
+
+  };
+
+
+  $scope.displayPartInfos=function($event){
+$(':focus').blur();
+$('.highlighted').removeClass('highlighted');
+
+if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
+  $('.overlayed').removeClass('overlayed');
+  $('.chosenPart').removeClass('chosenPart');
+  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  return;
+}
+$('.chosenPart').removeClass('chosenPart');
+$($event.currentTarget).parent().toggleClass('chosenPart');
+
+    var part = $($event.currentTarget).attr('data-part');
+    if(indicator!='ALL') {
+      $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
+      $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
+    
+    }
+  
+    //$scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
+
+    $scope.issuesInspectorShow = true;
+ //   $('#erros-list-group').show();
+
+  };
+
+  $scope.displayChapterInfos=function($event){
+$(':focus').blur();
+$('.highlighted').removeClass('highlighted');
+
+$scope.issuesInspectorShow = false;
+   console.log($scope.issuesInspectorShow)
+
+if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
+  $('.overlayed').removeClass('overlayed');
+  $('.chosenPart').removeClass('chosenPart');
+  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  return;
+}
+$('.chosenPart').removeClass('chosenPart');
+$($event.currentTarget).parent().toggleClass('chosenPart');
+
+    var part = $($event.currentTarget).attr('data-part');
+    if(indicator!='ALL') {
+      $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
+      $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
+    
+    }
+  
+    //$scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
+
+    
+ 
  //   $('#erros-list-group').show();
 
   };
 
   
 
-$scope.$watch('factspanel', function(value) {   
+$scope.$watch('issuesInspectorShow', function(value) {   
         if (!value) {
                 $('.highlighted').removeClass('highlighted');
                 $('.overlayed').removeClass('overlayed');
