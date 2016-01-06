@@ -111,16 +111,32 @@ $scope.table_scrollconfig = {
         $scope.inspector={'type':'Course', 'title':$scope.studiedCourse.title, 'nIssues':0, 'nWarn':0,'nTasks':0,'description':''};
         
         var scale = chroma.scale('OrRd');
-        $scope.scale = chroma.scale('OrRd');
-        angular.forEach(data[0].parts, function(part) {
-          //part.color=scale(0.2).hex();;
-          console.log("number:" + part.facts.filter(function(value) { return value.classof === 'Readings' }));
-          part.color={
-            'reading':scale(part.facts.filter(function(value) { return value.classof === 'Readings' }).length /5).hex(),
+        $scope.computeBgColor=function(val){
+          return scale(val/5).hex();
+        }
+        
+        $scope.computeTextColor=function(val){
+          if(val==0) return 'green';
+          if(val==1) return '#354831';
+          if(val==2) return '#716F6F';
+          if(val==3) return '#F5F5F5';
+          if(val>=4) return 'white';
+        }
+        angular.forEach($scope.studiedCourse.parts, function(part) {        
+     /*     part.color={
+          'reading':scale(part.facts.filter(function(value) { return value.classof === 'Readings' }).length /5).hex(),
           'rereading':scale(part.facts.filter(function(value) { return value.classof === 'Rerading' }).length / 5).hex(),
           'transition':scale(part.facts.filter(function(value) { return value.classof === 'Transition' }).length / 5).hex(),
           'stop':scale(part.facts.filter(function(value) { return value.classof === 'Stop' }).length / 5).hex()
+        };*/
+
+        part.color={
+          'reading':part.facts.filter(function(value) { return value.classof == 'Readings' }).length,
+          'rereading':part.facts.filter(function(value) { return value.classof == 'Rereading' }).length,
+          'transition':part.facts.filter(function(value) { return value.classof == 'Transition' }).length,
+          'stop':part.facts.filter(function(value) { return value.classof == 'Stop' }).length
         };
+        console.log(part.color);
           
             angular.forEach(part.facts, function(fact) {
                 $scope.allIssues.push(
@@ -146,8 +162,19 @@ $scope.table_scrollconfig = {
   $scope.doDisplay=function($event){
 $(':focus').blur();
 
-$('.display-issues-btn').hide();
+//$('.display-issues-btn').hide();
 
+
+
+if(($($event.currentTarget).hasClass('chosenPart'))){
+  $('.highlighted').removeClass('highlighted');
+  $('.overlayed').removeClass('overlayed');
+  $('.chosenPart').removeClass('chosenPart');
+  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  return;
+}
+$('.chosenPart').removeClass('chosenPart');
+$($event.currentTarget).toggleClass('chosenPart');
 
     var indicator = $($event.currentTarget).find('span').attr('data-indicator');
     var part = $($event.currentTarget).find('span').attr('data-part');
@@ -160,43 +187,13 @@ $('.display-issues-btn').hide();
     
   }
   
-    if(part!=-1) {
-    $('thead th').has('span[data-part!='+part+']').removeClass('highlighted').addClass('overlayed');
-    $('thead th').has('span[data-part='+part+']').addClass('highlighted').removeClass('overlayed');
-  }
-  
-
-    var pos_top = $('thead').offset().top;
-    var height = 0;  
-    $('.indicators_group').each(function(index) {
-        height += parseInt($(this).outerHeight(), 10);
-
-    });
-
-
-var bottom = $('table').height + $('table').offset().top;
-var width = 0;
-$('.part_index').each(function(index) {
-    width += parseInt($(this).outerWidth(), 10);
-});
-
-var pos_left = $('.indicators_group').outerWidth();
-
-var modal_top = $('thead').outerHeight();
-var modal_left = pos_left ;
-$("#issues-dialog").css('position','absolute');
-$("#issues-dialog").css('top',modal_top);
-$("#issues-dialog").css('left',modal_left);
-$("#issues-dialog").css('bottom',0);
-$("#issues-dialog").css('right',0);
-
-
+   
     
     $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
 
 
     $scope.factspanel = true;
-    $('#erros-list-group').show();
+ //   $('#erros-list-group').show();
 
   };
 

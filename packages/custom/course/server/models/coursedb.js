@@ -54,10 +54,13 @@ var FactSchema = new Schema({
   value: {
     type: String
   },  
-  norm_description: {
+  description: {
     type: String
   }, 
   norm_value: {
+    type: String
+  },
+  gravity: {
     type: String
   },
   suggestion : [TodoSchema]

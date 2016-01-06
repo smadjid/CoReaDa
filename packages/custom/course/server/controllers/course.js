@@ -334,8 +334,9 @@ console.log("\n *FINISH* \n");
                     'value':part_facts[i].value,
                     'classof':part_facts[i].classe,
                     'type':part_facts[i].type,
-                    'norm_description':part_facts[i].norm_description,
-                    'norm_value':part_facts[i].norm_value
+                    'description':part_facts[i].description,
+                    'norm_value':part_facts[i].norm_value,
+                    'gravity':part_facts[i].gravity
                 }
 
                 part.facts.push(fact);
@@ -352,7 +353,7 @@ console.log("\n *FINISH* \n");
             }
             courseChapters.push(chapter)
         }
-        if(part.type==='subchapter') 
+       // if(part.type==='subchapter') 
         courseParts.push(part);
     console.log(part);
        }
@@ -369,7 +370,14 @@ console.log("\n *FINISH* \n");
         /*********** Chapters ***************/
     
         for (var i = 0; i < courseParts.length ; i++){ 
-              
+                if(courseParts[i].type==='chapter'){ 
+                    var self = courseParts[i]['id'];
+            
+                   for(var j = 0; j < courseChapters.length; j++)
+                    if(courseChapters[j].id==self)
+                        courseChapters[j].parts.push(courseParts[i]);
+
+                }
                 if(courseParts[i].type==='subchapter'){                   
                    var parent = courseParts[i]['parent_id'];
             
@@ -377,9 +385,6 @@ console.log("\n *FINISH* \n");
                     if(courseChapters[j].part_id==parent)
                         courseChapters[j].parts.push(courseParts[i]);
                 }
-            
-         
-      
         };
 
 

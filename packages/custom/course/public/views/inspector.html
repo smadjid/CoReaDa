@@ -1,4 +1,4 @@
-<div class="panel panel-flat">
+<div class="panel panel-flat" style="background-color: #1C383F; color:white">
     <div class="panel-heading">
         <div class="row">
             <div class="col-xs-3">
@@ -13,6 +13,10 @@
         
  
  <tabset class="tabs-left inspector-tab">
+    <tab heading="Warnings" id="issues-dialog">
+        <div data-ng-include src="'course/views/issues-panel.html'"></div>
+    </tab>
+
     <tab heading="En résumé">
 
         
@@ -31,6 +35,7 @@
                     <li>{{inspector.nTasks}} tâches planifiées   
         </ul>
     </tab>
+
     
 </tabset>
 

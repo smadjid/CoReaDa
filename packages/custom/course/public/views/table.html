@@ -3,13 +3,13 @@
         <tr>
             <th></th>         
             <th class="part_index" ng-repeat="chapter in studiedCourse.chapters"  colspan={{(chapter.parts).length}}>
-                {{chapter.title}}
+                <b>{{chapter.title}}</b>
             </th>            
 
 
         </tr>
          <tr>
-            <th></th>         
+         <th><b>Parties du cours</b></th>         
             <th class="part_index" ng-repeat="part in studiedCourse.parts">
                 {{part.id}}
                 <br/>
@@ -24,14 +24,14 @@
             <th class="indicators_group" data-indicator='Readings'>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >Lecture</span>
-                <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Reading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Readings'}).length}} </span>
-                </a>
+                
             </th>
 
             <td class="td_issue" ng-repeat="part in studiedCourse.parts">
                
-                    <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)''Readings' data-indicator='Readings' style='background-color:{{part.color.reading}}'>
+                    <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Readings' style='
+                    color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}};
+                    background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}'>
     <span data-indicator='Readings' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Readings'}).length}}</span>
                     </button>
                    
@@ -44,13 +44,13 @@
                 <i class="fa fa-repeat  fa-2x"></i>
                 <span class="fat">Relecture</span>
                 
-                <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Reading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Rereading'}).length}} </span>
-                </a>
+              
             </th>
 
             <td class="td_issue" ng-repeat="part in studiedCourse.parts">
-                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)''Rerading' data-indicator='Readings' style='background-color:{{part.color.rereading}}'>
+                     <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)'  data-indicator='Rereading' style='
+                     color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};
+                     background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}'>
     <span data-indicator='Rereading' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Rereading'}).length}}</span>
     </button>
 
@@ -61,13 +61,13 @@
             <th class="indicators_group" data-indicator='Transition'>
                 <i class="fa fa-random fa-2x"></i>
                 <span class="fat">Transitions</span>
-                <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Reading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Transition'}).length}} </span>
-                </a>
+                
             </th>
             <td class="td_issue" ng-repeat="part in studiedCourse.parts">
                 
-                     <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)''Readings' data-indicator='Transition' style='background-color:{{part.color.transition}}'>
+                     <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Transition' style='
+                     color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}};
+                     background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}'>
     <span data-indicator='Transition' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Transition'}).length}}</span>
                     </button>
                    
@@ -79,13 +79,13 @@
             <th class="indicators_group" data-indicator='Stop'>
                 <i class="fa fa-pause fa-2x"></i>
                 <span class="fat">Arrêts</span>
-                <a   class="badge badge-danger" ng-click='doDisplay($event)'> 
-                        <span data-indicator='Reading' data-fact="issue"  data-part='-1'>{{(allIssues | filter:search:strict | filter:{'classof':'Stop'}).length}} </span>
-                </a>
+                
             </th>
             <td class="td_issue" ng-repeat="part in studiedCourse.parts">
                 
-                   <button type="button" class="btn btn-warning btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Stop' style='background-color:{{part.color.stop}}'>
+                   <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Stop'style='
+                   color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}};
+                   background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}'>
     <span data-indicator='Stop' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Stop'}).length}}</span>
                     </button>
                     
