@@ -1,4 +1,4 @@
-<div class="panel panel-flat" style="background-color: #1C383F; color:white">
+<div class="panel panel-flat" >
     <div class="panel-heading">
         <div class="row">
             <div class="col-xs-3">
@@ -9,63 +9,10 @@
             </div>
         </div>
     </div>
-    <div class="panel-body inspector-body">
-        
- 
- <tabset class="tabs-left inspector-tab">
-    <tab heading="Warnings" id="issues-dialog">
-        <div data-ng-include src="'course/views/issues-panel.html'"></div>
-    </tab>
 
-    <tab heading="En résumé">
-
-        
-        <ul>
-        <li><strong><i>{{inspector.type}}</i> : {{inspector.title}} </strong>
-            <li ng-repeat="property in inspector.description.overview"><b>{{property.property}}</b>: {{property.value}}
-        </ul>
-
-    </tab>
-    <tab heading="Statistiques">
-    <ul>
-            <li><strong><i>{{inspector.type}}</i> : {{inspector.title}} </strong>
-              
-                    <li>{{inspector.nIssues}} problèmes de lecture détectés. 
-                    <li>{{inspector.nWarn}} autres remarques à considérer. 
-                    <li>{{inspector.nTasks}} tâches planifiées   
-        </ul>
-    </tab>
+    <div class="panel-body inspector-body"  data-ng-include src="'course/views/issues-panel.html'"></div>
+    
 
     
-</tabset>
 
-        </div>
-
-    <div class="panel-body inspector-body">
-        
- 
- <tabset class="tabs-left inspector-tab" style='display: none'>
-    <tab heading="Résumé sur la partie">
-
-        <ul>
-            <!--<li><strong><i>Cours</i> :{{inspectorcours}} </strong>-->
-            <li><strong><i>Titre</i> : {{inspector.title}} </strong>
-              
-                    <li>{{inspector.nIssues}} problèmes de lecture détectés. {{inspector.nWarn}} autres remarques à considérer. 
-                        <li>{{inspector.nTasks}} tâches planifiées   
-        </ul>
-        <ul>
-            <li ng-repeat="property in inspector.description"><b>{{property.property}}</b>: {{property.value}}
-        </ul>
-
-    </tab>
-    <tab heading="Vertical B">Reading</tab>
-    <tab heading="Vertical B">Vertical content B</tab>
-    <tab heading="Vertical B">Vertical content B</tab>
-</tabset>
-
-        </div>
-            
-
-
-</div>
+ </div>

@@ -232,256 +232,6 @@ ul.alert-dropdown {
 }
 
 
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-td,
-th {
-  padding: 0;
-}
-
-table {
-  background-color: transparent;
-}
-caption {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  color: #999999;
-  text-align: left;
-}
-th {
-  text-align: left;
-}
-.cl {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 21px;
-}
-.cl > thead > tr > th,
-.cl > tbody > tr > th,
-.cl > tfoot > tr > th,
-.cl > thead > tr > td,
-.cl > tbody > tr > td,
-.cl > tfoot > tr > td {
-  padding: 8px;
-  line-height: 1.5;
-  vertical-align: top;
-  border-top: 1px solid #434857;
-}
-.cl > thead > tr > th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #434857;
-}
-.cl > caption + thead > tr:first-child > th,
-.cl > colgroup + thead > tr:first-child > th,
-.cl > thead:first-child > tr:first-child > th,
-.cl > caption + thead > tr:first-child > td,
-.cl > colgroup + thead > tr:first-child > td,
-.cl > thead:first-child > tr:first-child > td {
-  border-top: 0;
-}
-.cl > tbody + tbody {
-  border-top: 2px solid #434857;
-}
-.cl .cl {
-  background-color: #252830;
-}
-.ea > thead > tr > th,
-.ea > tbody > tr > th,
-.ea > tfoot > tr > th,
-.ea > thead > tr > td,
-.ea > tbody > tr > td,
-.ea > tfoot > tr > td {
-  padding: 5px;
-}
-.cm {
-  border: 1px solid #434857;
-}
-.cm > thead > tr > th,
-.cm > tbody > tr > th,
-.cm > tfoot > tr > th,
-.cm > thead > tr > td,
-.cm > tbody > tr > td,
-.cm > tfoot > tr > td {
-  border: 1px solid #434857;
-}
-.cm > thead > tr > th,
-.cm > thead > tr > td {
-  border-bottom-width: 2px;
-}
-.table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #434857;
-}
-.eb > tbody > tr:hover {
-  background-color: #434857;
-}
-table col[class*="col-"] {
-  position: static;
-  float: none;
-  display: table-column;
-}
-table td[class*="col-"],
-table th[class*="col-"] {
-  position: static;
-  float: none;
-  display: table-cell;
-}
-.cl > thead > tr > td.active,
-.cl > tbody > tr > td.active,
-.cl > tfoot > tr > td.active,
-.cl > thead > tr > th.active,
-.cl > tbody > tr > th.active,
-.cl > tfoot > tr > th.active,
-.cl > thead > tr.active > td,
-.cl > tbody > tr.active > td,
-.cl > tfoot > tr.active > td,
-.cl > thead > tr.active > th,
-.cl > tbody > tr.active > th,
-.cl > tfoot > tr.active > th {
-  background-color: #434857;
-}
-.eb > tbody > tr > td.active:hover,
-.eb > tbody > tr > th.active:hover,
-.eb > tbody > tr.active:hover > td,
-.eb > tbody > tr:hover > .active,
-.eb > tbody > tr.active:hover > th {
-  background-color: #383c48;
-}
-.cl > thead > tr > td.ec,
-.cl > tbody > tr > td.ec,
-.cl > tfoot > tr > td.ec,
-.cl > thead > tr > th.ec,
-.cl > tbody > tr > th.ec,
-.cl > tfoot > tr > th.ec,
-.cl > thead > tr.ec > td,
-.cl > tbody > tr.ec > td,
-.cl > tfoot > tr.ec > td,
-.cl > thead > tr.ec > th,
-.cl > tbody > tr.ec > th,
-.cl > tfoot > tr.ec > th {
-  background-color: #dff0d8;
-}
-.eb > tbody > tr > td.ec:hover,
-.eb > tbody > tr > th.ec:hover,
-.eb > tbody > tr.ec:hover > td,
-.eb > tbody > tr:hover > .ec,
-.eb > tbody > tr.ec:hover > th {
-  background-color: #d0e9c6;
-}
-.cl > thead > tr > td.ed,
-.cl > tbody > tr > td.ed,
-.cl > tfoot > tr > td.ed,
-.cl > thead > tr > th.ed,
-.cl > tbody > tr > th.ed,
-.cl > tfoot > tr > th.ed,
-.cl > thead > tr.ed > td,
-.cl > tbody > tr.ed > td,
-.cl > tfoot > tr.ed > td,
-.cl > thead > tr.ed > th,
-.cl > tbody > tr.ed > th,
-.cl > tfoot > tr.ed > th {
-  background-color: #d9edf7;
-}
-.eb > tbody > tr > td.ed:hover,
-.eb > tbody > tr > th.ed:hover,
-.eb > tbody > tr.ed:hover > td,
-.eb > tbody > tr:hover > .ed,
-.eb > tbody > tr.ed:hover > th {
-  background-color: #c4e3f3;
-}
-.cl > thead > tr > td.ee,
-.cl > tbody > tr > td.ee,
-.cl > tfoot > tr > td.ee,
-.cl > thead > tr > th.ee,
-.cl > tbody > tr > th.ee,
-.cl > tfoot > tr > th.ee,
-.cl > thead > tr.ee > td,
-.cl > tbody > tr.ee > td,
-.cl > tfoot > tr.ee > td,
-.cl > thead > tr.ee > th,
-.cl > tbody > tr.ee > th,
-.cl > tfoot > tr.ee > th {
-  background-color: #fcf8e3;
-}
-.eb > tbody > tr > td.ee:hover,
-.eb > tbody > tr > th.ee:hover,
-.eb > tbody > tr.ee:hover > td,
-.eb > tbody > tr:hover > .ee,
-.eb > tbody > tr.ee:hover > th {
-  background-color: #faf2cc;
-}
-.cl > thead > tr > td.ef,
-.cl > tbody > tr > td.ef,
-.cl > tfoot > tr > td.ef,
-.cl > thead > tr > th.ef,
-.cl > tbody > tr > th.ef,
-.cl > tfoot > tr > th.ef,
-.cl > thead > tr.ef > td,
-.cl > tbody > tr.ef > td,
-.cl > tfoot > tr.ef > td,
-.cl > thead > tr.ef > th,
-.cl > tbody > tr.ef > th,
-.cl > tfoot > tr.ef > th {
-  background-color: #f2dede;
-}
-.eb > tbody > tr > td.ef:hover,
-.eb > tbody > tr > th.ef:hover,
-.eb > tbody > tr.ef:hover > td,
-.eb > tbody > tr:hover > .ef,
-.eb > tbody > tr.ef:hover > th {
-  background-color: #ebcccc;
-}
-
-.eg {
-  overflow-x: auto;
-  min-height: 0.01%;
-}
-@media screen and (max-width: 767px) {
-  .eg {
-    width: 100%;
-    margin-bottom: 15.75px;
-    overflow-y: hidden;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #434857;
-  }
-  .eg > .cl {
-    margin-bottom: 0;
-  }
-  .eg > .cl > thead > tr > th,
-  .eg > .cl > tbody > tr > th,
-  .eg > .cl > tfoot > tr > th,
-  .eg > .cl > thead > tr > td,
-  .eg > .cl > tbody > tr > td,
-  .eg > .cl > tfoot > tr > td {
-    white-space: nowrap;
-  }
-  .eg > .cm {
-    border: 0;
-  }
-  .eg > .cm > thead > tr > th:first-child,
-  .eg > .cm > tbody > tr > th:first-child,
-  .eg > .cm > tfoot > tr > th:first-child,
-  .eg > .cm > thead > tr > td:first-child,
-  .eg > .cm > tbody > tr > td:first-child,
-  .eg > .cm > tfoot > tr > td:first-child {
-    border-left: 0;
-  }
-  .eg > .cm > thead > tr > th:last-child,
-  .eg > .cm > tbody > tr > th:last-child,
-  .eg > .cm > tfoot > tr > th:last-child,
-  .eg > .cm > thead > tr > td:last-child,
-  .eg > .cm > tbody > tr > td:last-child,
-  .eg > .cm > tfoot > tr > td:last-child {
-    border-right: 0;
-  }
-  .eg > .cm > tbody > tr:last-child > th,
-  .eg > .cm > tfoot > tr:last-child > th,
-  .eg > .cm > tbody > tr:last-child > td,
-  .eg > .cm > tfoot > tr:last-child > td {
-    border-bottom: 0;
-  }
-}
 
 .navbar-inverse {
     background-color: #252830;
@@ -540,34 +290,14 @@ th {
   font-weight: lighter;
   text-shadow: 0 1px 0 #38678f;
   color: white;
-  border: 1px solid #38678f;
-  box-shadow: inset 0px 1px 2px #568ebd;
+  border-left:1px solid #cccccc;
   
 }
-thead {
-  background: none;
-  border-top: 0px!important;
-  border-color: none!important; 
-  box-shadow: none!important;
-}
-thead > tr:first-child > th:first-child {
-  background: none;
-  border: 0!important;
-  border-color: none!important; 
-  box-shadow: none!important;
-}
-thead > tr:first-child {
-  background: none;
-  border: 0!important;
-  border-color: none!important; 
-  box-shadow: none!important;
-}
+
+
 tr {
   border-bottom: 1px solid #cccccc;
   vertical-align: middle;
-  height: 40px;
- 
-
 }
 
 td {
@@ -612,10 +342,7 @@ td {
   opacity: .4;
 }
 
-.highlighted{
-  opacity :1;
-  background-color: #3E4651;
-}
+
 td,tr,th{
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -878,20 +605,20 @@ a.editable-click:hover {
     border-radius: 3px;
 }
 
-/*************SCROLL BAR **************************/
-/* Let's get this party started */
+/*************SCROLL BAR **************************
+
 ::-webkit-scrollbar {
     width: 12px;
 }
  
-/* Track */
+
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
  
-/* Handle */
+
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -900,7 +627,7 @@ a.editable-click:hover {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255,0,0,0.6); 
-}
+}*/
 
 
 .mCSB_container_wrapper, .mCSB_container, .mCSB_container_wrapper>.mCSB_container {
@@ -928,39 +655,7 @@ a.editable-click:hover {
   margin-bottom: 5px;
 }
 /*************FIXED 1st COLUMN **************************/
-[fixed-first-column] {position:relative}
-[fixed-first-column]>.table-responsive {margin-left:65px;}
-[fixed-first-column]>.table-responsive .table {}
 
-[fixed-first-column]>.table-responsive .table>thead>tr>td:first-child,
-[fixed-first-column]>.table-responsive .table>tbody>tr>td:first-child,
-[fixed-first-column]>.table-responsive .table>thead>tr>th:first-child,
-[fixed-first-column]>.table-responsive .table>tbody>tr>th:first-child {
-    position: absolute;
-    min-width: 110px;
-    width: 110px;
-    
-    border-right: 1px solid #ddd !important;
-    border-bottom:1px solid #f5f5f5 !important;
-  left:0;
-  top:auto;
-  padding-top:0 !important;
-  padding-bottom:0 !important;
-}
-
-[fixed-first-column] > .table-responsive .table > thead > tr > td:first-child > div,
-[fixed-first-column] > .table-responsive .table > tbody > tr > td:first-child > div,
-[fixed-first-column] > .table-responsive .table > thead > tr > th:first-child > div,
-[fixed-first-column] > .table-responsive .table > tbody > tr > th:first-child > div {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  position:relative;
-}
-
-[fixed-first-column] td {
-    min-width:150px; /* default width */
-  max-width:300px;
-}
 
 /*!
  * bootstrap-vertical-tabs - v1.2.1
@@ -1096,7 +791,17 @@ a.editable-click:hover {
 }
 
 
+.display-part-issues{
+   padding:2px;
+  margin: 1px;
+  width:100%;
+  height:100%; 
+  font-weight: bold;
+  text-shadow: 0 .4px 0 #38678f;
+  text-decoration: none;
+  cursor: pointer;
 
+}
 .display-issues-btn{
   padding:2px;
   margin: 1px;
@@ -1114,9 +819,51 @@ a.editable-click:hover {
 }
 
 .chosenPart{
-  background-color: #3E4651!important;
+  background-color: yellow!important;
   font-weight: bolder!important;
-  color:white!important;
+  color:red!important;
   border-radius: 4px!important;
 
+}
+.highlighted{
+  opacity :1;
+  background-color: yellow!important;
+  font-weight: bold!important;
+  color:red!important;
+  border-radius: 4px!important;
+}
+.chosenPart span{
+
+  }
+
+
+
+
+/* TABLE */
+table { 
+  width: 100%; 
+  
+  border-collapse: separate;
+    empty-cells: hide;
+}
+
+.table > thead > tr > th, 
+.table > tbody > tr > th, 
+.table > thead > tr > td, 
+.table > tbody > tr > td
+{
+    padding-left: 2px!important;
+    padding-right: 2px!important;
+    line-height: 1.0;
+    vertical-align: top;
+    border-top: 1px solid #dddddd;
+}
+
+
+
+.container-fluid {
+    margin-right: 1px;
+    margin-left: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
 }

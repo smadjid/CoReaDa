@@ -17,40 +17,7 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
       name: 'course'
     };
 
-var hsv2rgb = function(h, s, v) {
-  // adapted from http://schinckel.net/2012/01/10/hsv-to-rgb-in-javascript/
-  var rgb, i, data = [];
-  if (s === 0) {
-    rgb = [v,v,v];
-  } else {
-    h = h / 60;
-    i = Math.floor(h);
-    data = [v*(1-s), v*(1-s*(h-i)), v*(1-s*(1-(h-i)))];
-    switch(i) {
-      case 0:
-        rgb = [v, data[2], data[0]];
-        break;
-      case 1:
-        rgb = [data[1], v, data[0]];
-        break;
-      case 2:
-        rgb = [data[0], v, data[2]];
-        break;
-      case 3:
-        rgb = [data[0], data[1], v];
-        break;
-      case 4:
-        rgb = [data[2], data[0], v];
-        break;
-      default:
-        rgb = [v, data[0], data[1]];
-        break;
-    }
-  }
-  return '#' + rgb.map(function(x){
-    return ("0" + Math.round(x*255).toString(16)).slice(-2);
-  }).join('');
-};
+
 
 $scope.indicators=['Readings','Rereading','Transition','Stop'];
 
@@ -68,7 +35,7 @@ $scope.factspanel = false;
 // scrollbar config
 $scope.scrollconfig = {
     autoHideScrollbar: false,
-    theme: 'light',
+    theme: 'dark',
     live: true,
     scrollButtons:{enable:true,scrollType:"stepped"},
     advanced:{
@@ -82,23 +49,7 @@ $scope.scrollconfig = {
     }
 ;
 
-$scope.table_scrollconfig = {
-            
-            theme: "minimal",
-            live: true,
-            advanced:{
-                updateOnContentResize: true,
-                autoExpandHorizontalScroll: true,
-                autoExpandVerticalScroll: true,
-                updateOnSelectorChange: true
-            },
-            scrollButtons: {
-                enable: true,
-                scrollAmount: 'auto'
-            },
-            axis: 'yx',
-            autoHideScrollbar: false
-        };
+
 //CoursesDB.seed() 
     CoursesDB.get()
       .success(function(data) {
@@ -162,11 +113,7 @@ $scope.table_scrollconfig = {
   $scope.doDisplay=function($event){
 $(':focus').blur();
 
-//$('.display-issues-btn').hide();
-
-
-
-if(($($event.currentTarget).hasClass('chosenPart'))){
+if(($($event.currentTarget).parent().hasClass('chosenPart'))){
   $('.highlighted').removeClass('highlighted');
   $('.overlayed').removeClass('overlayed');
   $('.chosenPart').removeClass('chosenPart');
@@ -174,11 +121,11 @@ if(($($event.currentTarget).hasClass('chosenPart'))){
   return;
 }
 $('.chosenPart').removeClass('chosenPart');
-$($event.currentTarget).toggleClass('chosenPart');
+$($event.currentTarget).parent().toggleClass('chosenPart');
 
-    var indicator = $($event.currentTarget).find('span').attr('data-indicator');
-    var part = $($event.currentTarget).find('span').attr('data-part');
-    var fact = $($event.currentTarget).find('span').attr('data-fact');
+    var indicator = $($event.currentTarget).attr('data-indicator');
+    var part = $($event.currentTarget).attr('data-part');
+    var fact = $($event.currentTarget).attr('data-fact');
    
     if(indicator!='ALL') {
     $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');

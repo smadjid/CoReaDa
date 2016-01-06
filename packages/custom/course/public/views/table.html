@@ -27,15 +27,10 @@
                 
             </th>
 
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts">
-               
-                    <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Readings' style='
-                    color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}};
-                    background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}'>
-    <span data-indicator='Readings' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Readings'}).length}}</span>
-                    </button>
-                   
-
+            <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-indicator='Readings'  ng-click='doDisplay($event)' > 
+                        {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
+                    </span>
             </td>
 
         </tr>
@@ -47,13 +42,10 @@
               
             </th>
 
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts">
-                     <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)'  data-indicator='Rereading' style='
-                     color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};
-                     background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}'>
-    <span data-indicator='Rereading' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Rereading'}).length}}</span>
-    </button>
-
+            <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-indicator='Rereading'  ng-click='doDisplay($event)' > 
+                        {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
+                    </span>
             </td>
 
         </tr>
@@ -63,15 +55,10 @@
                 <span class="fat">Transitions</span>
                 
             </th>
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts">
-                
-                     <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Transition' style='
-                     color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}};
-                     background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}'>
-    <span data-indicator='Transition' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Transition'}).length}}</span>
-                    </button>
-                   
-                
+            <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-indicator='Transition'  ng-click='doDisplay($event)' > 
+                        {{(part.facts | filter:{'classof':'Transition'}).length >0 ?(part.facts | filter:{'classof':'Transition'}).length:""}}
+                    </span>
             </td>
 
         </tr>
@@ -81,15 +68,10 @@
                 <span class="fat">Arrêts</span>
                 
             </th>
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts">
-                
-                   <button type="button" class="btn  btn-xs display-issues-btn" data-toggle="popover"   ng-href='#here' ng-click='doDisplay($event)' data-indicator='Stop'style='
-                   color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}};
-                   background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}'>
-    <span data-indicator='Stop' data-part='{{part.id}}' data-fact="issue"> {{(part.facts | filter:{'classof':'Stop'}).length}}</span>
-                    </button>
-                    
-                
+             <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-indicator='Stop'  ng-click='doDisplay($event)' > 
+                        {{(part.facts | filter:{'classof':'Stop'}).length >0 ?(part.facts | filter:{'classof':'Stop'}).length:""}}
+                    </span>
             </td>
         </tr>
     </tbody>
