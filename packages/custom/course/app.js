@@ -33,6 +33,8 @@ Course.register(function(app, auth, database) {
   Course.aggregateAsset('js',"../lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js");
   Course.aggregateAsset('js',"../lib/ng-scrollbars/dist/scrollbars.min.js");
 
+  Course.aggregateAsset('js',"../lib/chroma.js");
+
 
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above

@@ -72,7 +72,7 @@ var DescriptionSchema = new Schema({
     trim: true
   },
   value: {
-    type: Number
+    type: String
   }
 
  });
@@ -87,12 +87,33 @@ var PartSchema = new Schema({
   part_id: {
     type: Number
   },
+  parent_id: {
+    type: Number
+  },
+  part_type: {
+    type: String
+  },
   title: {
     type: String
   },
- /* updated: {
-    type: Array
-  },*/
+  properties: [DescriptionSchema],
+  todos: [TodoSchema],
+  facts: [FactSchema]
+});
+/**
+ * Chapter Schema
+ */
+var ChapterSchema = new Schema({
+  id: {
+    type: Number
+  },
+  part_id: {
+    type: Number
+  },
+  title: {
+    type: String
+  },
+  parts: [PartSchema],
   properties: [DescriptionSchema],
   todos: [TodoSchema],
   facts: [FactSchema]
@@ -127,6 +148,7 @@ var CourseSchema = new Schema({
   },*/
   properties: [DescriptionSchema],
   parts: [PartSchema],
+  chapters: [ChapterSchema],
   facts: [FactSchema],
   todos: [TodoSchema]
 });

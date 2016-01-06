@@ -17,6 +17,41 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
       name: 'course'
     };
 
+var hsv2rgb = function(h, s, v) {
+  // adapted from http://schinckel.net/2012/01/10/hsv-to-rgb-in-javascript/
+  var rgb, i, data = [];
+  if (s === 0) {
+    rgb = [v,v,v];
+  } else {
+    h = h / 60;
+    i = Math.floor(h);
+    data = [v*(1-s), v*(1-s*(h-i)), v*(1-s*(1-(h-i)))];
+    switch(i) {
+      case 0:
+        rgb = [v, data[2], data[0]];
+        break;
+      case 1:
+        rgb = [data[1], v, data[0]];
+        break;
+      case 2:
+        rgb = [data[0], v, data[2]];
+        break;
+      case 3:
+        rgb = [data[0], data[1], v];
+        break;
+      case 4:
+        rgb = [data[2], data[0], v];
+        break;
+      default:
+        rgb = [v, data[0], data[1]];
+        break;
+    }
+  }
+  return '#' + rgb.map(function(x){
+    return ("0" + Math.round(x*255).toString(16)).slice(-2);
+  }).join('');
+};
+
 $scope.indicators=['Readings','Rereading','Transition','Stop'];
 
 
@@ -67,6 +102,7 @@ $scope.table_scrollconfig = {
 //CoursesDB.seed() 
     CoursesDB.get()
       .success(function(data) {
+
         $scope.studiedCourse = data[0];  
         console.log($scope.studiedCourse);      
         $scope.allIssues = [];
@@ -74,8 +110,18 @@ $scope.table_scrollconfig = {
         $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
         $scope.inspector={'type':'Course', 'title':$scope.studiedCourse.title, 'nIssues':0, 'nWarn':0,'nTasks':0,'description':''};
         
-        
+        var scale = chroma.scale('OrRd');
+        $scope.scale = chroma.scale('OrRd');
         angular.forEach(data[0].parts, function(part) {
+          //part.color=scale(0.2).hex();;
+          console.log("number:" + part.facts.filter(function(value) { return value.classof === 'Readings' }));
+          part.color={
+            'reading':scale(part.facts.filter(function(value) { return value.classof === 'Readings' }).length /5).hex(),
+          'rereading':scale(part.facts.filter(function(value) { return value.classof === 'Rerading' }).length / 5).hex(),
+          'transition':scale(part.facts.filter(function(value) { return value.classof === 'Transition' }).length / 5).hex(),
+          'stop':scale(part.facts.filter(function(value) { return value.classof === 'Stop' }).length / 5).hex()
+        };
+          
             angular.forEach(part.facts, function(fact) {
                 $scope.allIssues.push(
                     fact
