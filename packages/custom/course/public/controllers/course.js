@@ -22,7 +22,7 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
 $scope.indicators=['Readings','Rereading','Transition','Stop'];
 
 $scope.dynamicPopover = {
-    content: 'Hello, World!',
+    content: '',
     templateUrl: 'myPopoverTemplate.html',
     title: 'Title'
   };
@@ -102,7 +102,7 @@ $scope.scrollconfig = {
 
 $scope.displayIssue=function($event){
 $(':focus').blur();
-$('.highlighted').removeClass('highlighted');
+
 
 if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
   $('.overlayed').removeClass('overlayed');
@@ -117,13 +117,6 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
     var indicator = $($event.currentTarget).attr('data-indicator');
     var part = $($event.currentTarget).attr('data-part');
     var fact = $($event.currentTarget).attr('data-fact');    
-    $('.part_index[data-part='+part+']').addClass('highlighted');
-   
-    if(indicator!='ALL') {
-    $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
-    $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
-    
-  }
   
    
     
@@ -135,8 +128,16 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
 
   };
 
+var selectPart=function(index){
+   $('table tr > td:nth-child(4), .parts-header > th:nth-child(4)').addClass('highlight-left highlight-right');
+
+     $('.parts-header  > th:nth-child(4)').addClass('highlight-top');
+
+    $('table tr:last-child > td:nth-child(4)').addClass('highlight-bottom');
+}
 
   $scope.displayPartInfos=function($event){
+   selectPart(6);
 $(':focus').blur();
 $('.highlighted').removeClass('highlighted');
 

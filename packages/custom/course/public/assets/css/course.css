@@ -830,22 +830,16 @@ a.editable-click:hover {
     padding: 0px!important;
 }
 
-.chosenPart{
-  background-color: yellow!important;
-  font-weight: bolder!important;
-  color:red!important;
-  border-radius: 4px!important;
-
+.chosenPart{  
+   border: solid #785EDD!important;   
 }
-.highlighted{
-  opacity :1;
-  background-color: green!important;
-  font-weight: bold!important;
-  
-}
-.chosenPart span{
 
-  }
+/* Table highlighting */
+.highlight-left{border-left:solid red!important}
+.highlight-right{border-right:solid red!important}
+.highlight-top{border-top:solid red!important}
+.highlight-bottom{border-bottom:solid red!important}
+
 
 
 
