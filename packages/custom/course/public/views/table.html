@@ -11,6 +11,7 @@
          <tr>
          <th><b>Parties du cours</b></th>         
             <th class="part_index" ng-repeat="part in studiedCourse.parts" data-part={{part.id}}>
+
                 <span class="display-part-info" ng-click='displayPartInfos($event)'  uib-tooltip={{part.title}}> {{part.id}}</span>
                 <br/>
              
@@ -21,7 +22,7 @@
     </thead>
     <tbody>
         <tr>
-            <th class="indicators_group" data-indicator='Readings'>
+            <th class="indicators_group" data-indicator='Readings' ng-click='displayIndicatorInfos($event)'>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >Lecture</span>
                 
@@ -31,11 +32,12 @@
                     <span class='display-part-issues' data-part={{part.id}} data-indicator='Readings'  ng-click='displayIssue($event)' > 
                         {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
                     </span>
+           
             </td>
 
         </tr>
         <tr>
-            <th class="indicators_group" data-indicator='Rereading'>
+            <th class="indicators_group" data-indicator='Rereading'ng-click='displayIndicatorInfos($event)' >
                 <i class="fa fa-repeat  fa-2x"></i>
                 <span class="fat">Relecture</span>
                 
@@ -50,7 +52,7 @@
 
         </tr>
         <tr>
-            <th class="indicators_group" data-indicator='Transition'>
+            <th class="indicators_group" data-indicator='Transition' ng-click='displayIndicatorInfos($event)'>
                 <i class="fa fa-random fa-2x"></i>
                 <span class="fat">Transition</span>
                 
@@ -63,7 +65,7 @@
 
         </tr>
         <tr>
-            <th class="indicators_group" data-indicator='Stop'>
+            <th class="indicators_group" data-indicator='Stop' ng-click='displayIndicatorInfos($event)'>
                 <i class="fa fa-pause fa-2x"></i>
                 <span class="fat">Arrêts</span>
                 

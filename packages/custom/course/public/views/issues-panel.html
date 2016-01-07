@@ -1,3 +1,4 @@
+
   <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec">  
     <div class="todoDialog"style="margin:5px;"> 
 
@@ -5,11 +6,11 @@
   <div id="errors-display" ng-scrollbars ng-scrollbars-config="scrollconfig">  
       <div class="list-group" id="erros-list-group" style="height: 100%; margin-top:5px" ng-hide="toggleerrors">
        <uib-accordion close-others="true"> 
-       <uib-accordion-group is-open="status.open" panel-class="error-item" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="fact in focusStudy.studiedElt.facts | filter: {type: 'issue'}" >
+       <uib-accordion-group is-open="status.open" panel-class="error-item" ng-init="isOpen = $index == 0 ? true : false" is-open="isOpen" ng-repeat="fact in focusStudy.studiedElt.facts" >
        <uib-accordion-heading panel-class="error-item">       
        <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) : {{fact.description}} 
        
-        <span uib-popover="dynamicPopover.content" popover-title="Suggestion" popover-append-to-body="true" class=" pull-right"><span class="glyphicon glyphicon-tasks" aria-hidden="true" uib-tooltip="Suggestion"  tooltip-append-to-body="true"></span></span>
+        <span uib-popover-template="dynamicPopover.templateUrl" popover-trigger='click' popover-title="Suggestion" popover-append-to-body="true" popover-placement="right" class=" pull-right"><span class="glyphicon glyphicon-tasks" aria-hidden="true" uib-tooltip="Suggestion"  tooltip-append-to-body="true"></span></span>
        
      </uib-accordion-heading>
 
@@ -24,3 +25,16 @@
 </div>
 
 </div>
+
+
+<script type="text/ng-template" id="myPopoverTemplate.html">
+        <div>{{dynamicPopover.content}}</div>
+        <div class="form-group">
+          <label>Actions suggérées pour améliorer les valeurs de cet indicateurs</label>
+          <div class="alert suggestion" role="alert"><span>Première petite suggestion pour régler ce grand problème</span>
+          <span role="button" ng-click=" " class="glyphicon glyphicon-new-window pull-right" aria-hidden="true" uib-tooltip="Ajouter comme tâche"></span></div>
+
+          <div class="alert suggestion" role="alert"><span>Deuxième grande suggestion pour régler ce petit problème</span>
+          <span role="button" ng-click=" " class="glyphicon glyphicon-new-window pull-right" aria-hidden="true" uib-tooltip="Ajouter comme tâche"></span></div>
+        </div>
+    </script>

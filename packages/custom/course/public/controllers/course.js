@@ -21,6 +21,12 @@ courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Glo
 
 $scope.indicators=['Readings','Rereading','Transition','Stop'];
 
+$scope.dynamicPopover = {
+    content: 'Hello, World!',
+    templateUrl: 'myPopoverTemplate.html',
+    title: 'Title'
+  };
+
 
 $scope.formData = {};
 $scope.editIndex = false;
@@ -54,8 +60,7 @@ $scope.scrollconfig = {
     CoursesDB.get()
       .success(function(data) {
 
-        $scope.studiedCourse = data[0];  
-        console.log($scope.studiedCourse);      
+        $scope.studiedCourse = data[0];               
         $scope.allIssues = [];
 
         $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
@@ -103,6 +108,7 @@ if(($($event.currentTarget).parent().hasClass('chosenPart'))){
   $('.overlayed').removeClass('overlayed');
   $('.chosenPart').removeClass('chosenPart');
   $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+   $scope.issuesInspectorShow = false;
   return;
 }
 $('.chosenPart').removeClass('chosenPart');
@@ -134,6 +140,8 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
 $(':focus').blur();
 $('.highlighted').removeClass('highlighted');
 
+$scope.issuesInspectorShow = false;
+
 if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
   $('.overlayed').removeClass('overlayed');
   $('.chosenPart').removeClass('chosenPart');
@@ -162,7 +170,6 @@ $(':focus').blur();
 $('.highlighted').removeClass('highlighted');
 
 $scope.issuesInspectorShow = false;
-   console.log($scope.issuesInspectorShow)
 
 if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
   $('.overlayed').removeClass('overlayed');
@@ -188,7 +195,35 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
 
   };
 
+  $scope.displayIndicatorInfos=function($event){
+$(':focus').blur();
+$('.highlighted').removeClass('highlighted');
+
+
+$scope.issuesInspectorShow = false;
+
+if(($($event.currentTarget).hasClass('chosenPart'))){  
+  $('.chosenPart').removeClass('chosenPart');  
+  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  return;
+}
+$('.chosenPart').removeClass('chosenPart');  
+$($event.currentTarget).toggleClass('chosenPart');
+
+    var part = $($event.currentTarget).attr('data-part');
+    if(indicator!='ALL') {
+      $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
+      $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
+    
+    }
   
+    //$scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
+
+    
+ 
+ //   $('#erros-list-group').show();
+
+  };
 
 $scope.$watch('issuesInspectorShow', function(value) {   
         if (!value) {
@@ -218,7 +253,8 @@ var tabsFn = (function() {
 
 var computeInspectorCourseProperties = function(properties){
   var prop = {'property':'', 'value':''};
-  console.log(properties);
+  
+   
    return ({
    'overview':[
       {'property':'Nombre de parties', 
@@ -271,17 +307,13 @@ $scope.$watch('focusStudy.studiedElt', function() {
         $scope.formData = {};
 
        
-        if($scope.focusStudy.studiedElt.id)  {
+        if($scope.focusStudy.studiedElt.id)  {          
           $scope.inspector={'type':'Partie', 'title':$scope.focusStudy.studiedElt.title, 
-        'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
-        'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
-        'nTasks':$scope.focusStudy.studiedElt.todos.length,
+        
         'description':computeInspectorPartProperties($scope.focusStudy.studiedElt.properties)}
         }        
         else {$scope.inspector={'type':'Course', 'title':$scope.focusStudy.studiedElt.title, 
-                'nIssues':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'issue' }).length, 
-                'nWarn':$scope.focusStudy.studiedElt.facts.filter(function(value) { return value.type === 'warning' }).length,
-                'nTasks':$scope.focusStudy.studiedElt.todos.length,
+               
                 'description':computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties)}
         }   ;
 
@@ -359,47 +391,6 @@ $scope.editTask = function (todoId, data) {
               });
 
   }
-
-
-  ///////////////////////ROUTINE FUNCTIONS///////////////////////////////////////
-/*var updateContexte   = function(focus, part_index , indicator_index){  
-    if(part_index>0)
-      $scope.focusStudy =  {
-                    type:'part',
-                    studiedIndicator:'ALL',
-                    studiedElt :$scope.studiedCourse.parts[part_index - 1]
-                }
-    else      
-      $scope.focusStudy =  {
-                    type:'course',
-                    studiedIndicator:'ALL',
-                    studiedElt :$scope.studiedCourse
-                }; 
-                console.log(part_index);
-    
-};
-
-var updateContexte   = function(focus, part_index , indicator_index){  
-  
- 
-    $scope.focusStudy.type = focus;
-    if(focus=='course') 
-      {$scope.focusStudy.studiedElt = $scope.studiedCourse; }
-
-    if(focus=='part-head') 
-      {$scope.focusStudy.studiedElt = $scope.studiedCourse.parts[part_index - 1]; }
-    
-    if(focus=='indicator-head') 
-      {$scope.focusStudy.studiedIndicator = indicator_index; }
-
-    if(focus=='cell') 
-      {
-        $scope.focusStudy.studiedElt = $scope.studiedCourse.parts[part_index - 1]; 
-        $scope.focusStudy.studiedIndicator = indicator_index;
-      }
-    
-};
-*/
 
 }
 ]);

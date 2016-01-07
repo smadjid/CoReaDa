@@ -71,7 +71,7 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
         
       },
       update : function(course, focusElt, part_index , indicator) {
-
+console.log(part_index);
         var elt = focusElt;
         elt.type = focus;
         elt.studiedPart = part_index;
@@ -84,7 +84,9 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
 
         if(indicator=='ALL') 
           {
-            elt.studiedElt = course.parts[part_index - 1]; 
+            elt.studiedElt =  $.grep(course.parts, function(e){                 
+                return  e.id == part_index
+              });
             return elt;
           }
           if(part_index==-1) 
@@ -114,10 +116,15 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
           }
         
   
-          var result = course.parts[part_index - 1]; 
-//          console.log(result);
+        //  var result = course.parts[part_index - 1]; 
+          var result =  $.grep(course.parts, function(e){                 
+                return  e.id == part_index
+              });
+          result=result[0];
+
+          console.log(result);
           result.facts = $.grep(result.facts, function(e){ return  e.classof == indicator });
-          
+          console.log(result);
           elt.studiedIndicator=indicator;
           elt.studiedElt = result;
 

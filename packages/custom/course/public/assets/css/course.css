@@ -841,7 +841,7 @@ a.editable-click:hover {
   opacity :1;
   background-color: green!important;
   font-weight: bold!important;
-  border-radius: 4px!important;
+  
 }
 .chosenPart span{
 
@@ -913,3 +913,14 @@ table {
   top: -10px;
 }
 
+.suggestion {
+    background-color: #43ac6a;
+    border-color: #3c9a5f;
+    color: #ffffff;
+    width:100%;
+    height:auto;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 0;
+}

@@ -302,7 +302,6 @@ console.log("\n *FINISH* \n");
         var part = {
                 'id':part_data[0]['id'],
                 'title':part_data[0]['part_title'],
-            //    'type':part_data[0]['part_type'],
                 'properties':[],
                 'facts':[]
             };
@@ -353,9 +352,8 @@ console.log("\n *FINISH* \n");
             }
             courseChapters.push(chapter)
         }
-       // if(part.type==='subchapter') 
+       if(part.type==='subchapter') 
         courseParts.push(part);
-    console.log(part);
        }
        
 
