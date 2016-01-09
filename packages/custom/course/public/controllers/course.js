@@ -2,7 +2,7 @@
 'use strict'; 
 
 /* jshint -W098 */
-var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap','ngScrollbars']);
+var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap','ngScrollbars','vAccordion']);
 
 courseModule.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-sm';

@@ -446,19 +446,8 @@ a.list-warning-item:hover {
 
 
 
-.error-item {
-  border: 1px solid #ddd;
-  color: #a94442;
-  background-color: #ebcccc;
-  
 
-    
-}
-.error-item.panel-open .panel-heading , .error-item .panel-heading:hover {
-  text-decoration: none;
-    color:#fff;background-color:#a94442;
-    border-color:#a94442
-}
+
 
 .warning-item {
     border: 1px solid #ddd;
@@ -917,4 +906,35 @@ table {
     margin-bottom: 10px;
     border: 1px solid transparent;
     border-radius: 0;
+}
+
+.inspector-item {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.error-item {
+  border: 1px solid #ddd;
+  color: #a94442;
+  background-color: #ebcccc;
+  margin-bottom: 1px;
+}
+.error-item-heading, .error-item-heading:hover {
+  text-decoration: none;
+    color:#fff;background-color:#a94442;
+    border-color:#a94442
+    margin-bottom: 5px!important; 
+}
+
+.error-suggestion {
+  border: 1px solid #ddd;
+  color: #a94442;
+  background-color: #ebcccc;
+  margin-bottom: 0px;
+}
+.error-suggestion-heading, .error-suggestion-heading:hover {
+  text-decoration: none;
+    color:#fff;background-color:#a94442;
+    border-color:#a94442
+    margin-bottom: 5px!important; 
 }
