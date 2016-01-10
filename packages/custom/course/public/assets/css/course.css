@@ -360,10 +360,6 @@ td,tr,th{
   width:99%;
 }
 
-#errors-display{  
-  
-     height:100%;
-}
 /*********************************/
 
 .well-danger {
@@ -629,12 +625,7 @@ a.editable-click:hover {
     padding: 0px; 
 }
 
-.todoDialog{
-    padding: 10px;
-    margin:0;height:100%;
-    z-index: 5;
 
-}
 .btn{
   overflow: hidden;
 }
@@ -896,45 +887,57 @@ table {
   top: -10px;
 }
 
-.suggestion {
-    background-color: #43ac6a;
-    border-color: #3c9a5f;
-    color: #ffffff;
-    width:100%;
-    height:auto;
+
+
+
+.errors-display{
     padding: 5px;
-    margin-bottom: 10px;
-    border: 1px solid transparent;
-    border-radius: 0;
-}
+    height:100%;
 
+}
 .inspector-item {
-  border: 1px solid #ddd;
+  border: 2px solid #34495E;
   margin-bottom: 10px;
+  padding:3px;
 }
 
-.error-item {
-  border: 1px solid #ddd;
-  color: #a94442;
-  background-color: #ebcccc;
-  margin-bottom: 1px;
+.inspector-issue, .inspector-issue, .inspector-hints, .inspector-hints:hover {
+  margin-bottom: -20px;
+  height:auto!important;
+  font-size : 12px!important;
 }
-.error-item-heading, .error-item-heading:hover {
+.inspector-issue-heading {
   text-decoration: none;
-    color:#fff;background-color:#a94442;
-    border-color:#a94442
-    margin-bottom: 5px!important; 
+    color:#fff;
+    background-color:#a94442;
+    border-color:#a94442;   
+    padding-left: 15px!important; 
+    padding-right: 15px!important; 
+    height:auto!important;
+}
+.inspector-issue-heading:hover {
+    color: #fff!important;
+    text-decoration:underline;
 }
 
-.error-suggestion {
-  border: 1px solid #ddd;
-  color: #a94442;
-  background-color: #ebcccc;
-  margin-bottom: 0px;
-}
-.error-suggestion-heading, .error-suggestion-heading:hover {
+.inspector-hints-heading {
   text-decoration: none;
-    color:#fff;background-color:#a94442;
-    border-color:#a94442
-    margin-bottom: 5px!important; 
+    color:#fff;
+    background-color:#7F8C8D;
+    border-color:#a94442;   
+    padding-left: 15px!important; 
+    padding-right: 15px!important; 
+    height:auto!important;
+}
+.inspector-hints-heading:hover {
+    color: #fff!important;
+    text-decoration:underline;
+}
+
+ .vAccordion--default v-pane-header::after, .vAccordion--default v-pane-header::before {   
+    background-color: #fff!important; 
+}
+Pseudo ::after element
+.vAccordion--default v-pane-header::after, .vAccordion--default v-pane-header::before {
+     background-color: #fff!important; 
 }

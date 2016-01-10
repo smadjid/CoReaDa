@@ -129,37 +129,31 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
   };
 
 var selectPart=function(index){
-   $('table tr > td:nth-child(4), .parts-header > th:nth-child(4)').addClass('highlight-left highlight-right');
-
-     $('.parts-header  > th:nth-child(4)').addClass('highlight-top');
-
-    $('table tr:last-child > td:nth-child(4)').addClass('highlight-bottom');
+   $('table tr > td:nth-child('+index+'), .parts-header > th:nth-child('+index+')').addClass('highlight-left highlight-right');
+     $('.parts-header  > th:nth-child('+index+')').addClass('highlight-top');
+    $('table tr:last-child > td:nth-child('+index+')').addClass('highlight-bottom');
+}
+var deSelectAllParts=function(){
+  $('.highlight-left').removeClass('highlight-left');
+  $('.highlight-right').removeClass('highlight-right');
+  $('.highlight-top').removeClass('highlight-top');
+  $('.highlight-bottom').removeClass('highlight-bottom');
+ 
 }
 
   $scope.displayPartInfos=function($event){
-   selectPart(6);
+    if($($event.currentTarget).parent().hasClass('highlight-top'))
+       return deSelectAllParts();
+
+    deSelectAllParts();
+    selectPart($($event.currentTarget).parent().index() + 1);
+   
 $(':focus').blur();
 $('.highlighted').removeClass('highlighted');
-
-$scope.issuesInspectorShow = false;
-
-if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
-  $('.overlayed').removeClass('overlayed');
-  $('.chosenPart').removeClass('chosenPart');
-  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
-  return;
-}
 $('.chosenPart').removeClass('chosenPart');
-$($event.currentTarget).parent().toggleClass('chosenPart');
 
-    var part = $($event.currentTarget).attr('data-part');
-    if(indicator!='ALL') {
-      $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
-      $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
-    
-    }
-  
-    //$scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
+var part = $($event.currentTarget).parent().attr('data-part');
+$scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , 'ALL');
 
     $scope.issuesInspectorShow = true;
  //   $('#erros-list-group').show();
