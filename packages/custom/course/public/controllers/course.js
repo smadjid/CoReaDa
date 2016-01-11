@@ -10,8 +10,8 @@ courseModule.run(function(editableOptions, editableThemes) {
   editableOptions.theme = 'bs3';
 });
 
-courseModule.controller('courseController', ['$scope', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','focusStudyManager','Todos',
-  function($scope, $uibModal, $http, Global, Course,CoursesDB,focusStudyManager,Todos) {
+courseModule.controller('courseController', ['$scope','$location', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','focusStudyManager','Todos',
+  function($scope, $uibModal, $http,$location, Global, Course,CoursesDB,focusStudyManager,Todos) {
     $scope.global = Global;
     $scope.package = {
       name: 'course'
@@ -33,7 +33,7 @@ $scope.editIndex = false;
 $scope.loading = false;
 $scope.animationsEnabled = true;
 $scope.issuesInspectorShow = false;
-
+$scope.courseParts=[];
 
 
 
@@ -56,11 +56,110 @@ $scope.scrollconfig = {
 ;
 
 
+var completeCourseParts=function(){
+  
+  angular.forEach($scope.studiedCourse.chapters, function(chapter) { 
+            chapter.route=chapter._id
+            angular.forEach(chapter.parts, function(part) {
+              part.parent = chapter._id;
+              part.route=chapter._id+','+part._id;
+              angular.forEach(part.facts,function(fact){
+                  fact.route=part.route+','+fact._id
+              });
+                $scope.courseParts.push(
+                    part
+                );
+                
+            });
+        
+        });
+  
+
+};
+
+var resetPath=function(){
+  $('.overlayed').removeClass('overlayed');
+  $('.chosenPart').removeClass('chosenPart');
+  
+   $scope.issuesInspectorShow = false;
+
+   $('.highlight-left').removeClass('highlight-left');
+  $('.highlight-right').removeClass('highlight-right');
+  $('.highlight-top').removeClass('highlight-top');
+  $('.highlight-bottom').removeClass('highlight-bottom');
+  $('.overlayed').removeClass('overlayed');
+  $('.chosenPart').removeClass('chosenPart');
+
+  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  $scope.context.path="<a class='glyphicon glyphicon-home'></a>";
+  return "<a class='glyphicon glyphicon-home' href=\"#\"></a>"
+}
+var compilePath=function(path){
+
+  var arr = path.split(','); 
+  var result ="<a class='glyphicon glyphicon-home' href=\"#\"></a>" 
+ 
+  
+  var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[0] })[0];
+  result = result+" \/ <a href='#"+arr[0]+"'>"+chap.title+"</a>"; 
+  
+  
+  if(arr.length>1) {
+    var part = $.grep(chap.parts, function(e){ return  e._id == arr[1] })[0];    
+    result = result+" \/ <a href='#"+arr[0]+","+arr[1]+"'>"+part.title+"</a>"; 
+    
+    if(arr.length>2) {
+      var fact = $.grep(part.facts, function(e){ return  e._id == arr[1] })[0];      
+      result = result+" \/ <a href='#"+arr[0]+","+arr[1]+","+arr[2]+"'>"+fact.name+"</a>"; 
+    }
+  }
+ 
+  return result;
+};
+
+$(window).on('hashchange',function(){ 
+   
+    loadContext(location.hash.slice(1));
+    
+});
+
+var loadContext=function(path){
+   if(!path) resetPath();
+  var arr = path.split(',');  
+  var chap  = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[0] })[0];
+  var part  = -1;
+  if(arr.length=1) {    
+    $('.chapter_index[data-part='+chap.id+'] > span').click();
+  }
+
+  if(arr.length=2) {
+    var part = $.grep(chap.parts, function(e){ return  e._id == arr[1] })[0];  
+    $('.part_index[data-part='+part.id+'] > span').click();
+  }
+
+  
+};
+
 //CoursesDB.seed() 
     CoursesDB.get()
       .success(function(data) {
 
-        $scope.studiedCourse = data[0];               
+        
+        $scope.studiedCourse = data[0];
+        completeCourseParts();
+        $scope.context = {
+          'type':'course',
+          'path':'.',
+          'route':$scope.studiedCourse._id,
+          'id':0,
+          '_id':$scope.studiedCourse._id,
+          'title':$scope.studiedCourse.title,
+          'indicator':'ALL'
+        }
+
+      
+
+                       
         $scope.allIssues = [];
 
         $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
@@ -102,26 +201,22 @@ $scope.scrollconfig = {
 
 $scope.displayIssue=function($event){
 $(':focus').blur();
-
-
-if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
-  $('.overlayed').removeClass('overlayed');
-  $('.chosenPart').removeClass('chosenPart');
-  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
-   $scope.issuesInspectorShow = false;
+if(($($event.currentTarget).parent().hasClass('chosenPart'))){    
+    resetPath();
   return;
 }
-$('.chosenPart').removeClass('chosenPart');
+resetPath();
 $($event.currentTarget).parent().toggleClass('chosenPart');
 
     var indicator = $($event.currentTarget).attr('data-indicator');
     var part = $($event.currentTarget).attr('data-part');
-    var fact = $($event.currentTarget).attr('data-fact');    
+    var fact = $($event.currentTarget).attr('data-fact');  
+    $scope.context.path=compilePath($($event.currentTarget).attr('data-path')) ;
+    
   
    
     
     $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
-
 
     $scope.issuesInspectorShow = true;
  //   $('#erros-list-group').show();
@@ -133,19 +228,13 @@ var selectPart=function(index){
      $('.parts-header  > th:nth-child('+index+')').addClass('highlight-top');
     $('table tr:last-child > td:nth-child('+index+')').addClass('highlight-bottom');
 }
-var deSelectAllParts=function(){
-  $('.highlight-left').removeClass('highlight-left');
-  $('.highlight-right').removeClass('highlight-right');
-  $('.highlight-top').removeClass('highlight-top');
-  $('.highlight-bottom').removeClass('highlight-bottom');
- 
-}
+
 
   $scope.displayPartInfos=function($event){
     if($($event.currentTarget).parent().hasClass('highlight-top'))
-       return deSelectAllParts();
+       return resetPath();
 
-    deSelectAllParts();
+    resetPath();
     selectPart($($event.currentTarget).parent().index() + 1);
    
 $(':focus').blur();
@@ -153,6 +242,7 @@ $('.highlighted').removeClass('highlighted');
 $('.chosenPart').removeClass('chosenPart');
 
 var part = $($event.currentTarget).parent().attr('data-part');
+$scope.context.path=compilePath($($event.currentTarget).parent().attr('data-path')) ;
 $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , 'ALL');
 
     $scope.issuesInspectorShow = true;
@@ -167,15 +257,14 @@ $('.highlighted').removeClass('highlighted');
 $scope.issuesInspectorShow = false;
 
 if(($($event.currentTarget).parent().hasClass('chosenPart'))){  
-  $('.overlayed').removeClass('overlayed');
-  $('.chosenPart').removeClass('chosenPart');
-  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  resetPath();
   return;
 }
-$('.chosenPart').removeClass('chosenPart');
+resetPath();
 $($event.currentTarget).parent().toggleClass('chosenPart');
 
     var part = $($event.currentTarget).attr('data-part');
+    $scope.context.path=compilePath($($event.currentTarget).parent().attr('data-path')) ;
     if(indicator!='ALL') {
       $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
       $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
@@ -198,14 +287,16 @@ $('.highlighted').removeClass('highlighted');
 $scope.issuesInspectorShow = false;
 
 if(($($event.currentTarget).hasClass('chosenPart'))){  
-  $('.chosenPart').removeClass('chosenPart');  
-  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+  resetPath();
   return;
 }
-$('.chosenPart').removeClass('chosenPart');  
+resetPath();
 $($event.currentTarget).toggleClass('chosenPart');
 
     var part = $($event.currentTarget).attr('data-part');
+    $scope.context.path=compilePath($($event.currentTarget).attr('data-path')) ;
+
+
     if(indicator!='ALL') {
       $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
       $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
@@ -219,6 +310,7 @@ $($event.currentTarget).toggleClass('chosenPart');
  //   $('#erros-list-group').show();
 
   };
+
 
 $scope.$watch('issuesInspectorShow', function(value) {   
         if (!value) {

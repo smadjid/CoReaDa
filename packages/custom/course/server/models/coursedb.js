@@ -93,6 +93,9 @@ var PartSchema = new Schema({
   parent_id: {
     type: Number
   },
+  parent: {
+    type: String
+  },
   part_type: {
     type: String
   },

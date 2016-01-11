@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th></th>         
-            <th class="chapter_index" ng-repeat="chapter in studiedCourse.chapters"  colspan={{(chapter.parts).length}}  data-part={{chapter.id}} >
+            <th class="chapter_index" ng-repeat="chapter in studiedCourse.chapters"  colspan={{(chapter.parts).length}}  data-part={{chapter.id}} data-path={{chapter.route}}>
               <span  ng-click='displayChapterInfos($event)'> {{chapter.title}}</span>
             </th>            
 
@@ -10,7 +10,7 @@
         </tr>
          <tr class='parts-header'>
          <th><b>Parties du cours</b></th>         
-            <th class="part_index" ng-repeat="part in studiedCourse.parts" data-part={{part.id}}>
+            <th class="part_index" ng-repeat="part in courseParts" data-part={{part.id}} data-path={{part.route}}>
 
                 <span class="display-part-info" ng-click='displayPartInfos($event)'  uib-tooltip={{part.title}}> {{part.id}}</span>
                 <br/>
@@ -28,8 +28,8 @@
                 
             </th>
 
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center'>
-                    <span class='display-part-issues' data-part={{part.id}} data-indicator='Readings'  ng-click='displayIssue($event)' > 
+            <td class="td_issue" ng-repeat="part in courseParts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-part={{part.id}} data-path={{part.route}} data-indicator='Readings'  ng-click='displayIssue($event)' > 
                         {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
                     </span>
            
@@ -44,8 +44,8 @@
               
             </th>
 
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center'>
-                    <span class='display-part-issues' data-part={{part.id}} data-indicator='Rereading'  ng-click='displayIssue($event)' > 
+            <td class="td_issue" ng-repeat="part in courseParts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-part={{part.id}} data-path={{part.route}} data-indicator='Rereading'  ng-click='displayIssue($event)' > 
                         {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
                     </span>
             </td>
@@ -57,8 +57,8 @@
                 <span class="fat">Transition</span>
                 
             </th>
-            <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center'>
-                    <span class='display-part-issues' data-part={{part.id}} data-indicator='Transition'  ng-click='displayIssue($event)' > 
+            <td class="td_issue" ng-repeat="part in courseParts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-part={{part.id}} data-path={{part.route}} data-indicator='Transition'  ng-click='displayIssue($event)' > 
                         {{(part.facts | filter:{'classof':'Transition'}).length >0 ?(part.facts | filter:{'classof':'Transition'}).length:""}}
                     </span>
             </td>
@@ -70,8 +70,8 @@
                 <span class="fat">Arrêts</span>
                 
             </th>
-             <td class="td_issue" ng-repeat="part in studiedCourse.parts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}; text-align:center'>
-                    <span class='display-part-issues' data-part={{part.id}} data-indicator='Stop'  ng-click='displayIssue($event)' > 
+             <td class="td_issue" ng-repeat="part in courseParts" style='color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}}; background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}; text-align:center'>
+                    <span class='display-part-issues' data-part={{part.id}} data-path={{part.route}} data-indicator='Stop'  ng-click='displayIssue($event)' > 
                         {{(part.facts | filter:{'classof':'Stop'}).length >0 ?(part.facts | filter:{'classof':'Stop'}).length:""}}
                     </span>
             </td>

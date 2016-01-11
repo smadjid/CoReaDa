@@ -71,7 +71,7 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
         
       },
       update : function(course, focusElt, part_index , indicator) {
-console.log(part_index);
+
         var elt = focusElt;
         elt.type = focus;
         elt.studiedPart = part_index;
@@ -121,10 +121,8 @@ console.log(part_index);
                 return  e.id == part_index
               });
           result=result[0];
-
-          console.log(result);
+          
           result.facts = $.grep(result.facts, function(e){ return  e.classof == indicator });
-          console.log(result);
           elt.studiedIndicator=indicator;
           elt.studiedElt = result;
 

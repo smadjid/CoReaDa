@@ -1,5 +1,25 @@
 <div class="panel panel-flat" >
     <div class="panel-heading">
+       
+                <div> <span class="fat" >Inspector #  </span><small ng-bind-html="context.path">{{context.path}}</small> </div>
+            
+       
+    </div>
+
+    <div class="panel-body inspector-body" ng-show="issuesInspectorShow"  data-ng-include src="'course/views/issues-panel.html'"></div>
+    <div class="panel-body inspector-body" ng-show="!issuesInspectorShow">
+        <h2>//TODO</h2>
+        <h3>Données descrptives / aggregées sur le <b>cours</b> ou la <b>partie</b> ou la <b>classe d'indicateurs</b> selon la sélection</h3>
+
+        {{inspector.properties}}
+    </div>
+    
+
+
+ </div>
+
+<!--<div class="panel panel-flat" >
+    <div class="panel-heading">
         <div class="row">
             <div class="col-xs-3">
                 <i class="fa fa-tasks fa-2x"></i>
@@ -21,3 +41,4 @@
 
 
  </div>
+-->
