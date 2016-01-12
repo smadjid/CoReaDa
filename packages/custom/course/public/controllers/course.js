@@ -59,12 +59,12 @@ $scope.scrollconfig = {
 
 
 var completeCourseParts=function(){
-  
+  var course_route = $scope.studiedCourse._id;
   angular.forEach($scope.studiedCourse.chapters, function(chapter) { 
-            chapter.route=chapter._id
+            chapter.route=course_route+','+chapter._id
             angular.forEach(chapter.parts, function(part) {
               part.parent = chapter._id;
-              part.route=chapter._id+','+part._id;
+              part.route=chapter.route+','+part._id;
               angular.forEach(part.facts,function(fact){
                   fact.route=part.route+','+fact._id
               });
@@ -93,25 +93,25 @@ var resetPath=function(){
   $('.chosenPart').removeClass('chosenPart');
 
   $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
-  $scope.context.path="<a class='glyphicon glyphicon-home'></a>";
-  return "<a class='glyphicon glyphicon-home' href=\"#\"></a>"
+  
 }
 var compilePath=function(path){
-console.log(path);
+
   var arr = path.split(','); 
   var result ="<a class='glyphicon glyphicon-home' href=\"#\"></a>" 
  
-  
-  var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[0] })[0];
+  if(arr.length>=2) {
+  var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[1] })[0];
   result = result+" \/ <a href='#"+arr[0]+"'>"+chap.title+"</a>"; 
+  }
   
   
-  if(arr.length>1) {
-    var part = $.grep(chap.parts, function(e){ return  e._id == arr[1] })[0];    
+  if(arr.length>=3) {
+    var part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];    
     result = result+" \/ <a href='#"+arr[0]+","+arr[1]+"'>"+part.title+"</a>"; 
     
-    if(arr.length>2) {
-      var fact = $.grep(part.facts, function(e){ return  e._id == arr[1] })[0];      
+    if(arr.length>=4) {
+      var fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0];      
       result = result+" \/ <a href='#"+arr[0]+","+arr[1]+","+arr[2]+"'>"+fact.name+"</a>"; 
     }
   }
@@ -119,48 +119,31 @@ console.log(path);
   return result;
 };
 
-$scope.compilePath=function(path){
-console.log(path);
-  var arr = path.split(','); 
-  var result ="<a class='glyphicon glyphicon-home' href=\"#\"></a>" 
- 
-  
-  var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[0] })[0];
-  result = result+" \/ <a href='#"+arr[0]+"'>"+chap.title+"</a>"; 
-  
-  
-  if(arr.length>1) {
-    var part = $.grep(chap.parts, function(e){ return  e._id == arr[1] })[0];    
-    result = result+" \/ <a href='#"+arr[0]+","+arr[1]+"'>"+part.title+"</a>"; 
-    
-    if(arr.length>2) {
-      var fact = $.grep(part.facts, function(e){ return  e._id == arr[1] })[0];      
-      result = result+" \/ <a href='#"+arr[0]+","+arr[1]+","+arr[2]+"'>"+fact.name+"</a>"; 
-    }
-  }
- 
-  return result;
-};
 
 $(window).on('hashchange',function(){ 
-   
+
+   $scope.context.route=location.hash.slice(1);
+   $scope.context.path=compilePath(location.hash.slice(1));
     loadContext(location.hash.slice(1));
+    $scope.path=compilePath(location.hash.slice(1));
+    
     
 });
 
 var loadContext=function(path){
    if(!path) resetPath();
   var arr = path.split(',');  
-  var chap  = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[0] })[0];
+  var course  = $scope.studiedCourse;
+  var chap = -1;
   var part  = -1;
-  if(arr.length==1) {  
+  if(arr.length>=2) {  
+     chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
     displayChapterInfos($('.chapter_index[data-part='+chap.id+'] > a')[0]);
   }
 
-  if(arr.length==2) {
+  if(arr.length>=3) {
 
-    var part = $.grep(chap.parts, function(e){ return  e._id == arr[1] })[0];  
-    //$('.part_index[data-part='+part.id+'] > span').click();
+    part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];  
     displayPartInfos($('.part_index[data-part='+part.id+'] > a')[0]);
   }
 
@@ -176,7 +159,7 @@ var loadContext=function(path){
         completeCourseParts();
         $scope.context = {
           'type':'course',
-          'path':'.',
+          'path':'<a class="glyphicon glyphicon-home">',
           'route':$scope.studiedCourse._id,
           'id':0,
           '_id':$scope.studiedCourse._id,
@@ -222,10 +205,7 @@ var loadContext=function(path){
         });
     
 
-  $scope.hideIssuesDialog = function(){
-    $scope.studiedElt = $scope.studiedCourse;
-    $scope.issuesInspectorShow=false;
-  }
+ 
 
 $scope.displayIssue=function($event){
 $(':focus').blur();
@@ -239,7 +219,7 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
     var indicator = $($event.currentTarget).attr('data-indicator');
     var part = $($event.currentTarget).attr('data-part');
     var fact = $($event.currentTarget).attr('data-fact');  
-    $scope.context.path=compilePath($($event.currentTarget).attr('data-path')) ;
+   
     
   
    
@@ -293,10 +273,9 @@ var selectChapter=function(index){
     $('.chosenPart').removeClass('chosenPart');
 
 var part = $(partElt).parent().attr('data-part');
-$scope.context.path=compilePath($(partElt).parent().attr('data-path')) ;
 $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , 'ALL');
 
-    $scope.issuesInspectorShow = true;
+    $scope.issuesInspectorShow = false;
  //   $('#erros-list-group').show();
 
   };
@@ -313,16 +292,7 @@ if(($(partElt).parent().hasClass('chosenPart'))){
 }
 resetPath();
 selectChapter($(partElt).parent().index() + 1);
-return;
-$(partElt).parent().toggleClass('chosenPart');
 
-    var part = $(partElt).attr('data-part');
-    $scope.context.path=compilePath($(partElt).parent().attr('data-path')) ;
-    if(indicator!='ALL') {
-      $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
-      $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
-    
-    };
     $(':focus').blur();
   
   };
@@ -342,8 +312,7 @@ resetPath();
 $(partElt).toggleClass('chosenPart');
 
     var part = $($event.currentTarget).attr('data-part');
-    $scope.context.path=compilePath($($event.currentTarget).attr('data-path')) ;
-
+    
 
     if(indicator!='ALL') {
       $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
@@ -431,7 +400,7 @@ var computeInspectorPartProperties = function(properties){
 };
 
 $scope.$watch('focusStudy.studiedElt', function() {
-        $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
+      //  $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
         $scope.loading = false;
         $scope.formData = {};
 
@@ -464,9 +433,14 @@ $scope.addTask = function () {
 
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
-        var addedTask = $scope.formData.text;
+        var addedTask = $scope.formData.text;  
+        Todos.insertTask($scope.context.route)
+        .success(function(data) {
+                alert('END')
+                
+              });
 
-        Todos.addTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, {type:'edition', todo:addedTask})
+      /*  Todos.addTask($scope.studiedCourse._id,$scope.focusStudy.studiedElt._id, {type:'edition', todo:addedTask})
         .success(function(data) {
                 $scope.studiedCourse = data; 
                 $scope.Taks = Todos.filterTasks($scope.focusStudy.studiedElt);
@@ -476,7 +450,7 @@ $scope.addTask = function () {
                  $scope.loading = false;
                  $scope.formData = {};
                 
-              });
+              });*/
       }
 
 
