@@ -1,37 +1,13 @@
-        <div class="container-fluid" data-ng-controller="courseController">            
-            <div class="row">
-                <div class="container-fluid">
-
-                <div class="col-xs-12 col-md-9" style=" padding-right: 0">
-                    <div class="col-xs-12 col-md-12" style=" padding: 0">
-                        
-
-                      
-                        <table  class="table table-hover" data-ng-include src="'course/views/table.html'" ></table>
-                  
-
-
-                    </div>
-                     <div class="col-xs-12 col-md-12 inspector-container"  data-ng-include src="'course/views/inspector.html'"></div>
-                     </div>
-                    
-
-                    <div class="col-lg-3" >
-                        <div class="panel panel-flat"  data-ng-include src="'course/views/todo.html'"></div>
-                    </div>
-                </div>
+<div class="container-fluid row"  data-ng-controller="courseController">            
+    <table  class="data-table table" data-ng-include src="'course/views/table.html'" ></table>
+    <div class="inspector-container inspectoEnclosing">
+        <div class="panel panel-flat" style="margin-bottom:0">
+            <div class="panel-heading">
+                <div> <span class="fat" >Inspector #  </span><small ng-bind-html="context.path">{{context.path}}</small> </div>
             </div>
-         
-                <div class="container-fluid">
-                   
-
-
-
-
-
-         
- </div>
- </div>
-
-
+            <div class="panel-body inspector-body" ng-show="issuesInspectorShow"  data-ng-include src="'course/views/issues-panel.html'"></div>
+            <div class="panel-body  inspector-body" ng-show="!issuesInspectorShow" data-ng-include src="'course/views/component-panel.html'"></div>
+        </div>
+    </div>
+</div>
 

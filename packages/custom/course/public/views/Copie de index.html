@@ -1,0 +1,249 @@
+<div data-ng-controller="courseController">
+
+  <div id="page-wrapper">
+
+        <div class="container-fluid">            
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="col-xs-12 col-md-9 table-responsive">
+                        <table class="table table-hover " data-min="11" data-max="30" cellpadding="0" cellspacing="0" >
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="part_index" ng-repeat="part in partdata">
+                                        {{part.id}}
+                                        <br/>
+                                        <div class="part-issues">
+                                            <a data-part='1' class="badge badge-danger">
+                                                <span class="glyphicon glyphicon-remove">{{part.total_error}}</span>
+                                            </a>
+                                            <a data-part='1' class="badge badge-warning" data-part=" ">
+                                                <span class="glyphicon glyphicon-warning-sign">{{part.total_warning}}</span>
+                                            </a>
+                                        </div>
+                                    </th>                                    
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="indicators_group">
+                                        <i class="fa fa-play-circle fa-2x"></i>
+                                        <span class="fat"  style="padding:10px">Reading</span>
+
+                                        <br/>
+                                        <div class="total-indicator">
+                                            <a data-indicator='1' class="badge badge-danger">45 issues</a>
+                                            <a data-indicator='1' class="badge badge-warning">33 warn.</a>
+                                        </div>
+                                    </th>
+                                    
+                                    <td ng-repeat="part in partdata">
+                                        <div class="btn-group-vertical" role="group" data-toggle="buttons" >
+                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                                <span class="badge badge-danger">{{part.reading_error}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-warning-sign"></span>
+                                                <span class="badge badge-warning">{{part.reading_warning}}</span>
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <th class="indicators_group">
+                                        <i class="fa fa-repeat  fa-2x"></i>
+                                        <span class="fat" style="padding:10px">Rerading</span>
+                                        <br/>
+                                        <div style="display: inline-flex;margin-top:7px;">
+                                            <a data-indicator='2' class="badge badge-danger">45 issues</a>
+                                            <a data-indicator='2' class="badge badge-warning">33 warn.</a>
+                                        </div>
+                                    </th>
+                                   
+                                    <td ng-repeat="part in partdata">
+                                        <div class="btn-group-vertical disabled" role="group" data-toggle="buttons">
+                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                                <span class="badge badge-danger" disabled="disabled">{{part.reeading_error}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-warning-sign"></span>
+                                                <span class="badge badge-warning">{{part.rereading_warning}}</span>
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <th class="indicators_group">
+                                        <i class="fa fa-random fa-2x"></i>
+                                        <span class="fat"  style="padding:10px">Transitions</span>
+                                        <br/>
+                                        <div style="display: inline-flex;margin-top:7px;">
+
+                                            <a data-indicator='3'  class="badge badge-danger">4 issues</a>
+                                            <a data-indicator='3' class="badge badge-warning">4 warn.</a>
+                                        </div>
+                                    </th>
+                                    <td ng-repeat="part in partdata">
+                                        <div class="btn-group-vertical" role="group" data-toggle="buttons">
+                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                                <span class="badge badge-danger">{{part.transition_error}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-warning-sign"></span>
+                                                <span class="badge badge-warning">{{part.transition_warning}}</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <th class="indicators_group">
+                                        <i class="fa fa-pause fa-2x"></i>
+                                        <span class="fat"  style="padding:10px">Stops</span>
+                                        <br/>
+                                        <div style="display: inline-flex;margin-top:7px;">
+                                            <a data-indicator='4'  class="badge badge-danger">4 issues</a>
+                                            <a data-indicator='4'  class="badge badge-warning">4 warn.</a>
+                                        </div>
+                                    </th>
+                                    <td ng-repeat="part in partdata">
+                                        <div class="btn-group-vertical" role="group" data-toggle="buttons">
+                                            <button type="button" class="btn btn-danger btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                                <span class="badge badge-danger">{{part.stop_error}}</span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-sm display-issues-btn" data-toggle="popover" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <span class="glyphicon glyphicon-warning-sign"></span>
+                                                <span class="badge badge-warning">{{part.stop_warning}}</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-xs-12 col-md-12 inspector-container">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tasks fa-2x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="fat">Inspector</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.
+                                </p>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tachometer fa-2x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="fat">Tasks Panels</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body" ng-controller="appCtrl">
+
+                                        <header>
+                <div id="add_items" class="rounded">
+                    <!-- Add item -->
+                    <i class="fa fa-plus fa-sm btn" ng-click="addItem(newItem)"></i>
+                    <input id="addItemInput" type="text" placeholder="Add Item" class="rounded" ng-model="newItem" ng-keypress="keyboardHandler($event, newItem)">
+                </div>
+                <!-- Edit Items Button -->
+                <div class="btn" id="edit_items" ng-click="toggleEdit()">
+                    <i ng-hide="edit" class="fa fa-edit fa-sm"></i>
+                    <p ng-hide="edit">Edit Items</p>
+                    <i ng-show="edit" class="fa fa-check fa-sm"></i>
+                    <p ng-show="edit">Done</p>
+                </div>
+                
+            </header>
+            <main>
+
+                <!-- incomplete items -->
+                <section id="incomplete_list">
+                    <div class="item" ng-repeat="item in items | incomplete">
+                        <input type="text" ng-show="edit" ng-model="item.name" ng-value="item.name" class="rounded">
+                        <div ng-click="itemClicked(item)" ng-hide="edit">{{item.name}}</div>
+                        <div ng-show="edit" class="delete btn" ng-click="deleteItem(item)">
+                            <i class="fa fa-trash fa-md"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <hr>
+
+                <!-- completed items -->
+                <section id="completed_list">
+                    <div class="item completed" ng-repeat="item in items | complete">
+                        <input type="text" ng-show="edit" ng-model="item.name" ng-value="item.name" class="rounded">
+                        <div ng-click="itemClicked(item)" ng-hide="edit">{{item.name}}</div>
+                        <div ng-show="edit" class="delete btn" ng-click="deleteItem(item)">
+                            <i class="fa fa-trash fa-md"></i>
+                        </div>
+                    </div>
+                </section>
+                <div id="clean" class="btn" ng-click="clean()">Clean Slate</div>
+            </main>
+
+                                
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View All tasks</span>
+                                    <span class="pull-right">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                    </span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    
+
+                    <!-- /.row --> </div>
+
+                <!-- /.container-fluid --> </div>
+            <!-- /#page-wrapper --> </div>
+    
+
+
+
+
+</div>
+
+
+
+</div>

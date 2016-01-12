@@ -1,60 +1,27 @@
 <div class="panel-heading">
-                             
-     <span>Tasks # </span>
-     <small data-type='course' data-id='0' ng-bind-html="context.path"></small>
-                             
+
+ <span>Tasks # </span>
+ <small data-type='course' data-id='0' ng-bind-html="context.path"></small>
+ 
 </div>
-                            <div class="tasks-panel panel-body" > <!--ng-controller="ToDoController">-->
-                                <div    >
+<div class="tasks-panel panel-body" > <!--ng-controller="ToDoController">-->
+<div>
 
-                                    <!-- Form Starts Here -->
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" ng-model="formData.text">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" ng-click="addTask()"><span
-                                                class="glyphicon glyphicon-plus"></span> </button>
-                                            </span>
-                                        </div>
-                                        <!-- Form Ends Here -->
+<!-- Form Starts Here -->
 
 
+</div>
 
-<table class="table table-bordered table-hover table-condensed" >
-    <tr ng-repeat="task in Tasks">
-      <td>
-        <span editable-text="task.todo"  e-name="name" e-form="rowform" e-required>
-          {{ task.todo || 'empty' }} 
-        </span>
-      </td>
-      <td style="    width: 1px;">
-        <!-- form -->
-
-        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == task.todo" blur="cancel" onaftersave="editTask(task._id, $data.name)"><!--onaftersave="saveTable()"-->
-
-          <a role="button"  ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
-          <a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
-        </form>
-        <div class="buttons pull-right" ng-show="!rowform.$visible">
-          <a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
-          <a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task._id, $index)"></a>
-        </div>  
-      </td>
-    </tr>
-  </table>
-
-                  
-                                        </div>
-
-                                  <!--      <a href="#">
-                                            <div class="panel-footer">
-                                                <span class="pull-left">View All tasks</span>
-                                                <span class="pull-right">
-                                                    <i class="fa fa-arrow-circle-right"></i>
-                                                </span>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </a>-->
-                                    </div>
+<!--<a href="#">
+<div class="panel-footer">
+<span class="pull-left">View All tasks</span>
+<span class="pull-right">
+<i class="fa fa-arrow-circle-right"></i>
+</span>
+<div class="clearfix"></div>
+</div>
+</a>-->
+</div>
 
 
-                                </div>
+</div>

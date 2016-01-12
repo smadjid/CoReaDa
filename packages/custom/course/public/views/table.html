@@ -1,9 +1,10 @@
 
+    </tr>
     <thead>
-        <tr>
+        <tr class='chapters-header'>
             <th></th>         
             <th class="chapter_index" ng-repeat="chapter in studiedCourse.chapters"  colspan={{(chapter.parts).length}}  data-part={{chapter.id}} data-path={{chapter.route}}>
-              <span  ng-click='displayChapterInfos($event)'> {{chapter.title}}</span>
+              <a class="display-chapter-info"  href="#{{chapter.route}}" > {{chapter.title}}</a>
             </th>            
 
 
@@ -12,7 +13,7 @@
          <th><b>Parties du cours</b></th>         
             <th class="part_index" ng-repeat="part in courseParts" data-part={{part.id}} data-path={{part.route}}>
 
-                <span class="display-part-info" ng-click='displayPartInfos($event)'  uib-tooltip={{part.title}}> {{part.id}}</span>
+                <a class="display-part-info" href="#{{part.route}}"  uib-tooltip={{part.title}}> {{part.id}}</a>
                 <br/>
              
             </th>            

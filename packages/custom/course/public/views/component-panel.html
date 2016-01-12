@@ -1,0 +1,57 @@
+	
+<v-accordion class="vAccordion--default" >
+  <v-pane class='inspector-component'>
+    <v-pane-header class='inspector-component-heading'>
+      En résumé 
+    </v-pane-header>
+
+    <v-pane-content>
+      description component1 #1
+    </v-pane-content>
+  </v-pane> 
+
+  <v-pane class='inspector-component'>
+    <v-pane-header class='inspector-component-heading'>
+      Gestion des tâches
+    </v-pane-header>
+
+    <v-pane-content>
+      
+      <div class="input-group">
+	<input type="text" class="form-control" ng-model="formData.text">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="button" ng-click="addTask()"><span
+			class="glyphicon glyphicon-plus"></span> 
+		</button>
+	</span>
+</div>
+	<!-- Form Ends Here --> 
+
+
+<table class="table table-bordered table-hover table-condensed" >
+	<tr ng-repeat="task in Tasks">
+		<td>
+			<span editable-text="task.todo"e-name="name" e-form="rowform" e-required>
+				{{ task.todo || 'empty' }} 
+			</span>
+		</td>
+		<td style="width: 1px;">
+			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == task.todo" blur="cancel" onaftersave="editTask(task._id, $data.name)">
+				<a role="button"ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
+				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
+			</form>
+			<div class="buttons pull-right" ng-show="!rowform.$visible">
+				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
+				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task._id, $index)"></a>
+			</div>
+		</td>
+	</tr>
+</table>
+
+    </v-pane-content>
+  </v-pane> 
+  
+</v-accordion>
+
+
+

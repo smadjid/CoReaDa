@@ -71,7 +71,6 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
         
       },
       update : function(course, focusElt, part_index , indicator) {
-
         var elt = focusElt;
         elt.type = focus;
         elt.studiedPart = part_index;
