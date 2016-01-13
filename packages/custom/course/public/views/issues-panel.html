@@ -2,10 +2,9 @@
   <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec">  
   
 
-<!-- add `multiple` attribute to allow multiple sections to open at once -->
 
-
-  <div id="errors-display" class="errors-display"  ng-scrollbars ng-scrollbars-config="scrollconfig">  
+<div class="errors-display"  ng-scrollbars ng-scrollbars-config="scrollconfig">  
+<!--<div class="errors-display" >  -->
      
 
 <v-accordion class="vAccordion--default inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>
@@ -24,7 +23,7 @@
     </v-pane-header>
 
     <v-pane-content>
-    <h5>Suggestions</h4>
+    <h4>Suggestions</h4>
       <ul>
       <li>Suggestion. <a ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>
        <li ng-repeat="suggestion in fact.suggestions" >{{suggestion}}. <a ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>

@@ -279,7 +279,7 @@ ul.alert-dropdown {
 
     
  .data-table{
-  border-collapse: collapse;  
+  border-collapse: separate;  
   background: white;
   table-layout:auto
 }
@@ -830,7 +830,7 @@ a.editable-click:hover {
 .highlight-top{border-top: solid#45348A!important}
 .highlight-bottom{border-bottom:solid #45348A!important}
 
-
+.fack-highlight{border-bottom:solid red!important}
 
 
 

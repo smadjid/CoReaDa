@@ -142,18 +142,16 @@ angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
       addTask : function(path, todoData) {
         return $http.post('/api/tasks/add/'+path, todoData);
       },
+      deleteTask : function(path) {
+        return $http.delete('/api/tasks/delete/'+path);  
+      },
       getTasks : function(courseId, partId, todoData) {  
       if(courseId == partId) partId=0;      
         return $http.get('/api/tasks/get/'+courseId+'/'+partId)
         },
-      editTask : function(courseId, partId, taskId, todoData) {  
-      if(courseId == partId) partId=0;            
-        return $http.post('/api/tasks/edit/'+courseId+'/'+partId+'/'+taskId, todoData);
-        },
-      deleteTask : function(courseId, partId, taskId) {
-         if(courseId == partId) partId=0;            
-        return $http.delete('/api/tasks/delete/'+courseId+'/'+partId+'/'+taskId);         
-      },
+      editTask : function(path, todoData) {               
+        return $http.post('/api/tasks/edit/'+path, todoData);
+        },      
       filterTasks : function(studiedPart) {
           return studiedPart.todos;
       }

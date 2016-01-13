@@ -10,7 +10,6 @@ module.exports = function(Courses, app, auth, database) {
 // seed
     app.route('/api/courses/seed')
       .get(courses.seed);
-
     // get all todos
     app.route('/api/course/node')
       .get(courses.locate);
@@ -20,9 +19,9 @@ module.exports = function(Courses, app, auth, database) {
 
     app.route('/api/tasks/add/:courseId/:chapterId/:partId/:factId')
       .post(courses.addTodo);
-      
-    app.route('/api/tasks/edit/:courseId/:partId/:todoId')
-      .post(courses.editTodo);
-    app.route('/api/tasks/delete/:courseId/:partId/:todoId')
+    app.route('/api/tasks/delete/:courseId/:chapterId/:partId/:factId/:todoId')
       .delete(courses.removeTodo);
+    app.route('/api/tasks/edit/:courseId/:chapterId/:partId/:factId/:todoId')
+      .post(courses.editTodo);
+    
 };
