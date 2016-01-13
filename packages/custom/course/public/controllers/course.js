@@ -98,7 +98,8 @@ var resetPath=function(){
 var compilePath=function(path){
 
   var arr = path.split(','); 
-  var result ="<a class='glyphicon glyphicon-home' href=\"#\"></a>" 
+  var result ="<a class='glyphicon glyphicon-home' href=\"#"+arr[0]+"\"></a>" ;
+
  
   if(arr.length>=2) {
   var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[1] })[0];
@@ -118,7 +119,23 @@ var compilePath=function(path){
  
   return result;
 };
+var parseRequest=function(path){
+  var arr = path.split(','); 
+  var courseId = arr[0] ;
+  var chapId = 0;
+  var partId=0;
+  var factId=0;
+ 
+  if(arr.length>=2)   chapId =  arr[1] ;
+  if(arr.length>=3)   partId =  arr[2] ;
+  if(arr.length>=4)   factId =  arr[3] ;
 
+  
+ var result = courseId+'/'+chapId+'/'+partId+'/'+factId;
+
+
+  return result
+};
 
 $(window).on('hashchange',function(){ 
 
@@ -126,6 +143,7 @@ $(window).on('hashchange',function(){
    $scope.context.path=compilePath(location.hash.slice(1));
     loadContext(location.hash.slice(1));
     $scope.path=compilePath(location.hash.slice(1));
+
     
     
 });
@@ -159,7 +177,7 @@ var loadContext=function(path){
         completeCourseParts();
         $scope.context = {
           'type':'course',
-          'path':'<a class="glyphicon glyphicon-home">',
+          'path':compilePath($scope.studiedCourse._id),
           'route':$scope.studiedCourse._id,
           'id':0,
           '_id':$scope.studiedCourse._id,
@@ -434,8 +452,9 @@ $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
         var addedTask = $scope.formData.text;  
-        Todos.insertTask($scope.context.route)
+        Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:addedTask})
         .success(function(data) {
+
                 alert('END')
                 
               });

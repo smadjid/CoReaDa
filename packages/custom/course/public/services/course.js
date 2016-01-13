@@ -138,12 +138,9 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
 
 angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
     return {
-      insertTask : function(route) {
-        alert(route);
-      },
-      addTask : function(courseId, partId, todoData) {
-        if(courseId == partId) partId=0;        
-        return $http.post('/api/tasks/add/'+courseId+'/'+partId, todoData);
+      
+      addTask : function(path, todoData) {
+        return $http.post('/api/tasks/add/'+path, todoData);
       },
       getTasks : function(courseId, partId, todoData) {  
       if(courseId == partId) partId=0;      

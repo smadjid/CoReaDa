@@ -18,7 +18,7 @@ module.exports = function(Courses, app, auth, database) {
     app.route('/api/tasks/get/:courseId/:partId')
       .get(courses.getTodos);
 
-    app.route('/api/tasks/add/:courseId/:partId')
+    app.route('/api/tasks/add/:courseId/:chapterId/:partId/:factId')
       .post(courses.addTodo);
       
     app.route('/api/tasks/edit/:courseId/:partId/:todoId')

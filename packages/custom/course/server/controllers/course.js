@@ -80,20 +80,35 @@ module.exports = function(Courses) {
         addTodo: function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
         	if(err) return next("Error finding the course.");	
+            var _result = _course.todos;
         	
-        	if(req.params.partId==0){
-        		_course.todos.unshift(req.body);
+        	if(req.params.chapterId==0){
+                _course.todos.unshift(req.body);        		
         		_course.save();
+                _result = _course.todos[0];
         	}
         	else{
-        		var part = _course.parts.id(req.params.partId);
-        		part.todos.unshift(req.body);
-        		part.save();	
-        		_course.save();
+                var chapter = _course.chapters.id(req.params.chapterId);
+                if(req.params.partId==0){
+                    chapter.todos.unshift(req.body);
+                    chapter.save();                    
+                    _course.save();
+                    _result = chapter.todos[0];
+                    }
+                    else{
+
+                        var part = chapter.parts.id(req.params.partId);
+                        part.todos.unshift(req.body);
+                        part.save();    
+                        chapter.save();
+                        _course.save();
+                        _result = part.todos[0];
+
+                    }
         	}        	
         	
 
-        	res.json(_course);
+        	res.json(_result);
         	})
         },
         /**
