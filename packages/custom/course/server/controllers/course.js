@@ -8,13 +8,7 @@ var mongoose = require('mongoose'),
     config = require('meanio').loadConfig(),
     _ = require('lodash');
 
-$( '.errors-display' ).bind( 'mousewheel DOMMouseScroll', function ( e ) {
-    var e0 = e.originalEvent,
-        delta = e0.wheelDelta || -e0.detail;
 
-    this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-    e.preventDefault();
-});
 function getTodos(res){
     Todo.find(function(err, todos) {
 

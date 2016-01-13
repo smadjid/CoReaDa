@@ -218,6 +218,8 @@ var loadContext=function(path){
             });
         
         });
+
+        //$('.td_issue').css()
        
 
         
