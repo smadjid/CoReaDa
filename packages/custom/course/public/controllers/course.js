@@ -163,7 +163,7 @@ var computeSubFacts=function(element){
                 var partFacts = angular.copy(part.facts);
                 for (var i = 0; i < partFacts.length; i++){
                   partFacts[i].source = part.route;
-                  partFacts[i].sourceTitle = 'Part '+part.id+': '+part.title;
+                  partFacts[i].sourceTitle = 'Part  : '+part.title;
                   facts.push(partFacts[i]);
                  }                
             });
@@ -177,7 +177,7 @@ var computeSubFacts=function(element){
       var partFacts = angular.copy(part.facts);
                 for (var i = 0; i < partFacts.length; i++){
                   partFacts[i].source = part.route;
-                  partFacts[i].sourceTitle = 'Part '+part.id+': '+part.title;
+                  partFacts[i].sourceTitle = 'Part : '+part.title;
                   facts.push(partFacts[i]);
                  }                
     });
