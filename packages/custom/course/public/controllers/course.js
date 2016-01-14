@@ -44,6 +44,8 @@ $scope.scrollconfig = {
     autoHideScrollbar: false,
     theme: 'dark',
     live: true,
+    scrollX:'none',
+    scrollY:'left',
     scrollButtons:{enable:true,scrollType:"stepped"},
     advanced:{
         updateOnContentResize: true,
@@ -51,7 +53,7 @@ $scope.scrollconfig = {
                 autoExpandVerticalScroll: true,
                 updateOnSelectorChange: true
     },
-        setHeight: 200,
+        setHeight: 250,
         scrollInertia: 0
     }
 ;
@@ -120,7 +122,7 @@ var compilePath=function(path){
 };
 var parseRequest=function(path){
   var arr = path.split(','); 
-  var courseId = arr[0] ;
+  var courseId = $scope.studiedCourse._id;
   var chapId = 0;
   var partId=0;
   var factId=0;
@@ -142,6 +144,18 @@ var updateDisplay=function(){
    $scope.context.path=compilePath(url);
    $scope.context.Tasks=resolveRoute(url).todos;
     loadContext(url);
+                
+//$('td').addClass('width');
+
+//document.getElementById('someElementId').className = 'cssClass';
+
+        var totalWidth = $('.col-lg-9').width();
+        $('.data-table').css('width',totalWidth);
+        $('th').css('overflow','hidden');
+        $('.indicators_group').css('width','50px');
+        var tdW = (totalWidth - 55)/26;
+        
+        $scope.width=tdW;
     
 }
 
@@ -219,9 +233,7 @@ var loadContext=function(path){
         
         });
 
-        //$('.td_issue').css()
-       
-
+        window.location.href = "course#"+$scope.studiedCourse._id;
         
       })
         .error(function(data) {
@@ -229,16 +241,21 @@ var loadContext=function(path){
         });
     
 
- 
+ $scope.triggerClick=function($event){
+  var url = $($event.currentTarget).find('a:first').attr('href');
+  window.location.href = "course"+url;
+  
+ }
 
-$scope.displayIssue=function($event){
+$scope.displayIssue=function($event){  
 $(':focus').blur();
-if(($($event.currentTarget).parent().hasClass('chosenPart'))){    
+if(($($event.currentTarget).hasClass('chosenPart'))){    
     resetPath();
   return;
 }
 resetPath();
-$($event.currentTarget).parent().toggleClass('chosenPart');
+
+$($event.currentTarget).toggleClass('chosenPart');
 
     var indicator = $($event.currentTarget).attr('data-indicator');
     var part = $($event.currentTarget).attr('data-part');
@@ -251,6 +268,12 @@ $($event.currentTarget).parent().toggleClass('chosenPart');
     $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
 
     $scope.issuesInspectorShow = true;
+
+   var url =  $($event.currentTarget).attr('data-path');
+   $scope.context.route= url;
+   $scope.context.path=compilePath(url);
+   $scope.context.Tasks=resolveRoute(url).todos;
+ 
  //   $('#erros-list-group').show();
 
   };
@@ -497,14 +520,33 @@ var insertLocalTask=function(route, task){
  updateDisplay();
 }
 
+$scope.acceptSuggestion=function($event){
+  var suggestion = $($event.currentTarget).text();
+  Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:suggestion})
+        .success(function(data) {
+          insertLocalTask($scope.context.route, data);
+          swal({   title: "Nouvelle tâche ajoutée!",   
+            text: "La suggestion a été ajoutée comme tâche avec succès.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 2000,   showConfirmButton: false });
+        });
+}
+
 $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
         var addedTask = $scope.formData.text;  
-        Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:addedTask})
+        var route = $scope.context.route;
+        Todos.addTask(parseRequest(route),  {type:'edition', todo:addedTask})
         .success(function(data) {
-          insertLocalTask($scope.context.route, data);
-           $scope.formData.text = undefined;    
+          insertLocalTask(route, data);
+           $scope.formData.text = undefined;
+            swal({   title: "Nouvelle tâche ajoutée!",   
+            text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 2000,   showConfirmButton: false });    
         });
              
       }       
@@ -518,18 +560,45 @@ var updateLocalTasks=function(route, data){
 }
 
 $scope.deleteTask = function (todoId, index) {
+
+swal({
+      title: "Delete the task?", 
+      text: "Are you sure that you want to delete this task?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+       Todos.deleteTask(parseRequest($scope.context.route)+'/'+todoId)
+        .success(function(data) {
+          updateLocalTasks($scope.context.route, data)     ;
+          swal("Deleted!", "The task was successfully deleted!", "success");     
+              })
+      .error(function(data) {
+        swal("Oops", "We couldn't connect to the server!", "error");
+      });
+    });
+ /*
+
+
     Todos.deleteTask(parseRequest($scope.context.route)+'/'+todoId)
         .success(function(data) {
           updateLocalTasks($scope.context.route, data)          
-              });
+              });*/
 
   }
 
 $scope.editTask = function (todoId, data) {       
-  alert(parseRequest($scope.context.route)+'/'+todoId);
+  parseRequest($scope.context.route)+'/'+todoId;
         Todos.editTask(parseRequest($scope.context.route)+'/'+todoId,  {type:'edition', todo:data})
         .success(function(data) {
-          updateLocalTasks($scope.context.route, data)  
+          updateLocalTasks($scope.context.route, data)  ;
+          swal({   title: "Tâche modifiée!",   
+            text: "La tâche a été modifiée avec succès.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 2000,   showConfirmButton: false });
         });
   }
 

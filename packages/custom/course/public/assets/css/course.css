@@ -276,32 +276,15 @@ ul.alert-dropdown {
     font-size: 16px;
 }
 
-
+.width{
+  width:30px!important;
+}
     
  .data-table{
-  border-collapse: separate;  
   background: white;
-  table-layout:auto
-}
-
-td {
-    min-width: 30px;
-}
-
-th:first-child {
-    min-width: 100px;
-}
-
-.indicators_group
-{
-    min-width:100px!important;
-}
-.chapter_index{
-  border-bottom:none;
-  text-decoration: none;
-}
-.chapter_index, .chapter_index:hover{
-  color:white!important;
+  border-collapse: separate;
+  
+  width: auto;
 }
 th {
   background: steelblue;
@@ -310,6 +293,7 @@ th {
   text-shadow: 0 1px 0 #38678f;
   color: white;
   border-left:1px solid #cccccc;
+  overflow: hidden; 
   
 }
 
@@ -324,7 +308,8 @@ td {
   padding: 10px;
   vertical-align: middle!important;
   white-space:nowrap!important;
-  transition: all 0.2s;
+  overflow: hidden; 
+
   
 }
 
@@ -334,6 +319,15 @@ td {
     border-bottom: 1px solid #eee;
 }
 
+
+
+.chapter_index{
+  border-bottom:none;
+  text-decoration: none;
+}
+.chapter_index, .chapter_index:hover{
+  color:white!important;
+}
 .overlay
  {
      position: absolute;
@@ -363,10 +357,10 @@ td {
 
 
 td,tr,th{
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.s ease;
+    transition: all 0.1s ease;
 }
 .part-issues{
   display: inline-flex;
@@ -777,8 +771,9 @@ a.editable-click:hover {
 
 
 .display-part-issues{
-   padding:2px;
-  margin: 1px;
+   padding:0;
+  margin: 0;
+  text-align:center;
   width:100%;
   height:100%; 
   font-weight: bold;
@@ -788,8 +783,9 @@ a.editable-click:hover {
 
 }
 .display-part-info, .display-part-info:hover{
-  padding:2px;
-  margin: 1px;
+ padding:0;
+  margin: 0;
+  text-align:center;
   width:100%;
   height:100%; 
   font-weight: bold;
@@ -805,8 +801,9 @@ a.editable-click:hover {
 }
 
 .display-issues-btn{
-  padding:2px;
-  margin: 1px;
+  padding:0;
+  margin: 0;
+  text-align:center;
   width:100%;
   height:100%;
  border-radius: 1px!important;
@@ -825,10 +822,10 @@ a.editable-click:hover {
 }
 
 /* Table highlighting */
-.highlight-left{border-left: solid#45348A!important}
-.highlight-right{border-right: solid#45348A!important}
-.highlight-top{border-top: solid#45348A!important}
-.highlight-bottom{border-bottom:solid #45348A!important}
+.highlight-left{border-left: outset 2px #45348A!important}
+.highlight-right{border-right: outset 2px #45348A!important}
+.highlight-top{border-top: outset 2px #45348A!important}
+.highlight-bottom{border-bottom:outset  2px  #45348A!important}
 
 .fack-highlight{border-bottom:solid red!important}
 
@@ -836,7 +833,7 @@ a.editable-click:hover {
 
 /* TABLE */
 table { 
-  width: 100%; 
+  
   
   border-collapse: separate;
     empty-cells: hide;
@@ -855,7 +852,9 @@ table {
     
 }
 
-
+.table > thead > tr > th {
+ border-bottom: 1px!important;
+  }
 
 .container-fluid {
     margin-right: 1px;
@@ -902,7 +901,8 @@ table {
 
 
 .errors-display{
-    padding: 5px;
+    padding: 0;
+    width:100%;
     height:100%;
 
 }
@@ -928,7 +928,9 @@ table {
 }
 
 .inspector-issue, .inspector-issue, .inspector-hints, .inspector-hints:hover {
-  margin-bottom: -20px;
+  margin:0px;
+  padding:0;
+  margin-bottom: -10px;
   height:auto!important;
   font-size : 12px!important;
 }
@@ -954,6 +956,8 @@ table {
     padding-left: 10px!important; 
     padding-right: 15px!important; 
     height:auto!important;
+    font-style:italic;
+    font-weight:bold;
 }
 .inspector-hints-heading:hover {
     color: #fff!important;

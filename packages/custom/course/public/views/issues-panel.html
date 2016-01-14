@@ -4,34 +4,30 @@
 
 
 <div class="errors-display"  ng-scrollbars ng-scrollbars-config="scrollconfig">  
-<!--<div class="errors-display" >  -->
-     
+<!--<div class="errors-display" >  -->    
 
 <v-accordion class="vAccordion--default inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>
+
   <v-pane class='inspector-issue'>
     <v-pane-header class='inspector-issue-heading'>
-      <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) : {{fact.description}} 
+      <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) 
     </v-pane-header>
 
     <v-pane-content>
-      description Issue #1
+      {{fact.description}} 
     </v-pane-content>
   </v-pane> 
   <v-pane class='inspector-hints'>
     <v-pane-header class='inspector-hints-heading'>
-    <i>Suggestions pour ce problème</i>. 
+    Suggestions pour ce problème
     </v-pane-header>
 
-    <v-pane-content>
-    <h4>Suggestions</h4>
+    <v-pane-content>   
       <ul>
-      <li>Suggestion. <a ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>
-       <li ng-repeat="suggestion in fact.suggestions" >{{suggestion}}. <a ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>
+      <li>Suggestion. <button class="btn btn-primary btn-xs" ng-click="acceptSuggestion($event)">Ajouter comme tâche</button>
+       <li ng-repeat="suggestion in fact.suggestions" >{{suggestion}}. <a style="cursor: pointer" ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>
        </ul>
-      <h5>Tâches définies</h4>
-      <ul>
-       <li ng-repeat="task in fact.tasks" editable-textarea="task.name" e-rows="1">{{task.name|| 'empty'}} 
-      </ul>
+     
 
     </v-pane-content>
   </v-pane> 

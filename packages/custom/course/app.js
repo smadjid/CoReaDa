@@ -37,6 +37,9 @@ Course.register(function(app, auth, database) {
   Course.aggregateAsset('js',"../lib/v-accordion/dist/v-accordion.min.js");
   Course.aggregateAsset('css',"../lib/v-accordion/dist/v-accordion.min.css");
 
+   Course.aggregateAsset('js',"../lib/sweetalert/dist/sweetalert.min.js");
+  Course.aggregateAsset('css',"../lib/sweetalert/dist/sweetalert.css");
+
 
   Course.aggregateAsset('js',"../lib/chroma.js");
 
