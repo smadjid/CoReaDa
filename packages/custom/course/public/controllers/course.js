@@ -2,7 +2,7 @@
 'use strict'; 
 
 /* jshint -W098 */
-var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap','ngScrollbars','vAccordion']);
+var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap','ngScrollbars','vAccordion','angularSpinner']);
 
 courseModule.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-sm';
@@ -10,15 +10,20 @@ courseModule.run(function(editableOptions, editableThemes) {
   editableOptions.theme = 'bs3';
 });
 
-courseModule.controller('courseController', ['$scope', '$document','$location', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','focusStudyManager','Todos',
-  function($scope, $document,$uibModal, $http,$location, Global, Course,CoursesDB,focusStudyManager,Todos) {
+courseModule.controller('courseController', ['$scope', '$document','$location', '$http','$uibModal', 'Global', 'Course', 'CoursesDB','focusStudyManager','Todos','usSpinnerService',
+  function($scope, $document,$uibModal, $http,$location, Global, Course,CoursesDB,focusStudyManager,Todos,usSpinnerService) {
     $scope.global = Global;
     $scope.package = {
       name: 'course'
     };
 
    
-
+ var startSpin = function(){
+        usSpinnerService.spin('spinner');
+    }
+var stopSpin = function(){
+        usSpinnerService.stop('spinner');
+   }
 
 
 $scope.indicators=['Readings','Rereading','Transition','Stop'];
@@ -138,17 +143,65 @@ var parseRequest=function(path){
   return result
 };
 
+
+var computeSubFacts=function(element){
+  var type = element.elementType;
+  var facts=angular.copy(element.facts);
+
+  /*******Course******/
+ if(type=='course'){     
+  for (var i = 0; i < facts.length; i++)   
+      {facts[i].source = element.route; facts[i].sourceTitle = 'Course'; }
+    angular.forEach(element.chapters, function(chapter) {  
+      var chFacts = angular.copy(chapter.facts);
+      for (var i = 0; i < chFacts.length; i++){
+        chFacts[i].source = chapter.route;
+        chFacts[i].sourceTitle = 'Chapter :'+chapter.title;
+        facts.push(chFacts[i]);
+      } 
+            angular.forEach(chapter.parts, function(part) {
+                var partFacts = angular.copy(part.facts);
+                for (var i = 0; i < partFacts.length; i++){
+                  partFacts[i].source = part.route;
+                  partFacts[i].sourceTitle = 'Part '+part.id+': '+part.title;
+                  facts.push(partFacts[i]);
+                 }                
+            });
+        
+        });
+  }
+  /******Chapter*******/
+  if(type=='chapter'){    
+    for (var i = 0; i < facts.length; i++)   {facts[i].source = element._id; facts[i].sourceTitle = 'This chapter';}
+    angular.forEach(element.parts, function(part) {
+      var partFacts = angular.copy(part.facts);
+                for (var i = 0; i < partFacts.length; i++){
+                  partFacts[i].source = part.route;
+                  partFacts[i].sourceTitle = 'Part '+part.id+': '+part.title;
+                  facts.push(partFacts[i]);
+                 }                
+    });
+  }
+  /******Part*******/
+  if(type=='part'){
+    for (var i = 0; i < facts.length; i++)   {facts[i].source = element.route; facts[i].sourceTitle = 'This part';}
+  }
+
+  return facts
+
+};
+
+
 var updateDisplay=function(){
+  startSpin();
+
     var url = location.hash.slice(1);
    $scope.context.route= url;
    $scope.context.path=compilePath(url);
    $scope.context.Tasks=resolveRoute(url).todos;
+   $scope.context.subfacts=computeSubFacts(resolveRoute(url));
     loadContext(url);
-                
-//$('td').addClass('width');
-
-//document.getElementById('someElementId').className = 'cssClass';
-
+  
         var totalWidth = $('.col-lg-9').width();
         $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
@@ -156,6 +209,8 @@ var updateDisplay=function(){
         var tdW = (totalWidth - 55)/26;
         
         $scope.width=tdW;
+
+      stopSpin();
     
 }
 
@@ -186,6 +241,7 @@ var loadContext=function(path){
 };
 
 //CoursesDB.seed() 
+stopSpin();
     CoursesDB.get()
       .success(function(data) {
 
@@ -240,6 +296,7 @@ var loadContext=function(path){
             console.log('Error: ' + data);
         });
     
+stopSpin();
 
  $scope.triggerClick=function($event){
   var url = $($event.currentTarget).find('a:first').attr('href');
@@ -303,15 +360,16 @@ var selectChapter=function(index){
    });
     
 
- //  $('.parts-header> th:nth-child('+index+')').addClass('highlight-top');    
-  //  $('table tr:last-child > td:nth-child('+index+')').addClass('highlight-bottom');
 }
 
 
    var displayPartInfos=function(partElt){
   
-    if($(partElt).parent().hasClass('highlight-top'))
-       return resetPath();
+    if($(partElt).parent().hasClass('highlight-top')){
+      window.location.href = "course#"+$scope.studiedCourse._id;
+      return;
+    }
+       
 
     resetPath();
     selectPart($(partElt).parent().index() + 1);
@@ -334,10 +392,12 @@ $('.highlighted').removeClass('highlighted');
 
 $scope.issuesInspectorShow = false;
 
-if(($(partElt).parent().hasClass('chosenPart'))){  
-  resetPath();
-  return;
-}
+if(($(partElt).parent().hasClass('highlight-top'))){  
+  
+      window.location.href = "course#"+$scope.studiedCourse._id;
+  
+    }
+
 resetPath();
 selectChapter($(partElt).parent().index() + 1);
 
@@ -369,16 +429,6 @@ $(partElt).toggleClass('chosenPart');
     }
   
   };
-
-/*
-$scope.$watch('issuesInspectorShow', function(value) {   
-        if (!value) {
-                $('.highlighted').removeClass('highlighted');
-                $('.overlayed').removeClass('overlayed');
-                $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
-                $('.display-issues-btn').show();
-        }
-    });*/
 var tabsFn = (function() {
   
   function init() {
@@ -446,52 +496,7 @@ var computeInspectorPartProperties = function(properties){
   })
 
 };
-/*
-$scope.$watch('focusStudy.studiedElt', function() {
-      //  $scope.Tasks = Todos.filterTasks($scope.focusStudy.studiedElt);
-        $scope.loading = false;
-        $scope.formData = {};
 
-       
-        if($scope.focusStudy.studiedElt.id)  {          
-          $scope.inspector={'type':'Partie', 'title':$scope.focusStudy.studiedElt.title, 
-        
-        'description':computeInspectorPartProperties($scope.focusStudy.studiedElt.properties)}
-        }        
-        else {$scope.inspector={'type':'Course', 'title':$scope.focusStudy.studiedElt.title, 
-               
-                'description':computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties)}
-        }   ;
-
-        //console.log(computeInspectorCourseProperties($scope.focusStudy.studiedElt.properties));
-        //$scope.inspector = {'cours' = $scope.studiedCourse.title;
-        //scope.focusStudy.facts.length
-        
-
-        
-    });*/
-
-
-/////////////////////////////// TODOS ////////////////////////
-/*var resolveRoute=function(route){
-    var arr = route.split(','); 
-    var result = $scope.studiedCourse;  
-    if(arr.length>1) {
-      result = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[1] })[0];
-     
-      if(arr.length>2){
-        result = $.grep(result.parts, function(e){ return  e._id == arr[2] })[0];
-        if(arr.length>3){
-          var fact = $.grep(result.facts, function(e){ return  e._id == arr[3] })[0];
-          if(arr.length>4){
-            result = $.grep(result.todos, function(e){ return  e._id == arr[3] })[0];            
-          }
-        }
-      }
-    }
-     alert(result.title);
-    return result;  
-  }*/
   var resolveRoute=function(route){
     var arr = route.split(',');        
     if(arr.length>1) {
@@ -529,10 +534,22 @@ $scope.acceptSuggestion=function($event){
             text: "La suggestion a été ajoutée comme tâche avec succès.", 
              animation: "slide-from-top",
              type:"info"  ,
-            timer: 2000,   showConfirmButton: false });
+            timer: 1500,   showConfirmButton: false });
         });
 }
-
+$scope.forwardSuggestion=function($event, route){
+  
+  var suggestion = $($event.currentTarget).text();  
+  Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:suggestion})
+        .success(function(data) {
+          insertLocalTask(route, data);
+          swal({   title: "Nouvelle tâche ajoutée à l'élément concerné!",   
+            text: "La suggestion a été ajoutée comme tâche avec succès.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+        });
+}
 $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
@@ -546,7 +563,7 @@ $scope.addTask = function () {
             text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
              animation: "slide-from-top",
              type:"info"  ,
-            timer: 2000,   showConfirmButton: false });    
+            timer: 1500,   showConfirmButton: false });    
         });
              
       }       
@@ -579,13 +596,7 @@ swal({
         swal("Oops", "We couldn't connect to the server!", "error");
       });
     });
- /*
 
-
-    Todos.deleteTask(parseRequest($scope.context.route)+'/'+todoId)
-        .success(function(data) {
-          updateLocalTasks($scope.context.route, data)          
-              });*/
 
   }
 
@@ -598,7 +609,7 @@ $scope.editTask = function (todoId, data) {
             text: "La tâche a été modifiée avec succès.", 
              animation: "slide-from-top",
              type:"info"  ,
-            timer: 2000,   showConfirmButton: false });
+            timer: 1500,   showConfirmButton: false });
         });
   }
 

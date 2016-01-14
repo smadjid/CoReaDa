@@ -8,7 +8,7 @@
 
   <v-pane class='inspector-issue'>
     <v-pane-header class='inspector-issue-heading'>
-      <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) 
+      <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) - <small class="badge">{{fact.sourceTitle}}</small>
     </v-pane-header>
 
     <v-pane-content>
@@ -22,8 +22,8 @@
 
     <v-pane-content>   
       <ul>
-      <li>Suggestion. <button class="btn btn-primary btn-xs" ng-click="acceptSuggestion($event)">Ajouter comme tâche</button>
-       <li ng-repeat="suggestion in fact.suggestions" >{{suggestion}}. <a style="cursor: pointer" ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>
+      <li>Suggestion. <button class="btn btn-primary btn-xs" ng-click="forwardSuggestion($event,fact.source)">Ajouter comme tâche</button>
+       <li ng-repeat="suggestion in fact.suggestions" >{{suggestion}}. <a style="cursor: pointer" ng-click="forwardSuggestion($event)">Ajouter comme tâche</a>
        </ul>
      
 

@@ -309,6 +309,7 @@ module.exports = function(Courses) {
         
         var course = new Course( {
             title : "Des applications ultra-rapides avec Node.js",
+            elementType:'course',
             version : 1.0,
             parts:courseParts,
             properties:jsonCoursedata,
@@ -369,6 +370,7 @@ console.log("\n *FINISH* \n");
         var part = {
                 'id':part_data[0]['id'],
                 'title':part_data[0]['part_title'],
+                'elementType':'part',
                 'properties':[],
                 'facts':[]
             };
@@ -400,6 +402,7 @@ console.log("\n *FINISH* \n");
                     'value':part_facts[i].value,
                     'classof':part_facts[i].classe,
                     'type':part_facts[i].type,
+                    'elementType':'fact',
                     'description':part_facts[i].description,
                     'norm_value':part_facts[i].norm_value,
                     'gravity':part_facts[i].gravity
@@ -413,6 +416,7 @@ console.log("\n *FINISH* \n");
                 'part_id':part.part_id,
                 'title':part.title,
                 'type':part.type,
+                'elementType':'chapter',
                 'properties': part.properties,
                 'facts':part.facts,
                 'parts':[]
@@ -461,6 +465,7 @@ console.log("\n *FINISH* \n");
             parts:courseParts,
             properties:jsonCoursedata,
             chapters:courseChapters,
+            elementType:'course',
             facts: [],  
             todos: []
         });

@@ -23,7 +23,7 @@ Course.register(function(app, auth, database) {
     roles: ['authenticated'],
     menu: 'main'
   });
-  
+  Course.aggregateAsset('js',"../lib/spin.js/spin.min.js");
   Course.aggregateAsset('css', 'course.css');
   
   Course.aggregateAsset('css', '../lib/angular-xeditable/dist/css/xeditable.css');
@@ -39,6 +39,11 @@ Course.register(function(app, auth, database) {
 
    Course.aggregateAsset('js',"../lib/sweetalert/dist/sweetalert.min.js");
   Course.aggregateAsset('css',"../lib/sweetalert/dist/sweetalert.css");
+
+
+     
+     Course.aggregateAsset('js',"../lib/angular-spinner/angular-spinner.js");
+     
 
 
   Course.aggregateAsset('js',"../lib/chroma.js");

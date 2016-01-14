@@ -17,6 +17,9 @@ var SuggestionSchema = new Schema({
   },
   value: {
     type: Number
+  },
+  elementType:{
+    type:String
   }
 });
 
@@ -34,6 +37,9 @@ var TodoSchema = new Schema({
     type: String,
     default: 'Review...'
   },
+  elementType:{
+    type:String
+  },
   suggestions : [SuggestionSchema]
 });
 
@@ -50,6 +56,9 @@ var FactSchema = new Schema({
   },
   type: {
     type: String
+  },
+  elementType:{
+    type:String
   },
   value: {
     type: String
@@ -99,6 +108,9 @@ var PartSchema = new Schema({
   part_type: {
     type: String
   },
+  elementType:{
+    type:String
+  },
   title: {
     type: String
   },
@@ -118,6 +130,9 @@ var ChapterSchema = new Schema({
   },
   title: {
     type: String
+  },
+  elementType:{
+    type:String
   },
   parts: [PartSchema],
   properties: [DescriptionSchema],
@@ -144,6 +159,9 @@ var CourseSchema = new Schema({
   },
   version: {
     type: Number
+  },
+  elementType:{
+    type:String
   },
   
  /* permissions: {
