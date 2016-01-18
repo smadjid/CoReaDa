@@ -1,35 +1,32 @@
 
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec">  
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  ng-scrollbars ng-scrollbars-config="scrollconfig">  
   
-<div class="errors-display"  ng-scrollbars ng-scrollbars-config="scrollconfig">  
+<div class="errors-display" >  
 <!--<div class="errors-display" >  -->    
 
-<v-accordion class="vAccordion--default inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>
 
-  <v-pane class='inspector-issue'>
-    <v-pane-header class='inspector-issue-heading'>
-      <b>{{fact.name}} </b> (<u>{{fact.value}} </u>) 
-    </v-pane-header>
+<div class="inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>
 
-    <v-pane-content>
-      {{fact.description}} 
-    </v-pane-content>
-  </v-pane> 
-  <v-pane class='inspector-hints'>
-    <v-pane-header class='inspector-hints-heading'>
-    Suggestions pour ce problème
-    </v-pane-header>
+  <uib-accordion close-others="oneAtATime" >
+   <uib-accordion-group is-open="status.open" class='inspector-issue'>
+      <uib-accordion-heading>
+        <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <span>{{fact.name}} </span>  <button class="btn btn-primary btn-xs pull-right" ng-click="acceptSuggestion($event)">Ajouter une tâche</button>
+      </uib-accordion-heading>
+      <span>{{fact.name}} </span> (<u>{{fact.value}} </u>) : {{fact.description}} 
+    </uib-accordion-group>
+  </uib-accordion>
 
-    <v-pane-content>   
-      <ul>
-      <li>Suggestion. <button class="btn btn-primary btn-xs" ng-click="acceptSuggestion($event)">Ajouter comme tâche</button>
-       <li ng-repeat="suggestion in fact.suggestions" >{{suggestion}}. <a style="cursor: pointer" ng-click="acceptSuggestion($event)">Ajouter comme tâche</a>
-       </ul>
-     
-
-    </v-pane-content>
-  </v-pane> 
-</v-accordion>
+  <uib-accordion close-others="oneAtATime" >
+   <uib-accordion-group is-open="status.open" class='inspector-hint'>
+      <uib-accordion-heading>
+      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
+      <em>Suggestion: </em>
+      </i> <span>Faire ceci </span> <button class="btn btn-primary btn-xs pull-right" ng-click="acceptSuggestion($event)">Définir comme tâche</button> 
+      </uib-accordion-heading>
+      Faire ceci permettrait d'élminer cela
+    </uib-accordion-group>
+  </uib-accordion>
+</div>
 
 </div>
 

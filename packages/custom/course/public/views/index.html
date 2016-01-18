@@ -1,11 +1,12 @@
 <div class="container-fluid row"  data-ng-controller="courseController">  
 <div><small ng-bind-html="context_path" ></small> </div>
 <div class="col-lg-9">         
-    <table  class="table data-table "   data-ng-include src="'course/views/table.html'" ></table>
+    <table id="data-table"  class="table data-table"   data-ng-include src="'course/views/table.html'" ></table>
     <div class="inspector-container inspectoEnclosing">
         <div class="panel panel-flat" style="margin-bottom:0">
             <div class="panel-heading">
-                <div> <span class="fat" >Inspector #  </span><small ng-bind-html="context_path">{{context_path}}</small> </div>
+                <div> <span class="fat" >Inspector #  </span><!--<small ng-bind-html="context_path">{{context_path}}</small>-->
+                   <em>{{context.inspector_title}}</em> </div>
             </div>
             <div class="panel-body inspector-body" ng-show="issuesInspectorShow"  data-ng-include src="'course/views/issues-panel.html'"></div>
             <div class="panel-body  inspector-body" ng-show="!issuesInspectorShow" data-ng-include src="'course/views/component-panel.html'"></div>
@@ -13,7 +14,7 @@
     </div>
 </div>
 <div class="col-lg-3" >
-                        <div class="panel panel-flat"  data-ng-include src="'course/views/tasks-manager.html'"></div>
+                        <div id="task-panel" class="fadein fadeout showpanel panel"  ng-show="toggle" data-ng-include src="'course/views/tasks-manager.html'"></div>
     </div>
 </div>
 

@@ -41,12 +41,21 @@ $scope.animationsEnabled = true;
 $scope.issuesInspectorShow = false;
 $scope.courseParts=[];
 
+//*******************************************************************************/
+//Tasks
+  $scope.toggle=true;
+  $scope.selection = [];
+  $scope.statuses=['ACTIVE','COMPLETED'];
+  $scope.priorities=['HIGH','LOW','MEDIUM'];
 
-
+  
+//*******************************************************************************/
+//*******************************************************************************/
 
 // scrollbar config
 $scope.scrollconfig = {
-    autoHideScrollbar: false,
+    autoHideScrollbar: true,
+    scrollbarPosition: 'outside',
     theme: 'dark',
     live: true,
     scrollX:'none',
@@ -85,9 +94,13 @@ var completeCourseParts=function(){
 
 };
 
+
+
 var resetPath=function(){
-  $('.overlayed').removeClass('overlayed');
+  
   $('.chosenPart').removeClass('chosenPart');
+
+  
   
    $scope.issuesInspectorShow = false;
 
@@ -95,10 +108,12 @@ var resetPath=function(){
   $('.highlight-right').removeClass('highlight-right');
   $('.highlight-top').removeClass('highlight-top');
   $('.highlight-bottom').removeClass('highlight-bottom');
-  $('.overlayed').removeClass('overlayed');
+  
   $('.chosenPart').removeClass('chosenPart');
 
   $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
+
+
   
 }
 var compilePath=function(path){
@@ -144,9 +159,58 @@ var parseRequest=function(path){
 };
 
 
+var computeSubTasks=function(){
+  
+ var tasks=angular.copy($scope.studiedCourse.todos);
+ /*
+  tasks = tasks.concat($scope.studiedCourse.todos);
+     
+    angular.forEach($scope.studiedCourse.chapters, function(chapter) {  
+      tasks = tasks.concat(chapter.todos);      
+            angular.forEach(chapter.parts, function(part) {
+                 tasks = tasks.concat(part.todos);
+                 angular.forEach(part.facts, function(fact) {
+                  tasks = tasks.concat(fact.todos)
+                })
+              })
+            });
+
+
+  return tasks*/
+  
+  for (var i = 0; i < tasks.length; i++)   
+      {tasks[i].selected = 1 }
+    angular.forEach($scope.studiedCourse.chapters, function(chapter) {  
+      var chTasks = angular.copy(chapter.todos);
+      for (var i = 0; i < chTasks.length; i++){
+        chTasks[i].selected = 1;
+        tasks.push(chTasks[i]);
+      } 
+            angular.forEach(chapter.parts, function(part) {
+                var partTasks = angular.copy(part.todos);
+                for (var i = 0; i < partTasks.length; i++){
+                  partTasks[i].selected = 1;
+                  tasks.push(partTasks[i]);}
+                  angular.forEach(part.facts, function(fact){
+                    var factTasks = angular.copy(fact.todos);
+                    for(var i = 0; i<factTasks; i++){
+                      factTasks[i].selected = 1;
+                      tasks.push(factTasks[i]);}
+                  })
+                  })
+                                 
+            });
+        
+        
+    
+  return tasks
+
+};
+
+
 var computeSubFacts=function(element){
   var type = element.elementType;
-  var facts=angular.copy(element.facts);
+  var facts=[];
 
   /*******Course******/
  if(type=='course'){     
@@ -169,6 +233,7 @@ var computeSubFacts=function(element){
             });
         
         });
+    
   }
   /******Chapter*******/
   if(type=='chapter'){    
@@ -181,16 +246,24 @@ var computeSubFacts=function(element){
                   facts.push(partFacts[i]);
                  }                
     });
+  $scope.context.inspector_title = "Chapitre: "+element.title +" - " +facts.length +" remarques";
   }
   /******Part*******/
   if(type=='part'){
+    facts=angular.copy(element.facts);
+    $scope.context.inspector_title = "Partie: "+element.title +" - " +facts.length +" remarques";
     for (var i = 0; i < facts.length; i++)   {facts[i].source = element.route; facts[i].sourceTitle = 'This part';}
+      
   }
 
   return facts
 
 };
 
+var goHome=function(){
+  window.location.href = "course#"+$scope.studiedCourse._id; 
+  updateDisplay();
+}
 
 var updateDisplay=function(){
   startSpin();
@@ -200,6 +273,8 @@ var updateDisplay=function(){
    $scope.context.path=compilePath(url);
    $scope.context.Tasks=resolveRoute(url).todos;
    $scope.context.subfacts=computeSubFacts(resolveRoute(url));
+   
+
     loadContext(url);
   
         var totalWidth = $('.col-lg-9').width();
@@ -215,33 +290,48 @@ var updateDisplay=function(){
 }
 
 /********  Update on @ change ****************/
-$(window).on('hashchange',function(){ 
-  updateDisplay();
-});
+//$(window).on('hashchange',function(){ 
+  //updateDisplay();
+//});
 /********************************************/
 
 var loadContext=function(path){
-   if(!path) resetPath();
+  resetPath();
+   if(!path) goHome();
   var arr = path.split(',');  
   var course  = $scope.studiedCourse;
   var chap = -1;
   var part  = -1;
-  if(arr.length>=2) {  
+  var partElt = -1;
+
+
+  if(arr.length<2) { 
+    displayCourseInfos();
+    $scope.context.selectedElement=course._id;
+
+  }
+
+  if(arr.length==2) {  
      chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
-    displayChapterInfos($('.chapter_index[data-part='+chap.id+'] > a')[0]);
+     partElt = $('.chapter_index[data-part='+chap.id+']')[0];
+     
+     if($scope.context.selectedElement==chap._id)     {goHome()}
+      else    {displayChapterInfos(partElt);$scope.context.selectedElement=chap._id}
   }
 
   if(arr.length>=3) {
-
-    part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];  
-    displayPartInfos($('.part_index[data-part='+part.id+'] > a')[0]);
+    chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
+    part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
+    partElt = $('.part_index[data-part='+part.id+']'); 
+    if($scope.context.selectedElement==part._id)     goHome()
+      else    {displayPartInfos(partElt);$scope.context.selectedElement=part._id}
   }
 
   
 };
 
 //CoursesDB.seed() 
-stopSpin();
+startSpin();
     CoursesDB.get()
       .success(function(data) {
 
@@ -256,7 +346,8 @@ stopSpin();
           '_id':$scope.studiedCourse._id,
           'title':$scope.studiedCourse.title,
           'Todos':$scope.studiedCourse.todos,
-          'indicator':'ALL'
+          'indicator':'ALL',
+          'selectedElement':$scope.studiedCourse._id
         }
 
       
@@ -289,7 +380,10 @@ stopSpin();
         
         });
 
+        $scope.context.alltasks=computeSubTasks();
+        $scope.context.subtasks=$scope.context.alltasks;
         window.location.href = "course#"+$scope.studiedCourse._id;
+        updateDisplay();
         
       })
         .error(function(data) {
@@ -298,9 +392,14 @@ stopSpin();
     
 stopSpin();
 
+
  $scope.triggerClick=function($event){
+  
   var url = $($event.currentTarget).find('a:first').attr('href');
   window.location.href = "course"+url;
+  //$(window).trigger('hashchange');
+  updateDisplay();
+  $(':focus').blur();
   
  }
 
@@ -308,6 +407,7 @@ $scope.displayIssue=function($event){
 $(':focus').blur();
 if(($($event.currentTarget).hasClass('chosenPart'))){    
     resetPath();
+    goHome();
   return;
 }
 resetPath();
@@ -317,10 +417,6 @@ $($event.currentTarget).toggleClass('chosenPart');
     var indicator = $($event.currentTarget).attr('data-indicator');
     var part = $($event.currentTarget).attr('data-part');
     var fact = $($event.currentTarget).attr('data-fact');  
-   
-    
-  
-   
     
     $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
 
@@ -330,18 +426,23 @@ $($event.currentTarget).toggleClass('chosenPart');
    $scope.context.route= url;
    $scope.context.path=compilePath(url);
    $scope.context.Tasks=resolveRoute(url).todos;
- 
+   
+   
+ $scope.context.inspector_title = "Parte: "+ $.grep($scope.studiedCourse.parts, function(e){ return  e.id == part })[0].title+' - '+
+ $($event.currentTarget).find('.display-part-issues').text() +  " remarques de type "+ $($event.currentTarget).attr('data-indicator') ;
+  ;
  //   $('#erros-list-group').show();
 
   };
 
 var selectPart=function(index){
-   $('table tr > td:nth-child('+index+'), .parts-header > th:nth-child('+index+')').addClass('highlight-left highlight-right');
+   $('.data-table tr > td:nth-child('+index+'), .parts-header > th:nth-child('+index+')').addClass('highlight-left highlight-right');
    $('.parts-header> th:nth-child('+index+')').addClass('highlight-top');    
    
-    $('tbody tr:last-child > td:nth-child('+index+')').addClass('highlight-bottom');
+    $('.data-table tbody tr:last-child > td:nth-child('+index+')').addClass('highlight-bottom');
 };
 var selectChapter=function(index){
+
   var begin = 0;
   var end = 0;
   $('.chapters-header> th:nth-child('+index+')').addClass('highlight-top highlight-right highlight-left');
@@ -352,9 +453,9 @@ var selectChapter=function(index){
     end = end + this.colSpan;
   });
 
-   $('table tr > td:nth-child('+begin+'), .parts-header > th:nth-child('+begin+')').addClass('highlight-right');
-   $('table tr > td:nth-child('+end+'), .parts-header > th:nth-child('+end+')').addClass('highlight-right');
-   $('table tr:last-child > td').slice(begin-1,end-1).each(function()
+   $('.data-table tr > td:nth-child('+begin+'), .parts-header > th:nth-child('+begin+')').addClass('highlight-right');
+   $('.data-table tr > td:nth-child('+end+'), .parts-header > th:nth-child('+end+')').addClass('highlight-right');
+   $('.data-table tr:last-child > td').slice(begin-1,end-1).each(function()
    {
     $(this).addClass('highlight-bottom');
    });
@@ -364,69 +465,99 @@ var selectChapter=function(index){
 
 
    var displayPartInfos=function(partElt){
-  
-    if($(partElt).parent().hasClass('highlight-top')){
-      window.location.href = "course#"+$scope.studiedCourse._id;
-      return;
-    }
-       
-
     resetPath();
-    selectPart($(partElt).parent().index() + 1);
+
+
+    
+    selectPart($(partElt).index() + 1);
    
     $(':focus').blur();
     $('.highlighted').removeClass('highlighted');
     $('.chosenPart').removeClass('chosenPart');
 
-var part = $(partElt).parent().attr('data-part');
-$scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , 'ALL');
+var part = $(partElt).attr('data-part');
+
+
+$scope.focusStudy = focusStudyManager.update(
+  angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , 'ALL');
+
+var route = $(partElt).attr('data-path');
+for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 0 }
+
+var element=resolveRoute(route);
+angular.forEach(element.todos, function(todo){
+  $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+});
+angular.forEach(element.facts, function(fact){
+  angular.forEach(fact.todos, function(todo){
+  $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+})
+});
 
     $scope.issuesInspectorShow = false;
+    
  //   $('#erros-list-group').show();
 
   };
 
-  var displayChapterInfos=function(partElt){ 
+var displayCourseInfos=function(){  
+resetPath(); 
+  $scope.issuesInspectorShow = false;  
+  $scope.context.inspector_title = "Course: "+$scope.studiedCourse.title +" - " +$scope.context.subfacts.length +" remarques";
+  for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 1 }
 
-$('.highlighted').removeClass('highlighted');
-
+};
+var displayChapterInfos=function(partElt){ 
+  resetPath();
 $scope.issuesInspectorShow = false;
 
-if(($(partElt).parent().hasClass('highlight-top'))){  
-  
-      window.location.href = "course#"+$scope.studiedCourse._id;
-  
-    }
 
-resetPath();
-selectChapter($(partElt).parent().index() + 1);
+
+
+selectChapter($(partElt).index() + 1);
 
     $(':focus').blur();
+
+  var route = $(partElt).attr('data-path');
+for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 0 }
+
+var element=resolveRoute(route);
+angular.forEach(element.todos, function(todo){
+  $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+});
+angular.forEach(element.facts, function(fact){
+  angular.forEach(fact.todos, function(todo){
+  $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+})
+});
+
+angular.forEach(element.parts, function(part){
+ angular.forEach(part.todos, function(todo){
+  $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+});
+angular.forEach(part.facts, function(fact){
+  angular.forEach(fact.todos, function(todo){
+  $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+})
+});
+
+});
   
   };
 
   var displayIndicatorInfos=function(partElt){
 $(':focus').blur();
-$('.highlighted').removeClass('highlighted');
+
 
 
 $scope.issuesInspectorShow = false;
 
-if(($(partElt).hasClass('chosenPart'))){  
-  resetPath();
-  return;
-}
+
 resetPath();
 $(partElt).toggleClass('chosenPart');
-
-    var part = $($event.currentTarget).attr('data-part');
-    
-
-    if(indicator!='ALL') {
-      $('.indicators_group[data-indicator!='+indicator+']').removeClass('highlighted').addClass('overlayed');
-      $('.indicators_group[data-indicator='+indicator+']').addClass('highlighted').removeClass('overlayed');    
-    
-    }
   
   };
 var tabsFn = (function() {
@@ -522,7 +653,7 @@ var computeInspectorPartProperties = function(properties){
 var insertLocalTask=function(route, task){
   var element = resolveRoute(route);
   element.todos.unshift(task);
- updateDisplay();
+ //updateDisplay();
 }
 
 $scope.acceptSuggestion=function($event){
@@ -530,6 +661,7 @@ $scope.acceptSuggestion=function($event){
   Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:suggestion})
         .success(function(data) {
           insertLocalTask($scope.context.route, data);
+          $scope.context.alltasks=computeSubTasks();
           swal({   title: "Nouvelle tâche ajoutée!",   
             text: "La suggestion a été ajoutée comme tâche avec succès.", 
              animation: "slide-from-top",
@@ -543,6 +675,7 @@ $scope.forwardSuggestion=function($event, route){
   Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:suggestion})
         .success(function(data) {
           insertLocalTask(route, data);
+          $scope.context.alltasks=computeSubTasks();
           swal({   title: "Nouvelle tâche ajoutée à l'élément concerné!",   
             text: "La suggestion a été ajoutée comme tâche avec succès.", 
              animation: "slide-from-top",
@@ -553,11 +686,12 @@ $scope.forwardSuggestion=function($event, route){
 $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         $scope.loading = true;
-        var addedTask = $scope.formData.text;  
+        var addedTask = $scope.formData.text;          
         var route = $scope.context.route;
         Todos.addTask(parseRequest(route),  {type:'edition', todo:addedTask})
         .success(function(data) {
           insertLocalTask(route, data);
+          $scope.context.alltasks=computeSubTasks();
            $scope.formData.text = undefined;
             swal({   title: "Nouvelle tâche ajoutée!",   
             text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
@@ -572,7 +706,7 @@ $scope.addTask = function () {
 var updateLocalTasks=function(route, data){
   var element = resolveRoute(route);
   element.todos = data;
- updateDisplay(); 
+ updateDisplay();
 
 }
 
@@ -590,7 +724,12 @@ swal({
        Todos.deleteTask(parseRequest($scope.context.route)+'/'+todoId)
         .success(function(data) {
           updateLocalTasks($scope.context.route, data)     ;
-          swal("Deleted!", "The task was successfully deleted!", "success");     
+           swal({   title: "Tâche supprimée!",   
+            text: "La tâche a été supprimée avec succès", 
+             animation: "slide-from-top",
+             type:"success"  ,
+            timer: 1500,   showConfirmButton: false });
+         
               })
       .error(function(data) {
         swal("Oops", "We couldn't connect to the server!", "error");

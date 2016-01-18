@@ -72,7 +72,8 @@ var FactSchema = new Schema({
   gravity: {
     type: String
   },
-  suggestion : [TodoSchema]
+  suggestion : [TodoSchema],
+  todos : [TodoSchema]
 });
 
 /**
