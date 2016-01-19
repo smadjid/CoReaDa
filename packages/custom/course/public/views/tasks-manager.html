@@ -62,12 +62,12 @@
 
 </td>
 
-		<td style="width: 10%;">
+		<td style="width: 10%;" valign="top">
 			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task._id, $data.name)">
 				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
 				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
 			</form>
-			<div class="buttons pull-right" ng-show="!rowform.$visible">
+			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
 				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task._id, $index)"></a>
 			</div>

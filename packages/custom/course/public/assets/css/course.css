@@ -306,11 +306,11 @@ tr {
 td {
   border-right: 1px solid #cccccc;
   padding: 10px;
-  vertical-align: middle!important;
-  
   overflow: hidden; 
-
-  
+}
+.data-table td,.data-table th,.data-table tr{
+  vertical-align: middle!important;
+  text-align: center!important;
 }
 
 .page-header-coreada {
@@ -1006,8 +1006,8 @@ padding: 5px 10px;;
   width:100%;
   margin-right:5%;
   margin-left:5%;
-  background-color:#39393d!important;
-  border-color: #e2e2e2;
+  background-color:#49769C!important;
+  border-color: #49769C;
   border-radius: 2px;
   
 }
@@ -1024,14 +1024,14 @@ padding: 5px 10px;;
 {
   background: beige;
   margin: 0;
-  border: solid #39393d!important;
+
     background: beige;
     margin: 0;
     padding: 0px;
 }
 .tasks-table td{
   border:none;
-  border-bottom: solid #39393d!important;
+  border-bottom: solid #49769C!important;
 }
 .tasks-table .panel, .tasks-table .panel-heading {
     border: none!important;

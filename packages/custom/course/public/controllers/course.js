@@ -260,11 +260,14 @@ var computeSubFacts=function(element){
 
 };
 
-var goHome=function(){
+
+var goHome=function(){ 
   window.location.href = "course#"+$scope.studiedCourse._id; 
   updateDisplay();
 }
-
+$scope.goHome=function(){
+  goHome();
+}
 var updateDisplay=function(){
   startSpin();
 
@@ -504,7 +507,7 @@ angular.forEach(element.facts, function(fact){
 var displayCourseInfos=function(){  
 resetPath(); 
   $scope.issuesInspectorShow = false;  
-  $scope.context.inspector_title = "Course: "+$scope.studiedCourse.title +" - " +$scope.context.subfacts.length +" remarques";
+  $scope.context.inspector_title = "Cours: "+$scope.studiedCourse.title +" - " +$scope.context.subfacts.length +" remarques";
   for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 1 }
 
