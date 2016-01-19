@@ -10,7 +10,7 @@
   <uib-accordion close-others="oneAtATime" >
    <uib-accordion-group is-open="status.open" class='inspector-issue'>
       <uib-accordion-heading>
-        <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <span>{{fact.name}} </span>  <button class="btn btn-primary btn-xs pull-right" ng-click="acceptSuggestion($event)">Ajouter une tâche</button>
+        <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  <button class="btn btn-primary btn-xs pull-right" ng-click="acceptSuggestion($event)">Ajouter une tâche</button>
       </uib-accordion-heading>
       <span>{{fact.name}} </span> (<u>{{fact.value}} </u>) : {{fact.description}} 
     </uib-accordion-group>
