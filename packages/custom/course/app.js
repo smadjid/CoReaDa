@@ -40,6 +40,10 @@ Course.register(function(app, auth, database) {
    Course.aggregateAsset('js',"../lib/sweetalert/dist/sweetalert.min.js");
   Course.aggregateAsset('css',"../lib/sweetalert/dist/sweetalert.css");
 
+  Course.aggregateAsset('js',"../lib/perfect-scrollbar/min/perfect-scrollbar.min.js");
+  Course.aggregateAsset('css',"../lib/perfect-scrollbar/min/perfect-scrollbar.min.css");
+  Course.aggregateAsset('js',"../lib/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js");
+
 
      
      Course.aggregateAsset('js',"../lib/angular-spinner/angular-spinner.js");

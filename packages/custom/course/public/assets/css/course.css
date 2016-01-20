@@ -282,7 +282,10 @@ ul.alert-dropdown {
     
  .data-table{
   background: white;
-  border-collapse: separate;
+  border-collapse: separate; 
+  border:3px solid white!important; 
+border-radius: 3px;    
+ padding: 0px; 
   
   width: auto;
 }
@@ -622,7 +625,27 @@ a.editable-click:hover {
   background: rgba(255,0,0,0.6); 
 }*/
 
+.inspectorScroller {
+    
+    max-height:  50vh;
+    overflow-y: hidden;
+    position: relative;
 
+}
+
+.taskScroller {    
+    max-height:  75vh;
+    overflow-y: hidden;
+    position: relative;
+
+}
+.content {
+    margin-top: 20px!important;
+}
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 .mCSB_container_wrapper, .mCSB_container, .mCSB_container_wrapper>.mCSB_container {
   padding: 0px; 
 /**  padding-right:10px!important; **/
@@ -822,12 +845,6 @@ a.editable-click:hover {
 }
 
 /* Table highlighting */
-.highlight-left{border-left: outset 2px #45348A!important}
-.highlight-right{border-right: outset 2px #45348A!important}
-.highlight-top{border-top: outset 2px #45348A!important}
-.highlight-bottom{border-bottom:outset  2px  #45348A!important}
-
-.fack-highlight{border-bottom:solid red!important}
 
 
 
@@ -1050,3 +1067,18 @@ a:hover, a:active, a:focus {
   outline: none!important;
   background: none!important;
 }
+.highlight-table {  
+border:3px solid #45348A!important; 
+border-radius: 3px;    
+ padding: 0px; 
+} 
+#divOverlay {  
+   position: 'absolute';
+visibility: hidden; 
+border:3px solid #45348A!important; 
+text-align:center;  
+position:absolute; 
+pointer-events: none;
+border-radius: 3px;    
+ padding: 0px; 
+} 

@@ -5,7 +5,7 @@
 			
 
 			<div class="input-group">
-	<input type="text" class="form-control" ng-model="formData.text">
+	<input id='taskInput' type="text" class="form-control" ng-model="formData.text" >
 	<span class="input-group-btn">
 		<button class="btn btn-default" type="button" ng-click="addTask()"><span
 			class="glyphicon glyphicon-plus"></span> 
@@ -14,11 +14,15 @@
 	</div>
 
 		</div>
+<perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
 		<div class="tasks-panel-body">
+
 <table class="table table-hover table-condensed tasks-table" style="">
-<!--
-	<tr ng-repeat="task in context.Tasks">
-		<td style="width: 70%;">
+
+	
+
+	<tr ng-repeat="task in context.subtasks|filter:{'selected':'1'}" class="selectedTask">
+		<td style="width: 70%;" >
 <uib-accordion close-others="oneAtATime" style="width:50%">
    <uib-accordion-group is-open="status.open" class='task-accordion'>
       <uib-accordion-heading>
@@ -33,20 +37,19 @@
 
 </td>
 
-		<td style="width: 10%;">
+		<td style="width: 10%;" valign="top">
 			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task._id, $data.name)">
 				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
 				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
 			</form>
-			<div class="buttons pull-right" ng-show="!rowform.$visible">
+			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
 				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task._id, $index)"></a>
 			</div>
 		</td>
 	</tr>
--->
 
-	<tr ng-repeat="task in context.subtasks" ng-class="task.selected==1?'selectedTask':'unselectedTask'">
+	<tr ng-repeat="task in context.subtasks|filter:{'selected':'0'}" class="unselectedTask">
 		<td style="width: 70%;" >
 <uib-accordion close-others="oneAtATime" style="width:50%">
    <uib-accordion-group is-open="status.open" class='task-accordion'>
@@ -75,3 +78,4 @@
 	</tr>
 </table>
 	</div>
+	</perfect-scrollbar>

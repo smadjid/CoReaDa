@@ -1,5 +1,5 @@
 <div class="container-fluid row"  data-ng-controller="courseController">  
-<div><small ng-bind-html="context_path" ></small> </div>
+<!--<div><small ng-bind-html="context_path" ></small> </div>-->
 <div class="col-lg-9">         
     <table id="data-table"  class="table data-table"   data-ng-include src="'course/views/table.html'" ></table>
     <div class="inspector-container inspectoEnclosing">
@@ -14,8 +14,9 @@
     </div>
 </div>
 <div class="col-lg-3" >
-                        <div id="task-panel" class="fadein fadeout showpanel panel"  ng-show="toggle" data-ng-include src="'course/views/tasks-manager.html'"></div>
+                        <div id="task-panel" class="fadein fadeout showpanel panel"  data-ng-include src="'course/views/tasks-manager.html'"></div>
     </div>
 </div>
 
 <span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner"></span>
+ <div id="divOverlay" style=""> </div> 
