@@ -1,34 +1,5 @@
 'use strict'; 
-/// set up the very simple jQuery plugin
-(function($){
-  $.fn.domChange = function( whenChanged ){
-     /// we want to store our setInterval statically so that we
-     /// only use one for all the listeners we might create in a page
-     var _static = $.fn.domChange;
-     _static.calls = [];
-     _static.iid = setInterval( function(){
-       var i = _static.calls.length;
-       while ( i-- ) {
-         if ( _static.calls[i] ) {
-           _static.calls[i]();
-         }
-       }
-     }, 500 );
-     /// step each element in the jQuery collection and apply a
-     /// logic block that checks for the change in html
-     this.each (function(){
-       var target = $(this), html = target.html();
-       /// by adding the function to a list we can easily switch
-       /// in extra checks to the main setInterval function
-       _static.calls.push (function(){
-         if ( html != target.html() ) {
-           html = target.html();
-           whenChanged();
-         }
-       });
-     });
-  }
-})(typeof jQuery != undefined && jQuery);
+
 /* jshint -W098 */
 var courseModule = angular.module('mean.course',  ['xeditable','ui.bootstrap','ngScrollbars','perfect_scrollbar','angularSpinner']);
 
@@ -52,11 +23,6 @@ var stopSpin = function(){
         usSpinnerService.stop('spinner');
 }
 
-
-
-$('.data-table').domChange( function(){
-      alert('I was changed!');
-    } );
 // construct hierarchy, routes and paths
 var completeCourseParts=function(course, courseParts){
   var course_route = course._id;
@@ -80,15 +46,19 @@ var completeCourseParts=function(course, courseParts){
 }
 
 var resolveRoute=function(route){
-   var arr = route.split(',');        
-   if(arr.length>1) {
+   var arr = route.split(',');       
+   if(arr.length>=2) {
      var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[1] })[0];
-     if(arr.length>2){
+     if(arr.length>=3){
        var part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];
-       if(arr.length>3){
-         var fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0];
-         if(arr.length>4){
-           var todo = $.grep(fact.todos, function(e){ return  e._id == arr[3] })[0];
+       if(arr.length==4){
+        return part;
+       }
+       else
+       if(arr.length>=5){
+         var fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0];
+         if(arr.length>=6){
+           var todo = $.grep(fact.todos, function(e){ return  e._id == arr[5] })[0];
            return todo;
          }
          return fact
@@ -105,32 +75,26 @@ var resetPath=function(){
   $('#divOverlay').css('visibility','hidden');
   
   $scope.issuesInspectorShow = false;
-  $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy),-1, 'ALL');
 
 }
-var compilePath=function(path){
+
+var parseTask=function(path, content){
   var arr = path.split(','); 
-  var result ="<a class='glyphicon glyphicon-home' href=\"#"+arr[0]+"\"></a>" ;
-
-  if(arr.length>=2) {
-  var chap = $.grep($scope.studiedCourse.chapters, function(e){ return  e._id == arr[1] })[0];
-  result = result+" \/ <a href='#"+arr[0]+"'>"+chap.title+"</a>"; 
-  }  
-  
-  if(arr.length>=3) {
-    var part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];    
-    result = result+" \/ <a href='#"+arr[0]+","+arr[1]+"'>"+part.title+"</a>"; 
-    
-    if(arr.length>=4) {
-      var fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0];      
-      result = result+" \/ <a href='#"+arr[0]+","+arr[1]+","+arr[2]+"'>"+fact.name+"</a>"; 
-    }
-  }
+  var courseId = $scope.studiedCourse._id;
+  var chapId = 0;
+  var partId=0;
+  var factId=0;
+  var indicator="ALL"
  
-  return result;
+  if(arr.length>=2)   chapId =  arr[1] ;
+  if(arr.length>=3)   partId =  arr[2] ;
+  if(arr.length>=4)   indicator =  arr[3] ;
+  if(arr.length>=5)   factId =  arr[4] ;
+  
+ var route = courseId+'/'+chapId+'/'+partId+'/'+factId;
+ var todo ={'classof':indicator, 'todo':content,'elementType':'todo'}
+  return {'route':route, 'todo':todo}
 }
-
-
 var parseRequest=function(path){
   var arr = path.split(','); 
   var courseId = $scope.studiedCourse._id;
@@ -146,36 +110,57 @@ var parseRequest=function(path){
   return result
 }
 
-var computeSubTasks=function(){ 
+var computeAllTasks=function(){ 
+
  var tasks=angular.copy($scope.studiedCourse.todos);
-  for (var i = 0; i < tasks.length; i++)   
-      {tasks[i].selected = 1 }
+ for (var i = 0; i < tasks.length; i++)   
+      {
+        tasks[i].selected = 1 
+        tasks[i].route=$scope.studiedCourse._id+',0,0,0,'+tasks[i]._id
+      } 
+
     angular.forEach($scope.studiedCourse.chapters, function(chapter) {  
       var chTasks = angular.copy(chapter.todos);
       for (var i = 0; i < chTasks.length; i++){
-        chTasks[i].selected = 1;
+        chTasks[i].route=chapter.route+',0,0,'+chTasks[i]._id
         tasks.push(chTasks[i]);
       } 
             angular.forEach(chapter.parts, function(part) {
                 var partTasks = angular.copy(part.todos);
                 for (var i = 0; i < partTasks.length; i++){
-                  partTasks[i].selected = 1;
-                  tasks.push(partTasks[i]);}
+                  partTasks[i].route=part.route+',0,'+partTasks[i]._id
+                  tasks.push(partTasks[i]);
+                }
                   angular.forEach(part.facts, function(fact){
                     var factTasks = angular.copy(fact.todos);
                     for(var i = 0; i<factTasks; i++){
-                      factTasks[i].selected = 1;
+                      factTasks[i].route=fact.route+','+factTasks[i]._id
                       tasks.push(factTasks[i]);}
                   })
                   })
                                  
             });
+  for (var i = 0; i < tasks.length; i++)   
+      {
+        tasks[i].selected = 1 
+      } 
   return tasks
 
 }
 
 
-var computeSubFacts=function(element){
+var computeSubFacts=function(element, indicator){
+  
+  var facts  = $.grep(element.facts, function(e){ return  e.classof==indicator}); 
+ 
+  return facts
+
+}
+
+
+
+
+var computeAllFacts=function(element, indicator){
   var type = element.elementType;
   var facts=[];
 
@@ -295,9 +280,10 @@ var updateDisplay=function(){
 
     var url = location.hash.slice(1);
    $scope.context.route= url;
-   $scope.context.path=compilePath(url);
-   $scope.context.Tasks=resolveRoute(url).todos;
-   $scope.context.subfacts=computeSubFacts(resolveRoute(url));
+   $scope.context.Tasks=resolveRoute(url).todos; 
+   $scope.context.subfacts=computeAllFacts(resolveRoute(url));
+   for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 0 }
    
 
     loadContext(url);
@@ -340,6 +326,7 @@ var loadContext=function(path){
   if(arr.length<2) { 
     displayCourseInfos();
     $scope.context.selectedElement=course._id;
+    $scope.context.selectedIndicator="ALL";
 
   }
 
@@ -348,15 +335,29 @@ var loadContext=function(path){
    partElt = $('.chapter_index[data-part='+chap.id+']')[0];
    
    if($scope.context.selectedElement==chap._id)     {goHome()}
-    else    {displayChapterInfos(partElt);$scope.context.selectedElement=chap._id}
+    else    {displayChapterInfos(partElt);$scope.context.selectedElement=chap._id;$scope.context.selectedIndicator="ALL"}
 }
 
-if(arr.length>=3) {
+if(arr.length==3) {  
   chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
   part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
   if($scope.context.selectedElement==part._id)     goHome()
-    else    {displayPartInfos(partElt);$scope.context.selectedElement=part._id}
+    else    {displayPartInfos(partElt);$scope.context.selectedElement=part._id;$scope.context.selectedIndicator="ALL"}
+}
+if(arr.length==4) { 
+  chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
+  part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
+  partElt = $('.part_index[data-part='+part.id+']'); 
+  var indicator = arr[3]
+  
+  
+   if($scope.context.selectedElement==part._id+'/'+indicator)     goHome()
+     else{
+    displayPartIssues(path, part, indicator);
+    $scope.context.selectedElement=part._id+'/'+indicator;
+    $scope.context.selectedIndicator=indicator;
+  }
 }
 
 
@@ -375,11 +376,8 @@ $scope.computeTextColor=function(val){
   if(val>=4) return 'white';
 }
 
-$scope.triggerClick=function($event){  
-  var url = $($event.currentTarget).find('a:first').attr('href');
-  
-  
-  //console.log(window.location.hash ==)
+var loadURL =function(url){
+
   if(url == window.location.hash)
     $(window).trigger('hashchange')
   else 
@@ -388,10 +386,15 @@ $scope.triggerClick=function($event){
   $scope.$emit('content.changed');
   //$scope.$broadcast('content.reload');
   $(':focus').blur();
+
+}
+$scope.triggerClick=function($event){  
+  var url = $($event.currentTarget).find('a:first').attr('href');
+  loadURL(url);
   
  }
 
-$scope.displayIssue=function($event){  
+$scope.displayIssue=function($event){   
   $(':focus').blur();
   if(($($event.currentTarget).hasClass('chosenPart'))){    
       resetPath();
@@ -405,19 +408,58 @@ $scope.displayIssue=function($event){
       var indicator = $($event.currentTarget).attr('data-indicator');
       var part = $($event.currentTarget).attr('data-part');
       var fact = $($event.currentTarget).attr('data-fact');  
+      var url = $($event.currentTarget).attr('data-path');  
+
       
-      $scope.focusStudy = focusStudyManager.update(angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , indicator);
 
       $scope.issuesInspectorShow = true;
 
      var url =  $($event.currentTarget).attr('data-path');
-     $scope.context.route= url;
-     $scope.context.path=compilePath(url);
+     $scope.context.route= url;     
      $scope.context.Tasks=resolveRoute(url).todos;
+     $scope.context.Facts=computeSubFacts(resolveRoute(url), indicator);
+     
      
      
      $scope.context.inspector_title = "Parte: "+ $.grep($scope.studiedCourse.parts, function(e){ return  e.id == part })[0].title+' - '+
    $($event.currentTarget).find('.display-part-issues').text() +  " remarques de type "+ $($event.currentTarget).attr('data-indicator') ;
+
+    }
+
+var displayPartIssues=function(url, part, indicator){   
+  $(':focus').blur();
+ 
+  resetPath();
+
+ 
+      $('.td_issue[data-path="'+url+'"]').addClass('chosenPart');
+
+      $scope.issuesInspectorShow = true;
+
+     
+     $scope.context.route= url;     
+     $scope.context.Tasks=resolveRoute(url).todos;
+     $scope.context.Facts=computeSubFacts(resolveRoute(url), indicator);
+     
+     
+     var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
+     if(nb==0) nb="aucune (0) remarque";
+     if(nb==1) nb="une (1) remarque";
+      if(nb>1) nb=nb+" remarques";
+     $scope.context.inspector_title = "Partie: "+ part.title+' - '+nb+ " de type "+indicator ;
+
+      var element=resolveRoute(url);
+      
+    angular.forEach(element.todos, function(todo){
+      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
+      if(typeof results !== 'undefined') results.selected=1;
+    });
+    angular.forEach(element.facts, function(fact){
+      angular.forEach(fact.todos, function(todo){
+      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
+      if(typeof results !== 'undefined') results.selected=1;
+    })
+    });
 
     }
 
@@ -470,19 +512,19 @@ var displayPartInfos=function(partElt){
     
      var part = $(partElt).attr('data-part');
 
-    $scope.focusStudy = focusStudyManager.update(
-        angular.copy($scope.studiedCourse), angular.copy($scope.focusStudy), part , 'ALL');
     var route = $(partElt).attr('data-path');
     for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 0 }
 
     var element=resolveRoute(route);
     angular.forEach(element.todos, function(todo){
-      $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+      var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
+      if(typeof results !== 'undefined') results.selected=1;
     });
     angular.forEach(element.facts, function(fact){
       angular.forEach(fact.todos, function(todo){
-      $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+      var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+      if(typeof results !== 'undefined') results.selected=1;
     })
     });
 
@@ -512,23 +554,26 @@ var displayChapterInfos=function(partElt){
 
   var element=resolveRoute(route);
   angular.forEach(element.todos, function(todo){
-    $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
+    if(typeof results !== 'undefined') results.selected=1;
   });
   angular.forEach(element.facts, function(fact){
     angular.forEach(fact.todos, function(todo){
-    $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
+    if(typeof results !== 'undefined') results.selected=1;
   })
   });
 
   angular.forEach(element.parts, function(part){
 
    angular.forEach(part.todos, function(todo){
-
-    $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
+    if(typeof results !== 'undefined') results.selected=1;
   });
   angular.forEach(part.facts, function(fact){
     angular.forEach(fact.todos, function(todo){
-    $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
+    if(typeof results !== 'undefined') results.selected=1;
   })
   });
 
@@ -610,8 +655,9 @@ var computeInspectorPartProperties = function(properties){
 
 var insertLocalTask=function(route, task){
   var element = resolveRoute(route);
+  
   element.todos.unshift(task);
- //updateDisplay();
+ 
 }
 
 $scope.editSuggestion=function($event){
@@ -636,36 +682,40 @@ window.setTimeout(function() {
         }, 50);
 
 }
-$scope.forwardSuggestion=function($event, route){  
-  var suggestion = $($event.currentTarget).text();  
-  Todos.addTask(parseRequest($scope.context.route),  {type:'edition', todo:suggestion})
-        .success(function(data) {
-          insertLocalTask(route, data);
-          $scope.context.alltasks=computeSubTasks();
-          swal({   title: "Nouvelle tâche ajoutée à l'élément concerné!",   
-            text: "La suggestion a été ajoutée comme tâche avec succès.", 
-             animation: "slide-from-top",
-             type:"info"  ,
-            timer: 1500,   showConfirmButton: false });
-        });
-}
+
 $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         var addedTask = $scope.formData.text;          
         var route = $scope.context.route;
-        Todos.addTask(parseRequest(route),  {type:'edition', todo:addedTask})
+        var query = parseTask(route, addedTask)
+        Todos.addTask(query.route,query.todo)
         .success(function(data) {
           insertLocalTask(route, data);
-          $scope.context.alltasks=computeSubTasks();
+          $scope.context.subtasks=computeAllTasks();
            $scope.formData.text = undefined;
             swal({   title: "Nouvelle tâche ajoutée!",   
             text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
              animation: "slide-from-top",
              type:"info"  ,
-            timer: 1500,   showConfirmButton: false });    
+            timer: 1500,   showConfirmButton: false });
         });
+
+        
              
       }       
+  }
+$scope.editTask = function (todoRoute, todoId, data) {    
+console.log(parseRequest(todoRoute));     
+console.log(parseRequest($scope.context.route)+'/'+todoId);     
+        Todos.editTask(todoId,  {type:'edition', todo:data})
+        .success(function(data) {
+          updateLocalTasks($scope.context.route, data)  ;
+          swal({   title: "Tâche modifiée!",   
+            text: "La tâche a été modifiée avec succès.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+        });
   }
 
 var updateLocalTasks=function(route, data){
@@ -703,18 +753,7 @@ swal({
 
   }
 
-$scope.editTask = function (todoId, data) {       
-  parseRequest($scope.context.route)+'/'+todoId;
-        Todos.editTask(parseRequest($scope.context.route)+'/'+todoId,  {type:'edition', todo:data})
-        .success(function(data) {
-          updateLocalTasks($scope.context.route, data)  ;
-          swal({   title: "Tâche modifiée!",   
-            text: "La tâche a été modifiée avec succès.", 
-             animation: "slide-from-top",
-             type:"info"  ,
-            timer: 1500,   showConfirmButton: false });
-        });
-  }
+
 /*  MAIN FUNCTION */
 startSpin();
 
@@ -723,8 +762,7 @@ CoursesDB.get()
     $scope.studiedCourse = data[0];
     completeCourseParts($scope.studiedCourse, $scope.courseParts);
     $scope.context = {
-      'type':'course',
-      'path':compilePath($scope.studiedCourse._id),
+      'type':'course',      
       'route':$scope.studiedCourse._id,
       'id':0,
       '_id':$scope.studiedCourse._id,
@@ -735,7 +773,7 @@ CoursesDB.get()
     }
 
     $scope.focusStudy = focusStudyManager.initialize($scope.studiedCourse);
-    $scope.context.subtasks=computeSubTasks();
+    $scope.context.subtasks=computeAllTasks();
         window.location.href = "course#"+$scope.studiedCourse._id;
     updateDisplay();
      displayCourseInfos();

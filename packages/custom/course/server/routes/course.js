@@ -21,7 +21,7 @@ module.exports = function(Courses, app, auth, database) {
       .post(courses.addTodo);
     app.route('/api/tasks/delete/:courseId/:chapterId/:partId/:factId/:todoId')
       .delete(courses.removeTodo);
-    app.route('/api/tasks/edit/:courseId/:chapterId/:partId/:factId/:todoId')
+    app.route('/api/tasks/edit/:todoId')
       .post(courses.editTodo);
     
 };

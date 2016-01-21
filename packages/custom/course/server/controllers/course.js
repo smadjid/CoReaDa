@@ -156,7 +156,21 @@ module.exports = function(Courses) {
          * Edit a todo
          */
 
-        editTodo:function(req, res) {
+        editTodo:function(req, res) { 
+        Course.findOne({"_id":req.params.todoId}).exec(function(err, _todo){
+            if(err) console.log("Error finding the todo.");  
+            console.log(_todo); 
+            _todo.todo=req.body.todo;
+            _todo.save();
+            console.log(_todo.todo);
+            })
+        },
+
+        /**
+         * Edit a todo
+         */
+
+        editTodo0:function(req, res) { alert(req);
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");   
             var _result = _course.todos;            

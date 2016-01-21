@@ -127,11 +127,6 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
 
 
                 return(elt);
-          //return result;
-
-        
-        
-        
       }
     }
   }]);
@@ -139,8 +134,8 @@ angular.module('mean.course').factory('focusStudyManager', [function() {
 angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
     return {
       
-      addTask : function(path, todoData) {
-        return $http.post('/api/tasks/add/'+path, todoData);
+      addTask : function(route,params) {
+        return $http.post('/api/tasks/add/'+route,params);
       },
       deleteTask : function(path) {
         return $http.delete('/api/tasks/delete/'+path);  
@@ -149,7 +144,7 @@ angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
       if(courseId == partId) partId=0;      
         return $http.get('/api/tasks/get/'+courseId+'/'+partId)
         },
-      editTask : function(path, todoData) {               
+      editTask : function(path, todoData) {                
         return $http.post('/api/tasks/edit/'+path, todoData);
         },      
       filterTasks : function(studiedPart) {

@@ -29,8 +29,8 @@ var SuggestionSchema = new Schema({
  * Todo Schema
  */
 
-var TodoSchema = new Schema({ 
-  type: {
+var TodoSchema = new Schema({   
+  classof: {
     type: String
   },
   todo: {

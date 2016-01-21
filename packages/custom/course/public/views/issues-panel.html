@@ -4,13 +4,13 @@
 <div class="errors-display" >  
 <!--<div class="errors-display" >  -->    
 
-
-<div class="inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>
+<div class="inspector-item" ng-repeat="fact in context.Facts" multiple>
+<!--<div class="inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>-->
 
   <uib-accordion close-others="oneAtATime" >
    <uib-accordion-group is-open="status.open" class='inspector-issue'>
       <uib-accordion-heading>
-        <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  <button class="btn btn-primary btn-xs pull-right" ng-click="createSuggestion($event)">Ajouter une tâche</button>
+        <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  <a class="btn btn-primary btn-xs pull-right" ng-click="createSuggestion($event)" href={{fact.route}}>Ajouter une tâche</a>
       </uib-accordion-heading>
       <span>{{fact.name}} </span> (<u>{{fact.value}} </u>) : {{fact.description}} 
     </uib-accordion-group>
@@ -21,7 +21,7 @@
       <uib-accordion-heading>
       <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
       <em>Suggestion: </em>
-      </i> <span>Faire ceci </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event)">Définir comme tâche</button> 
+      </i> <span>Faire ceci </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event)" data-path={{fact.route}}>Définir comme tâche</button> 
       </uib-accordion-heading>
       Faire ceci permettrait d'élminer cela
     </uib-accordion-group>

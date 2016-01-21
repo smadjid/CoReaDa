@@ -38,7 +38,7 @@
 </td>
 
 		<td style="width: 10%;" valign="top">
-			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task._id, $data.name)">
+			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route,task._id, $data.name)">
 				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
 				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
 			</form>
@@ -64,9 +64,9 @@
   </uib-accordion>
 
 </td>
-
+ 
 		<td style="width: 10%;" valign="top">
-			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task._id, $data.name)">
+			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, task._id, $data.name)">
 				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
 				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
 			</form>
