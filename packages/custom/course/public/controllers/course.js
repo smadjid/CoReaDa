@@ -110,6 +110,41 @@ var parseRequest=function(path){
   return result
 }
 
+var parseTaskRequest=function(path){
+  var arr = path.split(','); 
+  var courseId = $scope.studiedCourse._id;
+  var chapterId = 0;
+  var partId=0;
+  var factId=0;
+  var taskId=0;
+  var route = courseId;
+  var scope = 'course';
+ 
+  if(arr.length>=2)   chapterId =  arr[1] ;
+  if(arr.length>=3)   partId =  arr[2] ;
+  if(arr.length>=4)   factId =  arr[3] ;
+  taskId=arr[4] ;
+
+
+  if(chapterId==0){
+    route=route+'/'+factId+'/'+taskId;
+  }
+  else
+    if(partId==0){
+      route = route+'/'+chapterId+'/'+factId+'/'+taskId;
+      scope='chapter';
+    }
+    else
+      {
+        route = route+'/'+chapterId+'/'+partId+'/'+factId+'/'+taskId;
+        scope='part';
+      }
+  
+  return {'route':route, 'scope':scope}
+}
+
+
+
 var computeAllTasks=function(){ 
 
  var tasks=angular.copy($scope.studiedCourse.todos);
@@ -704,12 +739,10 @@ $scope.addTask = function () {
              
       }       
   }
-$scope.editTask = function (todoRoute, todoId, data) {    
-console.log(parseRequest(todoRoute));     
-console.log(parseRequest($scope.context.route)+'/'+todoId);     
-        Todos.editTask(todoId,  {type:'edition', todo:data})
+$scope.editTask = function (route, todo, index) {   
+  var task={'todo':todo, 'updated':Date.now};
+        Todos.editTask(parseTaskRequest(route), task)
         .success(function(data) {
-          updateLocalTasks($scope.context.route, data)  ;
           swal({   title: "Tâche modifiée!",   
             text: "La tâche a été modifiée avec succès.", 
              animation: "slide-from-top",
@@ -725,7 +758,16 @@ var updateLocalTasks=function(route, data){
 
 }
 
-$scope.deleteTask = function (todoId, index) {
+var deleteTaskLocally = function(index){
+  $scope.context.subtasks.splice(index,1)
+}
+
+var editTaskLocally = function(index, task){
+  $scope.context.subtasks[index] = task;
+}
+
+
+$scope.deleteTask = function (route, index) {
 swal({
       title: "Delete the task?", 
       text: "Are you sure that you want to delete this task?", 
@@ -735,9 +777,10 @@ swal({
       confirmButtonText: "Yes, delete it!",
       confirmButtonColor: "#ec6c62"
     }, function() {
-       Todos.deleteTask(parseRequest($scope.context.route)+'/'+todoId)
+       Todos.deleteTask(parseTaskRequest(route))
         .success(function(data) {
-          updateLocalTasks($scope.context.route, data)     ;
+     //     updateLocalTasks($scope.context.route, data)     ;
+     deleteTaskLocally(index);
            swal({   title: "Tâche supprimée!",   
             text: "La tâche a été supprimée avec succès", 
              animation: "slide-from-top",

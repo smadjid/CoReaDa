@@ -5,7 +5,7 @@
 			
 
 			<div class="input-group">
-	<input id='taskInput' type="text" class="form-control" ng-model="formData.text" >
+	<input id='taskInput' type="text"  class="form-control" ng-model="formData.text" >
 	<span class="input-group-btn">
 		<button class="btn btn-default" type="button" ng-click="addTask()"><span
 			class="glyphicon glyphicon-plus"></span> 
@@ -38,13 +38,13 @@
 </td>
 
 		<td style="width: 10%;" valign="top">
-			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route,task._id, $data.name)">
+			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
 				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
 				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
 			</form>
 			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
-				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task._id, $index)"></a>
+				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task.route, $index)"></a>
 			</div>
 		</td>
 	</tr>
@@ -66,13 +66,13 @@
 </td>
  
 		<td style="width: 10%;" valign="top">
-			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, task._id, $data.name)">
+			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
 				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
 				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
 			</form>
 			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
-				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task._id, $index)"></a>
+				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task.route, $index)"></a>
 			</div>
 		</td>
 	</tr>

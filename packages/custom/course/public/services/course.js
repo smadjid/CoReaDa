@@ -137,16 +137,27 @@ angular.module('mean.course').factory('Todos', ['$http',function($http,id) {
       addTask : function(route,params) {
         return $http.post('/api/tasks/add/'+route,params);
       },
-      deleteTask : function(path) {
-        return $http.delete('/api/tasks/delete/'+path);  
+      deleteTask : function(params) {
+        if(params.scope=='course')
+          return $http.delete('/api/course/tasks/delete/'+params.route);  
+        if(params.scope=='chapter')
+          return $http.delete('/api/chapter/tasks/delete/'+params.route);  
+        if(params.scope=='part')
+          return $http.delete('/api/part/tasks/delete/'+params.route);  
+      },
+      editTask : function(params, task) {        
+        if(params.scope=='course')          
+          return $http.post('/api/course/tasks/edit/'+params.route, task);  
+        if(params.scope=='chapter')
+          return $http.post('/api/chapter/tasks/edit/'+params.route, task);  
+        if(params.scope=='part')
+          return $http.post('/api/part/tasks/edit/'+params.route, task);  
       },
       getTasks : function(courseId, partId, todoData) {  
       if(courseId == partId) partId=0;      
         return $http.get('/api/tasks/get/'+courseId+'/'+partId)
         },
-      editTask : function(path, todoData) {                
-        return $http.post('/api/tasks/edit/'+path, todoData);
-        },      
+      
       filterTasks : function(studiedPart) {
           return studiedPart.todos;
       }

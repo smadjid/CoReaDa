@@ -111,7 +111,7 @@ module.exports = function(Courses) {
         	res.json(_result);
         	})
         },
-           // delete a todo
+        // delete a todo from the course
         removeTodo:function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");   
@@ -152,72 +152,141 @@ module.exports = function(Courses) {
             })
         },
   
-        /**
-         * Edit a todo
-         */
-
-        editTodo:function(req, res) { 
-        Course.findOne({"_id":req.params.todoId}).exec(function(err, _todo){
-            if(err) console.log("Error finding the todo.");  
-            console.log(_todo); 
-            _todo.todo=req.body.todo;
-            _todo.save();
-            console.log(_todo.todo);
-            })
-        },
-
-        /**
-         * Edit a todo
-         */
-
-        editTodo0:function(req, res) { alert(req);
+        
+        // delete a todo from the course
+        removeCourseTodo:function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");   
-            var _result = _course.todos;            
-            if(req.params.chapterId==0){
-                var todo =  _course.todos.id(req.params.todoId);
-                todo.todo = req.body.todo;
-                todo.save();
-                _course.save();
+            if(req.params.factId != 0){
+                var _fact = _course.facts.id(req.params.factId)
+                _fact.todos.id(req.params.todoId).remove();               
+                _fact.save();
             }
-            else{
-                var chapter = _course.chapters.id(req.params.chapterId);
-                if(req.params.partId==0){
-                    var todo =  chapter.todos.id(req.params.todoId);
-                    todo.todo = req.body.todo;
-                    todo.save();
-                    chapter.save();                    
-                    _course.save();
-                    _result = chapter.todos;
-                    }
-                    else{
-                        var part = chapter.parts.id(req.params.partId);
-                        if(req.params.factId==0){                            
-                            var todo =  part.todos.id(req.params.todoId); 
-                            todo.todo = req.body.todo;
-                            todo.save();
-                            part.save();    
-                            chapter.save();
-                            _course.save();
-                            _result = part.todos;
-                        }
-                        else{
-                            var fact = part.facts.id(req.params.partId);
-                            var todo =  fact.todos.id(req.params.todoId); 
-                            todo.todo = req.body.todo;
-                            todo.save();
-                            fact.save();    
-                            part.save();    
-                            chapter.save();
-                            _course.save();
-                            _result = fact.todos;
-                        }
-                    }
-                }
-            res.json(_result);
+            else 
+                _course.todos.id(req.params.todoId).remove();               
+            _course.save();
+            res.json('ok');
             })
         },
 
+         // delete a todo from a chapter
+        removeChapterTodo:function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");    
+            var _chapter = _course.chapters.id(req.params.chapterId)           
+            if(req.params.factId != 0){
+                var _fact = _chapter.facts.id(req.params.factoId)
+                _fact.todos.id(req.params.todoId).remove();               
+                _fact.save();                
+            }
+            else 
+                _chapter.todos.id(req.params.todoId).remove();               
+            _chapter.save();
+            _course.save();
+            res.json('ok');
+            })
+        },
+         // delete a todo from a part
+        removePartTodo:function(req, res) {
+       Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");    
+            var _chapter = _course.chapters.id(req.params.chapterId);           
+            var _part = _chapter.parts.id(req.params.partId);
+            if(req.params.factId != 0){
+                var _fact = _part.facts.id(req.params.factoId)
+                _fact.todos.id(req.params.todoId).remove();               
+                _fact.save();
+                
+            }
+            else 
+                _part.todos.id(req.params.todoId).remove();               
+            _part.save();
+            _chapter.save();
+            _course.save();
+            res.json('ok');
+            })
+        },
+        
+        
+                // edit a todo of  the course
+        editCourseTodo:function(req, res) {        
+            
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");   
+            var _todo = 0;
+            if(req.params.factId != 0){
+                var _fact = _course.facts.id(req.params.factId)
+                var _todo = _fact.todos.id(req.params.todoId);
+                _todo.todo = req.body.todo;
+                _todo.updated = req.body.updated;
+                _todo.save();
+                _fact.save();
+            }
+            else 
+                {
+                    var _todo = _course.todos.id(req.params.todoId);
+                    _todo.todo = req.body.todo;
+                    _todo.updated = req.body.updated;
+                    _todo.save();
+                }               
+            _course.save();
+            res.json(_todo);
+            })
+        },
+
+         // edit a todo of  a chapter
+        editChapterTodo:function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");    
+            var _todo = 0;
+            var _chapter = _course.chapters.id(req.params.chapterId)           
+            if(req.params.factId != 0){
+                var _fact = _chapter.facts.id(req.params.factoId)
+                _todo = _fact.todos.id(req.params.todoId);    
+                _todo.todo = req.body.todo;
+                _todo.save();           
+                _fact.save();                
+            }
+            else 
+                {
+                    _todo = _chapter.todos.id(req.params.todoId);               
+                    _todo.todo = req.body.todo;
+                    _todo.save();
+
+                }
+            _chapter.save();
+            _course.save();
+            res.json(_todo);
+            })
+        },
+         // edit a todo of  a part
+        editPartTodo:function(req, res) {
+       Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");    
+            var _todo = 0;
+            var _chapter = _course.chapters.id(req.params.chapterId);           
+            var _part = _chapter.parts.id(req.params.partId);
+            if(req.params.factId != 0){
+                var _fact = _part.facts.id(req.params.factoId)
+                _todo = _fact.todos.id(req.params.todoId);               
+                _todo.todo = req.body.todo;
+                _todo.save();
+                _fact.save();
+                
+            }
+            else 
+                {
+                    _todo = _part.todos.id(req.params.todoId);
+                    _todo.todo = req.body.todo;
+                    _todo.save();
+                }               
+            _part.save();
+            _chapter.save();
+            _course.save();
+            res.json(_todo);
+            })
+        },
+        
        
         /**
          * Get a Todo
