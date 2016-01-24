@@ -26,6 +26,7 @@
     "body-parser": "latest",
     "compression": "latest",
     "connect-flash": "latest",
+    "connect-modrewrite": "latest",
     "consolidate": "latest",
     "cookie-parser": "latest",
     "errorhandler": "latest",
@@ -51,11 +52,9 @@
     "serve-favicon": "latest",
     "shelljs": "latest",
     "swig": "latest",
-    "view-helpers": "latest",
-    "view-helpers": "xeditable"
+    "view-helpers": "latest"
   },
   "devDependencies": {
-    "connect-modrewrite": "latest",
     "del": "latest",
     "expect.js": "latest",
     "gulp": "latest",
@@ -69,6 +68,7 @@
     "gulp-load-plugins": "latest",
     "gulp-mocha": "latest",
     "gulp-nodemon": "latest",
+    "gulp-sass": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "jasmine": "latest",

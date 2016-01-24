@@ -1,0 +1,7 @@
+{
+  "name": "courses",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular-chroma": "*"
+  }
+}

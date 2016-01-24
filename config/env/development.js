@@ -13,7 +13,7 @@ module.exports = {
   },
   hostname: 'http://localhost:3000',
   app: {
-    name: 'CoReaDa - Course Reading Dashboard - Development'
+    name: 'MEAN - A Modern Stack - Development'
   },
   strategies: {
     local: {

@@ -1,9 +1,0 @@
-{
-  "name": "course",
-  "version": "0.0.1",
-  "dependencies": {
-    "angular-xeditable": "~0.1.9",
-    "angular-bootstrap": "~0.14.3",
-    "ng-scrollbars": "~0.0.5"
-  }
-}

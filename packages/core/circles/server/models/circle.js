@@ -50,7 +50,7 @@ CircleSchema.statics.buildPermissions = function(callback) {
         //going through each of the containers parents
         containers.forEach(function(container) {
 
-          if (data[container].decendants.indexOf(circle.name) == -1) {
+          if (data[container].decendants.indexOf(circle.name) === -1) {
             data[container].decendants.push(circle.name.toString());
             if (level === 0) {
               data[circle.name].parents.push(container.toString());
@@ -59,7 +59,7 @@ CircleSchema.statics.buildPermissions = function(callback) {
           }
 
           data[container].circles.forEach(function(circ) {
-            if (containers.indexOf(circ) == -1 && circ != circle.name) {
+            if (containers.indexOf(circ) === -1 && circ !== circle.name) {
               data[circle.name].containers.push(circ.toString());
               found = true;
             }
@@ -79,21 +79,23 @@ CircleSchema.statics.buildPermissions = function(callback) {
 
 
 var buildTrees = CircleSchema.statics.buildTrees = function(data) {
-  var tree = []
+  var tree = [];
 
   for (var index in data) {
     buildTree(data, index, tree);
   }
 
-  return tree;
+  return {
+    'name': 'circles',
+    'children': tree
+  };
 };
 
 function buildTree(data, id, branch) {
-
   var length = branch.length;
 
   branch.push({
-    "name": data[id].name
+    'name': data[id].name
   });
 
   if (hasChildren(data, id)) {
@@ -129,4 +131,5 @@ function noChildren(data, id) {
 function hasChildren(data, id) {
   return !noChildren(data, id);
 }
+
 mongoose.model('Circle', CircleSchema);

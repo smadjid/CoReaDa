@@ -13,7 +13,7 @@ module.exports = {
     format: 'common'
   },
   app: {
-    name: 'CoReaDa - Course Reading Dashboard - Test'
+    name: 'MEAN - A Modern Stack - Test'
   },
   strategies: {
     local: {
