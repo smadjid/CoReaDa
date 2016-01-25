@@ -1081,4 +1081,12 @@ border-radius: 3px;
 
 .course_title_top{
   font-size: 18px;
+float: left;
+    padding: 12px 15px;
+    line-height: 21px;
+    height: 45px;
+
+    font-family: 'Halflings';
+    
+    -webkit-font-smoothing: antialiased;
 }

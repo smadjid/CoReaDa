@@ -20,11 +20,11 @@ Courses.register(function(app, auth, database, swagger) {
 
   
   //We are adding a link to the main menu for all authenticated users
-  Courses.menus.add({
+ /* Courses.menus.add({
     'roles': ['authenticated'],
     'title': 'Courses',
     'link': 'all courses'
-  });
+  });*/
  
 
 
@@ -62,6 +62,8 @@ Courses.register(function(app, auth, database, swagger) {
   swagger.add(__dirname);
 
   Courses.angularDependencies(['xeditable','perfect_scrollbar','angularSpinner']);
+
+
 	
   return Courses;
 });

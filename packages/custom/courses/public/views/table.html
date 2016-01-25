@@ -1,7 +1,7 @@
     <thead>
         <tr class='chapters-header'>
         <th role="button" ng-click='resetPath();goHome()'><span class="glyphicon glyphicon-home" ></span></th>         
-            <th role='button' ng-click='triggerClick($event)' class="chapter_index" ng-repeat="chapter in studiedCourse.chapters"  colspan={{(chapter.parts).length}}  data-part={{chapter.id}} data-path={{chapter.route}}>
+            <th role='button' ng-click='triggerClick($event)' class="chapter_index" ng-repeat="chapter in course.chapters"  colspan={{(chapter.parts).length}}  data-part={{chapter.id}} data-path={{chapter.route}}>
               <a class="display-chapter-info"  href="#{{chapter.route}}" > {{chapter.title}}</a>
             </th>            
 

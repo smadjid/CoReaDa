@@ -1,27 +1,36 @@
-<div class="" data-ng-controller="CoursesController">
-  <h1>Example view from your new awesome package</h1>
-  <h2>Package: {{package.name}}</h2>
+<div class="" data-ng-controller="CoursesListController" data-ng-init="find()">
+<div class="row">
+
+<div class="col-lg-2">
+<img src="/courses/assets/img/logo.png" width="70%" />
+</div>
+
+<div class="col-lg-9">
+<h1>Welcome to <em>CoReaDa</em>, the Course Reading Dashboard</h1>
+</div>
+
+</div>
+</br>
+</br>
+<div class="row">
+<h3>Courses ready for analysis</h3>
+  <br/>
   <ol>
-    <li>
-      <a href="/api/courses/example/anyone" target="_self">Server route that anyone can access</a>
-    </li>
-    <li>
-      <a href="/api/courses/example/auth" target="_self">Server route that requires authentication</a>
-    </li>
-    <li>
-      <a href="/api/courses/example/admin" target="_self">Server route that requires admin user</a>
-    </li>
-    <li>
-      <a href="/api/courses/example/render" target="_self">Raw Html rendering example from using swig</a>
+    <li data-ng-repeat="course in courses">
+       <h4><a data-ng-href="/courses/{{course._id}}"><strong>{{course.title}}</strong></a></h4>
+    
+      <ul>
+        <li>Analyse créée le: {{course.created | date:'medium'}}
+        <li>Nombre de remarques:
+        <li>Nombre de tâches planifiées:
+      </ul>
     </li>
   </ol>
-  <h3><img src="/courses/assets/img/logo.png" /></h3>
+  
   </br>
-  <p class="alert alert-info">You can find your package in /packages/courses</p>
+  <p class="alert alert-warning">You must be logged in to use this work in progress tool</p>
   </br>
-  <p class="alert alert-warning">MEAN versions prior to 0.3.2 will be in /node_modules/courses</p>
-  </br>
-  <h3><a href="http://learn.mean.io">Documentation</a></h3>
-  </br>
+</div>
+
 </div>
 

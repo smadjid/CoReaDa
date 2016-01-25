@@ -102,7 +102,7 @@ module.exports = function(Courses) {
             });
         },
         /**
-         * Show an course
+         * Show a course
          */
         show: function(req, res) {
 
@@ -121,10 +121,9 @@ module.exports = function(Courses) {
          * List of Courses
          */
         all: function(req, res) {
-            var query = req.acl.query('Course');
-
+           
             //query.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
-            query.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+            Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
                 if (err) {
                     return res.status(500).json({
                         error: 'Cannot list the courses'
