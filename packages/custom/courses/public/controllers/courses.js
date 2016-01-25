@@ -90,6 +90,40 @@ var parseTask=function(path, content){
  var todo ={'classof':indicator, 'todo':content,'elementType':'todo'}
   return {'route':route, 'todo':todo}
 }
+var deparseTask=function(path){
+  
+  var arr = path.split(','); 
+  var courseId = $scope.course._id;
+  var chapId = 0;
+  var partId=0;
+  var factId=0;
+  var indicator="ALL";
+  var result ="#";
+ 
+  if(arr.length>=2)   chapId =  arr[1] ;
+  if(arr.length>=3)   partId =  arr[2] ;
+  if(arr.length>=4)   indicator =  arr[3] ;
+  if(arr.length>=5)   factId =  arr[4] ;
+  if(chapId==0) return result
+    else {
+      result ="#"+courseId;
+      result = result+','+chapId;
+      if(partId==0)
+        return result;
+      else{
+        result =  result +','+ partId;
+        if(factId==0)
+          return result
+        else{
+          result = result + ',' + factId;
+          return result;
+        } 
+      }
+    }
+
+  
+}
+
 var parseRequest=function(path){
   var arr = path.split(','); 
   var courseId = $scope.course._id;
@@ -305,6 +339,13 @@ $scope.goHome=function(){
   goHome();
 }
 
+$scope.taskContexter= function(task) {
+ 
+        var urlResolved = deparseTask(task.route);
+        console.log(urlResolved);
+ 
+ loadURL(urlResolved);
+};
 
 var addTask = function(route,params) {
         return $http.post('/api/tasks/add/'+route,params);
@@ -380,7 +421,7 @@ if(arr.length==4) {
      else{
     displayPartIssues(path, part, indicator);
     $scope.context.selectedElement=part._id+'/'+indicator;
-    $scope.context.selectedIndicator=indicator;
+    $scope.context.selectedIndicator=indicator;alert(indicator)
   }
 }
 
@@ -402,7 +443,7 @@ $scope.computeTextColor=function(val){
 }
 
 var loadURL =function(url){
-
+console.log(url);
   if(url == window.location.hash)
     $(window).trigger('hashchange')
   else 
@@ -422,38 +463,7 @@ $scope.triggerClick=function($event){
   
  }
 
-$scope.displayIssue=function($event){   
-  $(':focus').blur();
-  if(($($event.currentTarget).hasClass('chosenPart'))){    
-      resetPath();
-      goHome();
-    return;
-  }
-  resetPath();
 
-  $($event.currentTarget).toggleClass('chosenPart');
-
-      var indicator = $($event.currentTarget).attr('data-indicator');
-      var part = $($event.currentTarget).attr('data-part');
-      var fact = $($event.currentTarget).attr('data-fact');  
-      var url = $($event.currentTarget).attr('data-path');  
-
-      
-
-      $scope.issuesInspectorShow = true;
-
-     var url =  $($event.currentTarget).attr('data-path');
-     $scope.context.route= url;     
-     var urlResolved = resolveRoute(url);
-     $scope.context.Tasks=urlResolved.todos;
-     $scope.context.Facts=computeSubFacts(urlResolved, indicator);
-     
-     
-     
-     $scope.context.inspector_title = "Parte: "+ $.grep($scope.course.parts, function(e){ return  e.id == part })[0].title+' - '+
-   $($event.currentTarget).find('.display-part-issues').text() +  " remarques de type "+ $($event.currentTarget).attr('data-indicator') ;
-
-    }
 
 var displayPartIssues=function(url, part, indicator){   
   $(':focus').blur();
