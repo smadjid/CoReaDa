@@ -47,9 +47,7 @@ Courses.register(function(app, auth, database, swagger) {
   Courses.aggregateAsset('css',"../lib/perfect-scrollbar/min/perfect-scrollbar.min.css");
   Courses.aggregateAsset('js',"../lib/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js");
   
- Courses.aggregateAsset('js',"../lib/spin.js/spin.min.js");
 
-  Courses.aggregateAsset('js',"../lib/angular-spinner/angular-spinner.js");
   
   Courses.aggregateAsset('css', 'courses.css');
     Courses.settings({
@@ -61,7 +59,7 @@ Courses.register(function(app, auth, database, swagger) {
   // Only use swagger.add if /docs and the corresponding files exists
   swagger.add(__dirname);
 
-  Courses.angularDependencies(['xeditable','perfect_scrollbar','angularSpinner']);
+  Courses.angularDependencies(['xeditable','perfect_scrollbar']);
 
 
 	

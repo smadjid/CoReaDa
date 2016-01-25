@@ -15,6 +15,7 @@ angular.module('mean.courses').controller('CoursesController', ['$scope', '$root
   $scope.courseParts=[];
    $scope.context = {};
 
+ 
     // construct hierarchy, routes and paths
 var completeCourseParts=function(course, courseParts){
   var course_route = course._id;
@@ -269,7 +270,7 @@ var CountSubFacts=function(element){
 
 }
 var updateDisplay=function(){
-//  startSpin();
+  
 
     var url = location.hash.slice(1);
     var urlResolved = resolveRoute(url);
@@ -292,7 +293,7 @@ var updateDisplay=function(){
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
 
-  //    stopSpin();
+      
     
 }
 var goHome=function(){ 
@@ -888,6 +889,7 @@ swal({
     };
 
     $scope.findOne = function() {
+     
       Courses.get({
         courseId: $stateParams.courseId
       }, function(course) {
@@ -907,10 +909,12 @@ swal({
     $scope.context.subtasks=computeAllTasks();
       
 
-if($('.course_title_top').length<1)
+    if($('.course_title_top').length<1)
         $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
 
+      updateDisplay();
 
+  
 
 
       });

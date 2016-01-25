@@ -962,25 +962,41 @@ text-decoration:none!important;
   padding:0px;
   height:auto!important;
   font-size : 12px!important;
-  border: none;
-  
+  border: none;  
 }
-.inspector-issue .glyphicon, .inspector-hint .glyphicon{
+
+.inspector-issue .glyphicon{
   padding-right:10px;
   font-size: 14px;
   font-weight: normal;
   cursor: pointer;
 }
-.inspector-issue span, .inspector-hint span,.inspector-issue span:hover, .inspector-hint span:hover{
+.inspector-hint .glyphicon{
+  padding-right:10px;
+  padding-top:5px;
+  font-size: 10px;
+  font-weight: normal;
+  cursor: pointer;
+}
+.inspector-issue span, .inspector-issue span:hover{
   font-size: 14px;
   font-weight: normal;
   cursor: default;
 }
-.inspector-issue{
-  border-bottom: 1px solid rgba(0,0,0,.3)!important;
-
+.inspector-hint span,.inspector-hint span:hover{
+  font-size: 12px;
+  font-weight: normal;
+  cursor: default;
 }
 
+.inspector-issue{
+  border-bottom: 1px solid rgba(0,0,0,.15)!important;
+
+}
+.hint-heading .panel-heading{
+  padding: 5px 15px 5px 30px!important;
+
+}
 .panel-group {
     margin-bottom: 0;
 }
@@ -1055,6 +1071,9 @@ padding: 5px 10px;;
   border: none!important;  
   background: rgba(128, 128, 128, 0.6); 
 }
+.unselectedTask span{
+  color:#5A5252;
+}
 input, textarea, select, a { outline: none!important; }
 a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
   outline: none!important;
@@ -1089,4 +1108,19 @@ float: left;
     font-family: 'Halflings';
     
     -webkit-font-smoothing: antialiased;
+}
+
+.course_li>li {
+    display: block;
+}
+.course_li>li:before {
+    /*Using a Bootstrap glyphicon as the bullet point*/
+    content: "\e043";
+    font-family: 'Glyphicons Halflings';
+    font-size: 14px;
+    float: left;
+    
+    margin-left: -17px;
+    padding-right:10px;
+    color: #796C6C;
 }

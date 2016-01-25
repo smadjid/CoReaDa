@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.courses').controller('CoursesListController', ['$scope', '$rootScope','$stateParams', '$location', '$http','Global', 'Courses', 'MeanUser', 'Circles','$http','$uibModal',
-  function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
+angular.module('mean.courses').controller('CoursesListController', ['$scope',  '$location', 'Global', 'Courses', 'MeanUser', 'Circles',
+  function($scope,  $location,  Global, Courses, MeanUser, Circles) {
     $scope.global = Global;
 
     if($('.course_title_top').length>0) $('.course_title_top').remove();
