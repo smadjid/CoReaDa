@@ -3,8 +3,14 @@
 			<i class="panel-title-icon fa fa-tasks"></i>
 			<span class="panel-title">Tâches</span>
 			
+<div id="form-controlA" editable-text="formData" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
+<span
+			class="glyphicon glyphicon-plus"></span> 
+				{{formData ||  '(nouvelle tâche pour ce contexte)'  }}
 
-			<div class="input-group">
+		</div>
+		</div>
+	<!--		<div class="input-group">
 			
 	<input id='taskInput' type="text"  class="form-control" ng-model="formData.text" >
 	<span class="input-group-btn">
@@ -12,18 +18,16 @@
 			class="glyphicon glyphicon-plus"></span> 
 		</button>
 	</span>
-	</div>
+{{ formData.text || '(nouvelle tâche pour ce contexte)' }} 
+	</div>-->
 
 		</div>
 
 <perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
 
+
 		<div class="tasks-panel-body">
-<!--		<div>
-<span editable-textarea="task.todo"  e-required style="vertical-align:text-top"  ng-model="formData.text">
-				{{ task.todo || '(Insérer une nouvelle tâche)' }} 
-		</span>
-		</div>-->
+		
 <table class=" table-hover tasks-table" style="">
 
 	

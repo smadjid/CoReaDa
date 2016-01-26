@@ -568,10 +568,10 @@ hr {
   padding:5px;
 }
 
-.editable-click, a.editable-click {
+.editable-click, a.editable-click, .editable-click:hover, a.editable-click:hover {
     text-decoration: none!important;
-    color: #428bca;
-    border-bottom: none;
+    color: #F5F5F5;
+   
     cursor: pointer; cursor: hand;
     width:100%;
 }
@@ -1098,6 +1098,13 @@ padding: 5px 10px;;
 .tasks-table .editable-textarea{
   
   width:100%!important;
+  
+}
+ .editable-textarea .editable-controls .editable-input,
+ .editable-textarea .editable-controls,
+ .editable-textarea{
+  
+  width:96%!important;
   
 }
 .tasks-table .panel, .tasks-table .panel-heading {

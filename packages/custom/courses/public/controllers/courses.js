@@ -7,15 +7,18 @@ angular.module('mean.courses')
    }
 ]);
 
-angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope','$stateParams', '$location', '$http','Global', 'Courses', 'MeanUser', 'Circles','$http','$uibModal',
+
+
+var app=angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope','$stateParams', '$location', '$http','Global', 'Courses', 'MeanUser', 'Circles','$http','$uibModal',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
     $scope.global = Global;
-    $scope.formData = {}
+    
   $scope.issuesInspectorShow = false;
   $scope.courseParts=[];
    $scope.context = {};
+$scope.formData='';
+$scope.textBtnForm='';
 
- 
     // construct hierarchy, routes and paths
 var completeCourseParts=function(course, courseParts){
   var course_route = course._id;
@@ -864,6 +867,9 @@ var computeInspectorPartProperties = function(properties){
 
 }
 
+$scope.clearEditingTask=function(){
+  $scope.formData='';return false;
+}
 var insertLocalTask=function(route, task){
   var element = resolveRoute(route);
   
@@ -874,20 +880,13 @@ var insertLocalTask=function(route, task){
 $scope.editSuggestion=function($event){
   var suggestion = $($event.currentTarget).text(); 
 
-  $scope.formData.text = suggestion;
-  
-  //$("#taskInput").fadeIn(500).fadeOut(500).fadeIn(500);
-window.setTimeout(function() {
-             $("#taskInput").fadeIn(200).fadeOut(200).fadeIn().focus().select();
-        }, 50);
- 
-
+  $scope.formData = suggestion;
 
 }
 $scope.createTask=function($event){
   var suggestion = "Nouvelle tâche"; 
 $('#taskInput').focus();
-  $scope.formData.text = suggestion;
+  $scope.formData = suggestion;
   $scope.context.route = $($event.currentTarget).attr('href');
   
 window.setTimeout(function() {
@@ -896,26 +895,25 @@ window.setTimeout(function() {
 
 }
 
-$scope.addTask = function () {
-      if ($scope.formData.text != undefined) {
-        var addedTask = $scope.formData.text;          
+$scope.addTask = function (data) {
+      if (data != undefined) {
+        var addedTask = data;          
         var route = $scope.context.route;
         var query = parseTask(route, addedTask); alert(query.route); 
         addTask(query.route,query.todo)
         .success(function(data) {
           insertLocalTask(route, data);
           $scope.context.subtasks=computeAllTasks();
-           $scope.formData.text = undefined;
+           $scope.formData = undefined;
             swal({   title: "Nouvelle tâche ajoutée!",   
             text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
              animation: "slide-from-top",
              type:"info"  ,
             timer: 1500,   showConfirmButton: false });
-        });
-
+        });        
         
-             
-      }       
+      }    
+      $scope.formData='';return false;   
   }
 $scope.editTask = function (route, todo, index) {   
   var task={'todo':todo, 'updated':Date.now};
@@ -1105,3 +1103,12 @@ swal({
     };
   }
 ]);
+app.run(function(editableOptions, editableThemes) {  
+  editableOptions.theme = 'bs3';
+  editableThemes['bs3'].submitTpl =  '<button type="submit" class="btn btn-info"><span></span></button><br/>',
+  editableThemes['bs3'].cancelTpl =  '<button type="button" class="btn btn-warning" ng-click="$form.$cancel()">'+
+                     '<span></span>'
+
+  editableThemes.bs3.inputClass = 'input-xs';
+  editableThemes.bs3.buttonsClass = 'btn-xs';
+});
