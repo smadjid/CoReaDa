@@ -162,7 +162,7 @@ module.exports = function(Courses) {
                     else{
 
                         var part = chapter.parts.id(req.params.partId);
-                        if(req.params.facttId==0){
+                        if(req.params.factId==0){
                             part.todos.unshift(req.body);
                             part.save();    
                             chapter.save();

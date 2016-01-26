@@ -900,7 +900,7 @@ $scope.addTask = function () {
       if ($scope.formData.text != undefined) {
         var addedTask = $scope.formData.text;          
         var route = $scope.context.route;
-        var query = parseTask(route, addedTask);
+        var query = parseTask(route, addedTask); alert(query.route); 
         addTask(query.route,query.todo)
         .success(function(data) {
           insertLocalTask(route, data);
