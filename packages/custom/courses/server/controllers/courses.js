@@ -162,11 +162,25 @@ module.exports = function(Courses) {
                     else{
 
                         var part = chapter.parts.id(req.params.partId);
-                        part.todos.unshift(req.body);
-                        part.save();    
-                        chapter.save();
-                        _course.save();
-                        _result = part.todos[0];
+                        if(req.params.facttId==0){
+                            part.todos.unshift(req.body);
+                            part.save();    
+                            chapter.save();
+                            _course.save();
+                            _result = part.todos[0];
+                        }
+                        else{
+                            var fact = part.facts.id(req.params.factId);
+                            var todo = req.body;
+                            todo.classof = fact.classof;
+                            fact.todos.unshift(todo);
+                            fact.save();    
+                            part.save();    
+                            chapter.save();
+                            _course.save();
+                            _result = part.todos[0];
+
+                        }
 
                     }
             }           

@@ -5,6 +5,7 @@
 			
 
 			<div class="input-group">
+			
 	<input id='taskInput' type="text"  class="form-control" ng-model="formData.text" >
 	<span class="input-group-btn">
 		<button class="btn btn-default" type="button" ng-click="addTask()"><span
@@ -14,39 +15,40 @@
 	</div>
 
 		</div>
-<perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
-		<div class="tasks-panel-body">
 
-<table class="table table-hover table-condensed tasks-table" style="">
+<perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+
+		<div class="tasks-panel-body">
+<!--		<div>
+<span editable-textarea="task.todo"  e-required style="vertical-align:text-top"  ng-model="formData.text">
+				{{ task.todo || '(Insérer une nouvelle tâche)' }} 
+		</span>
+		</div>-->
+<table class=" table-hover tasks-table" style="">
 
 	
 
-	<tr ng-repeat="task in context.subtasks" class="selectedTask"
+	<tr role='button' ng-repeat="task in context.subtasks" class="selectedTask"
 	 ng-class="{'selectedTask': task.selected, 'unselectedTask': !task.selected}" >
-		<td style="width: 70%;" >
-<uib-accordion close-others="oneAtATime" style="width:50%">
-   <uib-accordion-group is-open="status.open" class='task-accordion'>
-      <uib-accordion-heading>
-      <i class="pull-left glyphicon" style="font-size: 10px; vertical-align:text-bottom; padding-top:3px;padding-right:5px" ng-class="{'glyphicon-menu-down': status.open, 'glyphicon-menu-right': !status.open}"></i>
-        <span editable-textarea="task.todo" e-name="name" e-form="rowform" e-required style="vertical-align:text-top">
+		<td style="width: 75%;"  ng-click="taskContexter(task)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
+
+    <!--  <i class="pull-left glyphicon" style="font-size: 10px; vertical-align:text-bottom; padding-top:3px;padding-right:5px" ng-class="{'glyphicon-menu-down': status.open, 'glyphicon-menu-right': !status.open}"></i>-->
+        <div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
 				{{ task.todo || 'empty' }} 
-		</span>
-		<a href="#" ng-click="taskContexter(task)">Contexte</a>
-      </uib-accordion-heading>
-      description
-    </uib-accordion-group>
-  </uib-accordion>
+		</div>
+		
+    
 
 </td>
 
 		<td style="width: 10%;" valign="top">
 			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
-				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
-				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
+				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="rowform.$save()"></a>
+				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" aria-hidden="true" ng-click="rowform.$cancel()"></a>
 			</form>
 			<div class="buttons" ng-show="!rowform.$visible">
-				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
-				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task.route, $index)"></a>
+				<a role="button" class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
+				<a role="button" class="glyphicon glyphicon-minus" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>
 			</div>
 		</td>
 	</tr>

@@ -166,12 +166,12 @@ ul.alert-dropdown {
 }
 
 .panel-flat{
-    border-color:  #34495E
+    border-color:  #49769C
   }
   .panel-flat > .panel-heading {
-    border-color: #34495E;
+    border-color: #49769C;
     color: #fff;
-    background-color: #34495E;
+    background-color: #49769C;
     padding:5px;
 }
 
@@ -950,9 +950,16 @@ table {
 }
 
 .inspector-item {
-  border: 2px solid #34495E;
+  border: 2px solid #49769C;
   margin-bottom: 0px;
   padding:3px;
+}
+.inspector-item-selected {
+  border: 4px outset #45348A!important;  
+  margin-bottom: 0px;
+  padding:8px;
+
+
 }
 .inspector-item *{
 text-decoration:none!important; 
@@ -1055,25 +1062,51 @@ padding: 5px 10px;;
     margin: 0;
     padding: 0px;
 }
+
+.tasks-table{
+  display: block;
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 115%;
+  overflow: auto;
+  width: auto;
+}
 .tasks-table td{
   border:none;
   border-bottom: solid #49769C!important;
+  
+    color: rgb(111, 111, 111);
+    padding: 5px 10px;
+}
+.tasks-table .selectedTask{
+  border: solid #45348A!important;
+   background-color: rgba(240,255,255,1);;   
+}
+.tasks-table .selectedTask *{
+  color:rgba(64,61,61,0.85);
+}
+.tasks-table .unselectedTask{
+  border: none!important;  
+  background-color: #DDD;
+
+}
+.tasks-table .unselectedTask *{
+  color:grey;
+}
+.tasks-table .editable-textarea .editable-controls .editable-input,
+.tasks-table .editable-textarea .editable-controls,
+.tasks-table .editable-textarea{
+  
+  width:100%!important;
+  
 }
 .tasks-table .panel, .tasks-table .panel-heading {
     border: none!important;
     background: transparent!important;
 }
 
-.selectedTask{
-  border: solid #45348A!important;   
-}
-.unselectedTask{
-  border: none!important;  
-  background: rgba(128, 128, 128, 0.6); 
-}
-.unselectedTask span{
-  color:#5A5252;
-}
+
+
 input, textarea, select, a { outline: none!important; }
 a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
   outline: none!important;

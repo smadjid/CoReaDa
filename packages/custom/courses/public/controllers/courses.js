@@ -38,93 +38,116 @@ var completeCourseParts=function(course, courseParts){
 
 }
 
-var resolveRoute=function(route){
-   var arr = route.split(',');       
+var resolveRoute=function(path){
+   
+   var regExp = RegXpURL(path); 
+  
+   var arr = regExp.arr.split(',');  
+      
    if(typeof $scope.course == 'undefined')
       console.log($scope.course);
+  var result = $scope.course;  
    if(arr.length>=2) {
      var chap = $.grep($scope.course.chapters, function(e){ return  e._id == arr[1] })[0];
-     if(arr.length>=3){
+     result = chap
+     if(arr.length==3){
        var part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];
-       if(arr.length==4){
-        return part;
+       result = part
+     }
+     else
+       if(arr.length>=4){
+        var part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];
+         var fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0];        
+         
+         result = fact
        }
-       else
-       if(arr.length>=5){
-         var fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0];
-         if(arr.length>=6){
-           var todo = $.grep(fact.todos, function(e){ return  e._id == arr[5] })[0];
-           return todo;
-         }
-         return fact
-       }
-       return part
      }     
-     return chap
-    }
-  return $scope.course;  
+     
+    
+  var taskId = 0;
+   var taskIndicator = 0;
+   if(regExp.task!=0){
+      taskId = regExp.task;
+       if(regExp.indicator!=0)
+        taskIndicator=regExp.indicator;
+      
+      var todo = $.grep(result.todos, function(e){ return  e._id == taskId })[0];
+      result = todo;
+         
+     }
+     return result;
 }
 var resetPath=function(){    
   $('.chosenPart').removeClass('chosenPart'); 
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
+  $('.inspector-item-selected').removeClass('inspector-item-selected');
   
   $scope.issuesInspectorShow = false;
 
 }
 
 var parseTask=function(path, content){
+
+   var regExp = RegXpURL(path);
+  
+  
+  var taskId = regExp.task;
+  var indicator = regExp.indicator;
+
+  path = regExp.arr;
+
   var arr = path.split(','); 
   var courseId = $scope.course._id;
   var chapId = 0;
   var partId=0;
   var factId=0;
-  var indicator="ALL"
  
   if(arr.length>=2)   chapId =  arr[1] ;
   if(arr.length>=3)   partId =  arr[2] ;
-  if(arr.length>=4)   indicator =  arr[3] ;
-  if(arr.length>=5)   factId =  arr[4] ;
+  if(arr.length>=4)   factId =  arr[3] ;
   
  var route = courseId+'/'+chapId+'/'+partId+'/'+factId;
  var todo ={'classof':indicator, 'todo':content,'elementType':'todo'}
   return {'route':route, 'todo':todo}
 }
-var deparseTask=function(path){
-  
+var deparseTask=function(route){
+  var regExp = RegXpURL(route);
+    var taskId =  regExp.task;  
+    var taskIndicator=regExp.indicator;  
+    var path = regExp.arr
+
   var arr = path.split(','); 
   var courseId = $scope.course._id;
   var chapId = 0;
   var partId=0;
   var factId=0;
-  var indicator="ALL";
   var result ="#";
  
   if(arr.length>=2)   chapId =  arr[1] ;
   if(arr.length>=3)   partId =  arr[2] ;
-  if(arr.length>=4)   indicator =  arr[3] ;
-  if(arr.length>=5)   factId =  arr[4] ;
-  if(chapId==0) return result
-    else {
-      result ="#"+courseId;
-      result = result+','+chapId;
-      if(partId==0)
-        return result;
-      else{
-        result =  result +','+ partId;
-        if(factId==0)
-          return result
-        else{
-          result = result + ',' + factId;
-          return result;
-        } 
-      }
-    }
+  if(arr.length>=4)   factId =  arr[3] ;
 
-  
+result ="#"+courseId;
+  if(chapId!=0) {
+    result = result+','+chapId;
+    if(partId != 0){
+      result = result+','+partId;
+      if(factId != 0)
+        result = result+','+factId;
+    }
+  }
+
+//  result = result + ',' + chapId + ',' + partId + ',' + factId + ',' + taskId;
+result = result + ';' + taskId;
+  if( taskIndicator!=0)    result = result + '@' + taskIndicator;
+
+  return result;
+
 }
 
 var parseRequest=function(path){
+
   var arr = path.split(','); 
   var courseId = $scope.course._id;
   var chapId = 0;
@@ -140,19 +163,24 @@ var parseRequest=function(path){
 }
 
 var parseTaskRequest=function(path){
+var regExp = RegXpURL(path);
+var taskId =  regExp.task; 
+var taskIndicator=regExp.indicator;
+
+  path =  regExp.arr; 
+  
   var arr = path.split(','); 
   var courseId = $scope.course._id;
   var chapterId = 0;
   var partId=0;
   var factId=0;
-  var taskId=0;
+  
   var route = courseId;
   var scope = 'course';
  
   if(arr.length>=2)   chapterId =  arr[1] ;
   if(arr.length>=3)   partId =  arr[2] ;
   if(arr.length>=4)   factId =  arr[3] ;
-  taskId=arr[4] ;
 
 
   if(chapterId==0){
@@ -175,30 +203,29 @@ var parseTaskRequest=function(path){
 
 
 var computeAllTasks=function(){ 
-
  var tasks=angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
       {
         tasks[i].selected = 1 
-        tasks[i].route=$scope.course._id+',0,0,0,'+tasks[i]._id
+        tasks[i].route=$scope.course._id+',0,0,0;'+tasks[i]._id+'@'+tasks[i].classof
       } 
 
     angular.forEach($scope.course.chapters, function(chapter) {  
       var chTasks = angular.copy(chapter.todos);
       for (var i = 0; i < chTasks.length; i++){
-        chTasks[i].route=chapter.route+',0,0,'+chTasks[i]._id
+        chTasks[i].route=chapter.route+',0,0;'+chTasks[i]._id+'@'+chTasks[i].classof
         tasks.push(chTasks[i]);
       } 
             angular.forEach(chapter.parts, function(part) {
                 var partTasks = angular.copy(part.todos);
                 for (var i = 0; i < partTasks.length; i++){
-                  partTasks[i].route=part.route+',0,'+partTasks[i]._id
+                  partTasks[i].route=part.route+',0;'+partTasks[i]._id+'@'+partTasks[i].classof
                   tasks.push(partTasks[i]);
                 }
                   angular.forEach(part.facts, function(fact){
                     var factTasks = angular.copy(fact.todos);
-                    for(var i = 0; i<factTasks; i++){
-                      factTasks[i].route=fact.route+','+factTasks[i]._id
+                    for(var i = 0; i<factTasks.length; i++){ 
+                      factTasks[i].route=fact.route+';'+factTasks[i]._id+'@'+factTasks[i].classof
                       tasks.push(factTasks[i]);}
                   })
                   })
@@ -208,12 +235,14 @@ var computeAllTasks=function(){
       {
         tasks[i].selected = 1 
       } 
+
   return tasks
 
 }
 
 
 var computeSubFacts=function(element, indicator){
+  
   
   var facts  = $.grep(element.facts, function(e){ return  e.classof==indicator}); 
  
@@ -304,18 +333,19 @@ var CountSubFacts=function(element){
 
 }
 var updateDisplay=function(){
-  
 
     var url = location.hash.slice(1);
-    var urlResolved = resolveRoute(url);
+ 
+    var element = resolveRoute(url);
    $scope.context.route= url;
-   $scope.context.Tasks=urlResolved.todos; 
-   $scope.context.subfacts=computeAllFacts(urlResolved);
+   
+   $scope.context.Tasks=element.todos; 
+   $scope.context.subfacts=computeAllFacts(element);
    for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 0 }
    
 
-    loadContext(url);
+    loadContext();
   
         var totalWidth = $('.col-lg-9').width();
         $('.data-table').css('width',totalWidth);
@@ -339,12 +369,16 @@ $scope.goHome=function(){
   goHome();
 }
 
+$scope.clicked=function(){
+  alert('yes')
+}
+
 $scope.taskContexter= function(task) {
+ //alert(task.route);
+        var element = deparseTask(task.route);
+        
  
-        var urlResolved = deparseTask(task.route);
-        console.log(urlResolved);
- 
- loadURL(urlResolved);
+ loadURL(element);
 };
 
 var addTask = function(route,params) {
@@ -376,54 +410,105 @@ var filterTasks = function(studiedPart) {
       };
 /********  Update on @ change ****************/
 $(window).on('hashchange',function(){ 
-  updateDisplay();
+  loadContext();
 });
 /********************************************/
-var loadContext=function(path){
+var loadContext=function(){
+   var url = location.hash.slice(1);
+ 
+    var element = resolveRoute(url);
+   $scope.context.route= url;
+   
+   $scope.context.Tasks=element.todos; 
+   $scope.context.subfacts=computeAllFacts(element);
+   for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 0 }
+
+
+/******************************************/
+var route = url;
+
   resetPath();
+  var regExp = RegXpURL(route);
+
+  //console.log(regExp);
+  var task =  regExp.task; 
+  var indicator = regExp.indicator;
+  if(indicator==0) indicator="ALL";
+  $scope.context.selectedIndicator=="ALL";
+
+  var path = regExp.arr; 
   var arr = path.split(',');  
   var course  = $scope.course;
   var chap = -1;
   var part  = -1;
   var partElt = -1;
+  var fact  = -1;
 
 
   if(arr.length<2) { 
     displayCourseInfos();
     $scope.context.selectedElement=course._id;
-    $scope.context.selectedIndicator="ALL";
-
   }
 
   if(arr.length==2) {  
+
    chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
    partElt = $('.chapter_index[data-part='+chap.id+']')[0];
    
    if($scope.context.selectedElement==chap._id)     {goHome()}
-    else    {displayChapterInfos(partElt);$scope.context.selectedElement=chap._id;$scope.context.selectedIndicator="ALL"}
+    else    {displayChapterInfos(partElt);$scope.context.selectedElement=chap._id}
 }
 
-if(arr.length==3) {  
+if(arr.length==3 && indicator=="ALL") { 
   chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
   part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
   if($scope.context.selectedElement==part._id)     goHome()
-    else    {displayPartInfos(partElt);$scope.context.selectedElement=part._id;$scope.context.selectedIndicator="ALL"}
+    else    {displayPartInfos(partElt);$scope.context.selectedElement=part._id}
 }
-if(arr.length==4) { 
+if(arr.length==3 && indicator!="ALL") { 
+  
   chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
   part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
-  var indicator = arr[3]
-  
   
    if($scope.context.selectedElement==part._id+'/'+indicator)     goHome()
      else{
-    displayPartIssues(path, part, indicator);
+    displayPartIssues(route, part, indicator);
     $scope.context.selectedElement=part._id+'/'+indicator;
-    $scope.context.selectedIndicator=indicator;alert(indicator)
+    $scope.context.selectedIndicator=indicator;
   }
 }
+
+if(arr.length==4 /*&& indicator!="ALL"*/) { 
+  
+  chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
+  part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];   
+
+  fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0]; 
+  partElt = $('.part_index[data-part='+part.id+']'); 
+  
+  
+ 
+  
+   if($scope.context.selectedElement==fact._id)     goHome()
+     else{
+     displayIssue(route, part, indicator);
+    $scope.context.selectedElement=fact._id;
+    $scope.context.selectedIndicator=indicator;
+  }
+}
+/*************************************************/
+  var totalWidth = $('.col-lg-9').width();
+        $('.data-table').css('width',totalWidth);
+        $('th').css('overflow','hidden');
+        $('.indicators_group').css('width','50px');
+        var tdW = (totalWidth - 55)/26;
+        
+        $scope.width=tdW;
+        if($('.course_title_top').length<1)
+                $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
 
 
 }
@@ -442,8 +527,46 @@ $scope.computeTextColor=function(val){
   if(val>=4) return 'white';
 }
 
+var RegXpURL =function(url){
+  //console.log(url);
+  //URL : #course,chapter,part,fact;task@indicator
+  var taskIndex =  url.indexOf(';'); 
+  var indicatorIndex =  url.indexOf('@'); 
+  
+
+  var task =  0; 
+  var indicator = 0;
+  var arr=url;
+
+ if((taskIndex==-1) && (indicatorIndex!=-1)){  
+ indicator=url.split('@'); 
+ if(indicator.length == 1) indicator=indicator[0]
+  else {arr = indicator[0];indicator=indicator[1]}
+ }
+
+if((taskIndex!=-1) && (indicatorIndex==-1)){
+ task=url.split(';'); 
+ if(task.length == 1) task=task[0]
+  else {arr = task[0];task=task[1]}
+ }
+if((taskIndex!=-1) && (indicatorIndex!=-1)){
+  
+ task=url.split(';'); 
+ if(task.length == 1) task=task[0]
+  else {arr = task[0];task=task[1]}
+
+ task=task.split('@'); 
+indicator=task[1];
+task=task[0]
+ }
+
+  var result = {'arr': arr, 'task' : task , 'indicator' : indicator};
+  //console.log(result);
+  return result;
+  
+}
 var loadURL =function(url){
-console.log(url);
+
   if(url == window.location.hash)
     $(window).trigger('hashchange')
   else 
@@ -458,17 +581,63 @@ console.log(url);
 }
 $scope.triggerClick=function($event){  
   var url = $($event.currentTarget).find('a:first').attr('href');
-  loadURL(url);
+  loadURL(url); 
   
+ }
+ $scope.triggerFactClick=function($event){  
+  var url = $($event.currentTarget).attr('data-path');
+  loadURL(url); 
   
  }
 
 
+var displayIssue=function(url, part, indicator){   
+  $(':focus').blur();
+ 
+  resetPath();
+//alert(url);
+  var regExp = RegXpURL(url); 
+  url=regExp.arr;
+
+     
+
+      $scope.issuesInspectorShow = true;
+
+     
+     $scope.context.route= url;     
+     var element = resolveRoute(url);
+
+     
+
+    
+
+var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
+     if(nb==0) nb="aucune (0) remarque";
+     if(nb==1) nb="une (1) remarque";
+      if(nb>1) nb=nb+" remarques";
+     $scope.context.inspector_title = "Partie: "+ part.title+' - '+nb+ " de type "+indicator ;
+    
+      
+    angular.forEach(element.todos, function(todo){
+      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
+      if(typeof results !== 'undefined') results.selected=1;
+    });
+
+
+  var parentUrl = url.substr(0, url.lastIndexOf(','))+'@'+indicator; 
+  $('.td_issue[data-path="'+parentUrl+'"]').addClass('chosenPart');
+  $scope.context.Facts=computeSubFacts(resolveRoute(parentUrl), indicator);
+  $('.inspector-item[data-fact="'+element._id+'"]').addClass('inspector-item-selected');
+
+  }
 
 var displayPartIssues=function(url, part, indicator){   
   $(':focus').blur();
  
   resetPath();
+
+  var regExp = RegXpURL(url); 
+  url=regExp.arr+'@'+regExp.indicator;
 
  
       $('.td_issue[data-path="'+url+'"]').addClass('chosenPart');
@@ -477,9 +646,11 @@ var displayPartIssues=function(url, part, indicator){
 
      
      $scope.context.route= url;     
-     var urlResolved = resolveRoute(url);
-     $scope.context.Tasks=urlResolved.todos;
-     $scope.context.Facts=computeSubFacts(urlResolved, indicator);
+     var element = resolveRoute(url);
+     
+
+     $scope.context.Tasks=element.todos;
+     $scope.context.Facts=computeSubFacts(element, indicator);
      
      
      var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
@@ -490,11 +661,11 @@ var displayPartIssues=function(url, part, indicator){
 
     
       
-    angular.forEach(urlResolved.todos, function(todo){
+    angular.forEach(element.todos, function(todo){
       var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
       if(typeof results !== 'undefined') results.selected=1;
     });
-    angular.forEach(urlResolved.facts, function(fact){
+    angular.forEach(element.facts, function(fact){
       angular.forEach(fact.todos, function(todo){
       var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
       if(typeof results !== 'undefined') results.selected=1;
@@ -563,7 +734,7 @@ var displayPartInfos=function(partElt){
     });
     angular.forEach(element.facts, function(fact){
       angular.forEach(fact.todos, function(todo){
-      var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0].selected=1;
+      var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
       if(typeof results !== 'undefined') results.selected=1;
     })
     });
@@ -713,10 +884,12 @@ window.setTimeout(function() {
 
 
 }
-$scope.createSuggestion=function($event){
+$scope.createTask=function($event){
   var suggestion = "Nouvelle tâche"; 
 $('#taskInput').focus();
   $scope.formData.text = suggestion;
+  $scope.context.route = $($event.currentTarget).attr('href');
+  
 window.setTimeout(function() {
              $("#taskInput").fadeIn(100).fadeOut(100).fadeIn().focus().select();
         }, 50);
@@ -759,7 +932,7 @@ $scope.editTask = function (route, todo, index) {
 var updateLocalTasks=function(route, data){
   var element = resolveRoute(route);
   element.todos = data;
- updateDisplay();
+ loadContext();
 
 }
 
@@ -782,6 +955,7 @@ swal({
       confirmButtonText: "Yes, delete it!",
       confirmButtonColor: "#ec6c62"
     }, function() {
+      
        deleteTask(parseTaskRequest(route))
         .success(function(data) {
      //     updateLocalTasks($scope.context.route, data)     ;
@@ -922,7 +1096,7 @@ swal({
     if($('.course_title_top').length<1)
         $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
 
-      updateDisplay();
+      loadContext();
 
   
 

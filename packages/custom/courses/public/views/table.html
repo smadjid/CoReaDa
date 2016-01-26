@@ -27,8 +27,8 @@
                 
             </th>
 
-            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}},Readings>
-                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; ' class='display-part-issues'   href="#{{part.route}},Readings"> 
+            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}}@Readings>
+                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; ' class='display-part-issues'   href="#{{part.route}}@Readings"> 
                         {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
                     </a>
            
@@ -43,8 +43,8 @@
               
             </th>
 
-            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Rereading' ng-click='triggerClick($event)' data-path={{part.route}},Rereading>
-                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};' class='display-part-issues'   href="#{{part.route}},Rereading"> 
+            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Rereading' ng-click='triggerClick($event)' data-path={{part.route}}@Rereading>
+                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};' class='display-part-issues'   href="#{{part.route}}@Rereading"> 
                         {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
                     </a>
            
@@ -57,8 +57,8 @@
                 <span class="fat">Transition</span>
                 
             </th>
-             <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Transition' ng-click='triggerClick($event)' data-path={{part.route}},Transition>
-                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}}; ' class='display-part-issues'   href="#{{part.route}},Transition"> 
+             <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Transition' ng-click='triggerClick($event)' data-path={{part.route}}@Transition>
+                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}}; ' class='display-part-issues'   href="#{{part.route}}@Transition"> 
                         {{(part.facts | filter:{'classof':'Transition'}).length >0 ?(part.facts | filter:{'classof':'Transition'}).length:""}}
                     </a>
            
@@ -71,8 +71,8 @@
                 <span class="fat">Arrêts</span>
                 
             </th>
-             <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Stop' ng-click='triggerClick($event)' data-path={{part.route}},Stop>
-                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}};' class='display-part-issues'   href="#{{part.route}},Stop"> 
+             <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Stop' ng-click='triggerClick($event)' data-path={{part.route}}@Stop>
+                    <a style='color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}};' class='display-part-issues'   href="#{{part.route}}@Stop"> 
                         {{(part.facts | filter:{'classof':'Stop'}).length >0 ?(part.facts | filter:{'classof':'Stop'}).length:""}}
                     </a>
            
