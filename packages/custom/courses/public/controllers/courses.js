@@ -60,7 +60,7 @@ var resolveRoute=function(path){
      else
        if(arr.length>=4){
         var part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0];
-         var fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0];        
+         var fact = $.grep(part.facts, function(e){ return  e._id == arr[3] })[0]; 
          
          result = fact
        }
@@ -78,6 +78,7 @@ var resolveRoute=function(path){
       result = todo;
          
      }
+
      return result;
 }
 var resetPath=function(){    
@@ -228,6 +229,7 @@ var computeAllTasks=function(){
                   angular.forEach(part.facts, function(fact){
                     var factTasks = angular.copy(fact.todos);
                     for(var i = 0; i<factTasks.length; i++){ 
+                      
                       factTasks[i].route=fact.route+';'+factTasks[i]._id+'@'+factTasks[i].classof
                       tasks.push(factTasks[i]);}
                   })
@@ -365,16 +367,13 @@ var updateDisplay=function(){
 }
 var goHome=function(){ 
 
-  window.location.hash = '';
+  window.location.hash = '#';
   
 }
 $scope.goHome=function(){
   goHome();
 }
 
-$scope.clicked=function(){
-  alert('yes')
-}
 
 $scope.taskContexter= function(task) {
  //alert(task.route);
@@ -899,7 +898,7 @@ $scope.addTask = function (data) {
       if (data != undefined) {
         var addedTask = data;          
         var route = $scope.context.route;
-        var query = parseTask(route, addedTask); alert(query.route); 
+        var query = parseTask(route, addedTask); //alert(query.route); 
         addTask(query.route,query.todo)
         .success(function(data) {
           insertLocalTask(route, data);
@@ -1096,9 +1095,7 @@ swal({
 
       loadContext();
 
-  
-
-
+    
       });
     };
   }

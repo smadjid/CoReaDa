@@ -106,14 +106,14 @@ module.exports = function(Courses) {
          */
         show: function(req, res) {
 
-            Courses.events.publish({
+         /*   Courses.events.publish({
                 action: 'viewed',
                 user: {
                     name: req.user.name
                 },
                 name: req.course.title,
                 url: config.hostname + '/courses/' + req.course._id
-            });
+            });*/
 
             res.json(req.course);
         },
@@ -178,7 +178,7 @@ module.exports = function(Courses) {
                             part.save();    
                             chapter.save();
                             _course.save();
-                            _result = part.todos[0];
+                            _result = fact.todos[0];
 
                         }
 
@@ -253,7 +253,7 @@ module.exports = function(Courses) {
             if(err) return next("Error finding the course.");    
             var _chapter = _course.chapters.id(req.params.chapterId)           
             if(req.params.factId != 0){
-                var _fact = _chapter.facts.id(req.params.factoId)
+                var _fact = _chapter.facts.id(req.params.factId)
                 _fact.todos.id(req.params.todoId).remove();               
                 _fact.save();                
             }
@@ -271,7 +271,7 @@ module.exports = function(Courses) {
             var _chapter = _course.chapters.id(req.params.chapterId);           
             var _part = _chapter.parts.id(req.params.partId);
             if(req.params.factId != 0){
-                var _fact = _part.facts.id(req.params.factoId)
+                var _fact = _part.facts.id(req.params.factId)
                 _fact.todos.id(req.params.todoId).remove();               
                 _fact.save();
                 
@@ -319,7 +319,7 @@ module.exports = function(Courses) {
             var _todo = 0;
             var _chapter = _course.chapters.id(req.params.chapterId)           
             if(req.params.factId != 0){
-                var _fact = _chapter.facts.id(req.params.factoId)
+                var _fact = _chapter.facts.id(req.params.factId)
                 _todo = _fact.todos.id(req.params.todoId);    
                 _todo.todo = req.body.todo;
                 _todo.save();           
@@ -345,7 +345,7 @@ module.exports = function(Courses) {
             var _chapter = _course.chapters.id(req.params.chapterId);           
             var _part = _chapter.parts.id(req.params.partId);
             if(req.params.factId != 0){
-                var _fact = _part.facts.id(req.params.factoId)
+                var _fact = _part.facts.id(req.params.factId)
                 _todo = _fact.todos.id(req.params.todoId);               
                 _todo.todo = req.body.todo;
                 _todo.save();

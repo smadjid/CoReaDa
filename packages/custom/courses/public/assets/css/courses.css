@@ -568,29 +568,6 @@ hr {
   padding:5px;
 }
 
-.editable-click, a.editable-click, .editable-click:hover, a.editable-click:hover {
-    text-decoration: none!important;
-    color: #F5F5F5;
-   
-    cursor: pointer; cursor: hand;
-    width:100%;
-}
-.editable-buttons {
-    display: inline-block;
-    vertical-align: middle;
-}
-/* customize xeditable css */
-a.editable-click { 
-    color: green;
-    border-bottom: dotted 2px green;
-}
-a.editable-click:hover { 
-    color: #47a447;
-    border-bottom-color: #47a447;
-}
-.editable-text{
-  width:100%;
-}
 
 
 
@@ -1102,7 +1079,9 @@ padding: 5px 10px;;
 }
  .editable-textarea .editable-controls .editable-input,
  .editable-textarea .editable-controls,
- .editable-textarea{
+ .editable-textarea,
+ .editable-controls,
+ .editable-input{
   
   width:96%!important;
   
@@ -1112,8 +1091,37 @@ padding: 5px 10px;;
     background: transparent!important;
 }
 
+.editable-click, a.editable-click, .editable-click:hover, a.editable-click:hover {
+    text-decoration: none!important;
+    color: #F5F5F5;
+   
+    cursor: pointer; cursor: hand;
+    width:100%;
+}
+.editable-empty, .editable-empty:hover, .editable-empty:focus, a.editable-empty, a.editable-empty:hover, a.editable-empty:focus {
+    font-style: italic;
+    color: white!important;
+    text-decoration: none;
+}
 
+.editable-buttons {
+    display: inline-block;
+    vertical-align: middle;
+}
+/* customize xeditable css */
+a.editable-click { 
+    color: green;
+    border-bottom: dotted 2px green;
+}
+a.editable-click:hover { 
+    color: #47a447;
+    border-bottom-color: #47a447;
+}
+.editable-text{
+  width:100%;
+}
 
+/****************************************/
 input, textarea, select, a { outline: none!important; }
 a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
   outline: none!important;
