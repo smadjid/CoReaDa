@@ -28,7 +28,7 @@ module.exports = {
   },
   hostname: 'http://localhost:3000',
   app: {
-    name: 'CoReaDa - The COurse Reading Dashboard'
+    name: 'CoReaDa - The Course Reading Dashboard'
   },
   logging: {
     format: 'combined'

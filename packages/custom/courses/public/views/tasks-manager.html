@@ -10,46 +10,30 @@
 
 		</div>
 		</div>
-	<!--		<div class="input-group">
-			
-	<input id='taskInput' type="text"  class="form-control" ng-model="formData.text" >
-	<span class="input-group-btn">
-		<button class="btn btn-default" type="button" ng-click="addTask()"><span
-			class="glyphicon glyphicon-plus"></span> 
-		</button>
-	</span>
-{{ formData.text || '(nouvelle tâche pour ce contexte)' }} 
-	</div>-->
+	
 
-		</div>
+	
 
 <perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
 
 
 		<div class="tasks-panel-body">
 		
-<table class=" table-hover tasks-table" style="">
+<table class=" tasks-table" style="">
 
 	
 
-	<tr role='button' ng-repeat="task in context.subtasks" class="selectedTask"
-	 ng-class="{'selectedTask': task.selected, 'unselectedTask': !task.selected}" >
-		<td style="width: 75%;"  ng-click="taskContexter(task)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
-
-    <!--  <i class="pull-left glyphicon" style="font-size: 10px; vertical-align:text-bottom; padding-top:3px;padding-right:5px" ng-class="{'glyphicon-menu-down': status.open, 'glyphicon-menu-right': !status.open}"></i>-->
-        <div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
-				{{ task.todo || 'empty' }} 
+	<tr role='button' ng-repeat="task in context.subtasks"  ng-class="task.selected" >
+		<td style="width: 75%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
+		<div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
+			{{ task.todo || 'empty' }} 
 		</div>
-		
-    
-
-</td>
-
-		<td style="width: 10%;" valign="top">
-			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
-				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="rowform.$save()"></a>
-				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" aria-hidden="true" ng-click="rowform.$cancel()"></a>
-			</form>
+	</td>
+	<td style="width: 10%;" valign="top">
+		<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
+			<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="rowform.$save()"></a>
+			<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" aria-hidden="true" ng-click="rowform.$cancel()"></a>
+		</form>
 			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
 				<a role="button" class="glyphicon glyphicon-minus" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>

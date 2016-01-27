@@ -210,7 +210,7 @@ var computeAllTasks=function(){
  var tasks=angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
       {
-        tasks[i].selected = 1 
+        tasks[i].selected = 'relevantTask' 
         tasks[i].route=$scope.course._id+',0,0,0;'+tasks[i]._id+'@'+tasks[i].classof
       } 
 
@@ -238,13 +238,17 @@ var computeAllTasks=function(){
             });
   for (var i = 0; i < tasks.length; i++)   
       {
-        tasks[i].selected = 1 
+        tasks[i].selected = 'relevantTask' 
       } 
 
   return tasks
 
 }
 
+var unSelectTasks = function(){
+  for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 'notRelevantTask' }
+}
 
 var computeSubFacts=function(element, indicator){
   
@@ -346,8 +350,8 @@ var updateDisplay=function(){
    
    $scope.context.Tasks=element.todos; 
    $scope.context.subfacts=computeAllFacts(element);
-   for (var i = 0; i < $scope.context.subtasks.length; i++)   
-      {$scope.context.subtasks[i].selected = 0 }
+   
+   unSelectTasks();
    
 
     loadContext();
@@ -375,12 +379,18 @@ $scope.goHome=function(){
 }
 
 
-$scope.taskContexter= function(task) {
- //alert(task.route);
-        var element = deparseTask(task.route);
-        
- 
- loadURL(element);
+$scope.taskContexter= function(task,$event) {
+  if(task.selected == 'selectedTask') {goHome(); return;}
+  var element = deparseTask(task.route);
+  loadURL(element);
+  //$($event.currentTarget).parent().removeClass(task.selected).addClass('selectedTask')
+   window.setTimeout(function() {
+  unSelectTasks();
+  task.selected = 'selectedTask';
+        }, 10);
+  $($event.currentTarget).parent().blur();
+  $($event.currentTarget).parent().focus();
+
 };
 
 var addTask = function(route,params) {
@@ -423,8 +433,8 @@ var loadContext=function(){
    
    $scope.context.Tasks=element.todos; 
    $scope.context.subfacts=computeAllFacts(element);
-   for (var i = 0; i < $scope.context.subtasks.length; i++)   
-      {$scope.context.subtasks[i].selected = 0 }
+   
+   unSelectTasks();
 
 
 /******************************************/
@@ -622,7 +632,7 @@ var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text()
       
     angular.forEach(element.todos, function(todo){
       var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
-      if(typeof results !== 'undefined') results.selected=1;
+      if(typeof results !== 'undefined') results.selected='relevantTask';
     });
 
 
@@ -665,12 +675,12 @@ var displayPartIssues=function(url, part, indicator){
       
     angular.forEach(element.todos, function(todo){
       var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
-      if(typeof results !== 'undefined') results.selected=1;
+      if(typeof results !== 'undefined') results.selected='relevantTask';
     });
     angular.forEach(element.facts, function(fact){
       angular.forEach(fact.todos, function(todo){
       var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
-      if(typeof results !== 'undefined') results.selected=1;
+      if(typeof results !== 'undefined') results.selected='relevantTask';
     })
     });
 
@@ -726,18 +736,18 @@ var displayPartInfos=function(partElt){
      var part = $(partElt).attr('data-part');
 
     var route = $(partElt).attr('data-path');
-    for (var i = 0; i < $scope.context.subtasks.length; i++)   
-      {$scope.context.subtasks[i].selected = 0 }
+    
+    unSelectTasks();
 
     var element=resolveRoute(route);
     angular.forEach(element.todos, function(todo){
       var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-      if(typeof results !== 'undefined') results.selected=1;
+      if(typeof results !== 'undefined') results.selected='relevantTask';
     });
     angular.forEach(element.facts, function(fact){
       angular.forEach(fact.todos, function(todo){
       var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-      if(typeof results !== 'undefined') results.selected=1;
+      if(typeof results !== 'undefined') results.selected='relevantTask';
     })
     });
 
@@ -749,7 +759,7 @@ var displayCourseInfos=function(){
   $scope.issuesInspectorShow = false;  
   $scope.context.inspector_title = "Cours: "+$scope.course.title +" - " +$scope.context.subfacts.length +" remarques";
   for (var i = 0; i < $scope.context.subtasks.length; i++)   
-  {$scope.context.subtasks[i].selected = 1 }
+  {$scope.context.subtasks[i].selected = 'relevantTask' }
 
 $('#data-table').addClass('highlight-table');
 
@@ -762,18 +772,17 @@ var displayChapterInfos=function(partElt){
   $(':focus').blur();
 
   var route = $(partElt).attr('data-path');
-  for (var i = 0; i < $scope.context.subtasks.length; i++)   
-      {$scope.context.subtasks[i].selected = 0 }
+  unSelectTasks();
 
   var element=resolveRoute(route);
   angular.forEach(element.todos, function(todo){
     var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected=1;
+    if(typeof results !== 'undefined') results.selected='relevantTask';
   });
   angular.forEach(element.facts, function(fact){
     angular.forEach(fact.todos, function(todo){
     var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected=1;
+    if(typeof results !== 'undefined') results.selected='relevantTask';
   })
   });
 
@@ -781,12 +790,12 @@ var displayChapterInfos=function(partElt){
 
    angular.forEach(part.todos, function(todo){
     var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected=1;
+    if(typeof results !== 'undefined') results.selected='relevantTask';
   });
   angular.forEach(part.facts, function(fact){
     angular.forEach(fact.todos, function(todo){
     var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected=1;
+    if(typeof results !== 'undefined') results.selected='relevantTask';
   })
   });
 

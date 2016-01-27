@@ -166,12 +166,12 @@ ul.alert-dropdown {
 }
 
 .panel-flat{
-    border-color:  #49769C
+    border-color:  rgb(47, 82, 111)
   }
   .panel-flat > .panel-heading {
-    border-color: #49769C;
+    border-color: rgb(47, 82, 111);
     color: #fff;
-    background-color: #49769C;
+    background-color: rgb(47, 82, 111);
     padding:5px;
 }
 
@@ -927,7 +927,7 @@ table {
 }
 
 .inspector-item {
-  border: 2px solid #49769C;
+  border: 2px solid rgb(47, 82, 111);
   margin-bottom: 0px;
   padding:3px;
 }
@@ -1016,8 +1016,8 @@ padding: 5px 10px;;
   width:100%;
   margin-right:5%;
   margin-left:5%;
-  background-color:#49769C!important;
-  border-color: #49769C;
+  background-color:rgb(47, 82, 111)!important;
+  border-color: rgb(47, 82, 111);
   border-radius: 2px;
   
 }
@@ -1049,26 +1049,46 @@ padding: 5px 10px;;
   width: auto;
 }
 .tasks-table td{
-  border:none;
-  border-bottom: solid #49769C!important;
-  
     color: rgb(111, 111, 111);
     padding: 5px 10px;
 }
-.tasks-table .selectedTask{
-  border: solid #45348A!important;
-   background-color: rgba(240,255,255,1);;   
+.relevantTask td, .notRelevantTask td{
+  border:none;
+  border-bottom: inset rgb(47, 82, 111)!important;  
+
 }
-.tasks-table .selectedTask *{
+.selectedTask td{
+border:none;
+border-bottom: inset rgb(47, 82, 111)!important;  
+}
+.selectedTask tr{
+
+
+box-shadow: outset 0 0 0 1px #fff;
+ 
+}
+.tasks-table .relevantTask{
+ 
+   background-color: white;  
+}
+
+.tasks-table .relevantTask *{
   color:rgba(64,61,61,0.85);
 }
-.tasks-table .unselectedTask{
+.tasks-table .notRelevantTask{
   border: none!important;  
   background-color: #DDD;
 
 }
-.tasks-table .unselectedTask *{
+.tasks-table .notRelevantTask *{
   color:grey;
+}
+.selectedTask, .selectedTask:hover{
+  
+   background-color: #49769C;  
+}
+.selectedTask *,.selectedTask *:hover{
+  color:white;
 }
 .tasks-table .editable-textarea .editable-controls .editable-input,
 .tasks-table .editable-textarea .editable-controls,
