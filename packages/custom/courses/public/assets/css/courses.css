@@ -1044,7 +1044,7 @@ padding: 5px 10px;;
   display: block;
   font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-size: 115%;
+  font-size: 14;
   overflow: auto;
   width: auto;
 }

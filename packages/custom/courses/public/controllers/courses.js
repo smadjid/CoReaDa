@@ -212,18 +212,22 @@ var computeAllTasks=function(){
       {
         tasks[i].selected = 'relevantTask' 
         tasks[i].route=$scope.course._id+',0,0,0;'+tasks[i]._id+'@'+tasks[i].classof
+        tasks[i].minipath='cours'
       } 
 
     angular.forEach($scope.course.chapters, function(chapter) {  
       var chTasks = angular.copy(chapter.todos);
       for (var i = 0; i < chTasks.length; i++){
         chTasks[i].route=chapter.route+',0,0;'+chTasks[i]._id+'@'+chTasks[i].classof
+        chTasks[i].minipath='cours/chapter.title'
         tasks.push(chTasks[i]);
+
       } 
             angular.forEach(chapter.parts, function(part) {
                 var partTasks = angular.copy(part.todos);
                 for (var i = 0; i < partTasks.length; i++){
                   partTasks[i].route=part.route+',0;'+partTasks[i]._id+'@'+partTasks[i].classof
+                  partTasks[i].minipath='cours/chapter.title/part.title'
                   tasks.push(partTasks[i]);
                 }
                   angular.forEach(part.facts, function(fact){
@@ -231,6 +235,7 @@ var computeAllTasks=function(){
                     for(var i = 0; i<factTasks.length; i++){ 
                       
                       factTasks[i].route=fact.route+';'+factTasks[i]._id+'@'+factTasks[i].classof
+                       factTasks[i].minipath='cours/chapter.title/part.title/fact.content'
                       tasks.push(factTasks[i]);}
                   })
                   })
