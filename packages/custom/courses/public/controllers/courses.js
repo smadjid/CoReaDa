@@ -48,7 +48,7 @@ var resolveRoute=function(path){
    var arr = regExp.arr.split(',');  
       
    if(typeof $scope.course == 'undefined')
-      console.log($scope.course);
+      console.log('Error')
   var result = $scope.course;  
    if(arr.length>=2) {
      var chap = $.grep($scope.course.chapters, function(e){ return  e._id == arr[1] })[0];
@@ -68,10 +68,10 @@ var resolveRoute=function(path){
      
     
   var taskId = 0;
-   var taskIndicator = 0;
+   var taskIndicator = 'ALL';
    if(regExp.task!=0){
       taskId = regExp.task;
-       if(regExp.indicator!=0)
+       if(regExp.indicator!='ALL')
         taskIndicator=regExp.indicator;
       
       var todo = $.grep(result.todos, function(e){ return  e._id == taskId })[0];
@@ -86,7 +86,9 @@ var resetPath=function(){
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
-  
+    for (var i = 0; i < $scope.context.subtasks.length; i++)   
+      {$scope.context.subtasks[i].selected = 'notRelevantTask' }
+
   $scope.issuesInspectorShow = false;
 
 }
@@ -144,7 +146,7 @@ result ="#"+courseId;
 
 //  result = result + ',' + chapId + ',' + partId + ',' + factId + ',' + taskId;
 result = result + ';' + taskId;
-  if( taskIndicator!=0)    result = result + '@' + taskIndicator;
+  if( taskIndicator!='ALL')    result = result + '@' + taskIndicator;
 
   return result;
 
@@ -212,14 +214,14 @@ var computeAllTasks=function(){
       {
         tasks[i].selected = 'relevantTask' 
         tasks[i].route=$scope.course._id+',0,0,0;'+tasks[i]._id+'@'+tasks[i].classof
-        tasks[i].minipath='cours'
+        tasks[i].minipath='Cours'
       } 
 
     angular.forEach($scope.course.chapters, function(chapter) {  
       var chTasks = angular.copy(chapter.todos);
       for (var i = 0; i < chTasks.length; i++){
         chTasks[i].route=chapter.route+',0,0;'+chTasks[i]._id+'@'+chTasks[i].classof
-        chTasks[i].minipath='cours/chapter.title'
+        chTasks[i].minipath='Chapitre :'+chapter.title
         tasks.push(chTasks[i]);
 
       } 
@@ -227,7 +229,7 @@ var computeAllTasks=function(){
                 var partTasks = angular.copy(part.todos);
                 for (var i = 0; i < partTasks.length; i++){
                   partTasks[i].route=part.route+',0;'+partTasks[i]._id+'@'+partTasks[i].classof
-                  partTasks[i].minipath='cours/chapter.title/part.title'
+                  partTasks[i].minipath='Partie: '+part.title;
                   tasks.push(partTasks[i]);
                 }
                   angular.forEach(part.facts, function(fact){
@@ -235,25 +237,19 @@ var computeAllTasks=function(){
                     for(var i = 0; i<factTasks.length; i++){ 
                       
                       factTasks[i].route=fact.route+';'+factTasks[i]._id+'@'+factTasks[i].classof
-                       factTasks[i].minipath='cours/chapter.title/part.title/fact.content'
+                       factTasks[i].minipath='Partie: '+part.title+' - ' +fact.classof
                       tasks.push(factTasks[i]);}
                   })
                   })
                                  
             });
   for (var i = 0; i < tasks.length; i++)   
-      {
-        tasks[i].selected = 'relevantTask' 
-      } 
+    tasks[i].selected = 'relevantTask';
 
   return tasks
 
 }
 
-var unSelectTasks = function(){
-  for (var i = 0; i < $scope.context.subtasks.length; i++)   
-      {$scope.context.subtasks[i].selected = 'notRelevantTask' }
-}
 
 var computeSubFacts=function(element, indicator){
   
@@ -356,7 +352,7 @@ var updateDisplay=function(){
    $scope.context.Tasks=element.todos; 
    $scope.context.subfacts=computeAllFacts(element);
    
-   unSelectTasks();
+   
    
 
     loadContext();
@@ -364,12 +360,12 @@ var updateDisplay=function(){
         var totalWidth = $('.col-lg-9').width();
         $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
-        $('.indicators_group').css('width','50px');
+        $('.indicators-header').css('width','50px');
         var tdW = (totalWidth - 55)/26;
         
         $scope.width=tdW;
         if($('.course_title_top').length<1)
-                $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
+                $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
 
       
     
@@ -385,14 +381,13 @@ $scope.goHome=function(){
 
 
 $scope.taskContexter= function(task,$event) {
-  if(task.selected == 'selectedTask') {goHome(); return;}
   var element = deparseTask(task.route);
   loadURL(element);
-  //$($event.currentTarget).parent().removeClass(task.selected).addClass('selectedTask')
+/*
    window.setTimeout(function() {
-  unSelectTasks();
-  task.selected = 'selectedTask';
-        }, 10);
+  
+  task.selected = 'selectedTaskG';
+        }, 10);*/
   $($event.currentTarget).parent().blur();
   $($event.currentTarget).parent().focus();
 
@@ -439,7 +434,7 @@ var loadContext=function(){
    $scope.context.Tasks=element.todos; 
    $scope.context.subfacts=computeAllFacts(element);
    
-   unSelectTasks();
+   
 
 
 /******************************************/
@@ -448,11 +443,10 @@ var route = url;
   resetPath();
   var regExp = RegXpURL(route);
 
-  //console.log(regExp);
+  
   var task =  regExp.task; 
   var indicator = regExp.indicator;
-  if(indicator==0) indicator="ALL";
-  $scope.context.selectedIndicator=="ALL";
+  
 
   var path = regExp.arr; 
   var arr = path.split(',');  
@@ -463,26 +457,30 @@ var route = url;
   var fact  = -1;
 
 
-  if(arr.length<2) { 
-    displayCourseInfos();
-    $scope.context.selectedElement=course._id;
-  }
+  if(arr.length<2) 
+    
+      displayCourseInfos(indicator, task);
+
+  
 
   if(arr.length==2) {  
 
    chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
    partElt = $('.chapter_index[data-part='+chap.id+']')[0];
    
-   if($scope.context.selectedElement==chap._id)     {goHome()}
-    else    {displayChapterInfos(partElt);$scope.context.selectedElement=chap._id}
+   
+      displayChapterInfos(partElt, task);
+      
+      //}
 }
 
 if(arr.length==3 && indicator=="ALL") { 
   chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
   part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
-  if($scope.context.selectedElement==part._id)     goHome()
-    else    {displayPartInfos(partElt);$scope.context.selectedElement=part._id}
+  
+      displayPartInfos(partElt, task);
+  
 }
 if(arr.length==3 && indicator!="ALL") { 
   
@@ -490,12 +488,11 @@ if(arr.length==3 && indicator!="ALL") {
   part = $.grep(chap.parts, function(e){ return  e._id == arr[2] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
   
-   if($scope.context.selectedElement==part._id+'/'+indicator)     goHome()
-     else{
-    displayPartIssues(route, part, indicator);
-    $scope.context.selectedElement=part._id+'/'+indicator;
-    $scope.context.selectedIndicator=indicator;
-  }
+   
+    displayPartIssues(route, task, part, indicator);
+   
+    
+  //}
 }
 
 if(arr.length==4 /*&& indicator!="ALL"*/) { 
@@ -509,23 +506,22 @@ if(arr.length==4 /*&& indicator!="ALL"*/) {
   
  
   
-   if($scope.context.selectedElement==fact._id)     goHome()
-     else{
-     displayIssue(route, part, indicator);
-    $scope.context.selectedElement=fact._id;
-    $scope.context.selectedIndicator=indicator;
-  }
+   
+     displayIssue(route, task, part, indicator);
+    
+    
+  //}
 }
 /*************************************************/
   var totalWidth = $('.col-lg-9').width();
         $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
-        $('.indicators_group').css('width','50px');
+        $('.indicators-header').css('width','50px');
         var tdW = (totalWidth - 55)/26;
         
         $scope.width=tdW;
         if($('.course_title_top').length<1)
-                $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
+                $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
 
 
 }
@@ -545,29 +541,32 @@ $scope.computeTextColor=function(val){
 }
 
 var RegXpURL =function(url){
-  //console.log(url);
+  
   //URL : #course,chapter,part,fact;task@indicator
   var taskIndex =  url.indexOf(';'); 
   var indicatorIndex =  url.indexOf('@'); 
   
 
   var task =  0; 
-  var indicator = 0;
+  var indicator = 'ALL';
   var arr=url;
 
- if((taskIndex==-1) && (indicatorIndex!=-1)){  
+ if((taskIndex==-1) && (indicatorIndex!=-1)){ 
  indicator=url.split('@'); 
  if(indicator.length == 1) indicator=indicator[0]
   else {arr = indicator[0];indicator=indicator[1]}
+
  }
 
 if((taskIndex!=-1) && (indicatorIndex==-1)){
  task=url.split(';'); 
  if(task.length == 1) task=task[0]
   else {arr = task[0];task=task[1]}
+
+
  }
+
 if((taskIndex!=-1) && (indicatorIndex!=-1)){
-  
  task=url.split(';'); 
  if(task.length == 1) task=task[0]
   else {arr = task[0];task=task[1]}
@@ -578,26 +577,51 @@ task=task[0]
  }
 
   var result = {'arr': arr, 'task' : task , 'indicator' : indicator};
-  //console.log(result);
+
   return result;
   
+}
+
+window.onresize = function(){reloadURL();}
+
+var reloadURL =function(){
+  var url = window.location.hash
+window.setTimeout(function() {
+goHome();
+        }, 20);
+
+window.setTimeout(function() {
+loadURL(url) 
+  
+        }, 80);
+
 }
 var loadURL =function(url){
 
   if(url == window.location.hash)
-    $(window).trigger('hashchange')
+   // $(window).trigger('hashchange')
+ {
+window.setTimeout(function() {
+  goHome();
+        }, 50);}
   else 
-    window.location.hash = url;
- 
+    {
+      window.location.hash = url;
+ window.setTimeout(function() {
   $scope.$emit('content.changed');
-  //$scope.$broadcast('content.reload');
+  $scope.$broadcast('content.reload');
+  
+        }, 50)
+}
   $(':focus').blur();
 
   return false;
 
 }
-$scope.triggerClick=function($event){  
-  var url = $($event.currentTarget).find('a:first').attr('href');
+$scope.triggerClick=function($event){ 
+
+  var url = '#'+$($event.currentTarget).attr('data-path');
+  
   loadURL(url); 
   
  }
@@ -607,12 +631,51 @@ $scope.triggerClick=function($event){
   
  }
 
+var showTasksAndFacts = function(element, indicator, task_id){  
+  if(indicator==='ALL'){
+       angular.forEach(element.todos, function(todo){
+        var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0]
+        if(typeof results !== 'undefined') results.selected='relevantTask';
+      });
+      angular.forEach(element.facts, function(fact){
+        angular.forEach(fact.todos, function(todo){
+        var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0];
+        if(typeof results !== 'undefined') results.selected='relevantTask';
+      })
+      });
+    }
+    else{
+       angular.forEach(element.todos, function(todo){
+      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
+      if(typeof results !== 'undefined') results.selected='relevantTask';
+        });
+        angular.forEach(element.facts, function(fact){
+          angular.forEach(fact.todos, function(todo){
+          var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
+          if(typeof results !== 'undefined') results.selected='relevantTask';
+        })
+        });
+    };
 
-var displayIssue=function(url, part, indicator){   
+    if(task_id != 0){
+      
+      var selection = $.grep($scope.context.subtasks, function(e){ return  e._id == task_id})[0];
+selection.selected='selectedTask';
+$('.selectedTask').focus().blur().focus();
+        window.setTimeout(function() {
+          selection.selected='selectedTask';
+          $('.selectedTask').focus().blur().focus();
+        }, 300);        
+    }
+   
+
+}
+var displayIssue=function(url, task, part, indicator){   
+
   $(':focus').blur();
  
   resetPath();
-//alert(url);
+
   var regExp = RegXpURL(url); 
   url=regExp.arr;
 
@@ -624,37 +687,31 @@ var displayIssue=function(url, part, indicator){
      $scope.context.route= url;     
      var element = resolveRoute(url);
 
-     
-
-    
-
-var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
+  var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
      if(nb==0) nb="aucune (0) remarque";
      if(nb==1) nb="une (1) remarque";
       if(nb>1) nb=nb+" remarques";
      $scope.context.inspector_title = "Partie: "+ part.title+' - '+nb+ " de type "+indicator ;
     
       
-    angular.forEach(element.todos, function(todo){
-      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
-      if(typeof results !== 'undefined') results.selected='relevantTask';
-    });
-
 
   var parentUrl = url.substr(0, url.lastIndexOf(','))+'@'+indicator; 
   $('.td_issue[data-path="'+parentUrl+'"]').addClass('chosenPart');
   $scope.context.Facts=computeSubFacts(resolveRoute(parentUrl), indicator);
   $('.inspector-item[data-fact="'+element._id+'"]').addClass('inspector-item-selected');
 
+  showTasksAndFacts(element, indicator, task);
   }
 
-var displayPartIssues=function(url, part, indicator){   
+var displayPartIssues=function(url, task, part, indicator){   
+  
   $(':focus').blur();
  
   resetPath();
 
+
   var regExp = RegXpURL(url); 
-  url=regExp.arr+'@'+regExp.indicator;
+  url=regExp.arr+'@'+regExp.indicator; 
 
  
       $('.td_issue[data-path="'+url+'"]').addClass('chosenPart');
@@ -675,21 +732,36 @@ var displayPartIssues=function(url, part, indicator){
      if(nb==1) nb="une (1) remarque";
       if(nb>1) nb=nb+" remarques";
      $scope.context.inspector_title = "Partie: "+ part.title+' - '+nb+ " de type "+indicator ;
-
-    
-      
-    angular.forEach(element.todos, function(todo){
-      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
-      if(typeof results !== 'undefined') results.selected='relevantTask';
-    });
-    angular.forEach(element.facts, function(fact){
-      angular.forEach(fact.todos, function(todo){
-      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
-      if(typeof results !== 'undefined') results.selected='relevantTask';
-    })
-    });
-
+  showTasksAndFacts(element, indicator, task);
+  
     }
+
+var selectIndictor=function(indicator){
+  if(indicator==='ALL') 
+    $('#data-table').addClass('highlight-table');
+  else{
+    var rowTop = $('.indicators-header[data-indicator="'+indicator+'"]').parent().offset();
+    var topTop = rowTop.top;
+    var left = rowTop.left;
+
+    var width = $('.data-table').innerWidth() ;
+    var height =  $('.indicators-header[data-indicator="'+indicator+'"]').innerHeight();
+
+
+    var rowBottom = $('.data-table tbody tr:last-child').offset();
+    var topBottom = rowBottom.top;
+
+    $('#divOverlay').offset({top:topTop - 2 ,left:left - 2});
+    $('#divOverlay').height(height);
+    $('#divOverlay').width(width);
+    $('#divOverlay').css('visibility','visible');
+    $('#divOverlay').delay(500).slideDown('fast');    
+  }
+
+  
+
+}
+
 
 var selectChapter=function(index){
 
@@ -714,7 +786,6 @@ var selectChapter=function(index){
 }
 
 var selectPart=function(index){
- 
 var rowTop = $('.parts-header > th:nth-child('+index+')').offset();
 var topTop = rowTop.top;
 var left = rowTop.left;
@@ -732,7 +803,7 @@ var topBottom = rowBottom.top;
   $('#divOverlay').css('visibility','visible');
 $('#divOverlay').delay(500).slideDown('fast');
 }
-var displayPartInfos=function(partElt){
+var displayPartInfos=function(partElt, task){
     resetPath();
     selectPart($(partElt).index() + 1);
     $(':focus').blur();
@@ -741,79 +812,45 @@ var displayPartInfos=function(partElt){
      var part = $(partElt).attr('data-part');
 
     var route = $(partElt).attr('data-path');
-    
-    unSelectTasks();
 
     var element=resolveRoute(route);
-    angular.forEach(element.todos, function(todo){
-      var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-      if(typeof results !== 'undefined') results.selected='relevantTask';
-    });
-    angular.forEach(element.facts, function(fact){
-      angular.forEach(fact.todos, function(todo){
-      var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-      if(typeof results !== 'undefined') results.selected='relevantTask';
-    })
-    });
-
-        $scope.issuesInspectorShow = false;
+    showTasksAndFacts(element, 'ALL', task);
+  $scope.issuesInspectorShow = false;
 }
 
-var displayCourseInfos=function(){  
+var displayCourseInfos=function(indicator, task){ 
   resetPath(); 
   $scope.issuesInspectorShow = false;  
   $scope.context.inspector_title = "Cours: "+$scope.course.title +" - " +$scope.context.subfacts.length +" remarques";
-  for (var i = 0; i < $scope.context.subtasks.length; i++)   
-  {$scope.context.subtasks[i].selected = 'relevantTask' }
+    selectIndictor(indicator); 
 
-$('#data-table').addClass('highlight-table');
+showTasksAndFacts($scope.course, indicator,task);
+
+  angular.forEach($scope.course.chapters, function(chapter){
+    showTasksAndFacts(chapter, indicator, task);
+    angular.forEach(chapter.parts, function(part){
+      showTasksAndFacts(part,indicator,task)
+    })
+  });
+  
 
 }
 
-var displayChapterInfos=function(partElt){ 
+
+
+var displayChapterInfos=function(partElt, task){ 
   resetPath();
   $scope.issuesInspectorShow = false;
   selectChapter($(partElt).index() + 1);
   $(':focus').blur();
 
   var route = $(partElt).attr('data-path');
-  unSelectTasks();
-
-  var element=resolveRoute(route);
-  angular.forEach(element.todos, function(todo){
-    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected='relevantTask';
-  });
-  angular.forEach(element.facts, function(fact){
-    angular.forEach(fact.todos, function(todo){
-    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected='relevantTask';
-  })
-  });
-
+  var element=resolveRoute(route);  
+  showTasksAndFacts(element, 'ALL', task);
   angular.forEach(element.parts, function(part){
-
-   angular.forEach(part.todos, function(todo){
-    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected='relevantTask';
-  });
-  angular.forEach(part.facts, function(fact){
-    angular.forEach(fact.todos, function(todo){
-    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id })[0];
-    if(typeof results !== 'undefined') results.selected='relevantTask';
-  })
-  });
-
+  showTasksAndFacts(part, 'ALL',task);
   });
     
-}
-
-var displayIndicatorInfos=function(partElt){
-$(':focus').blur();
-$scope.issuesInspectorShow = false;
-resetPath();
-$(partElt).toggleClass('chosenPart');
-  
 }
 
 var tabsFn = (function() {  
@@ -887,23 +924,33 @@ var insertLocalTask=function(route, task){
   var element = resolveRoute(route);
   
   element.todos.unshift(task);
+
+
+  $scope.context.subtasks=computeAllTasks();
+console.log(route);
+  //reloadURL();
+  loadURL(route+';'+task._id);
  
 }
 
-$scope.editSuggestion=function($event){
-  var suggestion = $($event.currentTarget).text(); 
+$scope.editSuggestion=function($event, suggesion){
 
-  $scope.formData = suggestion;
-
-}
-$scope.createTask=function($event){
-  var suggestion = "Nouvelle tâche"; 
-$('#taskInput').focus();
-  $scope.formData = suggestion;
+  $scope.formData = suggestion; 
+  $('#taskInput').focus();
   $scope.context.route = $($event.currentTarget).attr('href');
   
 window.setTimeout(function() {
-             $("#taskInput").fadeIn(100).fadeOut(100).fadeIn().focus().select();
+             $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
+        }, 50);
+
+}
+$scope.createTask=function($event){
+  $scope.formData =  "Nouvelle tâche"; 
+$('#taskInput').focus();  
+  $scope.context.route = $($event.currentTarget).attr('href');
+  
+window.setTimeout(function() {
+             $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
         }, 50);
 
 }
@@ -912,11 +959,10 @@ $scope.addTask = function (data) {
       if (data != undefined) {
         var addedTask = data;          
         var route = $scope.context.route;
-        var query = parseTask(route, addedTask); //alert(query.route); 
+        var query = parseTask(route, addedTask); 
         addTask(query.route,query.todo)
         .success(function(data) {
           insertLocalTask(route, data);
-          $scope.context.subtasks=computeAllTasks();
            $scope.formData = undefined;
             swal({   title: "Nouvelle tâche ajoutée!",   
             text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
@@ -958,12 +1004,13 @@ var editTaskLocally = function(index, task){
 
 $scope.deleteTask = function (route, index) {
 swal({
-      title: "Delete the task?", 
-      text: "Are you sure that you want to delete this task?", 
+      title: "Supprimer la tâche?", 
+      text: "Êtes vous sur de vouloir suppprimer cette tâche?", 
       type: "warning",
       showCancelButton: true,
       closeOnConfirm: false,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
       confirmButtonColor: "#ec6c62"
     }, function() {
       
@@ -1098,16 +1145,19 @@ swal({
       '_id':$scope.course._id,
       'title':$scope.course.title,
       'Todos':$scope.course.todos,
-      'indicator':'ALL',
-      'selectedElement':$scope.course._id
+      'indicator':'ALL'
     };
     $scope.context.subtasks=computeAllTasks();
       
-
+$('table').hide();
     if($('.course_title_top').length<1)
-        $('.navbar-brand').after('<span class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></span>');
+        $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
 
-      loadContext();
+       window.setTimeout(function() {
+          loadContext(); 
+          $('table').show();
+          reloadURL(); 
+        }, 50);
 
     
       });

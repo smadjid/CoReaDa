@@ -279,25 +279,35 @@ ul.alert-dropdown {
 .width{
   width:30px!important;
 }
-    
- .data-table{
-  background: white;
-  border-collapse: separate; 
-  border:3px solid white!important; 
-border-radius: 3px;    
- padding: 0px; 
   
+.coreada-box{
+  padding:1%!important;
+}  
+
+ .data-table{
+  
+  border-collapse: separate; 
+  border:3px solid rgba(66, 90, 90, 0.45)!important; 
+  border-radius: 3px;    
+  padding: 0px; 
   width: auto;
 }
+.highlight-table {  
+border-color:#45348A!important; 
+} 
+
+.data-table > tr:first-child > th
+{
+     border-left: 0; 
+}
+
 th {
   background: steelblue;
   vertical-align: middle;
-  font-weight: lighter;
-  
+  font-weight: lighter;  
   color: white;
   border-left:1px solid #cccccc;
-  overflow: hidden; 
-  
+  overflow: hidden;   
 }
 
 
@@ -321,7 +331,6 @@ td {
     margin: 10px;
     border-bottom: 1px solid #eee;
 }
-
 
 
 .chapter_index{
@@ -552,9 +561,7 @@ hr {
 /**************************************************/
 /**************************************************/
 
-.container{
-    width:95%;
-}
+
 
 .tasks-panel{
   padding:10px;
@@ -617,7 +624,10 @@ hr {
 
 }
 .content {
-    margin-top: 20px!important;
+    margin-top: 10px!important;
+}
+.container{
+    width:100%;
 }
 html, body {
     max-width: 100%;
@@ -839,8 +849,8 @@ table {
 .table > thead > tr > td, 
 .table > tbody > tr > td
 {
-    padding-left: 2px!important;
-    padding-right: 2px!important;
+    padding-left: 0!important;
+    padding-right: 0!important;
     line-height: 1.0;
     vertical-align: top;
     
@@ -1014,8 +1024,6 @@ padding: 5px 10px;;
 .showpanel
 {
   width:100%;
-  margin-right:5%;
-  margin-left:5%;
   background-color:rgb(47, 82, 111)!important;
   border-color: rgb(47, 82, 111);
   border-radius: 2px;
@@ -1048,31 +1056,47 @@ padding: 5px 10px;;
   overflow: auto;
   width: auto;
 }
+.tasks-table tbody{
+    width: 100%!important;
+    display: inline-table;
+  }
 .tasks-table td{
     color: rgb(111, 111, 111);
     padding: 5px 10px;
 }
+
+.relevantTask .taskMiniPath, .notRelevantTask .taskMiniPath {
+  color:#008CBA;
+  font-size: 11px;
+}
+.selectedTask .taskMiniPath {
+  color:#fff;
+  font-size: 11px;
+}
 .relevantTask td, .notRelevantTask td{
   border:none;
   border-bottom: inset rgb(47, 82, 111)!important;  
+  font-size: 13px;
 
 }
 .selectedTask td{
 border:none;
 border-bottom: inset rgb(47, 82, 111)!important;  
+font-size: 13px;
+color: white!important;
+}
+.selectedTask a{
+color: white!important;
 }
 .selectedTask tr{
-
-
-box-shadow: outset 0 0 0 1px #fff;
- 
+box-shadow: outset 0 0 0 1px #fff; 
 }
-.tasks-table .relevantTask{
- 
-   background-color: white;  
+.tasks-table .relevantTask{ 
+   background-color: #f5f5f5;  
+   font-size: 13px;
 }
 
-.tasks-table .relevantTask *{
+.tasks-table .relevantTask span{
   color:rgba(64,61,61,0.85);
 }
 .tasks-table .notRelevantTask{
@@ -1080,32 +1104,28 @@ box-shadow: outset 0 0 0 1px #fff;
   background-color: #DDD;
 
 }
-.tasks-table .notRelevantTask *{
+.tasks-table .notRelevantTask span{
   color:grey;
 }
+
 .selectedTask, .selectedTask:hover{
   
    background-color: #49769C;  
 }
-.selectedTask *,.selectedTask *:hover{
+.selectedTask span,.selectedTask span:hover{
   color:white;
 }
-.tasks-table .editable-textarea .editable-controls .editable-input,
-.tasks-table .editable-textarea .editable-controls,
-.tasks-table .editable-textarea{
-  
+
+.editable-text, .editable-controls{
   width:100%!important;
-  
+  display: block!important;
+  padding: 0!important;
+  margin: 0!important;
 }
- .editable-textarea .editable-controls .editable-input,
- .editable-textarea .editable-controls,
- .editable-textarea,
- .editable-controls,
- .editable-input{
-  
-  width:96%!important;
-  
+.editable-input{
+  width:90%!important;
 }
+
 .tasks-table .panel, .tasks-table .panel-heading {
     border: none!important;
     background: transparent!important;
@@ -1114,8 +1134,7 @@ box-shadow: outset 0 0 0 1px #fff;
 .editable-click, a.editable-click, .editable-click:hover, a.editable-click:hover {
     text-decoration: none!important;
     color: #F5F5F5;
-   
-    cursor: pointer; cursor: hand;
+    cursor: pointer;
     width:100%;
 }
 .editable-empty, .editable-empty:hover, .editable-empty:focus, a.editable-empty, a.editable-empty:hover, a.editable-empty:focus {
@@ -1137,9 +1156,6 @@ a.editable-click:hover {
     color: #47a447;
     border-bottom-color: #47a447;
 }
-.editable-text{
-  width:100%;
-}
 
 /****************************************/
 input, textarea, select, a { outline: none!important; }
@@ -1150,11 +1166,7 @@ a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
 }
  
 
-.highlight-table {  
-border:3px solid #45348A!important; 
-border-radius: 3px;    
- padding: 0px; 
-} 
+
 #divOverlay {  
    position: 'absolute';
 visibility: hidden; 
@@ -1166,7 +1178,7 @@ border-radius: 3px;
  padding: 0px; 
 } 
 
-.course_title_top{
+.course_title_top, .course_title_top:focus{
   font-size: 18px;
 float: left;
     padding: 12px 15px;
@@ -1176,7 +1188,13 @@ float: left;
     font-family: 'Halflings';
     
     -webkit-font-smoothing: antialiased;
+    color:rgb(207, 210, 218);
 }
+.course_title_top:hover, .course_title_top:active{
+ color:white;
+}
+
+
 
 .course_li>li {
     display: block;

@@ -4,8 +4,7 @@
 			<span class="panel-title">Tâches</span>
 			
 <div id="form-controlA" editable-text="formData" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
-<span
-			class="glyphicon glyphicon-plus"></span> 
+<span id='newTaskSpan'	class="glyphicon glyphicon-plus"></span> 
 				{{formData ||  '(nouvelle tâche pour ce contexte)'  }}
 
 		</div>
@@ -27,7 +26,8 @@
 		<td style="width: 75%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
 		<div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
 			<span>{{ task.todo || 'empty' }} </span>
-			<div class='taskMiniPath'>{{ task.minipath}}</div>
+			<br/>
+			<div class='taskMiniPath'><em>{{ task.minipath}}</em></div>
 		</div>
 	</td>
 	<td style="width: 10%;" valign="top">
