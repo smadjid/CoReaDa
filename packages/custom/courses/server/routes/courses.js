@@ -33,6 +33,8 @@ module.exports = function(Courses, app, auth) {
     .get(courses.show)
     .put(courses.update)
     .delete(auth.isMongoId, auth.requiresLogin, hasAuthorization, hasPermissions, courses.destroy);
+  app.route('/api/courses/seed')
+      .get(courses.seed);
 
 
   app.route('/api/tasks/add/:courseId/:chapterId/:partId/:factId')

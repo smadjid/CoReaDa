@@ -364,6 +364,158 @@ module.exports = function(Courses) {
             res.json(_todo);
             })
         },
+        ////////////////////////  
+       seed: function(req, res) { 
+        var fs = require("fs");
+        
+        var facts = fs.readFileSync("nodejs.facts.json");
+        var jsonFacts = JSON.parse(facts);
+
+        var partsdata = fs.readFileSync("nodejs.structure.json");
+        var jsonPartsdata = JSON.parse(partsdata);
+
+
+
+        //course
+        var partCount = 0;
+       var courseParts=[];
+       var courseChapters=[];
+        for(var key in jsonPartsdata) 
+            {partCount = Math.max(partCount, jsonPartsdata[key].id)}
+         
+       var subsetByField = function (arr,field,value) {
+        var objectArray = [];
+             for (var i = 0, l = arr.length; i < l; i++){
+                
+                    if (arr[i][field] === value) {
+                     objectArray.push(arr[i]);
+                }        
+            }
+            return objectArray;
+        }
+
+        var computePart = function(p, part_data, part_facts){
+            
+        var part = {
+                'id':part_data[0]['id'],
+                'title':part_data[0]['part_title'],
+                'elementType':'part',
+                'properties':[],
+                'facts':[]
+            };
+            for (var i = 0, l = part_data.length; i < l; i++){
+                var prop ={
+                    property : part_data[i]['variable'],
+                    value : part_data[i]['value']
+                } 
+                part.properties.push(prop);
+                if(part_data[i]['variable']=='part_id') 
+                    part.part_id=part_data[i]['value']
+                else
+                    if(part_data[i]['variable']=='part_title') 
+                        part.title=part_data[i]['value']
+                    else
+                        if(part_data[i]['variable']=='part_type')
+                            part.type=part_data[i]['value']
+                        else
+                            if(part_data[i]['variable']=='part_parent')
+                                part.parent_id=part_data[i]['value']
+                            else
+                                part.properties.push(prop);
+           
+            };
+
+            for (var i = 0, l = part_facts.length; i < l; i++){              
+                var fact={
+                    'name':part_facts[i].content,
+                    'value':part_facts[i].value,
+                    'classof':part_facts[i].classe,
+                    'type':part_facts[i].type,
+                    'elementType':'fact',
+                    'description':part_facts[i].description,
+                    'norm_value':part_facts[i].norm_value,
+                    'gravity':part_facts[i].gravity
+                }
+
+                part.facts.push(fact);
+            };
+        if(part.type==='chapter') {
+            var chapter={
+                'id':part.id,
+                'part_id':part.part_id,
+                'title':part.title,
+                'type':part.type,
+                'elementType':'chapter',
+                'properties': part.properties,
+                'facts':part.facts,
+                'parts':[]
+            }
+            courseChapters.push(chapter)
+        }
+       if(part.type==='subchapter') 
+        courseParts.push(part);
+       }
+       
+
+        
+       for (var i = 1; i <=partCount ; i++){ 
+            var partProps = subsetByField(jsonPartsdata, 'id', i);
+            var partFacts = subsetByField(jsonFacts, 'id', i);
+            computePart(i, partProps, partFacts);
+      
+        };
+        
+        /*********** Chapters ***************/
+    
+        for (var i = 0; i < courseParts.length ; i++){ 
+                if(courseParts[i].type==='chapter'){ 
+                    var self = courseParts[i]['id'];
+            
+                   for(var j = 0; j < courseChapters.length; j++)
+                    if(courseChapters[j].id==self)
+                        courseChapters[j].parts.push(courseParts[i]);
+
+                }
+                if(courseParts[i].type==='subchapter'){                   
+                   var parent = courseParts[i]['parent_id'];
+            
+                   for(var j = 0; j < courseChapters.length; j++)
+                    if(courseChapters[j].part_id==parent)
+                        courseChapters[j].parts.push(courseParts[i]);
+                }
+        };
+
+
+        /************ COURSE *****************/
+        
+        var course = new Course( {
+            title : "Des applications ultra-rapides avec Node.js - New",
+            version : 1.0,
+            parts:courseParts,
+            properties:[],
+            chapters:courseChapters,
+            elementType:'course',
+            content:'course content',
+            user:"565d54d764d8ea197d1b6ccc",
+            facts: [],  
+            todos: []
+        });
+
+        
+        
+        course.save(function(err){
+            if (err){
+                console.log("erreur d'écriture: "+ err)
+            }
+            else{
+                console.log("enregistrement effectué");
+            }
+        });
+        
+console.log("\n *FINISH* \n");
+
+       }
+ 
 
 
 

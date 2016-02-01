@@ -933,9 +933,9 @@ console.log(route);
  
 }
 
-$scope.editSuggestion=function($event, suggesion){
+$scope.editSuggestion=function($event, suggestion){
 
-  $scope.formData = suggestion; 
+  $scope.formData = suggestion; alert(suggestion);
   $('#taskInput').focus();
   $scope.context.route = $($event.currentTarget).attr('href');
   

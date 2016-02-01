@@ -12,10 +12,10 @@ var mongoose = require('mongoose'),
  * Suggestions Schema
  */
 var SuggestionSchema = new Schema({ 
-  name: {
+  title: {
     type: String
   },
-  value: {
+  content: {
     type: Number
   },
   elementType:{
@@ -80,7 +80,12 @@ var FactSchema = new Schema({
   gravity: {
     type: String
   },
-  suggestion : [TodoSchema],
+  suggestion_title: {
+    type: String
+  },
+  suggestion_content: {
+    type: String
+  },
   todos : [TodoSchema]
 });
 
