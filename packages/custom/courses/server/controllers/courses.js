@@ -367,7 +367,7 @@ module.exports = function(Courses) {
   ////////////////////////  
        seed: function(req, res){
         var fs = require("fs");
-        var courseHome = "data/"+req.params.courseTitle;
+        var courseHome = "coursesdata/"+req.params.courseTitle;
         //var course = 
         
         var facts = fs.readFileSync(courseHome+"/facts.json");
