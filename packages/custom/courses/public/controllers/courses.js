@@ -9,6 +9,7 @@ angular.module('mean.courses')
 
 
 
+
 var app=angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope','$stateParams', '$location', '$http','Global', 'Courses', 'MeanUser', 'Circles','$http','$uibModal',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
     $scope.global = Global;
@@ -18,6 +19,8 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
    $scope.context = {};
 $scope.formData='';
 $scope.textBtnForm='';
+
+
 
     // construct hierarchy, routes and paths
 var completeCourseParts=function(course, courseParts){
@@ -367,6 +370,9 @@ var updateDisplay=function(){
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
 
+
+
+
       
     
 }
@@ -448,6 +454,7 @@ var route = url;
   var indicator = regExp.indicator;
   
 
+
   var path = regExp.arr; 
   var arr = path.split(',');  
   var course  = $scope.course;
@@ -468,8 +475,8 @@ var route = url;
    chap = $.grep(course.chapters, function(e){ return  e._id == arr[1] })[0]; 
    partElt = $('.chapter_index[data-part='+chap.id+']')[0];
    
-   
-      displayChapterInfos(partElt, task);
+   displayChapterInfos(partElt, task);
+      
       
       //}
 }
@@ -508,7 +515,7 @@ if(arr.length==4 /*&& indicator!="ALL"*/) {
   
    
      displayIssue(route, task, part, indicator);
-    
+     displayChapterInfos(partElt, task);
     
   //}
 }
@@ -517,12 +524,26 @@ if(arr.length==4 /*&& indicator!="ALL"*/) {
         $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
         $('.indicators-header').css('width','50px');
-        var tdW = (totalWidth - 55)/26;
+        var nbP = $scope.course.parts.length;
+        if (nbP<=0) nbP = 1;
+        if (nbP>40) nbP=40;
+        var tdW = (totalWidth - 50)/nbP; 
         
-        $scope.width=tdW;
+        
+        $('.data-table td').each(function() {
+   
+    $(this).css('min-width', 20);     // css attribute of your <td> width:15px; i.e.
+    $(this).css('max-width', 20);     // css attribute of your <td> width:15px; i.e.
+});
+       // $scope.width=tdW;
+        //$('.data-table td').css('width',tdW+'px!important');
+        //$('.data-table td').css('display','table');
+      //  $('.data-table td').attr('width',tdW)
+        
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
-
+  
+  $('.tableScroller').scroll();
 
 }
 

@@ -281,16 +281,21 @@ ul.alert-dropdown {
 }
   
 .coreada-box{
-  padding:1%!important;
+  padding:5px!important;
 }  
 
  .data-table{
-  
   border-collapse: separate; 
   border:3px solid rgba(66, 90, 90, 0.45)!important; 
   border-radius: 3px;    
   padding: 0px; 
-  width: auto;
+  width: 100%;
+}
+.part_index{
+  min-width:10px!important;
+  max-width:10px!important;
+  max-width:10px!important;
+
 }
 .highlight-table {  
 border-color:#45348A!important; 
@@ -609,6 +614,20 @@ hr {
   background: rgba(255,0,0,0.6); 
 }*/
 
+.always-visible.ps-container > .ps-scrollbar-x-rail,
+      .always-visible.ps-container > .ps-scrollbar-y-rail {
+        opacity: 0.6;
+        z-index:1000;
+      }
+.tableScroller {
+    
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    max-height:  100vh;
+    max-width:80vw;
+
+}
 .inspectorScroller {
     
     max-height:  50vh;
@@ -628,6 +647,7 @@ hr {
 }
 .container{
     width:100%;
+    padding:5px!important;
 }
 html, body {
     max-width: 100%;
@@ -808,6 +828,7 @@ html, body {
 .display-chapter-info, .display-chapter-info:hover{  
   text-decoration: none!important;
   color:white;
+      word-break: break-word;
 }
 
 .display-issues-btn{

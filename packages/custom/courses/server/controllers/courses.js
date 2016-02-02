@@ -364,15 +364,24 @@ module.exports = function(Courses) {
             res.json(_todo);
             })
         },
-        ////////////////////////  
-       seed: function(req, res) { 
+  ////////////////////////  
+       seed: function(req, res){
         var fs = require("fs");
+        var courseHome = "data/"+req.params.courseTitle;
+        //var course = 
         
-        var facts = fs.readFileSync("nodejs.facts.json");
+        var facts = fs.readFileSync(courseHome+"/facts.json");
         var jsonFacts = JSON.parse(facts);
 
-        var partsdata = fs.readFileSync("nodejs.structure.json");
+        //var coursedata = fs.readFileSync("CourseStats.json");
+      //  var jsonCoursedata = JSON.parse(coursedata);
+        var partsdata = fs.readFileSync(courseHome+"/structure.json");
         var jsonPartsdata = JSON.parse(partsdata);
+
+        var courseName=fs.readFileSync(courseHome+"/"+req.params.courseTitle);
+        var jsoncourseName = JSON.parse(courseName);
+        var course_title = jsoncourseName[0].title;
+        console.log(course_title);
 
 
 
@@ -434,12 +443,15 @@ module.exports = function(Courses) {
                     'elementType':'fact',
                     'description':part_facts[i].description,
                     'norm_value':part_facts[i].norm_value,
-                    'gravity':part_facts[i].gravity
+                    'gravity':part_facts[i].gravity,
+                    'suggestion_title': part_facts[i].suggestion_title,
+                    'suggestion_content':part_facts[i].suggestion_content
                 }
 
                 part.facts.push(fact);
             };
         if(part.type==='chapter') {
+
             var chapter={
                 'id':part.id,
                 'part_id':part.part_id,
@@ -447,21 +459,31 @@ module.exports = function(Courses) {
                 'type':part.type,
                 'elementType':'chapter',
                 'properties': part.properties,
-                'facts':part.facts,
+                'facts':[],
                 'parts':[]
             }
-            courseChapters.push(chapter)
+            part.parent_id=part.id;
+            part.type='subchapter';
+            part.title='Introduction';
+            chapter.parts.push(part);
+            courseChapters.push(chapter);
+            
+
+            courseParts.push(part);
         }
-       if(part.type==='subchapter') 
+       else if(part.type==='subchapter') 
         courseParts.push(part);
        }
        
 
-        
+         
        for (var i = 1; i <=partCount ; i++){ 
+
             var partProps = subsetByField(jsonPartsdata, 'id', i);
             var partFacts = subsetByField(jsonFacts, 'id', i);
+ 
             computePart(i, partProps, partFacts);
+            
       
         };
         
@@ -489,10 +511,10 @@ module.exports = function(Courses) {
         /************ COURSE *****************/
         
         var course = new Course( {
-            title : "Des applications ultra-rapides avec Node.js - New",
+            title : course_title,
             version : 1.0,
             parts:courseParts,
-            properties:[],
+            properties:[],//jsonCoursedata,
             chapters:courseChapters,
             elementType:'course',
             content:'course content',
@@ -512,13 +534,9 @@ module.exports = function(Courses) {
             }
         });
         
-console.log("\n *FINISH* \n");
+console.log("\n *FINISHED SEEDING* \n");
+return res.status(200).json('Success : Course '+course_title+' seeded ');
 
        }
- 
-
-
-
-
     };
 }

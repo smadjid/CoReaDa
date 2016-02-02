@@ -9,7 +9,7 @@
         </tr>
          <tr class='parts-header'>
          <th><b>Parties du cours</b></th>         
-            <th role='button' ng-click='triggerClick($event)' class="part_index" width="30" ng-repeat="part in courseParts" data-part={{part.id}} data-path={{part.route}} >
+            <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts" data-part={{part.id}} data-path={{part.route}} >
 
                 <span class="display-part-info" uib-tooltip={{part.title}}>{{$index + 1}}</span>
                 <br/>
@@ -27,7 +27,7 @@
                 
             </th>
 
-            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}}@Readings>
+            <td  class="td_issue" role="button"  ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}}@Readings>
                     <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; ' class='display-part-issues'> 
                         {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
                     </span>
