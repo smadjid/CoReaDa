@@ -130,7 +130,19 @@ module.exports = function(Courses) {
                     });
                 }
 
-                res.json(courses)
+                var result = [];
+                for (var i = 0; i< courses.length; i++){              
+                var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'created':courses[i].created
+                }
+
+               result.push(course);
+            };
+
+
+                res.json(result)
             });
 
         },

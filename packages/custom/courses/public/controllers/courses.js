@@ -14,15 +14,55 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
     $scope.global = Global;
     
-  $scope.issuesInspectorShow = false;
-  $scope.courseParts=[];
-   $scope.context = {};
-$scope.formData='';
-$scope.textBtnForm='';
+
+ $scope.findOne = function() {
+  $(window).unbind('hashchange');
+
+     $('table').hide();
+     $scope.issuesInspectorShow = false;
+      $scope.courseParts=[];
+      $scope.context = {};
+      $scope.course={}
+      $scope.formData='';
+      $scope.textBtnForm='';
+      Courses.get({
+        courseId: $stateParams.courseId
+      }, function(course) {
+     
+        $scope.course = course;
+        completeCourseParts($scope.course, $scope.courseParts);
+            $scope.context = {
+              'type':'course',      
+              'route':$scope.course._id,
+              'id':0,
+              '_id':$scope.course._id,
+              'title':$scope.course.title,
+              'Todos':$scope.course.todos,
+              'indicator':'ALL'
+            };
+    $scope.context.subtasks=computeAllTasks();
+    /********  Update on @ change ****************/
+$(window).bind('hashchange',function(){ 
+  loadContext();
+});
+      
+
+    if($('.course_title_top').length<1)
+        $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
+
+       window.setTimeout(function() {
+          loadContext(); 
+          $('table').show();
+          reloadURL(); 
+        }, 70);
+
+    
+      });
+    };
 
 
 
-    // construct hierarchy, routes and paths
+  
 var completeCourseParts=function(course, courseParts){
   var course_route = course._id;
   angular.forEach(course.chapters, function(chapter) { 
@@ -426,10 +466,7 @@ var getTasks = function(courseId, partId, todoData) {
 var filterTasks = function(studiedPart) {
           return studiedPart.todos;
       };
-/********  Update on @ change ****************/
-$(window).on('hashchange',function(){ 
-  loadContext();
-});
+
 /********************************************/
 var loadContext=function(){
    var url = location.hash.slice(1);
@@ -1063,16 +1100,6 @@ swal({
 
 
 
-
-
-
-
-
-
-
-
-
-
     $scope.hasAuthorization = function(course) {
       if (!course || !course.user) return false;
       return MeanUser.isAdmin || course.user._id === MeanUser.user._id;
@@ -1151,38 +1178,7 @@ swal({
       });
     };
 
-    $scope.findOne = function() {
-     
-      Courses.get({
-        courseId: $stateParams.courseId
-      }, function(course) {
-     
-        $scope.course = course;
-        completeCourseParts($scope.course, $scope.courseParts);
-    $scope.context = {
-      'type':'course',      
-      'route':$scope.course._id,
-      'id':0,
-      '_id':$scope.course._id,
-      'title':$scope.course.title,
-      'Todos':$scope.course.todos,
-      'indicator':'ALL'
-    };
-    $scope.context.subtasks=computeAllTasks();
-      
-$('table').hide();
-    if($('.course_title_top').length<1)
-        $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
-
-       window.setTimeout(function() {
-          loadContext(); 
-          $('table').show();
-          reloadURL(); 
-        }, 50);
-
-    
-      });
-    };
+   
   }
 ]);
 app.run(function(editableOptions, editableThemes) {  
