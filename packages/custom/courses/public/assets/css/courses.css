@@ -1083,7 +1083,7 @@ padding: 5px 10px;;
   }
 .tasks-table td{
     color: rgb(111, 111, 111);
-    padding: 5px 10px;
+    padding: 3px 5px;
 }
 
 .relevantTask .taskMiniPath, .notRelevantTask .taskMiniPath {
@@ -1136,7 +1136,9 @@ box-shadow: outset 0 0 0 1px #fff;
 .selectedTask span,.selectedTask span:hover{
   color:white;
 }
-
+.editable-textarea{
+  width:100%;
+}
 .editable-text, .editable-controls{
   width:100%!important;
   display: block!important;
@@ -1146,6 +1148,10 @@ box-shadow: outset 0 0 0 1px #fff;
 .editable-input{
   width:90%!important;
 }
+tbody .editable-input{
+  width:100%!important;
+}
+
 
 .tasks-table .panel, .tasks-table .panel-heading {
     border: none!important;

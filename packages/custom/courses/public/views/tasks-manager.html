@@ -23,7 +23,7 @@
 	
 
 	<tr role='button' ng-repeat="task in context.subtasks"  ng-class="task.selected" >
-		<td style="width: 75%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
+		<td style="width: 85%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
 		<div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
 			<span>{{ task.todo || 'empty' }} </span>
 			<br/>
