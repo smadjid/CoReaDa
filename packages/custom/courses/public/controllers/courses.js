@@ -468,7 +468,7 @@ var filterTasks = function(studiedPart) {
       };
 
 /********************************************/
-var loadContext=function(){
+var loadContext = function(){
    var url = location.hash.slice(1);
  
     var element = resolveRoute(url);
@@ -552,7 +552,7 @@ if(arr.length==4 /*&& indicator!="ALL"*/) {
   
    
      displayIssue(route, task, part, indicator);
-     displayChapterInfos(partElt, task);
+   //  displayChapterInfos(partElt, task);
     
   //}
 }
