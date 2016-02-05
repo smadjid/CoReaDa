@@ -1,10 +1,24 @@
 
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec">  
-  <h2>//TODO</h2>
-        <h3>Données descrptives / aggregées sur le <b>cours</b> ou la <b>partie</b> ou la <b>classe d'indicateurs</b> selon la sélection</h3>
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="courseInspectorShow" >
+<strong>Popularité des chapitres du cours: </strong>
+  <div class="btn-group">
+        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'obsels'" ng-change="chartSelect('obsels')">Nombre de visites</label>
+        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'q3.duration'" ng-change="chartSelect('q3.duration')">Durées de lecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'Rereadings'" ng-change="chartSelect('Rereadings')">Relecture</label>
+    </div>
+    <nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3> 
 
-        {{inspector.properties}}
 </div>
 
 
-    
+
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="!courseInspectorShow" >
+<strong>Popularité des chapitres du cours: </strong>
+  <div class="btn-group">
+        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'obsels'" ng-change="chartSelect('obsels')">Nombre de visites</label>
+        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'q3.duration'" ng-change="chartSelect('q3.duration')">Durées de lecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'Rereadings'" ng-change="chartSelect('Rereadings')">Relecture</label>
+    </div>
+    <nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3> 
+
+</div>

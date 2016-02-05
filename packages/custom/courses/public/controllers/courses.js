@@ -20,16 +20,23 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
 
      $('table').hide();
      $scope.issuesInspectorShow = false;
+     $scope.courseInspectorShow = true;
       $scope.courseParts=[];
       $scope.context = {};
       $scope.course={}
       $scope.formData='';
       $scope.textBtnForm='';
+      $scope.chartType = 'obsels';
+      $scope.chartedElement = {};
+  
       Courses.get({
         courseId: $stateParams.courseId
       }, function(course) {
      
         $scope.course = course;
+        $scope.chartType = 'obsels';
+        $scope.chartedElement = course;
+  
         completeCourseParts($scope.course, $scope.courseParts);
             $scope.context = {
               'type':'course',      
@@ -41,6 +48,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
               'indicator':'ALL'
             };
     $scope.context.subtasks=computeAllTasks();
+     
     /********  Update on @ change ****************/
 $(window).bind('hashchange',function(){ 
   loadContext();
@@ -503,7 +511,10 @@ var route = url;
 
   if(arr.length<2) 
     
-      displayCourseInfos(indicator, task);
+      {
+        displayCourseInfos(indicator, task);
+      elementStatsChart(course);
+    };
 
   
 
@@ -513,6 +524,7 @@ var route = url;
    partElt = $('.chapter_index[data-part='+chap.id+']')[0];
    
    displayChapterInfos(partElt, task);
+   elementStatsChart(chap);
       
       
       //}
@@ -985,7 +997,7 @@ var insertLocalTask=function(route, task){
 
 
   $scope.context.subtasks=computeAllTasks();
-console.log(route);
+
   //reloadURL();
   loadURL(route+';'+task._id);
  
@@ -1178,6 +1190,160 @@ swal({
       });
     };
 
+
+  /**********************NVD3 CHARTS****************************/
+    
+ var indicatorRereadingChart = function(chart, element){
+
+  if(typeof $scope.course=='undefined') return;
+  element = $scope.course;
+    var chartData=[
+                {'key':'Readings', 'values':[]},
+                {'key':'Rereadings', 'values':[]},
+                {'key':'Sequential_rereadings', 'values':[]},
+                {'key':'Decaled_rereadings', 'values':[]}
+              ];
+    
+    var type = element.elementType;
+    if(type=='course'){  
+      angular.forEach(chartData, function(r){
+          angular.forEach(element.chapters, function(chapter){
+          var part = chapter.parts;  
+          var valueEntry=0    
+          part.map(function(item){        
+            valueEntry = valueEntry + parseInt(item.properties.filter(function(value){ return value.property === r.key})[0].value);
+          });
+          r.values.push({'x':chapter.title, 'y':valueEntry})
+        });
+
+      });
+      
+    };
+    if(type=='subchapter'){  
+      angular.forEach(chartData, function(r){
+          angular.forEach(element.parts, function(part){
+          var valueEntry=0    
+          
+            valueEntry = valueEntry + parseInt(part.properties.filter(function(value){ return value.property === r.key})[0].value);
+          
+          r.values.push({'x':part.title, 'y':valueEntry})
+        });
+
+      });
+      
+    }
+
+   
+ $scope.indicatorRereadingChartOptions =  {
+          "chart": {
+            "type": "multiBarChart",
+            "height": 300,
+            "margin": {
+              "top": 20,
+              "right": 20,
+              "bottom": 45,
+              "left": 45
+            },
+            "clipEdge": true,
+            "duration": 500,
+            "stacked": true,
+            "xAxis": {
+              "axisLabel": "Count",
+              "showMaxMin": false
+            },
+            "yAxis": {
+              "axisLabel": "Chapitres",
+              "axisLabelDistance": -20
+            }
+          }
+        };
+        $scope.data = chartData;
+
+    
+    }
+
+
+  $scope.chartSelect = function (chart) {
+    var element = $scope.chartedElement ;
+    $scope.chartType= chart;
+    elementStatsChart(element);
+        };
+ var elementStatsChart = function(element){
+  
+  
+  $scope.chartedElement = element;
+    
+    var chartData=[];
+    var type = element.elementType;
+    if(type=='course'){  
+        angular.forEach(element.chapters, function(chapter){
+        var part = chapter.parts;  
+        var valueEntry=0    
+        part.map(function(item){        
+          valueEntry = valueEntry + parseInt(item.properties.filter(function(value){ return value.property === $scope.chartType})[0].value);
+        });
+        chartData.push({'label':chapter.title, 'value':valueEntry,'url':chapter.route})
+      })
+    }
+
+    if(type=='chapter'){  
+        angular.forEach(element.parts, function(part){
+        
+        var valueEntry=0    ; console.log(part);
+               
+          valueEntry = parseInt(part.properties.filter(function(value){ return value.property === $scope.chartType})[0].value);
+        
+        chartData.push({'label':part.title, 'value':valueEntry,'url':part.route})
+      })
+    }
+      
+    $scope.options = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 300,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 50,
+                    left: 55
+                },
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},                
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                duration: 500,
+                xAxis: {
+                    axisLabel: 'Chapitres du cours',
+                    staggerLabels: true
+                },
+                yAxis: {
+                    axisLabel: 'Nombre de visites',
+                    axisLabelDistance: -10
+                },
+                discretebar:{
+                    dispatch: {
+                      elementClick: function(e){ console.log(e.data.url);loadURL(e.data.url); }
+                      //elementMouseover: function(e){ console.log('mouseover') },
+                      //elementMouseout: function(e){ console.log('mouseout') },
+                     //renderEnd: function(e){ console.log('renderEnd') }                    
+                  }
+
+                }
+                
+                
+            }
+        };
+
+        $scope.data = [{
+          key: "Cumulative Return",
+          values: chartData
+        }] ;
+
+      //  console.log( $scope.data);
+
+      }
    
   }
 ]);
