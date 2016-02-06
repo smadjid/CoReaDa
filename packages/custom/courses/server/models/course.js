@@ -156,6 +156,29 @@ var ChapterSchema = new Schema({
 
 
 /**
+ * Tome Schema
+ */
+var TomeSchema = new Schema({
+  id: {
+    type: Number
+  },
+  part_id: {
+    type: Number
+  },
+  title: {
+    type: String
+  },
+  elementType:{
+    type:String
+  },
+  chapters: [ChapterSchema],
+  properties: [DescriptionSchema],
+  todos: [TodoSchema],
+  facts: [FactSchema]
+});
+
+
+/**
  * Course Schema
  */
 var CourseSchema = new Schema({
@@ -191,7 +214,7 @@ var CourseSchema = new Schema({
   },
   properties: [DescriptionSchema],
   parts: [PartSchema],
-  chapters: [ChapterSchema],
+  tomes: [TomeSchema],
   facts: [FactSchema],
   todos: [TodoSchema]
 });

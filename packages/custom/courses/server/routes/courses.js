@@ -37,21 +37,25 @@ module.exports = function(Courses, app, auth) {
       .get(courses.seed);
 
 
-  app.route('/api/tasks/add/:courseId/:chapterId/:partId/:factId')
+  app.route('/api/tasks/add/:courseId/:tomeId/:chapterId/:partId/:factId')
       .post(courses.addTodo);
   
   app.route('/api/course/tasks/edit/:courseId/:factId/:todoId')
       .post(courses.editCourseTodo);
-    app.route('/api/chapter/tasks/edit/:courseId/:chapterId/:factId/:todoId')
+    app.route('/api/chapter/tasks/edit/:courseId/:tomeId/:factId/:todoId')
+      .post(courses.editTomeTodo);
+    app.route('/api/chapter/tasks/edit/:courseId/:tomeId/:chapterId/:factId/:todoId')
       .post(courses.editChapterTodo);
-    app.route('/api/part/tasks/edit/:courseId/:chapterId/:partId/:factId/:todoId')
+    app.route('/api/part/tasks/edit/:courseId/:tomeId/:chapterId/:partId/:factId/:todoId')
       .post(courses.editPartTodo);
 
     app.route('/api/course/tasks/delete/:courseId/:factId/:todoId')
       .delete(courses.removeCourseTodo);
-    app.route('/api/chapter/tasks/delete/:courseId/:chapterId/:factId/:todoId')
+    app.route('/api/chapter/tasks/delete/:courseId/:tomeId/:factId/:todoId')
+      .delete(courses.removeTomeTodo);
+    app.route('/api/chapter/tasks/delete/:courseId/:tomeId/:chapterId/:factId/:todoId')
       .delete(courses.removeChapterTodo);
-    app.route('/api/part/tasks/delete/:courseId/:chapterId/:partId/:factId/:todoId')
+    app.route('/api/part/tasks/delete/:courseId/:tomeId/:chapterId/:partId/:factId/:todoId')
       .delete(courses.removePartTodo);
 
   // Finish with setting up the courseId param

@@ -158,91 +158,60 @@ module.exports = function(Courses) {
             if(err) return next("Error finding the course.");   
             var _result = _course.todos;
             
-            if(req.params.chapterId==0){
+            if(req.params.tomeId==0){
                 _course.todos.unshift(req.body);                
                 _course.save();
                 _result = _course.todos[0];
             }
             else{
-                var chapter = _course.chapters.id(req.params.chapterId);
-                if(req.params.partId==0){
-                    chapter.todos.unshift(req.body);
-                    chapter.save();                    
+                var tome = _course.tomes.id(req.params.tomeId);
+                if(req.params.chapterId==0){
+                    tome.todos.unshift(req.body);
+                    tome.save();                    
                     _course.save();
-                    _result = chapter.todos[0];
-                    }
-                    else{
-
-                        var part = chapter.parts.id(req.params.partId);
-                        if(req.params.factId==0){
-                            part.todos.unshift(req.body);
-                            part.save();    
-                            chapter.save();
-                            _course.save();
-                            _result = part.todos[0];
-                        }
-                        else{
-                            var fact = part.facts.id(req.params.factId);
-                            var todo = req.body;
-                            todo.classof = fact.classof;
-                            fact.todos.unshift(todo);
-                            fact.save();    
-                            part.save();    
-                            chapter.save();
-                            _course.save();
-                            _result = fact.todos[0];
-
-                        }
-
-                    }
-            }           
-            
-
-            res.json(_result);
-            })
-        },
-        // delete a todo from the course
-        removeTodo:function(req, res) {
-        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
-            if(err) return next("Error finding the course.");   
-            var _result = _course.todos;            
-            if(req.params.chapterId==0){
-                _course.todos.id(req.params.todoId).remove();               
-                _course.save();
-            }
-            else{
-                var chapter = _course.chapters.id(req.params.chapterId);
-                if(req.params.partId==0){
-                    chapter.todos.id(req.params.todoId).remove();               
-                    chapter.save();                    
-                    _course.save();
-                    _result = chapter.todos;
-                    }
-                    else{
-                        var part = chapter.parts.id(req.params.partId);
-                        if(req.params.factId==0){                            
-                            part.todos.id(req.params.todoId).remove(); 
-                            part.save();    
-                            chapter.save();
-                            _course.save();
-                            _result = part.todos;
-                        }
-                        else{
-                            var fact = part.facts.id(req.params.partId);
-                            fact.todos.id(req.params.todoId).remove(); 
-                            fact.save();    
-                            part.save();    
-                            chapter.save();
-                            _course.save();
-                            _result = fact.todos;
-                        }
-                    }
+                    _result = tome.todos[0];
                 }
+                else{
+                    var chapter = tome.chapters.id(req.params.chapterId);
+                    if(req.params.partId==0){
+                        chapter.todos.unshift(req.body);
+                        chapter.save();                    
+                        tome.save();      
+                        _course.save();
+                        _result = chapter.todos[0];
+                        }
+                        else{
+
+                            var part = chapter.parts.id(req.params.partId);
+                            if(req.params.factId==0){
+                                part.todos.unshift(req.body);
+                                part.save();    
+                                chapter.save();
+                                tome.save();      
+                                _course.save();
+                                _result = part.todos[0];
+                            }
+                            else{
+                                var fact = part.facts.id(req.params.factId);
+                                var todo = req.body;
+                                todo.classof = fact.classof;
+                                fact.todos.unshift(todo);
+                                fact.save();    
+                                part.save();    
+                                chapter.save();
+                                tome.save();      
+                                _course.save();
+                                _result = fact.todos[0];
+
+                            }
+
+                        }
+                } 
+            }
+
             res.json(_result);
             })
         },
-  
-        
         // delete a todo from the course
         removeCourseTodo:function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
@@ -260,10 +229,28 @@ module.exports = function(Courses) {
         },
 
          // delete a todo from a chapter
+        removeTomeTodo:function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");    
+            var _tome = _course.tomes.id(req.params.tomeId)           
+            if(req.params.factId != 0){
+                var _fact = _tome.facts.id(req.params.factId)
+                _fact.todos.id(req.params.todoId).remove();               
+                _fact.save();                
+            }
+            else 
+                _tome.todos.id(req.params.todoId).remove();               
+            _tome.save();
+            _course.save();
+            res.json('ok');
+            })
+        },
+         // delete a todo from a chapter
         removeChapterTodo:function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");    
-            var _chapter = _course.chapters.id(req.params.chapterId)           
+            var _tome = _course.tomes.id(req.params.tomeId)           
+            var _chapter = _tome.chapters.id(req.params.chapterId)           
             if(req.params.factId != 0){
                 var _fact = _chapter.facts.id(req.params.factId)
                 _fact.todos.id(req.params.todoId).remove();               
@@ -272,6 +259,7 @@ module.exports = function(Courses) {
             else 
                 _chapter.todos.id(req.params.todoId).remove();               
             _chapter.save();
+            _tome.save();
             _course.save();
             res.json('ok');
             })
@@ -280,7 +268,8 @@ module.exports = function(Courses) {
         removePartTodo:function(req, res) {
        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");    
-            var _chapter = _course.chapters.id(req.params.chapterId);           
+            var _tome = _course.chapters.id(req.params.chapterId);           
+            var _chapter = _tome.chapters.id(req.params.chapterId); 
             var _part = _chapter.parts.id(req.params.partId);
             if(req.params.factId != 0){
                 var _fact = _part.facts.id(req.params.factId)
@@ -292,6 +281,7 @@ module.exports = function(Courses) {
                 _part.todos.id(req.params.todoId).remove();               
             _part.save();
             _chapter.save();
+            _tome.save();
             _course.save();
             res.json('ok');
             })
@@ -323,13 +313,39 @@ module.exports = function(Courses) {
             res.json(_todo);
             })
         },
+        // edit a todo of  a tome
+        editTomeTodo:function(req, res) {
+        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");    
+            var _todo = 0;
+            var _tome = _course.tomes.id(req.params.tomeId)           
+            if(req.params.factId != 0){
+                var _fact = _tome.facts.id(req.params.factId)
+                _todo = _fact.todos.id(req.params.todoId);    
+                _todo.todo = req.body.todo;
+                _todo.save();           
+                _fact.save();                
+            }
+            else 
+                {
+                    _todo = _tome.todos.id(req.params.todoId);               
+                    _todo.todo = req.body.todo;
+                    _todo.save();
 
+                }
+            _tome.save();
+            _course.save();
+            res.json(_todo);
+            })
+        },
+         
          // edit a todo of  a chapter
         editChapterTodo:function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");    
             var _todo = 0;
-            var _chapter = _course.chapters.id(req.params.chapterId)           
+            var _tome = _course.tomes.id(req.params.tomeId)           
+            var _chapter = _tome.chapters.id(req.params.chapterId)           
             if(req.params.factId != 0){
                 var _fact = _chapter.facts.id(req.params.factId)
                 _todo = _fact.todos.id(req.params.todoId);    
@@ -345,6 +361,7 @@ module.exports = function(Courses) {
 
                 }
             _chapter.save();
+            _tome.save();
             _course.save();
             res.json(_todo);
             })
@@ -354,7 +371,8 @@ module.exports = function(Courses) {
        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");    
             var _todo = 0;
-            var _chapter = _course.chapters.id(req.params.chapterId);           
+            var _tome = _course.tomes.id(req.params.tomeId)           
+            var _chapter = _tome.chapters.id(req.params.chapterId)
             var _part = _chapter.parts.id(req.params.partId);
             if(req.params.factId != 0){
                 var _fact = _part.facts.id(req.params.factId)
@@ -372,6 +390,7 @@ module.exports = function(Courses) {
                 }               
             _part.save();
             _chapter.save();
+            _tome.save();
             _course.save();
             res.json(_todo);
             })
@@ -398,11 +417,16 @@ module.exports = function(Courses) {
 
 
         //course
-        var partCount = 0;
+        var partsCount = 0;
+        var tomesCount = 0;
        var courseParts=[];
        var courseChapters=[];
-        for(var key in jsonPartsdata) 
-            {partCount = Math.max(partCount, jsonPartsdata[key].id)}
+       var courseTomes=[];
+        for(var key in jsonPartsdata) {
+            partsCount = Math.max(partsCount, jsonPartsdata[key].id);
+            tomesCount = Math.min(tomesCount, jsonPartsdata[key].id);
+
+        }
          
        var subsetByField = function (arr,field,value) {
         var objectArray = [];
@@ -415,12 +439,11 @@ module.exports = function(Courses) {
             return objectArray;
         }
 
-        var computePart = function(p, part_data, part_facts){
-            
+        var computePart = function(p, part_data, part_facts){            
         var part = {
                 'id':part_data[0]['id'],
                 'title':part_data[0]['part_title'],
-                'elementType':'part',
+                'elementType':part_data[0]['part_type'],
                 'properties':[],
                 'facts':[]
             };
@@ -462,11 +485,25 @@ module.exports = function(Courses) {
 
                 part.facts.push(fact);
             };
+        if(part.type==='tome') {
+            var  tome={
+                'id':part.id,
+                'part_id':part.part_id,
+                'title':part.title,
+                'type':part.type,
+                'elementType':'tome',
+                'properties': part.properties,
+                'facts':[],
+                'chapters':[]
+            };
+            courseTomes.push(tome); 
+            
+        };
         if(part.type==='chapter') {
-
             var chapter={
                 'id':part.id,
                 'part_id':part.part_id,
+                'parent_id':part.parent_id,
                 'title':part.title,
                 'type':part.type,
                 'elementType':'chapter',
@@ -474,12 +511,13 @@ module.exports = function(Courses) {
                 'facts':[],
                 'parts':[]
             }
-            part.parent_id=part.id;
+            part.parent_id=part.part_id;
             part.type='subchapter';
             part.title='Introduction';
-            chapter.parts.push(part);
-            courseChapters.push(chapter);
             
+            
+            
+            courseChapters.push(chapter);            
 
             courseParts.push(part);
         }
@@ -489,7 +527,7 @@ module.exports = function(Courses) {
        
 
          
-       for (var i = 1; i <=partCount ; i++){ 
+       for (var i = 1; i <=partsCount ; i++){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
             var partFacts = subsetByField(jsonFacts, 'id', i);
@@ -499,25 +537,38 @@ module.exports = function(Courses) {
       
         };
         
-        /*********** Chapters ***************/
+        if(tomesCount<0)
+        for (var i = -1; i >=tomesCount ; i--){ 
+
+            var partProps = subsetByField(jsonPartsdata, 'id', i);
+            computePart(i, partProps, []);
+            
+      
+        };
+        
+        /*********** Chapters & Tomes ***************/
     
         for (var i = 0; i < courseParts.length ; i++){ 
-                if(courseParts[i].type==='chapter'){ 
-                    var self = courseParts[i]['id'];
-            
-                   for(var j = 0; j < courseChapters.length; j++)
-                    if(courseChapters[j].id==self)
-                        courseChapters[j].parts.push(courseParts[i]);
-
-                }
-                if(courseParts[i].type==='subchapter'){                   
                    var parent = courseParts[i]['parent_id'];
             
                    for(var j = 0; j < courseChapters.length; j++)
                     if(courseChapters[j].part_id==parent)
                         courseChapters[j].parts.push(courseParts[i]);
-                }
+     
         };
+
+console.log(courseChapters[1]);
+        for (var i = 0; i < courseChapters.length ; i++){ 
+                    var self = courseChapters[i]['id'];
+                    var parent = courseChapters[i]['parent_id'];           
+                
+                
+                for(var j = 0; j < courseTomes.length; j++)
+                    if(courseTomes[j].part_id==parent)
+                        courseTomes[j].chapters.push(courseChapters[i]);
+        };
+
+       
 
 
         /************ COURSE *****************/
@@ -527,7 +578,7 @@ module.exports = function(Courses) {
             version : 1.0,
             parts:courseParts,
             properties:[],//jsonCoursedata,
-            chapters:courseChapters,
+            tomes:courseTomes,
             elementType:'course',
             content:'course content',
             user:"565d54d764d8ea197d1b6ccc",
