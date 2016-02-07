@@ -6,7 +6,7 @@
         <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'q3.duration'" ng-change="chartSelect('q3.duration')">Durées de lecture</label>
         <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'Rereadings'" ng-change="chartSelect('Rereadings')">Relecture</label>
     </div>
-    <nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3> 
+    <nvd3 options="options" data="data" class="with-3d-shadow with-transitions" api="componentChart.api"></nvd3> 
 
 </div>
 

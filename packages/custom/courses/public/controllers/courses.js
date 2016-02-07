@@ -29,6 +29,8 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
       $scope.textBtnForm='';
       $scope.chartType = 'obsels';
       $scope.chartedElement = {};
+      $scope.factChart={};
+      $scope.componentChart={};
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -86,7 +88,11 @@ var completeCourseParts=function(course, courseParts, courseChapters){
         chapter.parts_count = chapter.parts_count + 1;
         part.route=chapter.route+','+part._id;
         angular.forEach(part.facts,function(fact){
-          fact.route=part.route+','+fact._id
+          fact.route=part.route+','+fact._id;
+          fact.d3={'options':$scope.options,'data':$scope.data};
+          //fact.d3={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
+          appendD3Facts(fact,part._id,chapter.route);
+
         });
         courseParts.push( part );
       });
@@ -94,6 +100,7 @@ var completeCourseParts=function(course, courseParts, courseChapters){
     });
   });
 }
+
 
 
 var resolveRoute = function(path){
@@ -351,7 +358,6 @@ var computeSubFacts=function(element, indicator){
 }
 
 
-/*******HHHHHHHHHHHHHHHHERE*************/
 
 var computeAllFacts=function(element, indicator){
   var type = element.elementType;
@@ -865,6 +871,19 @@ var displayIssue=function(url, task, part, indicator){
   $('.inspector-item[data-fact="'+element._id+'"]').addClass('inspector-item-selected');
 
   showTasksAndFacts(element, indicator, task);
+  
+  
+    $scope.factoptions = element.d3.options;
+    $scope.factdata = element.d3.data;
+  
+  //$scope.factChart.api.updateWithOptions(element.d3.options);
+  //$scope.factChart.api.updateWithData(element.d3.data);
+  
+  $scope.factChart.api.updateWithTimeout(5);
+  $scope.factChart.api.refresh();
+  
+
+  
   }
 
 var displayPartIssues=function(url, task, part, indicator){   
@@ -999,6 +1018,8 @@ var displayPartInfos=function(partElt, task){
     var element=resolveRoute(route);
     showTasksAndFacts(element, 'ALL', task);
   $scope.issuesInspectorShow = false;
+    $scope.componentChart.api.updateWithTimeout(5);
+  $scope.componentChart.api.refresh();
 }
 
 var displayCourseInfos=function(indicator, task){ 
@@ -1016,7 +1037,10 @@ angular.forEach($scope.course.tomes, function(tome){
       showTasksAndFacts(part,indicator,task)
     })
   })
-})
+});
+
+  $scope.componentChart.api.updateWithTimeout(5);
+  $scope.componentChart.api.refresh();
 
 }
 
@@ -1033,6 +1057,9 @@ var displayTomeInfos=function(partElt, task){
   angular.forEach(element.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
   });
+
+    $scope.componentChart.api.updateWithTimeout(5);
+  $scope.componentChart.api.refresh();
     
 }
 
@@ -1048,6 +1075,9 @@ var displayChapterInfos=function(partElt, task){
   angular.forEach(element.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
   });
+
+    $scope.componentChart.api.updateWithTimeout(5);
+  $scope.componentChart.api.refresh();
     
 }
 
@@ -1158,8 +1188,7 @@ $scope.addTask = function (data) {
         var addedTask = data;          
         var route = $scope.context.route;
         var query = parseTask(route, addedTask); 
-        //console.log('arr 0: '+url.split(';')[0]+' and arr 1: '+url.split(';')[1]);
-        console.log(query.route);
+        
         addTask(query.route,query.todo)
         .success(function(data) {
           insertLocalTask(route, data);
@@ -1322,7 +1351,168 @@ swal({
 
 
   /**********************NVD3 CHARTS****************************/
+var appendD3Facts=function(fact, factedPartID, contextElement){
+ 
+  if(fact.classof==='Readings')
+    {
+     
+    if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels')
+    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration')
+    }
+
+
+  
+
+}
+
+var factReadingChart = function(element, factedPartID, attr){
+  if(typeof $scope.course=='undefined') return;
     
+    var chartData=[];
+    var meanData=[];
+    var dataEntries=[];
+    var colorsEntries=[];
+
+    var type = element.elementType;   
+    var elementChart={};
+    var issueCode=element.issueCode
+
+   
+   var meanValue=100;
+   var cpt = 0;
+    
+        angular.forEach(element.parts, function(part){
+        
+        var valueEntry=0    ; 
+                
+          valueEntry = parseInt(part.properties.filter(function(value){ return  value.property === attr})[0].value);
+        
+        chartData.push({'x':cpt, 'y':valueEntry,  'series':0});
+         meanData.push({'x':cpt, 'y':200,  'series':1});
+        dataEntries.push(part.title);
+        if(part._id===factedPartID) colorsEntries.push('red')
+          else colorsEntries.push('grey')
+        cpt = cpt + 1;
+      })
+
+       
+     elementChart.options =  {
+            chart: {
+                type: 'multiChart',               
+                margin : {
+                    top: 30,
+                    right: 60,
+                    bottom: 50,
+                    left: 70
+                },
+                color: d3.scale.category10().range(),                
+                duration: 500,
+                xAxis: {
+                    tickFormat: function(d){
+                        return null//dataEntries[d];
+                    }
+                },
+                yAxis1: {
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                yAxis2: {
+                    tickFormat: function(d){
+                        return d3.format(',.1f')(d);
+                    }
+                },
+                tooltip: {
+                contentGenerator: function (e) {
+                  var series = e.series[0];
+                  if (series.value === null) return;
+                  
+                  console.log(dataEntries[e.point.x]);
+                    
+                  return "<strong>"+dataEntries[parseInt(e.point.x)]+"</strong>";
+                } 
+              }
+            }
+        };
+
+        elementChart.data = [{
+          "key": "Data",
+          "type": "bar",
+          'yAxis':1,
+          "values": chartData
+        },
+        {
+          "key": "Mean",
+          "type": "line",
+          'yAxis':1,
+          "values": meanData
+        }]
+      
+//console.log(elementChart.data);
+
+
+
+
+
+
+
+
+    elementChart.options1 = {
+            chart: {
+                type: 'discreteBarChart',
+                height: 200,
+                width:300,
+                margin : {
+                    top: 20,
+                    right: 20,
+                    bottom: 50,
+                    left: 55
+                },
+                x: function(d){return d.label;},
+                y: function(d){return d.value;},                
+                showValues: true,
+                valueFormat: function(d){
+                    return d3.format('')(d);
+                },
+                duration: 500,
+                xAxis: {
+                    axisLabel: 'Chapitres du cours',
+                    staggerLabels: true
+                },
+                yAxis: {
+                    axisLabel: attr,
+                    axisLabelDistance: -10
+                },
+                discretebar:{
+                    dispatch: {
+                      elementClick: function(e){ 
+                        loadURL(e.data.url); 
+                      }
+                      
+                  }
+
+                }
+                
+                
+            }
+        };
+
+        elementChart.data1 = [{
+          key: "Cumulative Return",
+          values: chartData
+        }] ;
+
+
+
+
+
+       
+       
+        return elementChart;
+
+}
  var indicatorRereadingChart = function(chart, element){
 
   if(typeof $scope.course=='undefined') return;
@@ -1480,6 +1670,12 @@ swal({
         };
 
         $scope.data = [{
+          key: "Cumulative Return",
+          values: chartData
+        }] ;
+
+        $scope.factoptions=$scope.options;
+        $scope.factdata = [{
           key: "Cumulative Return",
           values: chartData
         }] ;
