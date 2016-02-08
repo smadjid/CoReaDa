@@ -195,7 +195,7 @@ module.exports = function(Courses) {
                                 var fact = part.facts.id(req.params.factId);
                                 var todo = req.body;
                                 todo.classof = fact.classof;
-                                todo.classof = fact.issueCode
+                                todo.issueCode = fact.issueCode
                                 fact.todos.unshift(todo);
                                 fact.save();    
                                 part.save();    

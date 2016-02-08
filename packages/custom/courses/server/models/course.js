@@ -62,6 +62,9 @@ var FactSchema = new Schema({
   classof: {
     type: String
   },
+  issueCode: {
+    type: String
+  },
   type: {
     type: String
   },
