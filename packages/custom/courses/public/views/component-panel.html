@@ -1,7 +1,7 @@
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="courseInspectorShow"  >
-<strong>Popularité des chapitres du cours: </strong>
-  <div class="btn-group">
+
+  <div class="btn-group" style="width:100%; text-align:center">
         <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'obsels'" ng-change="chartSelect('obsels')">Nombre de visites</label>
         <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'q3.duration'" ng-change="chartSelect('q3.duration')">Durées de lecture</label>
         <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'Rereadings'" ng-change="chartSelect('Rereadings')">Relecture</label>

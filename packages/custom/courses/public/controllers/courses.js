@@ -1592,10 +1592,12 @@ var factReadingChart = function(element, factedPartID, attr){
   
   
   $scope.chartedElement = element;
+  var xlabel='Tomes du cours';
     
     var chartData=[];
     var type = element.elementType;
     if(type=='course'){  
+      xlabel='Tomes du cours';
       angular.forEach(element.tomes, function(tome){
           angular.forEach(tome.chapters, function(chapter){
           var part = chapter.parts;  
@@ -1609,6 +1611,7 @@ var factReadingChart = function(element, factedPartID, attr){
     }
 
     if(type=='tome'){  
+      xlabel='Chapitres du tome';
         angular.forEach(element.chapters, function(chapter){
         var part = chapter.parts;  
         var valueEntry=0    
@@ -1620,6 +1623,7 @@ var factReadingChart = function(element, factedPartID, attr){
     }
 
     if(type=='chapter'){  
+      xlabel='Sous-chapitres du chapitre';
         angular.forEach(element.parts, function(part){
         
         var valueEntry=0    ; 
@@ -1648,16 +1652,13 @@ var factReadingChart = function(element, factedPartID, attr){
                 },
                 duration: 500,
                 xAxis: {
-                    axisLabel: 'Chapitres du cours',
+                    axisLabel: xlabel,
                     staggerLabels: true,
                     tickFormat: function(d){
                         return null;
                     }
                 },
-                yAxis: {
-                    axisLabel: 'Nombre de visites',
-                    axisLabelDistance: -10
-                },
+                
                 discretebar:{
                     dispatch: {
                       elementClick: function(e){ 
