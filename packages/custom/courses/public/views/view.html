@@ -1,20 +1,15 @@
 <section data-ng-controller="CoursesController" data-ng-init="findOne()">
-  <!--  Author:  <span>{{course.user.name}}</span> / <span>Created :{{course.created | date:'medium'}}</span> / <span>Last modification :{{course.created | date:'medium'}}</span> 
-<h2>{{course.title}}</h2>
-  <div data-ng-if="hasAuthorization(course)">
-    <a class="btn" href="/courses/{{course._id}}/edit">
-     <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn" data-ng-click="remove(course);">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-  <div>{{course.content}}</div>-->
-
-
-
-<div class="container-fluid row" >  
-<!--<div><small ng-bind-html="context_path" ></small> </div>-->
+<div ng-show="dataLoading" id="floatBarsG">
+  <div id="floatBarsG_1" class="floatBarsG"></div>
+  <div id="floatBarsG_2" class="floatBarsG"></div>
+  <div id="floatBarsG_3" class="floatBarsG"></div>
+  <div id="floatBarsG_4" class="floatBarsG"></div>
+  <div id="floatBarsG_5" class="floatBarsG"></div>
+  <div id="floatBarsG_6" class="floatBarsG"></div>
+  <div id="floatBarsG_7" class="floatBarsG"></div>
+  <div id="floatBarsG_8" class="floatBarsG"></div>
+</div>
+<div class="container-fluid row" ng-show="!dataLoading">  
 <div class="col-lg-9 coreada-box">        
 <perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   > 
 
@@ -40,22 +35,4 @@
 </div>
 
 
-
-
-
 </section>
-
-<!--<section data-ng-controller="CoursesController" data-ng-init="findOne()">
-  <span>{{course.created | date:'medium'}}</span> /
-  <span>{{course.user.name}}</span>
-  <h2>{{course.title}}</h2>
-  <div data-ng-if="hasAuthorization(course)">
-    <a class="btn" href="/courses/{{course._id}}/edit">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn" data-ng-click="remove(course);">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-  <div>{{course.content}}</div>
-</section>-->

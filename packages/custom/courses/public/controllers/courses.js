@@ -16,6 +16,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
     
 
  $scope.findOne = function() {
+  $scope.dataLoading = true;
   $(window).unbind('hashchange');
 
      $('table').hide();
@@ -66,8 +67,12 @@ $(window).bind('hashchange',function(){
           loadContext(); 
           $('table').show();
           reloadURL(); 
-        }, 70);
 
+        }, 50);
+
+
+       
+$scope.dataLoading = false;
     
       });
     };
@@ -513,11 +518,6 @@ $scope.taskContexter= function(task,$event) {
   var element = deparseTask(task.route);
   loadURL(element);
 
-/*
-   window.setTimeout(function() {
-  
-  task.selected = 'selectedTaskG';
-        }, 10);*/
   $($event.currentTarget).parent().blur();
   $($event.currentTarget).parent().focus();
 
@@ -761,7 +761,7 @@ goHome();
 window.setTimeout(function() {
 loadURL(url) 
   
-        }, 80);
+        }, 50);
 
 }
 var loadURL =function(url){
