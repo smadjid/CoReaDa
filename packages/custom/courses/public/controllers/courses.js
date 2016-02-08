@@ -17,7 +17,10 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
 
  $scope.findOne = function() {
   $scope.dataLoading = true;
+  $scope.pageLoaded = false;
   $(window).unbind('hashchange');
+
+  $scope.observedElt={'type':'cours','nbUsers':0,'nbRS':0,'obsels':0}
 
      $('table').hide();
      $scope.issuesInspectorShow = false;
@@ -73,6 +76,7 @@ $(window).bind('hashchange',function(){
 
        
 $scope.dataLoading = false;
+$scope.pageLoaded = true;
     
       });
     };
@@ -1039,6 +1043,29 @@ angular.forEach($scope.course.tomes, function(tome){
 });
 
 
+//$scope.
+//valueEntry = valueEntry + parseInt($scope.course.properties.filter(function(value){ return value.property === r.key})[0].value);
+var nbUsers = 0;
+var nbRS = 0;
+var obsels=0;
+console.log($scope.course);
+angular.forEach($scope.course, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+            nbUsers = nbUsers + parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
+            nbRS = nbRS + parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
+            obsels = obsels + parseInt(chapter.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
+            angular.forEach(chapter.parts, function(part){
+         
+                   
+            nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
+            nbRS = nbRS + parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
+            obsels = obsels + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
+          });
+          
+        });
+      });
+
+$scope.observedElt={'type':'cours','nbUsers':nbUsers,'nbRS':nbRS,'obsels':nbRS}
 
   $scope.componentChart.api.updateWithTimeout(5);
   $scope.componentChart.api.refresh();
@@ -1185,7 +1212,9 @@ window.setTimeout(function() {
 }
 
 $scope.addTask = function (data) {
+  $scope.dataLoading = true;
       if (data != undefined) {
+
         var addedTask = data;          
         var route = $scope.context.route;
         var query = parseTask(route, addedTask); 
@@ -1194,12 +1223,17 @@ $scope.addTask = function (data) {
         .success(function(data) {
           insertLocalTask(route, data);
            $scope.formData = undefined;
+           $scope.dataLoading = false;
             swal({   title: "Nouvelle tâche ajoutée!",   
             text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
              animation: "slide-from-top",
              type:"info"  ,
             timer: 1500,   showConfirmButton: false });
-        });        
+        })
+        .error(function(data) {
+        swal("Oops", "Une erreur interne du serveur est survenue. La tâche n'a pu être ajoutée", "error");
+      });  
+        $scope.dataLoading = false;     
         
       }    
       $scope.formData='';return false;   
