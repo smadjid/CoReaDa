@@ -1649,7 +1649,10 @@ var factReadingChart = function(element, factedPartID, attr){
                 duration: 500,
                 xAxis: {
                     axisLabel: 'Chapitres du cours',
-                    staggerLabels: true
+                    staggerLabels: true,
+                    tickFormat: function(d){
+                        return null;
+                    }
                 },
                 yAxis: {
                     axisLabel: 'Nombre de visites',
