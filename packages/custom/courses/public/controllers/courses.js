@@ -586,8 +586,10 @@ var loadContext = function(){
     
       {
         displayCourseInfos(indicator, task);
-        if(indicator!='Rereading')      elementStatsChart(course)
-          else indicatorRereadingChart(course);
+
+        if(indicator==='Readings') elementStatsChart(course);
+        if(indicator==='Rereading') indicatorRereadingChart(course);
+        if(indicator==='Stop') indicatorStopChart(course);
     };
 
   /********************************hhhhhhhhhhhhhhhh***********/
@@ -1513,6 +1515,7 @@ var factReadingChart = function(element, factedPartID, attr){
 }
 
  var indicatorRereadingChart = function(element){
+  $scope.indicatorGraphShow='rereading';
 
   if(typeof $scope.course=='undefined') return;
     var chartData=[
@@ -1585,12 +1588,14 @@ var factReadingChart = function(element, factedPartID, attr){
     }
 
 
-  $scope.chartSelect = function (chart) {
+  $scope.readingChartSelect = function (chart) {
     var element = $scope.chartedElement ;
     $scope.chartType= chart;
     elementStatsChart(element);
         };
- var elementStatsChart = function(element){
+
+        var elementStatsChart = function(element){
+  $scope.indicatorGraphShow='readings';
   
   $scope.chartedElement = element;
   var xlabel='Tomes du cours';
@@ -1686,6 +1691,92 @@ var factReadingChart = function(element, factedPartID, attr){
       
 
       }
+
+
+    $scope.stopChartSelect = function (chart) {
+      indicatorStopChart($scope.course, chart);
+        };
+
+ var indicatorStopChart = function(element, type){
+   $scope.indicatorGraphShow='stop';
+
+  if(typeof $scope.course=='undefined') return;
+    var chartData=[];
+    if(type==='stop')
+      chartData=[ {'key':'rupture', 'values':[]},
+                {'key':'recovery', 'values':[]},
+                {'key':'norecovery', 'values':[]}
+              ]
+    else
+      chartData=[ {'key':'shifted_recovery', 'values':[]},
+                {'key':'back_recovery', 'values':[]},
+                {'key':'next_recovery', 'values':[]},
+                {'key':'direct_recovery', 'values':[]}
+              ]
+    
+    var type = element.elementType;
+    if(type=='course'){  
+      angular.forEach(chartData, function(r){
+        angular.forEach(element.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+          var part = chapter.parts;  
+          var valueEntry=0    
+          part.map(function(item){        
+            valueEntry = valueEntry + parseInt(item.properties.filter(function(value){ return value.property === r.key})[0].value);
+          });
+          r.values.push({'x':chapter.title, 'y':valueEntry})
+        });
+      });
+
+    });
+      
+    };
+    if(type=='subchapter'){  
+      angular.forEach(chartData, function(r){
+          angular.forEach(element.parts, function(part){
+          var valueEntry=0    
+          
+            valueEntry = valueEntry + parseInt(part.properties.filter(function(value){ return value.property === r.key})[0].value);
+          
+          r.values.push({'x':part.title, 'y':valueEntry})
+        });
+
+      });
+      
+    }
+
+   
+ $scope.options =  {
+          "chart": {
+            "type": "multiBarChart",
+            "height": 300,
+            "margin": {
+              "top": 20,
+              "right": 20,
+              "bottom": 45,
+              "left": 45
+            },
+            "clipEdge": true,
+            "duration": 500,
+            "stacked": true,
+            'showXAxis':false,
+            "xAxis": {
+              "axisLabel": "Count",
+              "showMaxMin": false,
+            },
+            "yAxis": {
+              "axisLabel": "Chapitres",
+              "axisLabelDistance": -20
+            }
+          }
+        };
+        $scope.data = chartData;
+        console.log($scope.data);
+
+      
+
+      }
+  // end
    
   }
 ]);

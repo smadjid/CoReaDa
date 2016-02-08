@@ -2,9 +2,13 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="courseInspectorShow"  >
 
   <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='readings' ">
-        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'obsels'" ng-change="chartSelect('obsels')">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'q3.duration'" ng-change="chartSelect('q3.duration')">Durées de lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'Rereadings'" ng-change="chartSelect('Rereadings')">Relecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
+    </div>
+    <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='stop' ">
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="stopChartSelect('stop')">Type d'arrêt</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="stopChartSelect('recovery')">Reprises</label>
     </div>
     <nvd3 options="options" data="data" class="with-3d-shadow with-transitions" api="componentChart.api"></nvd3> 
 
@@ -15,9 +19,9 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="!courseInspectorShow" >
 <strong>Popularité des chapitres du cours: </strong>
   <div class="btn-group">
-        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'obsels'" ng-change="chartSelect('obsels')">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'q3.duration'" ng-change="chartSelect('q3.duration')">Durées de lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="chartSelector" uib-btn-radio="'Rereadings'" ng-change="chartSelect('Rereadings')">Relecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingChartSelect('obsels')">Nombre de visites</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
     </div>
     <nvd3 options="options" data="data" class="with-3d-shadow with-transitions"></nvd3> 
 
