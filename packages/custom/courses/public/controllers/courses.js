@@ -590,6 +590,7 @@ var loadContext = function(){
         if(indicator==='Readings') elementStatsChart(course);
         if(indicator==='Rereading') indicatorRereadingChart(course);
         if(indicator==='Stop') indicatorStopChart(course);
+        if(indicator==='Transition') transitionStopChart(course);
     };
 
   /********************************hhhhhhhhhhhhhhhh***********/
@@ -1712,6 +1713,94 @@ var factReadingChart = function(element, factedPartID, attr){
                 {'key':'back_recovery', 'values':[]},
                 {'key':'next_recovery', 'values':[]},
                 {'key':'direct_recovery', 'values':[]}
+              ]
+    
+    var type = element.elementType;
+    if(type=='course'){  
+      angular.forEach(chartData, function(r){
+        angular.forEach(element.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+          var part = chapter.parts;  
+          var valueEntry=0    
+          part.map(function(item){        
+            valueEntry = valueEntry + parseInt(item.properties.filter(function(value){ return value.property === r.key})[0].value);
+          });
+          r.values.push({'x':chapter.title, 'y':valueEntry})
+        });
+      });
+
+    });
+      
+    };
+    if(type=='subchapter'){  
+      angular.forEach(chartData, function(r){
+          angular.forEach(element.parts, function(part){
+          var valueEntry=0    
+          
+            valueEntry = valueEntry + parseInt(part.properties.filter(function(value){ return value.property === r.key})[0].value);
+          
+          r.values.push({'x':part.title, 'y':valueEntry})
+        });
+
+      });
+      
+    }
+
+   
+ $scope.options =  {
+          "chart": {
+            "type": "multiBarChart",
+            "height": 300,
+            "margin": {
+              "top": 20,
+              "right": 20,
+              "bottom": 45,
+              "left": 45
+            },
+            "clipEdge": true,
+            "duration": 500,
+            "stacked": true,
+            'showXAxis':false,
+            "xAxis": {
+              "axisLabel": "Count",
+              "showMaxMin": false,
+            },
+            "yAxis": {
+              "axisLabel": "Chapitres",
+              "axisLabelDistance": -20
+            }
+          }
+        };
+        $scope.data = chartData;
+        console.log($scope.data);
+
+      
+
+      };
+
+
+      $scope.transitionChartSelect = function (chart) {
+      transitionStopChart($scope.course, chart);
+        };
+
+ var transitionStopChart = function(element, type){
+   $scope.indicatorGraphShow='transition';
+
+  if(typeof $scope.course=='undefined') return;
+    var chartData=[];
+    if(type==='provenance')
+      chartData=[ {'key':'provenance_precedent', 'values':[]},
+                {'key':'provenance_shifted_past', 'values':[]},
+                {'key':'provenance_identity', 'values':[]},
+                {'key':'provenance_next_p', 'values':[]},
+                {'key':'provenance_shifted_next', 'values':[]}
+              ]
+    else
+      chartData=[ {'key':'destination_precedent', 'values':[]},
+                {'key':'destination_shifted_past', 'values':[]},
+                {'key':'destination_identity', 'values':[]},
+                {'key':'destination_next_p', 'values':[]},
+                {'key':'destination_shifted_next', 'values':[]}
               ]
     
     var type = element.elementType;

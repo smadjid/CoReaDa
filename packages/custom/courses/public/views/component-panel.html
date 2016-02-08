@@ -10,6 +10,10 @@
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="stopChartSelect('stop')">Type d'arrêt</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="stopChartSelect('recovery')">Reprises</label>
     </div>
+     <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='transition' ">
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="transitionChartSelect('provenance')">Provenance</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="transitionChartSelect('recovery')">Destination</label>
+    </div>
     <nvd3 options="options" data="data" class="with-3d-shadow with-transitions" api="componentChart.api"></nvd3> 
 
 </div>
