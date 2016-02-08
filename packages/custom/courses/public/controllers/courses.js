@@ -21,6 +21,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
      $('table').hide();
      $scope.issuesInspectorShow = false;
      $scope.courseInspectorShow = true;
+     $scope.indicatorGraphShow = 'readings';;
       $scope.courseParts=[];
       $scope.courseChapters=[];
       $scope.context = {};
@@ -564,14 +565,8 @@ var loadContext = function(){
    
    $scope.context.Tasks=element.todos; 
    $scope.context.subfacts=computeAllFacts(element);
-   
-   
-
-
-/******************************************/
-var route = url;
-
-  resetPath();
+   var route = url;
+   resetPath();
   var regExp = RegXpURL(route);
   
   var task =  regExp.task; 
@@ -591,7 +586,8 @@ var route = url;
     
       {
         displayCourseInfos(indicator, task);
-      elementStatsChart(course);
+        if(indicator!='Rereading')      elementStatsChart(course)
+          else indicatorRereadingChart(course);
     };
 
   /********************************hhhhhhhhhhhhhhhh***********/
@@ -1038,6 +1034,8 @@ angular.forEach($scope.course.tomes, function(tome){
     })
   })
 });
+
+
 
   $scope.componentChart.api.updateWithTimeout(5);
   $scope.componentChart.api.refresh();
@@ -1513,10 +1511,10 @@ var factReadingChart = function(element, factedPartID, attr){
         return elementChart;
 
 }
- var indicatorRereadingChart = function(chart, element){
+
+ var indicatorRereadingChart = function(element){
 
   if(typeof $scope.course=='undefined') return;
-  element = $scope.course;
     var chartData=[
                 {'key':'Readings', 'values':[]},
                 {'key':'Rereadings', 'values':[]},
@@ -1527,7 +1525,8 @@ var factReadingChart = function(element, factedPartID, attr){
     var type = element.elementType;
     if(type=='course'){  
       angular.forEach(chartData, function(r){
-          angular.forEach(element.chapters, function(chapter){
+        angular.forEach(element.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
           var part = chapter.parts;  
           var valueEntry=0    
           part.map(function(item){        
@@ -1535,8 +1534,9 @@ var factReadingChart = function(element, factedPartID, attr){
           });
           r.values.push({'x':chapter.title, 'y':valueEntry})
         });
-
       });
+
+    });
       
     };
     if(type=='subchapter'){  
@@ -1554,7 +1554,7 @@ var factReadingChart = function(element, factedPartID, attr){
     }
 
    
- $scope.indicatorRereadingChartOptions =  {
+ $scope.options =  {
           "chart": {
             "type": "multiBarChart",
             "height": 300,
@@ -1567,9 +1567,10 @@ var factReadingChart = function(element, factedPartID, attr){
             "clipEdge": true,
             "duration": 500,
             "stacked": true,
+            'showXAxis':false,
             "xAxis": {
               "axisLabel": "Count",
-              "showMaxMin": false
+              "showMaxMin": false,
             },
             "yAxis": {
               "axisLabel": "Chapitres",
@@ -1578,6 +1579,7 @@ var factReadingChart = function(element, factedPartID, attr){
           }
         };
         $scope.data = chartData;
+        console.log($scope.data);
 
     
     }
@@ -1589,7 +1591,6 @@ var factReadingChart = function(element, factedPartID, attr){
     elementStatsChart(element);
         };
  var elementStatsChart = function(element){
-  
   
   $scope.chartedElement = element;
   var xlabel='Tomes du cours';
@@ -1651,12 +1652,10 @@ var factReadingChart = function(element, factedPartID, attr){
                     return d3.format('')(d);
                 },
                 duration: 500,
+                'showXAxis':false,
                 xAxis: {
                     axisLabel: xlabel,
-                    staggerLabels: true,
-                    tickFormat: function(d){
-                        return null;
-                    }
+                    staggerLabels: true
                 },
                 
                 discretebar:{
