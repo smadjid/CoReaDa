@@ -412,8 +412,8 @@ module.exports = function(Courses) {
 
         var courseName=fs.readFileSync(courseHome+"/"+req.params.courseTitle);
         var jsoncourseName = JSON.parse(courseName);
-        var course_title = jsoncourseName[0].title;
-        console.log(course_title);
+        //var course_title = jsoncourseName[0].title;
+        //console.log(course_title);
 
 
 
@@ -423,6 +423,8 @@ module.exports = function(Courses) {
        var courseParts=[];
        var courseChapters=[];
        var courseTomes=[];
+       var courseData={};
+
         for(var key in jsonPartsdata) {
             partsCount = Math.max(partsCount, jsonPartsdata[key].id);
             tomesCount = Math.min(tomesCount, jsonPartsdata[key].id);
@@ -487,6 +489,11 @@ module.exports = function(Courses) {
 
                 part.facts.push(fact);
             };
+        if(part.type==='course') {
+            courseData.title = part.title;
+            courseData.properties = part.properties;
+            
+        };
         if(part.type==='tome') {
             var  tome={
                 'id':part.id,
@@ -529,7 +536,7 @@ module.exports = function(Courses) {
        
 
          
-       for (var i = 1; i <=partsCount ; i++){ 
+       for (var i = 0; i <=partsCount ; i++){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
             var partFacts = subsetByField(jsonFacts, 'id', i);
@@ -576,10 +583,10 @@ console.log(courseChapters[1]);
         /************ COURSE *****************/
         
         var course = new Course( {
-            title : course_title,
+            title : courseData.title,
             version : 1.0,
             parts:courseParts,
-            properties:[],//jsonCoursedata,
+            properties:courseData.properties,//jsonCoursedata,
             tomes:courseTomes,
             elementType:'course',
             content:'course content',
@@ -600,7 +607,7 @@ console.log(courseChapters[1]);
         });
         
 console.log("\n *FINISHED SEEDING* \n");
-return res.status(200).json('Success : Course '+course_title+' seeded ');
+return res.status(200).json('Success : Course '+courseData.title+' seeded ');
 
        }
     };

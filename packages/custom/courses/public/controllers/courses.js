@@ -627,6 +627,8 @@ var loadContext = function(){
   part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
   displayPartInfos(partElt, task);
+
+  $scope.courseInspectorShow = true;
   
 }
 if(arr.length==4 && indicator!="ALL") { 
@@ -1020,6 +1022,15 @@ var displayPartInfos=function(partElt, task){
 
     var element=resolveRoute(route);
     showTasksAndFacts(element, 'ALL', task);
+
+
+
+$scope.observedElt={'type':'Cette partie ',
+      'nbUsers':parseInt(element.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value),
+      'nbRS':parseInt(element.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value),
+      'obsels':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value) };    
+
+
   $scope.issuesInspectorShow = false;
     $scope.componentChart.api.updateWithTimeout(5);
   $scope.componentChart.api.refresh();
@@ -1042,32 +1053,19 @@ angular.forEach($scope.course.tomes, function(tome){
   })
 });
 
+if(indicator==='ALL') $scope.courseInspectorShow = true
+  else  $scope.courseInspectorShow = false
 
-//$scope.
-//valueEntry = valueEntry + parseInt($scope.course.properties.filter(function(value){ return value.property === r.key})[0].value);
 var nbUsers = 0;
 var nbRS = 0;
 var obsels=0;
-console.log($scope.course);
-angular.forEach($scope.course, function(tome){
-          angular.forEach(tome.chapters, function(chapter){
-            nbUsers = nbUsers + parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
-            nbRS = nbRS + parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
-            obsels = obsels + parseInt(chapter.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
-            angular.forEach(chapter.parts, function(part){
-         
-                   
-            nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
-            nbRS = nbRS + parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
-            obsels = obsels + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
-          });
-          
-        });
-      });
 
-$scope.observedElt={'type':'cours','nbUsers':nbUsers,'nbRS':nbRS,'obsels':nbRS}
+$scope.observedElt={'type':'Ce cours',
+      'nbUsers':$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
+      'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
+      'obsels':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value};
 
-  $scope.componentChart.api.updateWithTimeout(5);
+  $scope.componentChart.api.update();
   $scope.componentChart.api.refresh();
 
 }
@@ -1081,10 +1079,29 @@ var displayTomeInfos=function(partElt, task){
 
   var route = $(partElt).attr('data-path');
   var element=resolveRoute(route);  
+  var nbUsers = 0;
+  var nbRS = 0;
+  var obsels = 0;
   showTasksAndFacts(element, 'ALL', task);
-  angular.forEach(element.parts, function(part){
+  
+  angular.forEach(element.chapters, function(chapitre){
+  angular.forEach(chapitre.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
+    nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
+    nbRS = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
+    obsels = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
+  })
+
   });
+
+
+$scope.observedElt={'type':'Ce tome',
+      'nbUsers':nbUsers,
+      'nbRS':nbRS,
+      'obsels':obsels };
+$scope.courseInspectorShow = true
+
+
 
     $scope.componentChart.api.updateWithTimeout(5);
   $scope.componentChart.api.refresh();
@@ -1106,7 +1123,24 @@ var displayChapterInfos=function(partElt, task){
 
     $scope.componentChart.api.updateWithTimeout(5);
   $scope.componentChart.api.refresh();
-    
+  var nbUsers = 0;
+  var nbRS = 0;
+  var obsels = 0;
+
+
+  angular.forEach(element.parts, function(part){
+  showTasksAndFacts(part, 'ALL',task);
+    nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
+    nbRS = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
+    obsels = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
+  })
+
+$scope.courseInspectorShow = true;
+
+$scope.observedElt={'type':'Ce chapitre',
+      'nbUsers':nbUsers,
+      'nbRS':nbRS,
+      'obsels':obsels };    
 }
 
 var tabsFn = (function() {  
@@ -1392,9 +1426,9 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
     {
      
     if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels')
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels', fact.norm_value)
     if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration')
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value)
     }
 
 
@@ -1402,7 +1436,7 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
 
 }
 
-var factReadingChart = function(element, factedPartID, attr){
+var factReadingChart = function(element, factedPartID, attr, meanValue){
   if(typeof $scope.course=='undefined') return;
     
     var chartData=[];
@@ -1415,7 +1449,7 @@ var factReadingChart = function(element, factedPartID, attr){
     var issueCode=element.issueCode
 
    
-   var meanValue=100;
+   
    var cpt = 0;
     
         angular.forEach(element.parts, function(part){
@@ -1425,7 +1459,7 @@ var factReadingChart = function(element, factedPartID, attr){
           valueEntry = parseInt(part.properties.filter(function(value){ return  value.property === attr})[0].value);
         
         chartData.push({'x':cpt, 'y':valueEntry,  'series':0});
-         meanData.push({'x':cpt, 'y':200,  'series':1});
+         meanData.push({'x':cpt, 'y':meanValue,  'series':1});
         dataEntries.push(part.title);
         if(part._id===factedPartID) colorsEntries.push('red')
           else colorsEntries.push('grey')

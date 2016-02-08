@@ -16,7 +16,7 @@
          <th><b>Parties du cours</b></th>         
             <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts" data-part={{part.id}} data-path={{part.route}} >
 
-                <span class="display-part-info" uib-tooltip={{part.title}}>{{$index + 1}}</span>
+                <span class="display-part-info" uib-tooltip={{part.title}}>{{part.id}}</span>
                 <br/>
              
             </th>   
