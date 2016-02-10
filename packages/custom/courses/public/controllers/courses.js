@@ -14,23 +14,10 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
     $scope.global = Global;
 
-    $scope.myData = [
-    {part: 'AngularJS', value: 300},
-    {part: 'D3.JS', value: 150},
-    {part: 'jQuery', value: 400},
-    {part: 'Backbone.js', value: 300},
-    {part: 'Ember.js', value: 100}
-];
 
  $scope.findOne = function() {
-    $scope.myData = [
-    {part: 'AngularJS', value: 300},
-    {part: 'D3.JS', value: 150},
-    {part: 'jQuery', value: 400},
-    {part: 'Backbone.js', value: 300},
-    {part: 'Ember.js', value: 100}
-];
 
+  $scope.d3opts = [];
   $scope.dataLoading = true;
   $scope.pageLoaded = false;
   $(window).unbind('hashchange');
@@ -1429,17 +1416,10 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
     {
      
     if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels', fact.norm_value)
-    else 
-      fact.d3 = [
-    {part: 'AngularJS', value: 300},
-    {part: 'D3.JS', value: 150},
-    {part: 'jQuery', value: 400},
-    {part: 'Backbone.js', value: 300},
-    {part: 'Ember.js', value: 100}
-];
-   /* if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value)*/
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels', fact.norm_value);
+    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value);
+    
     }
 
 

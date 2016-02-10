@@ -1444,6 +1444,9 @@ float: left;
   
 .line {
   fill: none;
-  stroke: #444;
-  stroke-width: 1.5px;
+  stroke: orange;
+  stroke-width: 2px;
+}
+.title {
+    font-size: 10pt;
 }

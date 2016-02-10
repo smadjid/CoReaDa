@@ -1,16 +1,19 @@
 angular.module('mean.courses')
-.directive( 'barChart', [
+.directive( 'd3Chart', [
   function () {
     return {
       restrict: 'E',
       scope: {
-        data: '='
+        data: '=',
+        d3opts: '='
       },
       link: function (scope, element) {
-        
-        var margin = {top: 1, right: 1, bottom: 30, left: 40},
+
+        var barChar = function(scope, element){        
+        var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 580 - margin.left - margin.right,
-          height = 360 - margin.top - margin.bottom;
+          height = 200 - margin.top - margin.bottom;
+
         var svg = d3.select(element[0])
           .append("svg")
           .attr('width', width + margin.left + margin.right)
@@ -74,33 +77,88 @@ angular.module('mean.courses')
               .attr('stroke', 'white')
               .attr("fill", function(d) { return d.color; });
 
+/*
 
-
-var x2 = d3.scale.ordinal()
+var xmean = d3.scale.ordinal()
   .rangeBands([0, width], 0);
-    x2.domain(data.map(function(d) { return d.part; }));
+    xmean.domain(data.map(function(d) { return d.part; }));
 
           var dataSum = d3.sum(data, function(d) { return parseInt(d.value); }); 
  
 
- var line = d3.svg.line()
+ var ymean = d3.svg.line()
     .x(function(d, i) { 
-      return x2(d.part) + i; })
+      return xmean(d.part) + i; })
     .y(function(d, i) { return y(dataSum/data.length); }); 
   
   svg.append("path")
       .datum(data)
       .attr("class", "line")
-      .attr("d", line);
+      .attr("d", ymean);
+
+*/
+
+    var xmedian = d3.scale.ordinal()
+        .rangeBands([0, width], 0);
+    xmedian.domain(data.map(function(d) { return d.part; }));
+
+    var dataMediane = d3.median(data, function(d) { return parseInt(d.value); }); 
+    var ymedian = d3.svg.line()
+        .x(function(d, i) { 
+          return xmedian(d.part) + i; })
+        .y(function(d, i) { return y(dataMediane); }) 
+
+  svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("d", ymedian);
+  
+
+  // Add title     
+    svg.append("svg:text")
+           .attr("class", "title")
+       .attr("x", -25)
+       .attr("y", -10)
+       .text("Nombre de visites");
 
         };
 
-         //Watch 'data' and run scope.render(newVal) whenever it changes
-         //Use true for 'objectEquality' property so comparisons are done on equality and not reference
-          scope.$watch('data', function(){
+  // add legend   
+var legend = svg.selectAll(".legend")
+    .data(["Médiane"])
+    .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function (d, i) {
+    return "translate(0," + i * 20 + ")";
+});
+
+legend.append("text")
+    .attr("x", width - 10)
+    .attr("y", -10)
+    .attr("dy", ".35em")
+    .style("text-anchor", "end")
+    .text(function (d) {return d;});
+
+legend.append("rect")
+    .attr("x", width - 65)
+    .attr("y", 0)
+    .attr("width", 60)
+    .attr("height", 3)
+    .style("fill", 'orange');
+
+
+
+    scope.$watch('data', function(){
 
               scope.render(scope.data);
           }, true);  
+
+};
+
+if(scope.d3opts.type in {'Readings':'','Rereading':''})
+    barChar(scope, element);
+
+          
         }
     };
   }
