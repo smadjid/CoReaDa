@@ -17,7 +17,7 @@
       <span>{{fact.name}} </span> (<u>{{fact.value}} </u>) : {{fact.description}} 
     </td>
     <td>
-      <nvd3 options="factoptions" data="factdata" api="factChart.api" config="{refreshDataOnly: false}" class="with-3d-shadow with-transitions"></nvd3> 
+      <bar-chart data='fact.d3' loadURL='loadURL'></bar-chart>
     </td>
     </table>
     </uib-accordion-group>

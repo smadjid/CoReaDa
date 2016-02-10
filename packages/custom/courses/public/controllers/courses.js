@@ -13,9 +13,24 @@ angular.module('mean.courses')
 var app=angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope','$stateParams', '$location', '$http','Global', 'Courses', 'MeanUser', 'Circles','$http','$uibModal',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
     $scope.global = Global;
-    
+
+    $scope.myData = [
+    {part: 'AngularJS', value: 300},
+    {part: 'D3.JS', value: 150},
+    {part: 'jQuery', value: 400},
+    {part: 'Backbone.js', value: 300},
+    {part: 'Ember.js', value: 100}
+];
 
  $scope.findOne = function() {
+    $scope.myData = [
+    {part: 'AngularJS', value: 300},
+    {part: 'D3.JS', value: 150},
+    {part: 'jQuery', value: 400},
+    {part: 'Backbone.js', value: 300},
+    {part: 'Ember.js', value: 100}
+];
+
   $scope.dataLoading = true;
   $scope.pageLoaded = false;
   $(window).unbind('hashchange');
@@ -99,9 +114,9 @@ var completeCourseParts=function(course, courseParts, courseChapters){
         part.route=chapter.route+','+part._id;
         angular.forEach(part.facts,function(fact){
           fact.route=part.route+','+fact._id;
-          fact.d3={'options':$scope.options,'data':$scope.data};
+          fact.d3=[];
           //fact.d3={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
-          appendD3Facts(fact,part._id,chapter.route);
+          appendD3Facts(fact,part.id,chapter.route);
 
         });
         courseParts.push( part );
@@ -791,7 +806,10 @@ window.setTimeout(function() {
 
   return false;
 
-}
+};
+
+$scope.loadURL = loadURL;
+
 $scope.triggerClick=function($event){ 
 
   var url = '#'+$($event.currentTarget).attr('data-path');
@@ -878,14 +896,9 @@ var displayIssue=function(url, task, part, indicator){
   showTasksAndFacts(element, indicator, task);
   
   
-    $scope.factoptions = element.d3.options;
-    $scope.factdata = element.d3.data;
+    $scope.barchartData = [element.d3];
   
-  //$scope.factChart.api.updateWithOptions(element.d3.options);
-  //$scope.factChart.api.updateWithData(element.d3.data);
-  
-  $scope.factChart.api.updateWithTimeout(5);
-  $scope.factChart.api.refresh();
+ 
   
 
   
@@ -1032,8 +1045,6 @@ $scope.observedElt={'type':'Cette partie ',
 
 
   $scope.issuesInspectorShow = false;
-    $scope.componentChart.api.updateWithTimeout(5);
-  $scope.componentChart.api.refresh();
 }
 
 var displayCourseInfos=function(indicator, task){ 
@@ -1064,9 +1075,6 @@ $scope.observedElt={'type':'Ce cours',
       'nbUsers':$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
       'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
       'obsels':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value};
-
-  $scope.componentChart.api.update();
-  $scope.componentChart.api.refresh();
 
 }
 
@@ -1102,9 +1110,6 @@ $scope.observedElt={'type':'Ce tome',
 $scope.courseInspectorShow = true
 
 
-
-    $scope.componentChart.api.updateWithTimeout(5);
-  $scope.componentChart.api.refresh();
     
 }
 
@@ -1121,8 +1126,6 @@ var displayChapterInfos=function(partElt, task){
   showTasksAndFacts(part, 'ALL',task);
   });
 
-    $scope.componentChart.api.updateWithTimeout(5);
-  $scope.componentChart.api.refresh();
   var nbUsers = 0;
   var nbRS = 0;
   var obsels = 0;
@@ -1427,12 +1430,18 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
      
     if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
       fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels', fact.norm_value)
-    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value)
+    else 
+      fact.d3 = [
+    {part: 'AngularJS', value: 300},
+    {part: 'D3.JS', value: 150},
+    {part: 'jQuery', value: 400},
+    {part: 'Backbone.js', value: 300},
+    {part: 'Ember.js', value: 100}
+];
+   /* if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value)*/
     }
 
-
-  
 
 }
 
@@ -1451,135 +1460,25 @@ var factReadingChart = function(element, factedPartID, attr, meanValue){
    
    
    var cpt = 0;
-    
-        angular.forEach(element.parts, function(part){
-        
-        var valueEntry=0    ; 
-                
-          valueEntry = parseInt(part.properties.filter(function(value){ return  value.property === attr})[0].value);
-        
-        chartData.push({'x':cpt, 'y':valueEntry,  'series':0});
-         meanData.push({'x':cpt, 'y':meanValue,  'series':1});
-        dataEntries.push(part.title);
-        if(part._id===factedPartID) colorsEntries.push('red')
-          else colorsEntries.push('grey')
-        cpt = cpt + 1;
+
+   angular.forEach($scope.course.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+        angular.forEach(chapter.parts, function(part){
+          chartData.push({'part':part.id,
+            'title':part.title,
+            'route':part.route,
+            'value': parseInt(part.properties.filter(function(value){ return  value.property === attr})[0].value),
+            'color':parseInt(factedPartID)===parseInt(part.id)?'red':'grey'
+          })
+        })
       })
-
-       
-     elementChart.options =  {
-            chart: {
-                type: 'multiChart',               
-                margin : {
-                    top: 30,
-                    right: 60,
-                    bottom: 50,
-                    left: 70
-                },
-                color: d3.scale.category10().range(),                
-                duration: 500,
-                xAxis: {
-                    tickFormat: function(d){
-                        return null//dataEntries[d];
-                    }
-                },
-                yAxis1: {
-                    tickFormat: function(d){
-                        return d3.format(',.1f')(d);
-                    }
-                },
-                yAxis2: {
-                    tickFormat: function(d){
-                        return d3.format(',.1f')(d);
-                    }
-                },
-                tooltip: {
-                contentGenerator: function (e) {
-                  var series = e.series[0];
-                  if (series.value === null) return;
-                  
-                  console.log(dataEntries[e.point.x]);
-                    
-                  return "<strong>"+dataEntries[parseInt(e.point.x)]+"</strong>";
-                } 
-              }
-            }
-        };
-
-        elementChart.data = [{
-          "key": "Data",
-          "type": "bar",
-          'yAxis':1,
-          "values": chartData
-        },
-        {
-          "key": "Mean",
-          "type": "line",
-          'yAxis':1,
-          "values": meanData
-        }]
-      
-//console.log(elementChart.data);
-
-
-
-
-
-
-
-
-    elementChart.options1 = {
-            chart: {
-                type: 'discreteBarChart',
-                height: 200,
-                width:300,
-                margin : {
-                    top: 20,
-                    right: 20,
-                    bottom: 50,
-                    left: 55
-                },
-                x: function(d){return d.label;},
-                y: function(d){return d.value;},                
-                showValues: true,
-                valueFormat: function(d){
-                    return d3.format('')(d);
-                },
-                duration: 500,
-                xAxis: {
-                    axisLabel: 'Chapitres du cours',
-                    staggerLabels: true
-                },
-                yAxis: {
-                    axisLabel: attr,
-                    axisLabelDistance: -10
-                },
-                discretebar:{
-                    dispatch: {
-                      elementClick: function(e){ 
-                        loadURL(e.data.url); 
-                      }
-                      
-                  }
-
-                }
-                
-                
-            }
-        };
-
-        elementChart.data1 = [{
-          key: "Cumulative Return",
-          values: chartData
-        }] ;
-
-
-
-
+    });
+    
+   //console.log(chartData);
 
        
        
-        return elementChart;
+return chartData;
 
 }
 
@@ -1651,7 +1550,7 @@ var factReadingChart = function(element, factedPartID, attr, meanValue){
           }
         };
         $scope.data = chartData;
-        console.log($scope.data);
+        
 
     
     }
@@ -1840,7 +1739,7 @@ var factReadingChart = function(element, factedPartID, attr, meanValue){
           }
         };
         $scope.data = chartData;
-        console.log($scope.data);
+        
 
       
 
@@ -1928,7 +1827,7 @@ var factReadingChart = function(element, factedPartID, attr, meanValue){
           }
         };
         $scope.data = chartData;
-        console.log($scope.data);
+        
 
       
 
