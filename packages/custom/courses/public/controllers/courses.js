@@ -1409,7 +1409,7 @@ swal({
     };
 
 
-  /**********************NVD3 CHARTS****************************/
+  /**********************D3 CHARTS****************************/
 var appendD3Facts=function(fact, factedPartID, contextElement){
  
  
@@ -1468,6 +1468,7 @@ var factChart = function(element, factedPartID, attr){
           angular.forEach(tome.chapters, function(chapter){
         angular.forEach(chapter.parts, function(part){
           chartData.push({'part':part.id,
+            'indicator':attr,
             'title':part.title,
             'route':part.route,
             'value': parseInt(part.properties.filter(function(value){ return  value.property === attr})[0].value),
