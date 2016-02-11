@@ -22,6 +22,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
   $scope.pageLoaded = false;
   $(window).unbind('hashchange');
 
+
   $scope.observedElt={'type':'cours','nbUsers':0,'nbRS':0,'Actions_nb':0}
 
      $('table').hide();
@@ -55,8 +56,10 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
               '_id':$scope.course._id,
               'title':$scope.course.title,
               'Todos':$scope.course.todos,
+              'taskText':'(nouvelle tâche pour ce contexte)',
               'indicator':'ALL'
             };
+
     $scope.context.subtasks=computeAllTasks();
      
     /********  Update on @ change ****************/
@@ -320,7 +323,7 @@ angular.forEach($scope.course.tomes, function(tome) {
     var tomeTasks = angular.copy(tome.todos);
     for (var i = 0; i < tomeTasks.length; i++){
     tomeTasks[i].route=tome.route+',0,0,0;'+tomeTasks[i]._id+'@'+tomeTasks[i].classof
-    tomeTasks[i].minipath='Tome :'+tome.title
+    tomeTasks[i].minipath='Partie :'+tome.title
     tasks.push(tomeTasks[i]);
   } 
 
@@ -342,9 +345,12 @@ angular.forEach($scope.course.tomes, function(tome) {
                   angular.forEach(part.facts, function(fact){
                     var factTasks = angular.copy(fact.todos);
                     for(var i = 0; i<factTasks.length; i++){ 
+                       var txt = (fact.classof==='Readings')?'Lecture':
+                            (fact.classof==='Rereading')?'Relecture':
+                               (fact.classof==='Transition')?'Transition' :'Arrêts';
                       
                       factTasks[i].route=fact.route+';'+factTasks[i]._id+'@'+factTasks[i].classof
-                       factTasks[i].minipath='Section: '+part.title+' - ' +fact.classof
+                       factTasks[i].minipath='Section: '+part.title+' - ' +txt; 
                       tasks.push(factTasks[i]);}
                   })
                   })
@@ -592,6 +598,7 @@ var loadContext = function(){
     
       {
         displayCourseInfos(indicator, task);
+        $scope.context.taskText='(nouvelle tâche globale)';
 /*
         if(indicator==='Readings') elementStatsChart(course);
         if(indicator==='Rereading') indicatorRereadingChart(course);
@@ -605,6 +612,7 @@ var loadContext = function(){
 
    tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
    partElt = $('.tome_index[data-part='+tome.id+']')[0];
+   $scope.context.taskText='(nouvelle tâche pour cette partie)';
    
    //displayChapterInfos(partElt, task);
    displayTomeInfos(partElt, task);
@@ -619,6 +627,7 @@ var loadContext = function(){
    partElt = $('.chapter_index[data-part='+chap.id+']')[0];
    
    displayChapterInfos(partElt, task);
+   $scope.context.taskText='(nouvelle tâche pour ce chapitre)';
    
  }
 
@@ -631,6 +640,7 @@ var loadContext = function(){
   displayPartInfos(partElt, task);
 
   $scope.courseInspectorShow = true;
+  $scope.context.taskText='(nouvelle tâche pour cette section)';
   
 }
 if(arr.length==4 && indicator!="ALL") { 
@@ -639,6 +649,7 @@ if(arr.length==4 && indicator!="ALL") {
   part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
   displayPartIssues(route, task, part, indicator);
+  $scope.context.taskText='(nouvelle tâche pour cette section)';
 }
 
 
@@ -651,6 +662,7 @@ if(arr.length==5) {
   partElt = $('.part_index[data-part='+part.id+']'); 
    
      displayIssue(route, task, part, indicator);
+     $scope.context.taskText='(nouvelle tâche pour cette section)';
 }
 /*************************************************/
   var totalWidth = $('.col-lg-9').width();
@@ -871,7 +883,7 @@ var displayIssue=function(url, task, part, indicator){
      if(nb==0) nb="aucune (0) remarque";
      if(nb==1) nb="une (1) remarque";
       if(nb>1) nb=nb+" problèmes potentiels";
-     $scope.context.inspector_title = "Section: "+ part.title+' - '+nb+ " de type "+indicator ;
+     //$scope.context.inspector_title = "Section: "+ part.title+' - '+nb+ " de type "+indicator ;
     
       
 

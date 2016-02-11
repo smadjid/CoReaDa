@@ -5,7 +5,7 @@
 			
 <div id="form-controlA" editable-text="formData" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
 <span id='newTaskSpan'	class="glyphicon glyphicon-plus"></span> 
-				{{formData ||  '(nouvelle tâche pour ce contexte)'  }}
+				{{formData ||  context.taskText  }}
 
 		</div>
 		</div>
@@ -27,7 +27,7 @@
 		<div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
 			<span>{{ task.todo || 'empty' }} </span>
 			<br/>
-			<div class='taskMiniPath'><em>{{ task.minipath}}</em></div>
+			<div class='taskMiniPath'>(<em>{{ task.minipath}}</em>)</div>
 		</div>
 	</td>
 	<td style="width: 10%;" valign="top">
