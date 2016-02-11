@@ -1412,20 +1412,43 @@ swal({
   /**********************NVD3 CHARTS****************************/
 var appendD3Facts=function(fact, factedPartID, contextElement){
  
-  if(fact.classof==='Readings')
-    {
-     
+ 
     if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'obsels', fact.norm_value);
-    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
-      fact.d3 = factReadingChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value);
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'obsels', fact.norm_value);
     
-    }
+    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value);
+
+    if(fact.issueCode in {'RRmax':''}) 
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Rereadings' , fact.norm_value);
+
+    if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Sequential_rereadings' , fact.norm_value);
+
+    if(fact.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Decaled_rereadings' , fact.norm_value);
+
+
+    if(fact.issueCode ==='StopRSEnd')
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'rupture' , fact.norm_value);
+    if(fact.issueCode === 'StopRSExit')
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'norecovery' , fact.norm_value);
+    if(fact.issueCode === 'StopRecNext')
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'next_recovery' , fact.norm_value);
+    if(fact.issueCode === 'StopRecback')
+      {fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'back_recovery' , fact.norm_value);}
+    if(fact.issueCode === 'StopRecShift')
+      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'shifted_recovery' , fact.norm_value);
+
+
+    if(fact.issueCode ==='TransProvP')       
+      console.log(fact.d3);
+ 
 
 
 }
 
-var factReadingChart = function(element, factedPartID, attr, meanValue){
+var factChart = function(element, factedPartID, attr){
   if(typeof $scope.course=='undefined') return;
     
     var chartData=[];
@@ -1453,87 +1476,12 @@ var factReadingChart = function(element, factedPartID, attr, meanValue){
         })
       })
     });
-    
-   //console.log(chartData);
-
-       
-       
+   
 return chartData;
 
 }
 
- var indicatorRereadingChart = function(element){
-  $scope.indicatorGraphShow='rereading';
 
-  if(typeof $scope.course=='undefined') return;
-    var chartData=[
-                {'key':'Readings', 'values':[]},
-                {'key':'Rereadings', 'values':[]},
-                {'key':'Sequential_rereadings', 'values':[]},
-                {'key':'Decaled_rereadings', 'values':[]}
-              ];
-    
-    var type = element.elementType;
-    if(type=='course'){  
-      angular.forEach(chartData, function(r){
-        angular.forEach(element.tomes, function(tome){
-          angular.forEach(tome.chapters, function(chapter){
-          var part = chapter.parts;  
-          var valueEntry=0    
-          part.map(function(item){        
-            valueEntry = valueEntry + parseInt(item.properties.filter(function(value){ return value.property === r.key})[0].value);
-          });
-          r.values.push({'x':chapter.title, 'y':valueEntry})
-        });
-      });
-
-    });
-      
-    };
-    if(type=='subchapter'){  
-      angular.forEach(chartData, function(r){
-          angular.forEach(element.parts, function(part){
-          var valueEntry=0    
-          
-            valueEntry = valueEntry + parseInt(part.properties.filter(function(value){ return value.property === r.key})[0].value);
-          
-          r.values.push({'x':part.title, 'y':valueEntry})
-        });
-
-      });
-      
-    }
-
-   
- $scope.options =  {
-          "chart": {
-            "type": "multiBarChart",
-            "height": 300,
-            "margin": {
-              "top": 20,
-              "right": 20,
-              "bottom": 45,
-              "left": 45
-            },
-            "clipEdge": true,
-            "duration": 500,
-            "stacked": true,
-            'showXAxis':false,
-            "xAxis": {
-              "axisLabel": "Count",
-              "showMaxMin": false,
-            },
-            "yAxis": {
-              "axisLabel": "Chapitres",
-              "axisLabelDistance": -20
-            }
-          }
-        };
-        $scope.data = chartData;
-        
-
-    
-    }
 
 
   $scope.readingChartSelect = function (chart) {
