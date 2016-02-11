@@ -5,6 +5,7 @@
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
+        <d3-chart data='context.d3' ></d3-chart>
     </div>
 
   <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='readings' ">

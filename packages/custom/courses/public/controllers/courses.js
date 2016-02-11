@@ -1429,31 +1429,31 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
  
  
     if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Actions_nb', fact.norm_value);
+      fact.d3 = factChart(factedPartID,'Actions_nb');
     
     if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'q3.duration' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'q3.duration' );
 
     if(fact.issueCode in {'RRmax':''}) 
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Rereadings' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'Rereadings' );
 
     if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Sequential_rereadings' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'Sequential_rereadings');
 
     if(fact.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'Decaled_rereadings' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'Decaled_rereadings');
 
 
     if(fact.issueCode ==='StopRSEnd')
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'rupture' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'rupture' );
     if(fact.issueCode === 'StopRSExit')
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'norecovery' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'norecovery');
     if(fact.issueCode === 'StopRecNext')
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'next_recovery' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'next_recovery' );
     if(fact.issueCode === 'StopRecback')
-      {fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'back_recovery' , fact.norm_value);}
+      fact.d3 = factChart(factedPartID,'back_recovery' );
     if(fact.issueCode === 'StopRecShift')
-      fact.d3 = factChart(resolveRoute(contextElement),factedPartID,'shifted_recovery' , fact.norm_value);
+      fact.d3 = factChart(factedPartID,'shifted_recovery' );
 
 
     if(fact.issueCode ==='TransProvP')       
@@ -1463,7 +1463,7 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
 
 }
 
-var factChart = function(element, factedPartID, attr){
+var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course=='undefined') return;
     
     var chartData=[];
@@ -1471,9 +1471,7 @@ var factChart = function(element, factedPartID, attr){
     var dataEntries=[];
     var colorsEntries=[];
 
-    var type = element.elementType;   
-    var elementChart={};
-    var issueCode=element.issueCode
+   
 
    
    
@@ -1485,7 +1483,7 @@ var factChart = function(element, factedPartID, attr){
           chartData.push({'part':part.id,
             'title':part.title,
             'route':part.route,
-            'value': parseInt(part.properties.filter(function(value){ return  value.property === attr})[0].value),
+            'value': parseInt(part.properties.filter(function(value){ return  value.property === issueCode})[0].value),
             'color':parseInt(factedPartID)===parseInt(part.id)?'#45348A':'grey'
           })
         })
