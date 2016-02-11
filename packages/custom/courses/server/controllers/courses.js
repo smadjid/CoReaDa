@@ -494,13 +494,13 @@ module.exports = function(Courses) {
             courseData.properties = part.properties;
             
         };
-        if(part.type==='tome') {
+        if(part.type==='partie') {
             var  tome={
                 'id':part.id,
                 'part_id':part.part_id,
                 'title':part.title,
                 'type':part.type,
-                'elementType':'tome',
+                'elementType':'partie',
                 'properties': part.properties,
                 'facts':[],
                 'chapters':[]
@@ -508,29 +508,27 @@ module.exports = function(Courses) {
             courseTomes.push(tome); 
             
         };
-        if(part.type==='chapter') {
+        if(part.type==='chapitre') {
             var chapter={
                 'id':part.id,
                 'part_id':part.part_id,
                 'parent_id':part.parent_id,
                 'title':part.title,
                 'type':part.type,
-                'elementType':'chapter',
+                'elementType':'chapitre',
                 'properties': part.properties,
                 'facts':[],
                 'parts':[]
             }
-            part.parent_id=part.part_id;
-            part.type='subchapter';
-            part.title='Introduction';
+           
             
             
             
             courseChapters.push(chapter);            
 
-            courseParts.push(part);
+           
         }
-       else if(part.type==='subchapter') 
+       else if(part.type==='section') 
         courseParts.push(part);
        }
        

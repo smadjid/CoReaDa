@@ -1450,6 +1450,9 @@ float: left;
 .title {
     font-size: 10pt;
 }
+.legend{
+  border:2px red;
+}
 .link {
   fill: none;
   stroke: #666;

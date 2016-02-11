@@ -1,13 +1,6 @@
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="courseInspectorShow"  >
-<table>
-    <td id='elementDescription'>
-        <li>Ce {{observedElt.type}} a été lu par {{observedElt.nbUsers}}
-        <li>Les lectures ont été faites à travers {{observedElt.nbRS}} séances
-        <li>Au total, {{observedElt.obsels}} accès ont été enregistrés.
 
-    </td>
-    <td>
 <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='all' ">
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
@@ -43,5 +36,3 @@
     
 
 </div>
-</td>
-    </table>

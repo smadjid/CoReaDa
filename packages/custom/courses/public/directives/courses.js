@@ -9,7 +9,7 @@ angular.module('mean.courses')
       },
       link: function (scope, element) {
 
-        var barChart = function(scope, element){        
+        var barChart = function(scope, element, title){   
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 580 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
@@ -77,26 +77,6 @@ angular.module('mean.courses')
               .attr('stroke', 'white')
               .attr("fill", function(d) { return d.color; });
 
-/*
-
-var xmean = d3.scale.ordinal()
-  .rangeBands([0, width], 0);
-    xmean.domain(data.map(function(d) { return d.part; }));
-
-          var dataSum = d3.sum(data, function(d) { return parseInt(d.value); }); 
- 
-
- var ymean = d3.svg.line()
-    .x(function(d, i) { 
-      return xmean(d.part) + i; })
-    .y(function(d, i) { return y(dataSum/data.length); }); 
-  
-  svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", ymean);
-
-*/
 
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0);
@@ -113,13 +93,12 @@ var xmean = d3.scale.ordinal()
       .attr("class", "line")
       .attr("d", ymedian);
   
-
   // Add title     
     svg.append("svg:text")
-           .attr("class", "title")
+        .attr("class", "title")
        .attr("x", -25)
        .attr("y", -10)
-       .text(data.indicator);
+       .text(title);
 
         };
 
@@ -140,10 +119,10 @@ legend.append("text")
     .text(function (d) {return d;});
 
 legend.append("rect")
-    .attr("x", width - 65)
-    .attr("y", 0)
-    .attr("width", 60)
-    .attr("height", 3)
+    .attr("x", width - 85)
+    .attr("y", -10)
+    .attr("width", 30)
+    .attr("height", 3)    
     .style("fill", 'orange');
 
 
@@ -160,8 +139,37 @@ var arcChart = function(scope, element){
 
 };
 
-if(scope.d3opts.type in {'Readings':'','Rereading':'','Stop':''})
-    barChart(scope, element);
+if(scope.d3opts.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
+  barChart(scope, element, 'Nombre de visites');
+if(scope.d3opts.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+  barChart(scope, element, 'Durée de lecture (en secondes)');
+if(scope.d3opts.issueCode in {'RRmax':''}) 
+  barChart(scope, element, 'Nombre de relectures');
+
+if(scope.d3opts.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
+  barChart(scope, element, 'Nombre de relectures dans les mêmes séances');
+
+if(scope.d3opts.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
+  barChart(scope, element, 'Nombre de relectures dans des séances distinctes');
+
+
+if(scope.d3opts.issueCode ==='StopRSEnd')
+  barChart(scope, element, 'Nombre de fins de séance');
+
+if(scope.d3opts.issueCode === 'StopRSExit')
+  barChart(scope, element, 'Nombre de fins de séance sans reprise');
+
+if(scope.d3opts.issueCode === 'StopRecNext')
+  barChart(scope, element, 'Nombre de fins de séance avec reprise sur la prochiane partie');
+
+if(scope.d3opts.issueCode === 'StopRecback')
+  barChart(scope, element, 'Nombre de fins de séance avec reprise sur la partie précéédente');
+
+if(scope.d3opts.issueCode === 'StopRecShift')
+  barChart(scope, element, 'Nombre de fins de séance avec reprise sur des parties lointanines');
+
+
+
 //if(scope.d3opts.type === 'Transition')
    // arcChart(scope, element);
 
