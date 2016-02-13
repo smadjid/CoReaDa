@@ -1461,30 +1461,47 @@ float: left;
 }
 .link {
   fill: none;
-  stroke: #666;
+  stroke: #ccc;
   stroke-width: 1.5px;
 }
 
-#licensing {
-  fill: green;
-}
-
-.link.licensing {
-  stroke: green;
-}
-
-.link.resolved {
-  stroke-dasharray: 0,2 1;
-}
-
-circle {
-  fill: #ccc;
-  stroke: #333;
+.node {
   stroke-width: 1.5px;
 }
+
+
 
 text {
-  font: 10px sans-serif;
+  font: 16px 'Open Sans', sans-serif;;
+  text-anchor: middle;
   pointer-events: none;
-  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+  fill: white;
+}
+circle {
+  fill: #008cba;
+  stroke: white ;
+  stroke-width: 2px;
+}
+
+
+
+.node {
+  font: 10px sans-serif;
+}
+
+
+.linklabelholder text {
+  font: 16px;
+  pointer-events: none;
+  fill: #211B3C;
+}
+marker#arrow {
+    stroke: #999;
+    fill: #999;
+}
+
+.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 2px;
 }

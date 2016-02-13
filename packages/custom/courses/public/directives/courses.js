@@ -134,13 +134,161 @@ legend.append("rect")
 
 };
 
-var arcChart = function(scope, element){ 
-      
 
-};
+
+
+
+
+var nodeChart = function(scope, element){ 
+  
+  var datum = [{id: "...", value:3}, {id: "P-1", value:3}, {id: "P", value:3}, 
+  {id: "P+1", value:3}, {id: "...", value:3}];
+    var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius;
+
+var graph={nodes:[], links:[]}
+
+  var identity = {id:'c3', x:gap * 3, y:height/2}
+
+  datum.forEach(function(c, i) {
+            c.x = gap * (i +1);// -2*radius;
+            c.y = height/2  ;
+    
+            graph.nodes.push(c);
+            
+            var node = {id:c.id,x:c.x, y:c.y};
+            
+            graph.links.push({source: identity, target: node, value:c.value});
+        });
+
+
+  var svg = d3.select(element[0]).append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+    
+    var color = d3.scale.category10();
+
+
+
+svg.append("defs").selectAll('marker')
+    .data(graph.links)
+    .enter()
+    .append('svg:marker')
+      .attr('id', function(d){ return 'marker'})
+     .attr("refX", 1) /*must be smarter way to calculate shift*/
+    .attr("refY", 5)
+    .attr( "viewBox","0 0 10 10")
+    .attr("markerWidth", 4)
+    .attr("markerHeight", 4)
+    .attr("orient", "auto")
+    .append("path")
+        .attr("d", "M 0 0 L 10 5 L 0 10 z"); //this is actual shape for arrowhead
+
+
+
+  var circle = svg.append("g").selectAll(".circle")
+            .data(graph.nodes)
+            .enter()
+            .append("g")
+            .attr("class", "circle");
+
+    var el = circle.append("circle")
+            .attr("cx", function(d) {return d.x})
+            .attr("cy", function(d) {return d.y})
+            .attr("r", radius);
+
+    var cTitle = circle.append("text")
+      .text(function(d){
+          return d.id;
+      })
+      .attr("dx",  function(d) {return d.x})
+      .attr("dy",  function(d) {return d.y + radius/3});
+
+
+ var radians = d3.scale.linear()
+  .range([Math.PI / 2, 3 * Math.PI / 2]);
+
+  var arc = d3.svg.line.radial()
+    .interpolate("basis")
+    .tension(0)
+    .angle(function(d) { return radians(d); });
+
+  var  linkArc=function(d) {
+       var x1 = d.source.x,
+          y1 = d.source.y - 20,
+          x2 = d.target.x ,
+          y2 = d.target.y - 30,
+          dx = x2 - x1,
+          dy = y2 - y1,
+          dr = Math.sqrt(dx * dx + dy * dy),
+
+          // Defaults for normal edge.
+          drx = dr,
+          dry = dr - 35,
+          xRotation = 90, // degrees
+          largeArc = 0, // 1 or 0
+          
+         sweep = (dx>0) ? 1 : 0; // 1 or 0
+
+          // Self edge.
+          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+             x1 = d.source.x - 20,
+             x2 = d.target.x + 20,
+            y1 = d.source.y + 15,
+            y2 = d.target.y + 15,
+            dx = x2 - x1,
+          dy = y2 - y1, 
+          dx = x2 - x1,
+          dy = y2 - y1,
+          dr = Math.sqrt(dx * dx + dy * dy),
+
+            // Fiddle with this angle to get loop oriented.
+            xRotation = -90;
+
+            // Needs to be 1.
+            largeArc = 1;
+
+            // Change sweep to change orientation of loop. 
+            sweep = 0;
+
+            // Make drx and dry different to get an ellipse
+            // instead of a circle.
+            drx = 30;
+            dry = 30;
+            
+            // For whatever reason the arc collapses to a point if the beginning
+            // and ending points of the arc are the same, so kludge it.
+            x2 = x2 + 1;
+            y2 = y2 + 1;
+          } 
+
+     return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + 
+     largeArc + "," + sweep + " " + x2 + "," + y2;
+}
+
+
+var path = svg.append("g").selectAll("path")
+    .data(graph.links)
+  .enter().append("path")
+    .attr("class", function(d) { return "link " + d.type; })
+    .attr("marker-end", function(d) { return "url(/courses/56bcd33dcc500d9805b1b049#marker)"; });
+ path.attr("d", linkArc);
+
+svg.append("g").selectAll("g.linklabelholder")
+    .data(graph.links).enter().append("g")
+    .attr("class", "linklabelholder")    
+    .append("text")
+      .text(function(d){
+          return d.value;
+      })
+      .attr("dx",  function(d) {return d.target.x  })
+      .attr("dy",  function(d) {return d.target.y + 1.75 * radius });
+
+  }
 
 if(scope.d3opts.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-  barChart(scope, element, 'Nombre de visites');
+  //barChart(scope, element, 'Nombre de visites');
+  nodeChart(scope, element, 'Nombre de visites');
 if(scope.d3opts.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
   barChart(scope, element, 'Durée de lecture (en secondes)');
 if(scope.d3opts.issueCode in {'RRmax':''}) 
