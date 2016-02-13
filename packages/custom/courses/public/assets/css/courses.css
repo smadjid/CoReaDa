@@ -1496,12 +1496,12 @@ circle {
   fill: #211B3C;
 }
 marker#arrow {
-    stroke: #999;
-    fill: #999;
+    stroke: #1FB1E6;
+    fill: #1FB1E6;
 }
 
 .link {
   fill: none;
-  stroke: #666;
+  stroke: #1FB1E6;
   stroke-width: 2px;
 }

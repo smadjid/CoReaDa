@@ -182,7 +182,8 @@ svg.append("defs").selectAll('marker')
     .attr("markerHeight", 4)
     .attr("orient", "auto")
     .append("path")
-        .attr("d", "M 0 0 L 10 5 L 0 10 z"); //this is actual shape for arrowhead
+    .attr("d", "M 0 0 L 10 5 L 0 10 z") //this is actual shape for arrowhead
+    .attr('fill', "#1FB1E6");
 
 
 
@@ -241,21 +242,16 @@ svg.append("defs").selectAll('marker')
           dx = x2 - x1,
           dy = y2 - y1,
           dr = Math.sqrt(dx * dx + dy * dy),
-
             // Fiddle with this angle to get loop oriented.
             xRotation = -90;
-
             // Needs to be 1.
             largeArc = 1;
-
             // Change sweep to change orientation of loop. 
             sweep = 0;
-
             // Make drx and dry different to get an ellipse
             // instead of a circle.
             drx = 30;
-            dry = 30;
-            
+            dry = 30;            
             // For whatever reason the arc collapses to a point if the beginning
             // and ending points of the arc are the same, so kludge it.
             x2 = x2 + 1;
@@ -266,12 +262,14 @@ svg.append("defs").selectAll('marker')
      largeArc + "," + sweep + " " + x2 + "," + y2;
 }
 
+var url =window.location.pathname;
+
 
 var path = svg.append("g").selectAll("path")
     .data(graph.links)
   .enter().append("path")
-    .attr("class", function(d) { return "link " + d.type; })
-    .attr("marker-end", function(d) { return "url(/courses/56bcd33dcc500d9805b1b049#marker)"; });
+    .attr("class", function(d) { return "link"; })
+    .attr("marker-end", function(d) { return "url("+url+"#marker)"; });
  path.attr("d", linkArc);
 
 svg.append("g").selectAll("g.linklabelholder")
