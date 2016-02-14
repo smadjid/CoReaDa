@@ -140,7 +140,7 @@ legend.append("rect")
 
 
 var nodeChart = function(scope, element){ 
-  
+  console.log(scope.data);
   var datum = [{id: "...", value:3}, {id: "P-1", value:3}, {id: "P", value:3}, 
   {id: "P+1", value:3}, {id: "...", value:3}];
     var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius;
@@ -285,8 +285,7 @@ svg.append("g").selectAll("g.linklabelholder")
   }
 
 if(scope.d3opts.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-  //barChart(scope, element, 'Nombre de visites');
-  nodeChart(scope, element, 'Nombre de visites');
+  barChart(scope, element, 'Nombre de visites'); 
 if(scope.d3opts.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
   barChart(scope, element, 'Durée de lecture (en secondes)');
 if(scope.d3opts.issueCode in {'RRmax':''}) 
@@ -298,6 +297,8 @@ if(scope.d3opts.issueCode in {'RRmaxS':'','RRVmaxS':''})
 if(scope.d3opts.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
   barChart(scope, element, 'Nombre de relectures dans des séances distinctes');
 
+if(scope.d3opts.issueCode ==='TransProvPrec')
+   nodeChart(scope, element, 'Provenance de la partie précédente');
 
 if(scope.d3opts.issueCode ==='StopRSEnd')
   barChart(scope, element, 'Nombre de fins de séance');

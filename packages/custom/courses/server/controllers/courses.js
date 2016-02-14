@@ -467,9 +467,6 @@ module.exports = function(Courses) {
                         else
                             if(part_data[i]['variable']=='part_parent')
                                 part.parent_id=part_data[i]['value']
-                            else
-                                part.properties.push(prop);
-           
             };
 
             for (var i = 0, l = part_facts.length; i < l; i++){              

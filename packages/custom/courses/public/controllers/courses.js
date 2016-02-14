@@ -1456,13 +1456,58 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
       fact.d3 = factChart(factedPartID,'shifted_recovery' );
 
 
-    if(fact.issueCode ==='TransProvP')       
-      console.log(fact.d3);
+    if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent' );}
+
+    if(fact.issueCode in{'TransProvNext':'', 'TransProvNextV':''})       
+      {fact.d3 = factChart(factedPartID,'provenance_next_p' );}
+
+    if(fact.issueCode in{'TransProvShiftNext':'', 'TransProvShiftNextV':''})       
+      {fact.d3 = factChart(factedPartID,'provenance_shifted_next' );}
+
+    if(fact.issueCode in{'TransProvShiftPast':'', 'TransProvShiftPastV':''})       
+      {fact.d3 = factChart(factedPartID,'provenance_shifted_past' );}
+
+
+    if(fact.issueCode in{'TransDestNext':'', 'TransDestNextV':''})       
+      {fact.d3 = factChart(factedPartID,'destination_next_p' );}
+    if(fact.issueCode in{'TransDestPrev':'', 'TransDestPrevV':''})       
+      {fact.d3 = factChart(factedPartID,'destination_precedent' );}
+    if(fact.issueCode in{'TransDestPast':'', 'TransDestPastV':''})       
+      {fact.d3 = factChart(factedPartID,'destination_shifted_past' );}
+    if(fact.issueCode in{'TransDestShiftNext':'', 'TransDestShiftNextV':''})       
+      {fact.d3 = factChart(factedPartID,'destination_shifted_next' );}
  
 
 
 }
 
+var transitionFactChart = function(factedPartID, issueCode){
+  var direction='provenance'
+  if(typeof $scope.course=='undefined') return;
+    
+    var chartData=[];
+    var meanData=[];
+    var dataEntries=[];
+    var colorsEntries=[];
+   
+   var cpt = 0;
+   var transitions=[]
+
+   angular.forEach($scope.course.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+        angular.forEach(chapter.parts, function(part){
+          if(parseInt(factedPartID)===parseInt(part.id)){
+            chartData.push(part.properties.filter(function(value){ 
+              return value.property.split('_')[0]===direction    
+          }))
+        }
+      })
+    })
+      });
+   chartData = chartData[0];
+return chartData;
+}
 var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course=='undefined') return;
     
@@ -1470,10 +1515,33 @@ var factChart = function(factedPartID, issueCode){
     var meanData=[];
     var dataEntries=[];
     var colorsEntries=[];
-
    
+   var cpt = 0;
 
-   
+   angular.forEach($scope.course.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+        angular.forEach(chapter.parts, function(part){
+          chartData.push({'part':part.id,
+            'title':part.title,
+            'route':part.route,
+            'value': parseInt(part.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'color':parseInt(factedPartID)===parseInt(part.id)?'#45348A':'grey'
+          })
+        })
+      })
+    });
+   if(issueCode ==='provenance_precedent') console.log(chartData);
+return chartData;
+
+}
+
+var factChart1 = function(factedPartID, issueCode){
+  if(typeof $scope.course=='undefined') return;
+    
+    var chartData=[];
+    var meanData=[];
+    var dataEntries=[];
+    var colorsEntries=[];
    
    var cpt = 0;
 
