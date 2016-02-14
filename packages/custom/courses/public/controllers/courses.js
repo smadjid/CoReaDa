@@ -1460,23 +1460,23 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
       {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent' );}
 
     if(fact.issueCode in{'TransProvNext':'', 'TransProvNextV':''})       
-      {fact.d3 = factChart(factedPartID,'provenance_next_p' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_next_p' );}
 
     if(fact.issueCode in{'TransProvShiftNext':'', 'TransProvShiftNextV':''})       
-      {fact.d3 = factChart(factedPartID,'provenance_shifted_next' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_next' );}
 
     if(fact.issueCode in{'TransProvShiftPast':'', 'TransProvShiftPastV':''})       
-      {fact.d3 = factChart(factedPartID,'provenance_shifted_past' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_past' );}
 
 
     if(fact.issueCode in{'TransDestNext':'', 'TransDestNextV':''})       
-      {fact.d3 = factChart(factedPartID,'destination_next_p' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_next_p' );}
     if(fact.issueCode in{'TransDestPrev':'', 'TransDestPrevV':''})       
-      {fact.d3 = factChart(factedPartID,'destination_precedent' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_precedent' );}
     if(fact.issueCode in{'TransDestPast':'', 'TransDestPastV':''})       
-      {fact.d3 = factChart(factedPartID,'destination_shifted_past' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' );}
     if(fact.issueCode in{'TransDestShiftNext':'', 'TransDestShiftNextV':''})       
-      {fact.d3 = factChart(factedPartID,'destination_shifted_next' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' );}
  
 
 
@@ -1505,8 +1505,7 @@ var transitionFactChart = function(factedPartID, issueCode){
       })
     })
       });
-   chartData = chartData[0];
-return chartData;
+   return {'partIndex':factedPartID,'issueCode':issueCode ,'transition':chartData[0]};
 }
 var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course=='undefined') return;

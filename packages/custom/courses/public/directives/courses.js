@@ -140,24 +140,48 @@ legend.append("rect")
 
 
 var nodeChart = function(scope, element){ 
-  console.log(scope.data);
-  var datum = [{id: "...", value:3}, {id: "P-1", value:3}, {id: "P", value:3}, 
-  {id: "P+1", value:3}, {id: "...", value:3}];
-    var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius;
+var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}
 
-var graph={nodes:[], links:[]}
+  var direction = scope.data.issueCode.split('_')[0];
+  var variable = scope.data.issueCode.split('_')[1];
+  var elementID = parseInt(scope.data.partIndex);
+alert( scope.data.issueCode)
+  var data = {
+  'identity': parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_identity'; })[0].value),
+  'next_p': parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_next_p'; })[0].value),
+  'precedent' : parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_precedent'; })[0].value),
+  'shifted_next' : parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_shifted_next'; })[0].value),
+  'shifted_past': parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_shifted_past'; })[0].value)
+
+  }
+ 
+/*
+  var identity =parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_identity'; })[0].value);
+  var next = parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_next_p'; })[0].value);
+  var prev = parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_precedent'; })[0].value);
+  var shiftnext = parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_shifted_next'; })[0].value);
+  var shiftprev = parseInt($.grep(scope.data.transition, function(e){ return e.property == direction+'_shifted_past'; })[0].value);
+*/
+  
+  var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+  {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
+  {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
+  {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
+  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}];
+
+$.grep(datum, function(e){if(e.name===variable) e.color='red'});
 
   var identity = {id:'c3', x:gap * 3, y:height/2}
 
   datum.forEach(function(c, i) {
-            c.x = gap * (i +1);// -2*radius;
+            c.x = gap * (i +1);
             c.y = height/2  ;
-    
             graph.nodes.push(c);
-            
             var node = {id:c.id,x:c.x, y:c.y};
-            
-            graph.links.push({source: identity, target: node, value:c.value});
+            if(direction=='destination')
+              graph.links.push({source: identity, target: node, value:c.value})
+            else
+              graph.links.push({source: node, target: identity, value:c.value})
         });
 
 
@@ -191,7 +215,8 @@ svg.append("defs").selectAll('marker')
             .data(graph.nodes)
             .enter()
             .append("g")
-            .attr("class", "circle");
+            .attr("class", "circle")
+            .attr("fill",  function(d) {return d.color});
 
     var el = circle.append("circle")
             .attr("cx", function(d) {return d.x})
@@ -203,7 +228,8 @@ svg.append("defs").selectAll('marker')
           return d.id;
       })
       .attr("dx",  function(d) {return d.x})
-      .attr("dy",  function(d) {return d.y + radius/3});
+      .attr("dy",  function(d) {return d.y + radius/3})
+      .attr("stroke", "white");
 
 
  var radians = d3.scale.linear()
@@ -275,12 +301,16 @@ var path = svg.append("g").selectAll("path")
 svg.append("g").selectAll("g.linklabelholder")
     .data(graph.links).enter().append("g")
     .attr("class", "linklabelholder")    
+
     .append("text")
       .text(function(d){
-          return d.value;
+          return d.value+"%";
       })
-      .attr("dx",  function(d) {return d.target.x  })
-      .attr("dy",  function(d) {return d.target.y + 1.75 * radius });
+      
+      .attr("stroke-width", ".2px")
+      .attr("stroke", function(d) {return d.target.color})
+      .attr("dx",  function(d) {return ((direction=='provenance')?d.source.x:d.target.x)  })
+      .attr("dy",  function(d) {return ((direction=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
 
   }
 
@@ -297,8 +327,8 @@ if(scope.d3opts.issueCode in {'RRmaxS':'','RRVmaxS':''})
 if(scope.d3opts.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
   barChart(scope, element, 'Nombre de relectures dans des séances distinctes');
 
-if(scope.d3opts.issueCode ==='TransProvPrec')
-   nodeChart(scope, element, 'Provenance de la partie précédente');
+if(scope.d3opts.issueClass ==='Transition')
+   nodeChart(scope, element);
 
 if(scope.d3opts.issueCode ==='StopRSEnd')
   barChart(scope, element, 'Nombre de fins de séance');

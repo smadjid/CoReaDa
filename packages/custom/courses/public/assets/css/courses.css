@@ -1459,11 +1459,7 @@ float: left;
 .legend{
   border:2px red;
 }
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
+
 
 .node {
   stroke-width: 1.5px;
@@ -1475,10 +1471,9 @@ text {
   font: 16px 'Open Sans', sans-serif;;
   text-anchor: middle;
   pointer-events: none;
-  fill: white;
 }
 circle {
-  fill: #008cba;
+  
   stroke: white ;
   stroke-width: 2px;
 }
@@ -1490,11 +1485,6 @@ circle {
 }
 
 
-.linklabelholder text {
-  font: 16px;
-  pointer-events: none;
-  fill: #211B3C;
-}
 marker#arrow {
     stroke: #1FB1E6;
     fill: #1FB1E6;
