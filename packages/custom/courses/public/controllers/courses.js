@@ -28,7 +28,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
      $('table').hide();
      $scope.issuesInspectorShow = false;
      $scope.courseInspectorShow = true;
-     $scope.indicatorGraphShow = 'readings';;
+     $scope.indicatorInspectorShow = 'course';;
       $scope.courseParts=[];
       $scope.courseChapters=[];
       $scope.context = {};
@@ -57,10 +57,13 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
               'title':$scope.course.title,
               'Todos':$scope.course.todos,
               'taskText':'(nouvelle tâche pour ce contexte)',
-              'indicator':'ALL'
+              'indicator':'ALL',
+              'd3':[]
             };
 
+    $scope.context.d3 = ComputeGlobalVisuData();
     $scope.context.subtasks=computeAllTasks();
+    
      
     /********  Update on @ change ****************/
 $(window).bind('hashchange',function(){ 
@@ -128,18 +131,18 @@ var resolveRoute = function(path){
       console.log('Error')
   var result = $scope.course;  
    if(arr.length>=2) {
-     var tome = $.grep($scope.course.tomes, function(e){ return  e._id == arr[1] })[0];
+var tome = $.grep($scope.course.tomes, function(e){ return  e._id == arr[1] })[0];
      result = tome
      if(arr.length>=3){
-        var chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0];
+   var chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0];
         result = chap
      
      if(arr.length>=4){
-       var part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0];
+  var part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0];
        result = part
       
        if(arr.length>=5){        
-         var fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0];          
+    var fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0];          
          result = fact
        }
       }
@@ -155,7 +158,7 @@ var resolveRoute = function(path){
         taskIndicator=regExp.indicator;
       
       
-      var todo = $.grep(result.todos, function(e){ return  e._id == taskId })[0];
+ var todo = $.grep(result.todos, function(e){ return  e._id == taskId })[0];
       result = todo;
          
      }
@@ -328,7 +331,7 @@ angular.forEach($scope.course.tomes, function(tome) {
   } 
 
     angular.forEach(tome.chapters, function(chapter) {  
-      var chTasks = angular.copy(chapter.todos);
+ var chTasks = angular.copy(chapter.todos);
       for (var i = 0; i < chTasks.length; i++){
         chTasks[i].route=chapter.route+',0,0;'+chTasks[i]._id+'@'+chTasks[i].classof
         chTasks[i].minipath='Chapitre :'+chapter.title
@@ -336,16 +339,16 @@ angular.forEach($scope.course.tomes, function(tome) {
 
       } 
             angular.forEach(chapter.parts, function(part) {
-                var partTasks = angular.copy(part.todos);
+           var partTasks = angular.copy(part.todos);
                 for (var i = 0; i < partTasks.length; i++){
                   partTasks[i].route=part.route+',0;'+partTasks[i]._id+'@'+partTasks[i].classof
                   partTasks[i].minipath='Section: '+part.title;
                   tasks.push(partTasks[i]);
                 }
                   angular.forEach(part.facts, function(fact){
-                    var factTasks = angular.copy(fact.todos);
+               var factTasks = angular.copy(fact.todos);
                     for(var i = 0; i<factTasks.length; i++){ 
-                       var txt = (fact.classof==='Readings')?'Lecture':
+                  var txt = (fact.classof==='Readings')?'Lecture':
                             (fact.classof==='Rereading')?'Relecture':
                                (fact.classof==='Transition')?'Transition' :'Arrêts';
                       
@@ -386,14 +389,14 @@ var computeAllFacts=function(element, indicator){
   for (var i = 0; i < facts.length; i++)   
       {facts[i].source = element.route; facts[i].sourceTitle = 'Course'; }
     angular.forEach(element.chapters, function(chapter) {  
-      var chFacts = angular.copy(chapter.facts);
+ var chFacts = angular.copy(chapter.facts);
       for (var i = 0; i < chFacts.length; i++){
         chFacts[i].source = chapter.route;
         chFacts[i].sourceTitle = 'Chapter :'+chapter.title;
         facts.push(chFacts[i]);
       } 
             angular.forEach(chapter.parts, function(part) {
-                var partFacts = angular.copy(part.facts);
+           var partFacts = angular.copy(part.facts);
                 for (var i = 0; i < partFacts.length; i++){
                   partFacts[i].source = part.route;
                   partFacts[i].sourceTitle = 'Part  : '+part.title;
@@ -410,7 +413,7 @@ var computeAllFacts=function(element, indicator){
     for (var i = 0; i < facts.length; i++)   {facts[i].source = element._id; facts[i].sourceTitle = 'This Part';}
     angular.forEach(element.chapters, function(chapter) {
       angular.forEach(chapter.parts, function(part) {
-        var partFacts = angular.copy(part.facts);
+   var partFacts = angular.copy(part.facts);
                   for (var i = 0; i < partFacts.length; i++){
                     partFacts[i].source = part.route;
                     partFacts[i].sourceTitle = 'Part : '+part.title;
@@ -425,7 +428,7 @@ var computeAllFacts=function(element, indicator){
   if(type=='chapitre'){    
     for (var i = 0; i < facts.length; i++)   {facts[i].source = element._id; facts[i].sourceTitle = 'This chapter';}
     angular.forEach(element.parts, function(part) {
-      var partFacts = angular.copy(part.facts);
+ var partFacts = angular.copy(part.facts);
                 for (var i = 0; i < partFacts.length; i++){
                   partFacts[i].source = part.route;
                   partFacts[i].sourceTitle = 'Part : '+part.title;
@@ -500,21 +503,16 @@ var updateDisplay=function(){
 
     loadContext();
   
-        var totalWidth = $('.col-lg-9').width();
+   var totalWidth = $('.col-lg-9').width();
         $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
         $('.indicators-header').css('width','50px');
-        var tdW = (totalWidth - 55)/26;
+   var tdW = (totalWidth - 55)/26;
         
         $scope.width=tdW;
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
 
-
-
-
-      
-    
 }
 var goHome=function(){ 
 
@@ -669,10 +667,10 @@ if(arr.length==5) {
         $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
         $('.indicators-header').css('width','50px');
-        var nbP = $scope.course.parts.length;
+   var nbP = $scope.course.parts.length;
         if (nbP<=0) nbP = 1;
         if (nbP>40) nbP=40;
-        var tdW = (totalWidth - 50)/nbP; 
+   var tdW = (totalWidth - 50)/nbP; 
         
         
         $('.data-table td').each(function() {
@@ -826,24 +824,24 @@ var showTasksAndFacts = function(element, indicator, task_id){
   
   if(indicator==='ALL'){
        angular.forEach(element.todos, function(todo){
-        var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0]
+   var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0]
         if(typeof results !== 'undefined') results.selected='relevantTask';
       });
       angular.forEach(element.facts, function(fact){
         angular.forEach(fact.todos, function(todo){
-        var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0];
+   var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0];
         if(typeof results !== 'undefined') results.selected='relevantTask';
       })
       });
     }
     else{
        angular.forEach(element.todos, function(todo){
-      var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
+ var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0]
       if(typeof results !== 'undefined') results.selected='relevantTask';
         });
         angular.forEach(element.facts, function(fact){
           angular.forEach(fact.todos, function(todo){
-          var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
+     var results= $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof==indicator})[0];
           if(typeof results !== 'undefined') results.selected='relevantTask';
         })
         });
@@ -851,7 +849,7 @@ var showTasksAndFacts = function(element, indicator, task_id){
 
     if(task_id != 0){
       
-      var selection = $.grep($scope.context.subtasks, function(e){ return  e._id == task_id})[0];
+ var selection = $.grep($scope.context.subtasks, function(e){ return  e._id == task_id})[0];
 selection.selected='selectedTask';
 $('.selectedTask').focus().blur().focus();
         window.setTimeout(function() {
@@ -877,7 +875,7 @@ var displayIssue=function(url, task, part, indicator){
 
      
      $scope.context.route= url;     
-     var element = resolveRoute(url);
+var element = resolveRoute(url);
 
   var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
      if(nb==0) nb="aucune (0) remarque";
@@ -920,18 +918,18 @@ var displayPartIssues=function(url, task, part, indicator){
 
      
      $scope.context.route= url;     
-     var element = resolveRoute(url);
+var element = resolveRoute(url);
      
 
      $scope.context.Tasks=element.todos;
      $scope.context.Facts=computeSubFacts(element, indicator);
      
      
-     var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
+var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text() ;
      if(nb==0) nb="aucune (0) remarque  relative ";
      if(nb==1) nb="une (1) remarque relative ";
       if(nb>1) nb=nb+" problèmes potentiels relatifs ";
-      var txt = (indicator==='Readings')?'à la lecture':
+ var txt = (indicator==='Readings')?'à la lecture':
                 (indicator==='Rereading')?'à la relecture':
                 (indicator==='Transition')?'à la navigation' :'aux arrêts et reprises de la lecture';
      $scope.context.inspector_title = "Section: "+ part.title+' - '+nb+ txt ;
@@ -1031,7 +1029,7 @@ var displayPartInfos=function(partElt, task){
     $(':focus').blur();
     
     
-     var part = $(partElt).attr('data-part');
+var part = $(partElt).attr('data-part');
 
     var route = $(partElt).attr('data-path');
 
@@ -1050,6 +1048,7 @@ $scope.observedElt={'type':'Cette section ',
 }
 
 var displayCourseInfos=function(indicator, task){ 
+  $scope.indicatorInspectorShow = indicator;
   resetPath(); 
   $scope.issuesInspectorShow = false;  
   $scope.context.inspector_title = "Cours: "+$scope.course.title +" - " +$scope.context.subfacts.length +" problèmes potentiels";
@@ -1066,8 +1065,6 @@ angular.forEach($scope.course.tomes, function(tome){
   })
 });
 
-if(indicator==='ALL') $scope.courseInspectorShow = true
-  else  $scope.courseInspectorShow = false
 
 var nbUsers = 0;
 var nbRS = 0;
@@ -1254,9 +1251,9 @@ $scope.addTask = function (data) {
   $scope.dataLoading = true;
       if (data != undefined) {
 
-        var addedTask = data;          
-        var route = $scope.context.route;
-        var query = parseTask(route, addedTask); 
+   var addedTask = data;          
+   var route = $scope.context.route;
+   var query = parseTask(route, addedTask); 
         
         addTask(query.route,query.todo)
         .success(function(data) {
@@ -1358,9 +1355,9 @@ swal({
     });
 
     $scope.showDescendants = function(permission) {
-        var temp = $('.ui-select-container .btn-primary').text().split(' ');
+   var temp = $('.ui-select-container .btn-primary').text().split(' ');
         temp.shift(); //remove close icon
-        var selected = temp.join(' ');
+   var selected = temp.join(' ');
         $scope.descendants = $scope.allDescendants[selected];
     };
 
@@ -1371,7 +1368,7 @@ swal({
     $scope.create = function(isValid) {
       if (isValid) {
         // $scope.course.permissions.push('test test');
-        var course = new Courses($scope.course);
+   var course = new Courses($scope.course);
 
         course.$save(function(response) {
           $location.path('courses/' + response._id);
@@ -1403,7 +1400,7 @@ swal({
 
     $scope.update = function(isValid) {
       if (isValid) {
-        var course = $scope.course;
+   var course = $scope.course;
         if (!course.updated) {
           course.updated = [];
         }
@@ -1425,8 +1422,29 @@ swal({
 
 
   /**********************D3 CHARTS****************************/
-var appendD3Facts=function(fact, factedPartID, contextElement){
- 
+var ComputeGlobalVisuData=function(){
+  var visuData = []
+  
+  visuData.push({type:'Actions_nb',data:factChart(-1,'Actions_nb')});  
+  visuData.push({type:'q3.duration',data:factChart(-1,'q3.duration')});
+  visuData.push({type:'Rereadings',data:factChart(-1,'Rereadings')});  
+  visuData.push({type:'Sequential_rereadings',data:factChart(-1,'Sequential_rereadings')});  
+  visuData.push({type:'Decaled_rereadings',data:factChart(-1,'Decaled_rereadings')});  
+  visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
+  visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
+  visuData.push({type:'next_recovery',data:factChart(-1,'next_recovery')});    
+  visuData.push({type:'back_recovery',data:factChart(-1,'back_recovery')});    
+  visuData.push({type:'shifted_recovery',data:factChart(-1,'shifted_recovery')});    
+  visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
+
+visuData.push({type:'provenance',data:globalTransitionsProvenance('provenance')});    
+visuData.push({type:'destination',data:globalTransitionsProvenance('destination')});    
+
+  
+
+  return visuData;
+}
+var appendD3Facts=function(fact, factedPartID, contextElement){ 
  
     if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
       fact.d3 = factChart(factedPartID,'Actions_nb');
@@ -1479,11 +1497,10 @@ var appendD3Facts=function(fact, factedPartID, contextElement){
       {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' );}
  
 
-
 }
 
 var transitionFactChart = function(factedPartID, issueCode){
-  var direction='provenance'
+  var classe='provenance'
   if(typeof $scope.course=='undefined') return;
     
     var chartData=[];
@@ -1494,18 +1511,80 @@ var transitionFactChart = function(factedPartID, issueCode){
    var cpt = 0;
    var transitions=[]
 
-   angular.forEach($scope.course.tomes, function(tome){
+  angular.forEach($scope.course.tomes, function(tome){
           angular.forEach(tome.chapters, function(chapter){
         angular.forEach(chapter.parts, function(part){
           if(parseInt(factedPartID)===parseInt(part.id)){
             chartData.push(part.properties.filter(function(value){ 
-              return value.property.split('_')[0]===direction    
+              return value.property.split('_')[0]===classe    
           }))
         }
       })
     })
       });
    return {'partIndex':factedPartID,'issueCode':issueCode ,'transition':chartData[0]};
+ 
+}
+
+var mean=function(numbers) {
+    // mean of [3, 5, 4, 4, 1, 1, 2, 3] is 2.875
+    var total = 0,
+        i;
+    for (i = 0; i < numbers.length; i += 1) {
+        total += numbers[i];
+    }
+    return total / numbers.length;
+}
+var median=function(numbers) {
+    // median of [3, 5, 4, 4, 1, 1, 2, 3] = 3
+    var median = 0,
+        numsLen = numbers.length;
+    numbers.sort();
+    if (numsLen % 2 === 0) { // is even
+        // average of two middle numbers
+        median = (numbers[numsLen / 2 - 1] + numbers[numsLen / 2]) / 2;
+    } else { // is odd
+        // middle number only
+        median = numbers[(numsLen - 1) / 2];
+    }
+    return median;
+}
+var globalTransitionsProvenance=function(classe){
+  var chartData = [];
+  
+   angular.forEach($scope.course.tomes, function(tome){
+          angular.forEach(tome.chapters, function(chapter){
+        angular.forEach(chapter.parts, function(part){
+          
+            chartData=chartData.concat(part.properties.filter(function(value){ 
+              return value.property.split('_')[0]===classe    
+            }))
+         
+        })
+      })
+    });
+  
+  
+var identity= mean(($.grep(chartData, function(e){ return  e.property === classe+"_identity" }))
+  .map(function(d) { return parseInt(d.value); }));
+var precedent= mean(($.grep(chartData, function(e){ return  e.property === classe+"_precedent" }))
+      .map(function(d) { return parseInt(d.value); }));
+var next_p= mean(($.grep(chartData, function(e){ return  e.property === classe+"_next_p" }))
+      .map(function(d) { return parseInt(d.value); }));
+var shifted_past= mean(($.grep(chartData, function(e){ return  e.property === classe+"_shifted_past" }))
+      .map(function(d) { return parseInt(d.value); }));
+var shifted_next= mean(($.grep(chartData, function(e){ return  e.property === classe+"_shifted_next" }))
+      .map(function(d) { return parseInt(d.value); }));
+var somme = identity + precedent + next_p + shifted_past + shifted_next;
+var chartData=[
+      {'classe':chartData, "property":"identity", value: identity * 100 / somme},
+      {'classe':chartData, "property":"precedent", value: precedent * 100 / somme},
+      {'classe':chartData, "property":"next_p", value: next_p * 100 / somme},
+      {'classe':chartData, "property":"shifted_past", value: shifted_past * 100 / somme},
+      {'classe':chartData, "property":"shifted_next", value: shifted_next * 100 / somme}]
+
+return(chartData)
+
 }
 var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course=='undefined') return;
@@ -1529,59 +1608,10 @@ var factChart = function(factedPartID, issueCode){
         })
       })
     });
-   if(issueCode ==='provenance_precedent') console.log(chartData);
-return chartData;
-
-}
-
-var factChart1 = function(factedPartID, issueCode){
-  if(typeof $scope.course=='undefined') return;
-    
-    var chartData=[];
-    var meanData=[];
-    var dataEntries=[];
-    var colorsEntries=[];
-   
-   var cpt = 0;
-
-   angular.forEach($scope.course.tomes, function(tome){
-          angular.forEach(tome.chapters, function(chapter){
-        angular.forEach(chapter.parts, function(part){
-          chartData.push({'part':part.id,
-            'title':part.title,
-            'route':part.route,
-            'value': parseInt(part.properties.filter(function(value){ return  value.property === issueCode})[0].value),
-            'color':parseInt(factedPartID)===parseInt(part.id)?'#45348A':'grey'
-          })
-        })
-      })
-    });
    
 return chartData;
 
 }
-
-
-
-
-  $scope.readingChartSelect = function (chart) {
-    var element = $scope.chartedElement ;
-    $scope.chartType= chart;
-    
-        };
-
-        
-
-
-    $scope.stopChartSelect = function (chart) {
-      
-        };
-
-
-
-      $scope.transitionChartSelect = function (chart) {
- 
-        };
 
  
   // end

@@ -1,39 +1,57 @@
 
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="courseInspectorShow"  >
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='all'"  >
 
-<div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='all' ">
+
+<div class="btn-group" style="width:100%; text-align:center">
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
   
     </div>
+<d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+    </div>
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Readings'"  >
+ <h2>Lecture</h2>
+  <div class="btn-group" style="width:100%; text-align:center" >
+     
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
+        
+    </div>
+    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+</div>
 
-  <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='readings' ">
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Rereading'"  >
+ <h2>Relecture</h2>
+  <div class="btn-group" style="width:100%; text-align:center" >
+     
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
     </div>
-    <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='stop' ">
+    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+</div>
+
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Stop'"  >
+    <div class="btn-group" style="width:100%; text-align:center">
+    <h2>Arrêts</h2>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="stopChartSelect('stop')">Type d'arrêt</label>
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="stopChartSelect('recovery')">Reprises</label>
     </div>
-     <div class="btn-group" style="width:100%; text-align:center" ng-show="indicatorGraphShow=='transition' ">
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="transitionChartSelect('provenance')">Provenance</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="transitionChartSelect('recovery')">Destination</label>
-    </div>
+<d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+</div>
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Transition'"  >
+ 
+       <table>
+           <td><h3>Provenance</h3>
+         <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart></td>
+         <td><h3>Destination</h3>
+         <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"destination"}'></d3-chart></td>
+       </table>
+
+ 
     
 
 </div>
 
 
-
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="!courseInspectorShow" >
-<strong>Popularité des chapitres du cours: </strong>
-  <div class="btn-group">
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingChartSelect('obsels')">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
-    </div>
-    
-
-</div>
