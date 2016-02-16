@@ -39,6 +39,10 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
       $scope.chartedElement = {};
       $scope.factChart={};
       $scope.componentChart={};
+
+      $scope.readingChartSelector = 'Actions_nb';
+      $scope.rereadingChartSelector = 'Rereadings';
+      $scope.stopChartSelector = 'rupture';
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -1435,7 +1439,7 @@ var ComputeGlobalVisuData=function(){
   visuData.push({type:'next_recovery',data:factChart(-1,'next_recovery')});    
   visuData.push({type:'back_recovery',data:factChart(-1,'back_recovery')});    
   visuData.push({type:'shifted_recovery',data:factChart(-1,'shifted_recovery')});    
-  visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
+  
 
 visuData.push({type:'provenance',data:globalTransitionsProvenance('provenance')});    
 visuData.push({type:'destination',data:globalTransitionsProvenance('destination')});    

@@ -8,37 +8,43 @@
         <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
   
     </div>
-<d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+
     </div>
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Readings'"  >
- <h2>Lecture</h2>
+
   <div class="btn-group" style="width:100%; text-align:center" >
      
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Actions_nb '">Nombre de visites</label>
+        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" >Durées de lecture</label>
         
     </div>
-    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+
+    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:readingChartSelector}'></d3-chart>
 </div>
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Rereading'"  >
- <h2>Relecture</h2>
+
   <div class="btn-group" style="width:100%; text-align:center" >
      
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Rereadings'">Nombre total de relectures</label>
+        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Sequential_rereadings'">Nombre de relectures séquantielles</label>
+        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Decaled_rereadings'">Nombre de relectures distantes</label>
+
     </div>
-    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+
+    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:rereadingChartSelector}'></d3-chart>
 </div>
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Stop'"  >
     <div class="btn-group" style="width:100%; text-align:center">
-    <h2>Arrêts</h2>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="stopChartSelect('stop')">Type d'arrêt</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="stopChartSelect('recovery')">Reprises</label>
+        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'rupture'">Fin de séances sur la partie</label>
+        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'norecovery'">Fin définitive de la lecture</label>
+        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'next_recovery'">Fin avec reprise sur la partie qui suit</label>
+        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'back_recovery'">Fin avec reprise sur une partie qui précède</label>
+        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'shifted_recovery'">Fin avec reprise sur une partie distante</label>
     </div>
-<d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart>
+
+<d3-chart data='context.d3' d3opts='{type:"global",issueCode:stopChartSelector}'></d3-chart>
 </div>
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Transition'"  >
  
