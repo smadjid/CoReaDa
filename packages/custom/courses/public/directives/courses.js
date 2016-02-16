@@ -7,8 +7,176 @@ angular.module('mean.courses')
         data: '=',
         d3opts: '='
       },
-      link: function (scope, element) {
-        var globalBarChart = function(scope, element, title){   
+      link: function (scope, element) {       
+        var globalBubbleChart = function(scope, element, title){  
+          var w = 500,
+          h = 500;
+         
+
+
+var svg = d3.select("body").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+ scope.renderGlobal = function(data, classe) {  
+   svg.selectAll('g').remove();
+  svg.selectAll('line').remove();
+    
+ var nodes = data,
+          links = [];
+
+console.log(nodes);
+for (i=0; i<5; i++) {
+  console.log(nodes[i]);
+    links.push({
+        source: nodes[i],
+        target: nodes[0]
+    });
+}
+
+
+
+
+var countLinks = function(n) {
+    var count = 0;
+    links.forEach(function(l) {
+        if (l.source === n || l.target === n) {
+            count++;
+        }
+    });
+
+    return count;
+}
+
+/////////////////////////////////////////////
+var force = d3.layout.force()
+    .nodes(nodes)
+    .links([])
+    .gravity(0.05)
+    .charge(function(d) {
+        return countLinks(d) * -50;     
+     })
+    .linkDistance(300)
+    .size([w, h]);
+
+
+ var link = svg.selectAll(".link")
+        .data(links)
+        .enter().append("line")
+        .attr("class", "link")
+        .attr("stroke", "#CCC")
+        .attr("fill", "none");
+
+ var node = svg.selectAll("circle.node")
+     .data(nodes)
+     .enter().append("g")
+     .attr("class", "node")
+     .call(force.drag);
+
+node.append("svg:circle")
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
+    .attr("r", 50)
+    .style("fill", "#CCC")
+    .style("stroke", "#AAA")
+    .style("stroke-width", 1.5)
+
+node.append("text").text(function(d) { return d.indicator; })
+    .attr("x", -6)
+    .attr("y", 6);
+
+force.on("tick", function(e) {
+    node.attr("transform", function(d, i) {
+        return "translate(" + d.x + "," + d.y + ")"; 
+    });
+
+    link.attr("x1", function(d)   { return d.source.x; })
+        .attr("y1", function(d)   { return d.source.y; })
+        .attr("x2", function(d)   { return d.target.x; })
+        .attr("y2", function(d)   { return d.target.y; }) 
+});
+
+force.start();           
+}        
+
+scope.$watch('data', function(){
+
+          if(typeof scope.data!=='undefined')
+
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true);  
+         
+};
+        var globalBubbleChartOLD = function(scope, element, title){             
+        var margin = {top: 20, right: 10, bottom: 30, left: 40},
+          width = 780 - margin.left - margin.right,
+          height = 250 - margin.top - margin.bottom;
+
+
+            var diameter = width, //max size of the bubbles
+                color    = d3.scale.category20b(); //color category
+
+            var bubble = d3.layout.pack()
+                .sort(null)
+                .size([diameter, diameter])
+                .padding(1.5);
+
+            var svg = d3.select(element[0])
+                .append("svg")
+                .attr("width", diameter)
+                .attr("height", diameter)
+                .attr("class", "bubble");
+
+
+        //Render graph based on 'data'
+        var gap = 100
+        scope.renderGlobal = function(data, classe) {  
+        data.forEach(function(c, i) {
+            c.x = gap * (i +1);
+            c.y = gap * (i +1)  ;
+            c.r = 50
+            
+        });
+
+        var circle = svg.append("g").selectAll(".circle")
+            .data(data)
+            .enter()
+            .append("g")
+            .attr("class", "circle")
+            .attr("fill",  "red");
+    var el = circle.append("circle")
+            .attr("cx", function(d) {return d.x})
+            .attr("cy", function(d) {return d.y})
+            .attr("r", function(d) {return d.r});
+
+       
+               //setup the chart
+          
+
+
+console.log(data);
+ 
+              
+
+        };
+
+
+scope.$watch('data', function(){
+
+          if(typeof scope.data!=='undefined')
+
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true);  
+   
+
+scope.$watch('d3opts', function(){
+          if(typeof scope.data!=='undefined')
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true);  
+};
+
+
+var globalBarChart = function(scope, element, title){   
           
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 780 - margin.left - margin.right,
@@ -36,7 +204,7 @@ angular.module('mean.courses')
 
         //Render graph based on 'data'
         scope.renderGlobal = function(globalData, classe) {
-          console.log(globalData)
+          
 
           var data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
 
@@ -284,9 +452,8 @@ var svg = d3.select(element[0]).append("svg")
 
  
 
-var renderGlobal=function(data){
+scope.renderGlobal=function(data){
 
-   console.log(data);
   var classe = scope.d3opts.issueCode;  
    
    svg.selectAll('g').remove();
@@ -439,9 +606,9 @@ svg.append("g").selectAll("g.linklabelholder")
 }
 
 
-   scope.$watch('data', function(){ 
-    console.log('update global');
-              renderGlobal(scope.data);
+   scope.$watch('data', function(){  
+    if(typeof scope.data!=='undefined')
+              scope.renderGlobal(scope.data);
               
           }, true);  
   /* scope.$watch('data', function(){
@@ -605,10 +772,11 @@ if(scope.d3opts.type === 'global')
 if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
-                      }) 
-  globalBarChart(scope, element,'titre');
-if(scope.d3opts.issueCode in {'provenance':'','destination':''}) 
-  globalNodeChart(scope, element);
+                      })  globalBarChart(scope, element,'titre')
+
+else 
+  if(scope.d3opts.issueCode in {'provenance':'','destination':''})  globalNodeChart(scope, element)
+    else globalBubbleChart(scope, element,'titre');
 }
 else{
 

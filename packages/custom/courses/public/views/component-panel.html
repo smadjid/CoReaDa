@@ -1,15 +1,10 @@
 
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='all'"  >
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='ALL'"  >
 
-
-<div class="btn-group" style="width:100%; text-align:center">
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'obsels'" ng-change="readingreadingChartSelect('obsels')">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" ng-change="readingChartSelect('q3.duration')">Durées de lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Rereadings'" ng-change="readingChartSelect('Rereadings')">Relecture</label>
-  
+ <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
+ 
     </div>
 
-    </div>
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Readings'"  >
 
   <div class="btn-group" style="width:100%; text-align:center" >
