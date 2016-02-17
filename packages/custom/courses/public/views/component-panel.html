@@ -1,6 +1,24 @@
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='ALL'"  >
 
+<div class="widget">
+    <div class="header">Taux d'achèvement</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'25_percent'">25%</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'50_percent '">50%</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'70_percent '">75%</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'100_percent '">100%</label>
+    </div>
+
+    <div id="chart" class="chart-container">
+            <d3-chart data='context.d3.stats' d3opts='{type:"indicator",issueCode:"progress"}'></d3-chart>
+    </div>
+
+</div>
+
+
+
  <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
  
     </div>

@@ -7,7 +7,175 @@ angular.module('mean.courses')
         data: '=',
         d3opts: '='
       },
-      link: function (scope, element) {       
+      link: function (scope, element) {   
+      var globalProgressChart = function(scope, element, title){  
+
+
+
+      var percent = 65;
+    var ratio=percent/100;
+
+    var pie=d3.layout.pie()
+            .value(function(d){return d})
+            .sort(null);
+
+    var w=250,h=250;
+    var svg=d3.select("#chart")
+            .append("svg")
+            .attr({
+                width:w,
+                height:h,
+                class:'shadow'
+            }).append('g')
+            .attr({
+                transform:'translate('+w/2+','+h/2+')'
+            });
+
+    var outerRadius=(w/2)-10;
+    var innerRadius=(w/2)-15;
+
+
+    var color = ['#B9B3B3','#404F70','white'];
+
+    var arc=d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius)
+            .startAngle(0)
+            .endAngle(2*Math.PI);
+
+
+    var arcLine=d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius)
+            .cornerRadius(20)
+            .startAngle(-0.05);
+
+    
+
+    var defs = svg.append("svg:defs");
+
+    var inset_shadow = defs.append("svg:filter")
+            .attr("id", "inset-shadow");
+
+    inset_shadow.append("svg:feOffset")
+            .attr({
+                dx:0,
+                dy:0
+            });
+
+    inset_shadow.append("svg:feGaussianBlur")
+            .attr({
+                stdDeviation:8,
+                result:'offset-blur'
+            });
+
+    inset_shadow.append("svg:feComposite")
+            .attr({
+                operator:'out',
+                in:'SourceGraphic',
+                in2:'offset-blur',
+                result:'inverse'
+            });
+
+    inset_shadow.append("svg:feFlood")
+            .attr({
+                'flood-color':'black',
+                'flood-opacity':1,
+                result:'color'
+            });
+
+    inset_shadow.append("svg:feComposite")
+            .attr({
+                operator:'in',
+                in:'color',
+                in2:'inverse',
+                result:'shadow'
+            });
+
+    inset_shadow.append("svg:feComposite")
+            .attr({
+                operator:'over',
+                in:'shadow',
+                in2:'SourceGraphic'
+            });
+
+    var pathBackground=svg.append('path')
+            .attr({
+                d:arc
+            })
+            .style({
+                fill:color[0],
+                filter:'url(#inset-shadow)'
+            });
+
+
+    var pathForeground=svg.append('path')
+            .datum({endAngle:0})
+            .attr({
+                d:arcLine
+            })
+            .style({
+                fill:color[1],
+                filter:'url(#inset-shadow)'
+            });
+    var circle=svg.append('circle')
+            .attr({
+                cx:0,
+                cy:0,
+                r:innerRadius
+            })
+            .style({
+                fill:color[2],
+                'fill-opacity':.5
+            });
+
+    var middleCount=svg.append('text')
+            .datum(0)
+            .text(function(d){
+                return d+'%';
+            })
+
+            .attr({
+                class:'middleText',
+                'text-anchor':'middle',
+                dy:27
+            })
+            .style({
+                fill:'#29384D',
+                'font-size':'80px'
+
+
+            });
+
+    var oldValue=0;
+    var arcTween=function(transition, newValue,oldValue) {
+        transition.attrTween("d", function (d) {
+            var interpolate = d3.interpolate(d.endAngle, ((2*Math.PI))*(newValue/100));
+
+            var interpolateCount = d3.interpolate(oldValue, newValue);
+            return function (t) {
+                d.endAngle = interpolate(t);
+                middleCount.text(Math.floor(interpolateCount(t))+'%');
+                return arcLine(d);
+            };
+        });
+    };
+
+
+    var animate=function(){
+
+        pathForeground.transition()
+                .duration(750)
+                .ease('cubic')
+                .call(arcTween,percent,oldValue);
+        oldValue=percent;
+        percent=(Math.random() * 60) + 20;
+       // setTimeout(animate,3000);
+    };
+
+    setTimeout(animate,50);
+
+      }    
         var globalBubbleChart = function(scope, element, title){  
           var w = 500,
           h = 500;
@@ -777,6 +945,12 @@ if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
 else 
   if(scope.d3opts.issueCode in {'provenance':'','destination':''})  globalNodeChart(scope, element)
     else globalBubbleChart(scope, element,'titre');
+}
+else
+if(scope.d3opts.type === 'indicator'){
+
+  globalProgressChart(scope, element, ' '); 
+
 }
 else{
 
