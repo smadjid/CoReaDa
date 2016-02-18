@@ -1504,12 +1504,12 @@ marker#arrow {
 
 /************ Chart Widget ********************************/
 .widget {
-    margin: 0 auto;
+    margin: 5px;
     width:250px;
-    margin-top:30px;
     background-color: white;
     border-radius: 5px;
     box-shadow: 0px 0px 1px 0px #06060d;
+    float:left;
 
 }
 

@@ -17,6 +17,41 @@
 
 </div>
 
+<div class="widget">
+    <div class="header">Séances de lecture</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'25_percent'">Par utilisateur</label>
+        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'50_percent '">Durées</label>
+    </div>  
+
+</div>
+
+<div class="widget">
+    <div class="header">Top parties</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'25_percent'">Visites</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'50_percent '">Lecteurs</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'70_percent '">Séances</label>
+        
+    </div>  
+
+</div>
+
+
+<div class="widget">
+    <div class="header">Problémes potentiels</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="issuesSelector" uib-btn-radio="'25_percent'">Par partie</label>
+        <label class="btn btn-xs btn-achievement" ng-model="issuesSelector" uib-btn-radio="'50_percent '">Par classe</label>
+        
+    </div>  
+
+</div>
+
+
 
 
  <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
