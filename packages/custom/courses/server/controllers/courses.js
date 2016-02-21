@@ -405,15 +405,17 @@ module.exports = function(Courses) {
         var facts = fs.readFileSync(courseHome+"/facts.json");
         var jsonFacts = JSON.parse(facts);
 
-        //var coursedata = fs.readFileSync("CourseStats.json");
-      //  var jsonCoursedata = JSON.parse(coursedata);
+        var coursedata = fs.readFileSync(courseHome+"/stats.json");
+        var coursestats = JSON.parse(coursedata);
+
+        var coursersdata = fs.readFileSync(courseHome+"/rs.json");
+        var coursers = JSON.parse(coursersdata);
+
         var partsdata = fs.readFileSync(courseHome+"/structure.json");
         var jsonPartsdata = JSON.parse(partsdata);
 
-        var courseName=fs.readFileSync(courseHome+"/"+req.params.courseTitle);
-        var jsoncourseName = JSON.parse(courseName);
         //var course_title = jsoncourseName[0].title;
-        //console.log(course_title);
+        
 
 
 
@@ -561,7 +563,7 @@ module.exports = function(Courses) {
      
         };
 
-console.log(courseChapters[1]);
+
         for (var i = 0; i < courseChapters.length ; i++){ 
                     var self = courseChapters[i]['id'];
                     var parent = courseChapters[i]['parent_id'];           
@@ -582,6 +584,8 @@ console.log(courseChapters[1]);
             version : 1.0,
             parts:courseParts,
             properties:courseData.properties,//jsonCoursedata,
+            stats:coursestats,
+            rs:coursers,
             tomes:courseTomes,
             elementType:'course',
             content:'course content',

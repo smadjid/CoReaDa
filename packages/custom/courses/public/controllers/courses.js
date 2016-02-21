@@ -1048,8 +1048,8 @@ var part = $(partElt).attr('data-part');
 
 
 $scope.observedElt={'type':'Cette section ',
-      'nbUsers':0,//parseInt(element.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value),
-      'nbRS':parseInt(element.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value),
+      'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
+      'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
       'Actions_nb':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value) };    
 
 

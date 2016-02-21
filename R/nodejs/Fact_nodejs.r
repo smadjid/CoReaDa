@@ -800,6 +800,9 @@ names(Provenances_stats)=c("part_index","provenance_precedent","provenance_shift
 names(Destinations_stats)=c("part_index","destination_precedent","destination_shifted_past", "destination_identity","destination_next_p","destination_shifted_next","destination_total_next") 
 PartData = merge(PartData, Provenances_stats,  by = 'part_index',all.x = TRUE)
 PartData = merge(PartData, Destinations_stats,  by = 'part_index',all.x = TRUE)
+
+PartData$Readers_tx = round(PartData$Readers / nusers, 4)
+PartData$RS_tx = round(PartData$RS_nb / nrow(nodejs.RS), 4)
 save(PartData, file='PartData.rdata')
 
 
@@ -812,8 +815,8 @@ cat(PartsData.json, file="structure.json")
 ########## RS stats
 CourseStats = data.frame(id=0, title='title')
 CourseStats$nactions =sum(Interest$Actions_nb)
-CourseStats$nusers =length(unique(data$user_id))
-CourseStats$nSR = nrow(RS)
+CourseStats$nusers =length(unique(data$user_id)) 
+CourseStats$nRS = nrow(RS)
 CourseStats$mean.rs.duration = mean(RS$duration,na.rm = TRUE)
 CourseStats$median.rs.duration = median(RS$duration,na.rm = TRUE) 
 CourseStats$mean.rs.nparts = mean(RS$nparts,na.rm = TRUE)
@@ -822,7 +825,7 @@ CourseStats$median.rs.nparts = median(RS$nparts,na.rm = TRUE)
 
 
 # course stats
-CourseStats$mean.duration = mean(Interest$Actions_nb,na.rm = TRUE) 
+CourseStats$mean.visites = mean(Interest$Actions_nb,na.rm = TRUE) 
 CourseStats$median.visites = median(Interest$Actions_nb,na.rm = TRUE) 
 CourseStats$q1.visites = quantile(Interest$Actions_nb,0.25,na.rm = TRUE) 
 CourseStats$q3.visites = quantile(Interest$Actions_nb,0.75,na.rm = TRUE) 
@@ -887,4 +890,9 @@ CourseStats$max.dec_rereadings = quantile(Reads$Decaled_rereadings,0.9,na.rm = T
 CourseStats = melt(CourseStats)[,c(2,3)]
 names(CourseStats)[1]='property'
 CourseStats.json = toJSON(unname(split(CourseStats,1:nrow(CourseStats))))
+cat(CourseStats.json, file="stats.json")
+
+rs_stats=RS[,c('nparts','duration')]
+rs_stats = toJSON(unname(split(rs_stats,1:nrow(rs_stats))))
+cat(rs_stats, file="rs.json")
 

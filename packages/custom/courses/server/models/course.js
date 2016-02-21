@@ -107,6 +107,19 @@ var DescriptionSchema = new Schema({
  });
 
 /**
+ * RS Schema
+ */
+var RSSchema = new Schema({
+  nparts: {
+    type: String
+  },
+  duration: {
+    type: Number
+  }
+
+ });
+
+/**
  * Part Schema
  */
 var PartSchema = new Schema({
@@ -219,7 +232,9 @@ var CourseSchema = new Schema({
   parts: [PartSchema],
   tomes: [TomeSchema],
   facts: [FactSchema],
-  todos: [TodoSchema]
+  todos: [TodoSchema],
+  rs:[RSSchema],
+  stats:[DescriptionSchema]
 });
 
 /**
