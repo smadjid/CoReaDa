@@ -1,110 +1,14 @@
 
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='ALL'"  >
-
-<div class="widget">
-    <div class="header">Taux d'achèvement</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'25_percent'">25%</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'50_percent '">50%</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'70_percent '">75%</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'100_percent '">100%</label>
-    </div>
-
-    <div id="chart" class="chart-container">
-            <d3-chart data='context.d3.stats' d3opts='{type:"indicator",issueCode:"progress"}'></d3-chart>
-    </div>
-
-</div>
-
-<div class="widget">
-    <div class="header">Séances de lecture</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'25_percent'">Par utilisateur</label>
-        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'50_percent '">Durées</label>
-    </div>  
-
-</div>
-
-<div class="widget">
-    <div class="header">Top parties</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'25_percent'">Visites</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'50_percent '">Lecteurs</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'70_percent '">Séances</label>
-        
-    </div>  
-
-</div>
-
-
-<div class="widget">
-    <div class="header">Problémes potentiels</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="issuesSelector" uib-btn-radio="'25_percent'">Par partie</label>
-        <label class="btn btn-xs btn-achievement" ng-model="issuesSelector" uib-btn-radio="'50_percent '">Par classe</label>
-        
-    </div>  
-
-</div>
-
-
-
-
- <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
- 
-    </div>
-
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Readings'"  >
-
-  <div class="btn-group" style="width:100%; text-align:center" >
-     
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Actions_nb '">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" >Durées de lecture</label>
-        
-    </div>
-
-    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:readingChartSelector}'></d3-chart>
-</div>
-
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Rereading'"  >
-
-  <div class="btn-group" style="width:100%; text-align:center" >
-     
-        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Rereadings'">Nombre total de relectures</label>
-        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Sequential_rereadings'">Nombre de relectures séquantielles</label>
-        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Decaled_rereadings'">Nombre de relectures distantes</label>
-
-    </div>
-
-    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:rereadingChartSelector}'></d3-chart>
-</div>
-
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Stop'"  >
-    <div class="btn-group" style="width:100%; text-align:center">
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'rupture'">Fin de séances sur la partie</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'norecovery'">Fin définitive de la lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'next_recovery'">Fin avec reprise sur la partie qui suit</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'back_recovery'">Fin avec reprise sur une partie qui précède</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'shifted_recovery'">Fin avec reprise sur une partie distante</label>
-    </div>
-
-<d3-chart data='context.d3' d3opts='{type:"global",issueCode:stopChartSelector}'></d3-chart>
-</div>
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Transition'"  >
- 
-       <table>
-           <td><h3>Provenance</h3>
-         <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart></td>
-         <td><h3>Destination</h3>
-         <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"destination"}'></d3-chart></td>
-       </table>
-
- 
-    
+<div class='row' style="margin:10px;color: #1C383F; " >
+    <span class='componentInfo'><span class="blue">56%</span> de lecteurs sont pasés par cette partie</span>
+<hr/>
+    <span class='componentInfo'><span class="blue">26%</span> de séances de lectures contiennent cette partie</span>
+<hr/>
+    <span class='componentInfo'><span class="blue">3mn</span> est le temps moyen de lecture dans cette partie. Le temps moyen sur la totalité des parties est de 5mn</span>
+<hr/>
+    <span class='componentInfo'>Cette partie est relue en moyenne <span class="blue">3 fois</span>, ce qui représente un taux de <b>12%</b> par rapport au nombre moyen de relectures sur les autres parties.</span>
+<hr/>
+    <span class='componentInfo'><span class="blue">13%</span> des arrêts définitifs de la lecture se passe sur cette partie</span>
 
 </div>
 

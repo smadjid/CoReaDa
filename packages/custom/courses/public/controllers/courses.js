@@ -647,8 +647,6 @@ var loadContext = function(){
   part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
   partElt = $('.part_index[data-part='+part.id+']'); 
   displayPartInfos(partElt, task);
-
-  $scope.courseInspectorShow = true;
   $scope.context.taskText='(nouvelle tâche pour cette section)';
   
 }
@@ -1056,6 +1054,7 @@ $scope.observedElt={'type':'Cette section ',
 
 
   $scope.issuesInspectorShow = false;
+  $scope.courseInspectorShow = false;
 }
 
 var displayCourseInfos=function(indicator, task){ 
@@ -1084,7 +1083,9 @@ var Actions_nb=0;
 $scope.observedElt={'type':'Ce cours',
       'nbUsers':0,//$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
       'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
-      'Actions_nb':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value};
+      'Actions_nb':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
+    };
+  $scope.courseInspectorShow = true;
 
 }
 
@@ -1117,7 +1118,7 @@ $scope.observedElt={'type':'Cette partie',
       'nbUsers':nbUsers,
       'nbRS':nbRS,
       'Actions_nb':Actions_nb };
-$scope.courseInspectorShow = true
+$scope.courseInspectorShow = false;
 
 
     
@@ -1148,7 +1149,7 @@ var displayChapterInfos=function(partElt, task){
     Actions_nb = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
   })
 
-$scope.courseInspectorShow = true;
+$scope.courseInspectorShow = false;
 
 $scope.observedElt={'type':'Ce chapitre',
       'nbUsers':nbUsers,

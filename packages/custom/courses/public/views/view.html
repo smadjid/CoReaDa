@@ -24,7 +24,10 @@
                    <em>{{context.inspector_title}}</em> </div>
             </div>
             <div class="panel-body inspector-body" ng-show="issuesInspectorShow"  data-ng-include src="'courses/views/issues-panel.html'"></div>
-            <div class="panel-body  inspector-body" ng-show="!issuesInspectorShow" data-ng-include src="'courses/views/component-panel.html'"></div>
+            <div class="panel-body  inspector-body" ng-show="!issuesInspectorShow">
+              <div data-ng-include ng-show="!courseInspectorShow" src="'courses/views/component-panel.html'"></div>
+              <div data-ng-include ng-show="courseInspectorShow" src="'courses/views/course-panel.html'"></div>
+            </div>
         </div>
     </div>
 
