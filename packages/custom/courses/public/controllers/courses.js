@@ -23,11 +23,10 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
   $(window).unbind('hashchange');
 
 
-  $scope.observedElt={'type':'cours','nbUsers':0,'nbRS':0,'Actions_nb':0}
+  $scope.observedElt={}
 
      $('table').hide();
-     $scope.issuesInspectorShow = false;
-     $scope.courseInspectorShow = true;
+     $scope.inspectorShow = 'course';
      $scope.indicatorInspectorShow = 'course';;
       $scope.courseParts=[];
       $scope.courseChapters=[];
@@ -214,7 +213,6 @@ var resetPath=function(){
     for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 'notRelevantTask' }
 
-  $scope.issuesInspectorShow = false;
 
 }
 
@@ -885,7 +883,7 @@ var displayIssue=function(url, task, part, indicator){
 
      
 
-      $scope.issuesInspectorShow = true;
+$scope.inspectorShow = 'issue';
 
      
      $scope.context.route= url;     
@@ -949,8 +947,7 @@ var nb = $('.td_issue[data-path="'+url+'"]').find('.display-part-issues').text()
      $scope.context.inspector_title = "Section: "+ part.title+' - '+nb+ txt ;
   showTasksAndFacts(element, indicator, task);
 
-  $scope.issuesInspectorShow = true;
-  
+  $scope.inspectorShow = 'issue';
     }
 
 var selectIndictor=function(indicator){
@@ -1059,8 +1056,12 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
 
     var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
     var rereads = parseInt(element.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value)
-    var rereadTx = (rereads==0)?0:rereads/reads;
-    rereadTx = Math.floor(rereadTx * 100)+'%'
+    var rereadTx = (rereads==0)?0:rereads/reads;    
+    rereadTx = Math.floor(rereadTx * 100)+'%';
+
+    var stop = parseInt(element.properties.filter(function(value){ return value.property === 'rupture'})[0].value);
+    var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
+    var stopTx = Math.floor(100 * stop / nrs)+'%';
     
 
 $scope.observedElt={'type':'Cette section ',
@@ -1068,18 +1069,18 @@ $scope.observedElt={'type':'Cette section ',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
       'Actions_nb':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
       'meanTime': meanTime,
-      'meanRereads':rereadTx
+      'meanRereads':rereadTx,
+      'meanStops':stopTx
     };    
 
-
-  $scope.issuesInspectorShow = false;
-  $scope.courseInspectorShow = false;
+$scope.inspectorShow = 'section';
+$scope.context.inspector_title = "Section: "+element.title
 }
 
 var displayCourseInfos=function(indicator, task){ 
   $scope.indicatorInspectorShow = indicator;
   resetPath(); 
-  $scope.issuesInspectorShow = false;  
+  
   $scope.context.inspector_title = "Cours: "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
     selectIndictor(indicator); 
 
@@ -1104,14 +1105,14 @@ $scope.observedElt={'type':'Ce cours',
       'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
       'Actions_nb':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
     };
-  $scope.courseInspectorShow = true;
+  $scope.inspectorShow = 'course';
 
 }
 
 
 var displayTomeInfos=function(partElt, task){ 
   resetPath();
-  $scope.issuesInspectorShow = false;
+  
   selectTome($(partElt).index() + 1);
   $(':focus').blur();
 
@@ -1132,12 +1133,41 @@ var displayTomeInfos=function(partElt, task){
 
   });
 
+var times=[], users=[], rss=[], rereadings=[], stops=[];
 
-$scope.observedElt={'type':'Cette partie',
-      'nbUsers':nbUsers,
-      'nbRS':nbRS,
-      'Actions_nb':Actions_nb };
-$scope.courseInspectorShow = false;
+angular.forEach(element.chapters, function(chapter){
+angular.forEach(chapter.parts, function(part){
+  times.push(parseInt(part.properties.filter(function(value){ return value.property === 'mean.duration'})[0].value)); 
+  users.push(100*part.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value);
+  rss.push(100*part.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value);
+  var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
+  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value);
+  rereadings.push((rereads==0)?0:rereads/reads);
+  stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
+  })
+});
+var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
+
+var sec_num = Math.round(d3.mean(times),2); 
+    var minutes = Math.floor(sec_num  / 60);
+    var seconds = sec_num -  (minutes * 60);
+    var meanTime    = minutes+' min '+seconds+' s';
+    if (minutes == 0) meanTime = seconds+' s';
+
+    var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
+    var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
+
+
+$scope.observedElt={'type':'cette partie',
+      'nbUsers':Math.round(d3.mean(users),2)+'%',
+      'nbRS':Math.round(d3.mean(rss),2)+'%',
+      'Actions_nb':0,
+      'meanTime': meanTime,
+      'meanRereads':Math.floor(100*d3.mean(rereadings),2)+'%',
+      'meanStops':stopTx
+    }; 
+$scope.context.inspector_title = "Partie: "+element.title
+$scope.inspectorShow = 'component';
 
 
     
@@ -1145,7 +1175,7 @@ $scope.courseInspectorShow = false;
 
 var displayChapterInfos=function(partElt, task){ 
   resetPath();
-  $scope.issuesInspectorShow = false;
+  
   selectChapter($(partElt).index() + 1);
   $(':focus').blur();
 
@@ -1168,12 +1198,42 @@ var displayChapterInfos=function(partElt, task){
     Actions_nb = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value);
   })
 
-$scope.courseInspectorShow = false;
+$scope.inspectorShow = 'component';
+$scope.context.inspector_title = "Chapitre: "+element.title
 
-$scope.observedElt={'type':'Ce chapitre',
-      'nbUsers':nbUsers,
-      'nbRS':nbRS,
-      'Actions_nb':Actions_nb };    
+
+var times=[], users=[], rss=[], rereadings=[], stops=[];
+
+angular.forEach(element.parts, function(part){
+  times.push(parseInt(part.properties.filter(function(value){ return value.property === 'mean.duration'})[0].value)); 
+  users.push(100*part.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value);
+  rss.push(100*part.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value);
+  var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
+  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value);
+  rereadings.push((rereads==0)?0:rereads/reads);
+  stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
+});
+
+var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
+
+var sec_num = Math.round(d3.mean(times),2); 
+    var minutes = Math.floor(sec_num  / 60);
+    var seconds = sec_num -  (minutes * 60);
+    var meanTime    = minutes+' min '+seconds+' s';
+    if (minutes == 0) meanTime = seconds+' s';
+
+    var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
+    var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
+
+console.log(users);console.log(d3.mean(users));
+$scope.observedElt={'type':'ce chapitre ',
+      'nbUsers':Math.round(d3.mean(users),2)+'%',
+      'nbRS':Math.round(d3.mean(rss),2)+'%',
+      'Actions_nb':0,
+      'meanTime': meanTime,
+      'meanRereads':Math.floor(100*d3.mean(rereadings),2)+'%',
+      'meanStops':stopTx
+    }; 
 }
 
 var tabsFn = (function() {  
