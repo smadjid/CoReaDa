@@ -5,23 +5,23 @@
     <div class="header">Avancement des lecteurs</div>
     <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
      
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'25_percent'">Taux moyen</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'50_percent '">Taux médian</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'mean.achievement'">Taux moyen</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'median.achievement'">Taux médian</label>
     </div>
 
     <div id="chart" class="chart-container">
-            <d3-chart data='context.d3.stats' d3opts='{type:"indicator",issueCode:"progress"}'></d3-chart>
+            <d3-chart data='context.achievement' d3opts='{type:"indicator",issueCode:achievementSelector}'></d3-chart>
     </div>
 
 </div>
 
 <div class="widget">
     <div class="header">Séances de lecture</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'25_percent'">Par taille</label>
-        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'50_percent '">Par durée</label>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >    
+        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'nparts'">Nombre de parties</label>
+        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'duration'">Durée (en min)</label>
     </div>  
+    <d3-chart data='course.rs' d3opts='{type:"rs",issueCode:rsSelector}'></d3-chart>
 
 </div>
 

@@ -8,12 +8,114 @@ angular.module('mean.courses')
         d3opts: '='
       },
       link: function (scope, element) {   
-      var globalProgressChart = function(scope, element, title){  
+      var rsBxChart  = function(scope, element, title){  
+        var margin = {top: 0, right: 20, bottom: 10, left: 20},
+        width = 280 - margin.left - margin.right,
+        height = 200 - margin.top - margin.bottom;
+
+        var min = Infinity,
+            max = -Infinity;
+
+        var chart = d3.box()
+            .whiskers(iqr(1.5))
+            .width(width)
+            .height(height);
+
+       
+        // Returns a function to compute the interquartile range.
+        function iqr(k) {
+          return function(d, i) {
+            var q1 = d.quartiles[0],
+                q3 = d.quartiles[2],
+                iqr = (q3 - q1) * k,
+                i = -1,
+                j = d.length;
+            while (d[++i] < q1 - iqr);
+            while (d[--j] > q3 + iqr);
+            return [i, j];
+          };
+        };
+
+        var filterOutliers = function(someArray) { 
+            // Copy the values, rather than operating on references to existing values
+            var values = someArray.concat();
+
+            // Then sort
+            values.sort( function(a, b) {
+                    return a - b;
+                 });
+
+            /* Then find a generous IQR. This is process._getActiveRequests();enerous because if (values.length / 4) 
+             * is not an int, then really you should average the two elements on either 
+             * side to find q1.
+             */     
+            var q1 = values[Math.floor((values.length / 4))];
+            // Likewise for q3. 
+            var q3 = values[Math.ceil((values.length * (3 / 4)))];
+            var iqr = q3 - q1;
+
+            // Then find min and max values
+            var maxValue = q3 + iqr*1.5;
+            var minValue = q1 - iqr*1.5;
+
+            // Then filter anything beyond or beneath these values.
+            var filteredValues = values.filter(function(x) {
+                return (x < maxValue) && (x > minValue);
+            });
+
+            // Then return
+            return filteredValues;
+        }
+
+        scope.renderGlobal = function(courseData, attr){
+          console.log(attr);
+
+          var data = courseData.map(function(a) {return parseInt(a[attr]);});
+          data = filterOutliers(data);
+          
+          
+
+           max = Math.max.apply(Math, data); 
+           min = Math.min.apply(Math, data); 
+           
+           data = [data];
+          
+           //data = [[1,5,8,9,3,6,7,10]];
+
+          chart.domain([min, max]);
+
+          d3.select(element[0]).selectAll('svg').remove();
+
+          var svg = d3.select(element[0]).selectAll("svg")
+              .data(data)
+            .enter().append("svg")
+              .attr("class", "box")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.bottom + margin.top)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+              .call(chart);
+            };
+        scope.$watch('data', function(){
+
+          if(typeof scope.data!=='undefined')
+
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true); 
+        scope.$watch('d3opts', function(){
+
+          if(typeof scope.data!=='undefined')
+
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true); 
+      }
 
 
 
-      var percent = 65;
-    var ratio=percent/100;
+
+var globalProgressChart = function(scope, element, title){  
+
+   
 
     var pie=d3.layout.pie()
             .value(function(d){return d})
@@ -160,9 +262,14 @@ angular.module('mean.courses')
             };
         });
     };
+    
 
-
+   scope.renderGlobal = function(courseData, attr){
+    
+          
     var animate=function(){
+      var percent = parseInt(parseFloat(courseData[attr])+0.5);
+    var ratio=percent/100;
 
         pathForeground.transition()
                 .duration(750)
@@ -174,6 +281,20 @@ angular.module('mean.courses')
     };
 
     setTimeout(animate,50);
+  }
+
+  scope.$watch('data', function(){
+
+          if(typeof scope.data!=='undefined')
+
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true);  
+  scope.$watch('d3opts', function(){
+
+          if(typeof scope.data!=='undefined')
+
+              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+          }, true);  
 
       }    
         var globalBubbleChart = function(scope, element, title){  
@@ -193,9 +314,9 @@ var svg = d3.select("body").append("svg:svg")
  var nodes = data,
           links = [];
 
-console.log(nodes);
+
 for (i=0; i<5; i++) {
-  console.log(nodes[i]);
+
     links.push({
         source: nodes[i],
         target: nodes[0]
@@ -275,73 +396,7 @@ scope.$watch('data', function(){
           }, true);  
          
 };
-        var globalBubbleChartOLD = function(scope, element, title){             
-        var margin = {top: 20, right: 10, bottom: 30, left: 40},
-          width = 780 - margin.left - margin.right,
-          height = 250 - margin.top - margin.bottom;
-
-
-            var diameter = width, //max size of the bubbles
-                color    = d3.scale.category20b(); //color category
-
-            var bubble = d3.layout.pack()
-                .sort(null)
-                .size([diameter, diameter])
-                .padding(1.5);
-
-            var svg = d3.select(element[0])
-                .append("svg")
-                .attr("width", diameter)
-                .attr("height", diameter)
-                .attr("class", "bubble");
-
-
-        //Render graph based on 'data'
-        var gap = 100
-        scope.renderGlobal = function(data, classe) {  
-        data.forEach(function(c, i) {
-            c.x = gap * (i +1);
-            c.y = gap * (i +1)  ;
-            c.r = 50
-            
-        });
-
-        var circle = svg.append("g").selectAll(".circle")
-            .data(data)
-            .enter()
-            .append("g")
-            .attr("class", "circle")
-            .attr("fill",  "red");
-    var el = circle.append("circle")
-            .attr("cx", function(d) {return d.x})
-            .attr("cy", function(d) {return d.y})
-            .attr("r", function(d) {return d.r});
-
-       
-               //setup the chart
-          
-
-
-console.log(data);
- 
-              
-
-        };
-
-
-scope.$watch('data', function(){
-
-          if(typeof scope.data!=='undefined')
-
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
-          }, true);  
-   
-
-scope.$watch('d3opts', function(){
-          if(typeof scope.data!=='undefined')
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
-          }, true);  
-};
+        
 
 
 var globalBarChart = function(scope, element, title){   
@@ -944,12 +999,18 @@ if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
 
 else 
   if(scope.d3opts.issueCode in {'provenance':'','destination':''})  globalNodeChart(scope, element)
-    else globalBubbleChart(scope, element,'titre');
+    //else globalBubbleChart(scope, element,'titre');
 }
 else
 if(scope.d3opts.type === 'indicator'){
 
   globalProgressChart(scope, element, ' '); 
+
+}
+else
+if(scope.d3opts.type === 'rs'){
+
+  rsBxChart(scope, element, ' '); 
 
 }
 else{

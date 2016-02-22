@@ -58,7 +58,6 @@ for (i in 1:nusers)
   for(j in 1:l)
   {
     
-    
     currentID =time$id[j] 
     nextID = time$id[j+1]
     nodejs[which(nodejs$id==currentID),]$end = nodejs[which(nodejs$id==nextID),]$date
@@ -96,7 +95,7 @@ for (i in 1:nparts)
   maxD = round(as.numeric(max(part_nodejs)  ),2);
   
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$max.duration=maxD
-  nodejs[which(nodejs$part_id==parts[i] & ( nodejs$duration==-1)),]$duration = maxD
+  nodejs[which(nodejs$part_id==parts[i] & ( nodejs$duration==-1)),]$duration = NA
   
   
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$max.duration=round(as.numeric(quantile(part_nodejs,9/10)  ),2)
@@ -107,6 +106,13 @@ for (i in 1:nparts)
   
   
 }
+
+for(i in 1:nrow(nodejs)){
+  p = nodejs$part_id[i]
+  if(nodejs$duration[i] >= nodejs.structure[which(nodejs.structure$part_id==p),]$max.duration  ) 
+    nodejs$duration[i] = NA
+}
+  
 
 
 
@@ -235,11 +241,11 @@ save(nodejs.Interest, file="nodejs.Interest.rdata")
 
 nRS=nrow(unique(subset(nodejs, select=c("user_id","seance"))))
 
-RS = data.table(id = 1:nRS,nparts = 0, nsessions = 0, duration = 0,parts=list(),dates=list(),durations=list())
+RS = data.frame(id = 1:nRS,nparts = 0, nsessions = 0, duration = 0)
 
 U=subset(nodejs, select=c("user_id","seance","part_id","session_id"))
 users = unique(U$user_id)
-
+nusers = length(users)
 cpt = 0
 for(i in 1:nusers)
 {
@@ -253,14 +259,16 @@ for(i in 1:nusers)
     
     RS[which(RS$id==cpt),]$nparts = length(seance$part_id)
     RS[which(RS$id==cpt),]$nsessions = length(seance$session_id)
-    RS[which(RS$id==cpt),]$duration = sum(seance$duration)
+    RS[which(RS$id==cpt),]$duration = sum(seance$duration, na.rm = TRUE)
+    print(paste('duration: ',RS[which(RS$id==cpt),]$duration))
   #  RS[which(RS$id==cpt),]$parts[[1]] = list(seance$part_index)
    # RS[which(RS$id==cpt),]$dates[[1]] = list(seance$date)
   #  RS[which(RS$id==cpt),]$durations[[1]] = list(seance$duration)
     
   }
 }
-
+#RS$duration=round(RS$duration/60,1)
+RS = RS[which(RS$duration>60),]
 nodejs.RS = RS
 save(nodejs.RS, file="nodejs.RS.rdata")
 
@@ -510,4 +518,4 @@ nodejs.achievement =data.frame(user_id=users,taux=0)
 for(i in 1:nusers){
   nodejs.achievement[which(nodejs.achievement$user_id==users[i]),]$taux = round(length(unique(nodejs[which(nodejs$user_id==users[i]),]$part_id)) / nparts,2)
 }
-save( nodejs.achievement, file=' nodejs.achievement.rdata')
+save( nodejs.achievement, file='nodejs.achievement.rdata')

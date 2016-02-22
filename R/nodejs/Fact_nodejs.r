@@ -9,6 +9,7 @@ load(paste(selectedCourse,"Reads.rdata",sep="."))
 load(paste(selectedCourse,"Ruptures.rdata",sep="."))
 load(paste(selectedCourse,"RS.rdata",sep="."))
 load(paste(selectedCourse,"partFollow.rdata",sep="."))
+load(paste(selectedCourse,"achievement.rdata",sep="."))
 
 
 
@@ -21,6 +22,7 @@ course_facts_read<- function(selectedCourse){
   RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
   partFollow=eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
   data = eval(parse(text = paste(selectedCourse,sep=".")))
+  achievement = eval(parse(text = paste(selectedCourse,"achievement",sep=".")))
   
  
   
@@ -822,8 +824,9 @@ CourseStats$median.rs.duration = median(RS$duration,na.rm = TRUE)
 CourseStats$mean.rs.nparts = mean(RS$nparts,na.rm = TRUE)
 CourseStats$median.rs.nparts = median(RS$nparts,na.rm = TRUE) 
 
-
-
+# course achievement
+CourseStats$mean.achievement = mean(achievement$taux * 100)
+CourseStats$median.achievement = median(achievement$taux * 100)
 # course stats
 CourseStats$mean.visites = mean(Interest$Actions_nb,na.rm = TRUE) 
 CourseStats$median.visites = median(Interest$Actions_nb,na.rm = TRUE) 
@@ -893,6 +896,7 @@ CourseStats.json = toJSON(unname(split(CourseStats,1:nrow(CourseStats))))
 cat(CourseStats.json, file="stats.json")
 
 rs_stats=RS[,c('nparts','duration')]
+rs_stats$duration = round(rs_stats$duration/60,1)
 rs_stats = toJSON(unname(split(rs_stats,1:nrow(rs_stats))))
 cat(rs_stats, file="rs.json")
 

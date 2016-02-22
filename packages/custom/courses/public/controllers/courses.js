@@ -43,6 +43,8 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
       $scope.readingChartSelector = 'Actions_nb';
       $scope.rereadingChartSelector = 'Rereadings';
       $scope.stopChartSelector = 'rupture';
+      $scope.achievementSelector = 'mean.achievement';
+      $scope.rsSelector = 'nparts';
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -62,7 +64,10 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
               'Todos':$scope.course.todos,
               'taskText':'(nouvelle tâche pour ce contexte)',
               'indicator':'ALL',
-              'd3':[]
+              'd3':[],
+              'achievement':{'mean.achievement':course.stats.filter(function(value){ return value.property === 'mean.achievement'})[0].value,
+                             'median.achievement':course.stats.filter(function(value){ return value.property === 'median.achievement'})[0].value,
+                              }
             };
 
     
@@ -1046,11 +1051,25 @@ var part = $(partElt).attr('data-part');
     showTasksAndFacts(element, 'ALL', task);
 
 
+var sec_num = parseInt(element.properties.filter(function(value){ return value.property === 'mean.duration'})[0].value, 10); 
+    var minutes = Math.floor(sec_num  / 60);
+    var seconds = sec_num -  (minutes * 60);
+    var meanTime    = minutes+' min '+seconds+' s';
+    if (minutes == 0) meanTime = seconds+' s';
+
+    var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
+    var rereads = parseInt(element.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value)
+    var rereadTx = (rereads==0)?0:rereads/reads;
+    rereadTx = Math.floor(rereadTx * 100)+'%'
+    
 
 $scope.observedElt={'type':'Cette section ',
       'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
-      'Actions_nb':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value) };    
+      'Actions_nb':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+      'meanTime': meanTime,
+      'meanRereads':rereadTx
+    };    
 
 
   $scope.issuesInspectorShow = false;

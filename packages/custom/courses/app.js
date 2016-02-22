@@ -36,6 +36,7 @@ Courses.register(function(app, auth, database, swagger) {
   
 
   Courses.aggregateAsset('js',"../lib/d3/d3.min.js");
+  
 
   Courses.aggregateAsset('css', '../lib/angular-xeditable/dist/css/xeditable.css');
   Courses.aggregateAsset('js', '../lib/angular-xeditable/dist/js/xeditable.js');
@@ -49,11 +50,13 @@ Courses.register(function(app, auth, database, swagger) {
   Courses.aggregateAsset('css',"../lib/perfect-scrollbar/min/perfect-scrollbar.min.css");
   Courses.aggregateAsset('js',"../lib/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js");
 
+  Courses.aggregateAsset('js',"../lib/d3/box.js");
 
-  
+
+  /*
   Courses.aggregateAsset('js',"../lib/nvd3/build/nv.d3.js");
   Courses.aggregateAsset('js',"../lib/angular-nvd3/dist/angular-nvd3.js");
-  Courses.aggregateAsset('css',"../lib/nvd3/build/nv.d3.css");
+  Courses.aggregateAsset('css',"../lib/nvd3/build/nv.d3.css");*/
   
 
   
@@ -67,7 +70,7 @@ Courses.register(function(app, auth, database, swagger) {
   // Only use swagger.add if /docs and the corresponding files exists
   swagger.add(__dirname);
 
-  Courses.angularDependencies(['xeditable','perfect_scrollbar','nvd3']);
+  Courses.angularDependencies(['xeditable','perfect_scrollbar']);
 
 
 	

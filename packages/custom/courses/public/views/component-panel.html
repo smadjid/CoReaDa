@@ -1,14 +1,14 @@
 
 <div class='row' style="margin:10px;color: #1C383F; " >
-    <span class='componentInfo'><span class="blue">{{observedElt.nbUsers}}</span> de lecteurs sont passés par cette partie</span>
+    <span class='componentInfo'><span class="blue">{{observedElt.nbUsers}}</span> de lecteurs ont visité par cette partie</span>
 <hr/>
     <span class='componentInfo'><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent cette partie</span>
 <hr/>
-    <span class='componentInfo'><span class="blue">3mn</span> est le temps moyen de lecture dans cette partie. Le temps moyen sur la totalité des parties est de 5mn</span>
+    <span class='componentInfo'><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans cette partie. Le temps moyen sur la totalité des parties est de 5mn</span>
 <hr/>
-    <span class='componentInfo'>Cette partie est relue en moyenne <span class="blue">3 fois</span>, ce qui représente un taux de <b>12%</b> par rapport au nombre moyen de relectures sur les autres parties.</span>
+	<span class='componentInfo'><span class="blue">{{observedElt.meanRereads}}</span> des lectures de cette partie sont des <b>relectures</b>.</span>
 <hr/>
-    <span class='componentInfo'><span class="blue">13%</span> des arrêts définitifs de la lecture se passe sur cette partie</span>
+    <span class='componentInfo'><span class="blue">{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur cette partie</span>
 
 </div>
 
