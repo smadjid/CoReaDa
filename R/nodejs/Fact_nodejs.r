@@ -702,24 +702,20 @@ facts =
     Rereads_Decaled_rereadings_vmax,
     Rereads_Decaled_rereadings_max,
     # Transitions
-    Transition_provenance_precedent,
-    Transition_provenance_precedent_v,
-    Transition_provenance_next,
-    Transition_provenance_next_v,
     Transition_provenance_shiftednext,
     Transition_provenance_shiftednext_v,
     Transition_provenance_shiftedpast,
-    Transition_provenance_shiftedpast_v,
+    ""    Transition_provenance_shiftedpast_v,
     
     Transition_Destination_next,
     Transition_Destination_next_v,
     Transition_Destination_prev,
     Transition_Destination_prev_v,
     Transition_Destination_shiftedback,
-    Transition_Destination_shiftedback_v,
-    Transition_Destination_shiftednext,
-    Transition_Destination_shiftednext_v,
-  
+        Transition_Destination_shiftedback_v,
+        Transition_Destination_shiftednext,
+        Transition_Destination_shiftednext_v,
+    
     
     
     
