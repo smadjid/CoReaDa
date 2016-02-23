@@ -1,42 +1,54 @@
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='ALL'"  >
-
-<div class="widget">
-    <div class="header">Avancement des lecteurs</div>
+<div class="widget" style="width:62%">
+    <div class="header">Statistiques d'utilisation du cours</div>
     <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
      
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'mean.achievement'">Taux moyen</label>
-        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'median.achievement'">Taux médian</label>
-    </div>
-
-    <div id="chart" class="chart-container">
-            <d3-chart data='context.achievement' d3opts='{type:"indicator",issueCode:achievementSelector}'></d3-chart>
-    </div>
-
-</div>
-
-<div class="widget">
-    <div class="header">Séances de lecture</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >    
-        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'nparts'">Nombre de parties</label>
-        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'duration'">Durée (en min)</label>
+        <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'visits'">Lecture</label>
+        <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'rs'">Séances de lecture</label>
+        <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'issue'">Problèmes de lecture</label>
+        
     </div>  
-    <d3-chart data='course.rs' d3opts='{type:"rs",issueCode:rsSelector}'></d3-chart>
+    <div>
+    <p/>
+        <ul ng-show="statSelector=='visits'">
+            <li>Le cours est visité par XXX lecteurs. 30% des visiteurs lisent au moins 2 sections.
+            <li>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de 31%. Ceci représente 4 sections sur les 26 sections du cours.
+            <li>Le temps moyen de la lecture du cours est de 56 minutes.            
+            
+        </ul>
+        <ul ng-show="statSelector=='rs'">
+            <li>En moyenne, chaque lecteur consacre 2 séances de lecture pour ce cours. Le nombre maximal de séances est de 12.  
+            <li>Une séance de lecture est en moyenne composée de 3 sections.
+            <li>Une séance de lecture dure en moyenne 5 minutes.
+        </ul>
+        <ul ng-show="statSelector=='issue'">
+            <li>Au total, 325 problèmes de lecture ont été détectés, réparties comme suit:
+            <ul>
+                <li>39 problèmes relatifs à la lecture
+                <li>39 problèmes relatifs à la relecture
+                <li>39 problèmes relatifs à la navigation
+                <li>39 problèmes relatifs aux arrêts
+            </ul>
+            <li>En termes de nombre, la partie avec plus de remarques est la suivante: ....
+
+        </ul>
+    </div>
+    
 
 </div>
 
-<div class="widget">
+<div class="widget" style="width:33%; ">
     <div class="header">Top parties</div>
     <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
      
         <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">Visites</label>
         <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Readers'">Lecteurs</label>
-        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'RS_nb'">Séances</label>
         
     </div>  
 
     <div>
-    <br/>
+    <p/>
         <ol ng-show="topSelector=='Actions_nb'">
         <li ng-repeat="top in context.Tops.Actions_nb">{{top}} 
         </ol>
@@ -52,6 +64,32 @@
 
 </div>
 
+<!--
+<div class="widget">
+    <div class="header">Séances de lecture</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >    
+        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'nparts'">Nombre de parties</label>
+        <label class="btn btn-xs btn-achievement" ng-model="rsSelector" uib-btn-radio="'duration'">Durée (en min)</label>
+    </div>  
+    <d3-chart data='course.rs' d3opts='{type:"rs",issueCode:rsSelector}'></d3-chart>
+
+</div>
+
+
+
+<div class="widget">
+    <div class="header">Avancement des lecteurs</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'mean.achievement'">Taux moyen</label>
+        <label class="btn btn-xs btn-achievement" ng-model="achievementSelector" uib-btn-radio="'median.achievement'">Taux médian</label>
+    </div>
+
+    <div id="chart" class="chart-container">
+            <d3-chart data='context.achievement' d3opts='{type:"indicator",issueCode:achievementSelector}'></d3-chart>
+    </div>
+
+</div>-->
 
 
 
