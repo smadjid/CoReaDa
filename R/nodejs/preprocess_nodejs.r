@@ -1,8 +1,7 @@
-setwd('~/dev/R/')
-setwd('E:/DEV/R/data/nodejs')
+setwd("~/dev/CoReaDa/R/nodejs")
 
 # Read the csv
-
+library('Peirce')
 
 selectedCourse='nodejs'
 
@@ -14,17 +13,11 @@ load('course.structure.rdata')
 
 
 nodejs[which(is.na(nodejs$user_id)),]$user_id=0
-nothing = min(as.character(nodejs$session_id))
-nodejs=nodejs[which(nodejs$session_id!=nothing),]
-nodejs[which(is.na(nodejs$part_id)),]$part_id=as.numeric(unique(nodejs$course_id)) #course homepage
+nodejs=nodejs[which(!is.na(nodejs$part_id)),]
 nodejs=unique(nodejs)
 
-
-
-
-
-nodejs.structure=course.structure
 names(course.structure)[1]='part_index'
+nodejs.structure=course.structure
 
 part3count = nrow(nodejs.structure[which(nodejs.structure$type=='title-3'),])
 nodejs.structure[which(nodejs.structure$type!='title-3'),]$part_index=0
@@ -33,18 +26,15 @@ save(nodejs.structure, file='nodejs.structure.rdata')
 
 parts=unique(nodejs$part_id)
 nparts=length(parts)
-for(i in 1:nparts)
-  nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$obsels=nrow(nodejs[which(nodejs$part_id == parts[i]),])
 
 nodejs=merge(nodejs, nodejs.structure[which(nodejs.structure$type=='title-3'),c('part_index','part_id')], by='part_id')
 nodejs=nodejs[order(nodejs$date),]  
 rownames(nodejs)=1:nrow(nodejs)
 nodejs$id=1:nrow(nodejs)
-
-
 save(nodejs,file='nodejs.rdata')
+
 nodejs$end=nodejs$date
-nodejs$duration=-1
+nodejs$duration=NA
 users = unique(unique(nodejs$user_id))
 nusers=length(unique(nodejs$user_id))
 # End calculation
@@ -95,8 +85,7 @@ for (i in 1:nparts)
   maxD = round(as.numeric(max(part_nodejs)  ),2);
   
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$max.duration=maxD
-  nodejs[which(nodejs$part_id==parts[i] & ( nodejs$duration==-1)),]$duration = NA
-  
+  nodejs[which(nodejs$part_id==parts[i] & ( nodejs$duration>maxD)),]$duration = NA
   
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$max.duration=round(as.numeric(quantile(part_nodejs,9/10)  ),2)
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$mean.duration=round(as.numeric(mean(part_nodejs)  ),2)
@@ -104,21 +93,8 @@ for (i in 1:nparts)
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$q1.duration=round(as.numeric(quantile(part_nodejs,1/4)  ),2)
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$q3.duration=round(as.numeric(quantile(part_nodejs,3/4)  ),2)
   
-  
 }
 
-for(i in 1:nrow(nodejs)){
-  p = nodejs$part_id[i]
-  if(nodejs$duration[i] >= nodejs.structure[which(nodejs.structure$part_id==p),]$max.duration  ) 
-    nodejs$duration[i] = NA
-}
-  
-
-
-
-
-
-#nodejs.structure$max.duration=as.numeric(as.character(nodejs.structure$max.duration))
 save(nodejs.structure, file="nodejs.structure.rdata") 
 
 save(nodejs, file="nodejs.rdata")
@@ -163,7 +139,6 @@ for (i in 1:nusers)
   
 }
 save(nodejs, file="nodejs.rdata")
-
 
 
 ######################### RS STATS ##################################################""
@@ -217,25 +192,71 @@ save(Users_RS, file="nodejs.Users_RS.rdata")
 
 ### SPATIAL + COURSE 
 #nRS
-
-
 nodejs=nodejs[order(nodejs$date),]
-nodejs.Interest = data.frame(part_id=parts,  Actions_nb=0, Users_nb = 0,Sessions_nb=0, RS_nb = 0)
-for(i in 1:(nparts))
+allParts=nodejs.structure$part_id
+nodejs.Interest = data.frame(part_id=allParts,  Actions_nb=0, Users_nb = 0,Sessions_nb=0, RS_nb = 0)
+parts=unique(nodejs$part_id)
+for(i in 1:(length(parts)))
 {
   print(i)
   dataPart = nodejs[which(nodejs$part_id==parts[i]),]
   
   nodejs.Interest[which(nodejs.Interest$part_id==parts[i]),]=c(part_id=parts[i],
                                                      Actions_nb=length(dataPart$id),
-                                                     Users_nb = nusers, 
+                                                     Users_nb = length(unique(dataPart$user_id)),
                                                      Sessions_nb=length(unique(dataPart$session_id)),                                              
                                                      RS_nb = nrow(unique(dataPart[,c("user_id","seance")])));
-  nodejs.Interest$part_id
+
   
 }
 
+#Aggregate for chapters
+names(nodejs.structure)[3]='parent_id'
+chapters = nodejs.structure[which(nodejs.structure$type=='title-2'),]$part_id
+nchapters = length(unique(chapters))
+for(i in 1:nchapters){
+  children = nodejs.structure[which(nodejs.structure$parent_id==chapters[i]),]$part_id
+ 
+  dataPart = nodejs[which(nodejs$part_id %in%children),]
+  
+  nodejs.Interest[which(nodejs.Interest$part_id==chapters[i]),]=c(part_id=chapters[i],
+                                                               Actions_nb=length(dataPart$id),
+                                                               Users_nb = length(unique(dataPart$user_id)),
+                                                               Sessions_nb=length(unique(dataPart$session_id)),                                              
+                                                               RS_nb = nrow(unique(dataPart[,c("user_id","seance")])));
+ 
+}
+
+#Aggregate for tomes
+tomes = nodejs.structure[which(nodejs.structure$type=='title-1'),]$part_id
+ntomes = length(unique(tomes))
+for(i in 1:ntomes){
+  children = nodejs.structure[which(nodejs.structure$parent_id==tomes[i]),]$part_id
+  
+  subchildren = nodejs.structure[which(nodejs.structure$parent_id%in%children),]$part_id
+  
+  
+  dataPart = nodejs[which(nodejs$part_id %in%subchildren),]
+  
+  nodejs.Interest[which(nodejs.Interest$part_id==tomes[i]),]=c(part_id=tomes[i],
+                                                                  Actions_nb=length(dataPart$id),
+                                                                  Users_nb = length(unique(dataPart$user_id)),
+                                                                  Sessions_nb=length(unique(dataPart$session_id)),                                              
+                                                                  RS_nb = nrow(unique(dataPart[,c("user_id","seance")])));
+  
+}
+#Aggregate for all course
+courseId = nodejs.structure[which(nodejs.structure$type=='course'),]$part_id
+nodejs.Interest[which(nodejs.Interest$part_id==courseId),]=c(part_id=courseId,
+                                                             Actions_nb=length(nodejs$id),
+                                                             Users_nb = length(unique(nodejs$user_id)),
+                                                             Sessions_nb=length(unique(nodejs$session_id)),                                              
+                                                             RS_nb = nrow(unique(nodejs[,c("user_id","seance")])));
+
+nodejs.Interest = merge(nodejs.Interest, nodejs.structure[,c('part_id','type')])
 save(nodejs.Interest, file="nodejs.Interest.rdata")
+
+
 ########################"Coverage
 
 
