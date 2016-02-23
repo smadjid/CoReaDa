@@ -1504,6 +1504,8 @@ marker#arrow {
 /************ Chart Widget ********************************/
 .widget {
     margin: 10px;
+    margin-right: 25px;
+    margin-left: 25px;
     width:300px;
     background-color: white;
     border-radius: 5px;
@@ -1550,6 +1552,7 @@ marker#arrow {
     color: #404F70;
     background-color: #67BAF5;
     border-color: #ffffff;
+    font-weight: bold;
 }
 
 .componentInfo{

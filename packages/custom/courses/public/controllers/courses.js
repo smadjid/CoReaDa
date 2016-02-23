@@ -44,6 +44,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
       $scope.stopChartSelector = 'rupture';
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
+      $scope.topSelector = 'Actions_nb';
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -73,6 +74,9 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
     $scope.context.subtasks=computeAllTasks();
     $scope.context.d3 = ComputeGlobalVisuData();
     $scope.context.d3.stats =courseFactsStat();
+    $scope.context.Tops = computeTopParts();
+
+   
 
     
      
@@ -352,7 +356,48 @@ else
 }
 
 
+var computeTopParts=function(){ 
+ 
+var partsData=[]
+angular.forEach($scope.course.tomes, function(tome) {  
+  angular.forEach(tome.chapters, function(chapter) {  
+    angular.forEach(chapter.parts, function(part) {
+      part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
+      partsData.push({
+                        'title':part.title+' (Section '+part.id+' )',
+                        'Actions_nb':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
+                        'RS_nb':parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                      })
+          
+                
+              
+    })                                 
+  })
+})
 
+partsData= partsData.sort(function(x, y){
+   return d3.descending(x.Actions_nb, y.Actions_nb);
+})
+var Actions_nb = partsData.slice(0,3);
+var topActions_nb=Actions_nb.map(function(o){return o.title;})
+
+partsData= partsData.sort(function(x, y){
+   return d3.descending(x.Readers, y.Readers);
+})
+var Readers = partsData.slice(0,3);
+var topReaders=Readers.map(function(o){return o.title;})
+
+
+partsData= partsData.sort(function(x, y){
+   return d3.descending(x.RS_nb, y.RS_nb);
+})
+var RS_nb = partsData.slice(0,3);
+var topRS_nb=RS_nb.map(function(o){return o.title;})
+
+return{'Actions_nb':topActions_nb, 'Readers':topReaders,'RS_nb':topRS_nb}
+
+}
 var computeAllTasks=function(){ 
  var tasks=angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
