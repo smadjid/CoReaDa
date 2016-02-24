@@ -1,15 +1,28 @@
 
 <div class='row' style="margin:10px;color: #1C383F; " >
-    <span class='componentInfo'><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité cette section</span>
-<hr/>
-    <span class='componentInfo'><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent cette section</span>
-<hr/>
-    <span class='componentInfo'><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans cette section. </span>
-<hr/>
-	<span class='componentInfo'><span class="blue">{{observedElt.meanRereads}}</span> des lectures de cette section sont des <b>relectures</b>.</span>
-<hr/>
-    <span class='componentInfo'><span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur cette section</span>
+<table class='col-lg-6 coreada-box' class="btn-group">
+<tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'Actions_nb'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité cette section </td></tr>
 
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'RS_nb'"><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent cette section</td></tr>
+	<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'mean.duration'"><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans cette section. </td></tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'Rereadings'"><span class="blue">{{observedElt.meanRereads}}</span> des lectures de cette section sont des <b>relectures</b>.</td></tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'rupture'"><span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur cette section</td></tr>
+	
+    </tr>
+	</table>
+
+	<div class='col-lg-6 coreada-box'>
+	
+
+    <d3-chart data='context.d3' d3opts='{type:"inspector",element:observedElt,issueCode:sectionPstatSelector}'></d3-chart>
+	</div>
 </div>
 
-
+<div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
+     
+      
+        <label class="btn btn-xs btn-achievement" ng-model="sectionPstatSelector" uib-btn-radio="'rs'">Séances de lecture</label>
+        <label class="btn btn-xs btn-achievement" ng-model="sectionPstatSelector" uib-btn-radio="'issue'">Problèmes de lecture</label>
+        
+    </div>  

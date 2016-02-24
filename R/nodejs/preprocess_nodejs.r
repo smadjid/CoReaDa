@@ -1,5 +1,5 @@
 setwd("~/dev/CoReaDa/R/nodejs")
-
+options(stringsAsFactors=FALSE)
 # Read the csv
 library('Peirce')
 
@@ -93,6 +93,39 @@ for (i in 1:nparts)
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$q1.duration=round(as.numeric(quantile(part_nodejs,1/4)  ),2)
   nodejs.structure[which(nodejs.structure$part_id==parts[i]),]$q3.duration=round(as.numeric(quantile(part_nodejs,3/4)  ),2)
   
+}
+
+#Aggregate for parents
+parents = nodejs.structure[which(nodejs.structure$type=='title-2'),]
+nparents = nrow(parents)
+for(i in 1:nparents){
+  children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$max.duration = sum(children$max.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$mean.duration = sum(children$mean.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$median.duration = sum(children$median.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$q1.duration = sum(children$q1.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$q3.duration = sum(children$q3.duration)
+}
+
+parents = nodejs.structure[which(nodejs.structure$type=='title-1'),]
+nparents = nrow(parents)
+for(i in 1:nparents){
+  children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$max.duration = sum(children$max.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$mean.duration = sum(children$mean.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$median.duration = sum(children$median.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$q1.duration = sum(children$q1.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$q3.duration = sum(children$q3.duration)
+}
+parents = nodejs.structure[which(nodejs.structure$type=='course'),]
+nparents = nrow(parents)
+for(i in 1:nparents){
+  children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$max.duration = sum(children$max.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$mean.duration = sum(children$mean.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$median.duration = sum(children$median.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$q1.duration = sum(children$q1.duration)
+  nodejs.structure[which(nodejs.structure$part_id==parents$part_id[i]),]$q3.duration = sum(children$q3.duration)
 }
 
 save(nodejs.structure, file="nodejs.structure.rdata") 
@@ -190,7 +223,7 @@ save(Users_RS, file="nodejs.Users_RS.rdata")
 
 ########################
 
-### SPATIAL + COURSE 
+### INTEREST
 #nRS
 nodejs=nodejs[order(nodejs$date),]
 allParts=nodejs.structure$part_id
@@ -253,13 +286,11 @@ nodejs.Interest[which(nodejs.Interest$part_id==courseId),]=c(part_id=courseId,
                                                              Sessions_nb=length(unique(nodejs$session_id)),                                              
                                                              RS_nb = nrow(unique(nodejs[,c("user_id","seance")])));
 
-nodejs.Interest = merge(nodejs.Interest, nodejs.structure[,c('part_id','type')])
+nodejs.Interest = merge(nodejs.Interest, nodejs.structure[,c('part_index','part_id','type')])
 save(nodejs.Interest, file="nodejs.Interest.rdata")
 
 
 ########################"Coverage
-
-
 nRS=nrow(unique(subset(nodejs, select=c("user_id","seance"))))
 
 RS = data.frame(id = 1:nRS,nparts = 0, nsessions = 0, duration = 0)
@@ -300,27 +331,64 @@ library(reshape2)
 library(plyr)
 library(data.table)
 
-
 ### Nombre de lecteurs (RDer), de relecteurs (Rereaders), de lectures (RDing) et de relectures (RRDing)
-nodejs.Reads = data.frame(part_index=1:nparts,Readers=0,Rereaders=0,Readings = 0, Rereadings = 0 )
-
+nodejs.Reads = data.frame(part_index=nodejs.structure$part_index,part_id=nodejs.structure$part_id,Readers=0,Rereaders=0,Readings = 0, Rereadings = 0 )
+parts=unique(nodejs$part_id)
+nparts=length(parts)
 for(i in 1:(nparts))
 {
-  rders = count(nodejs[which(nodejs$part_index==i),], "user_id")
-  nodejs.Reads[which(nodejs.Reads$part_index==i),]$Readers =    
-    length(rders$user_id)
+  rders = count(nodejs[which(nodejs$part_id==parts[i]),], "user_id")
+  nodejs.Reads[which(nodejs.Reads$part_id==parts[i]),]$Readers =    length(rders$user_id)
   
-  nodejs.Reads[which(nodejs.Reads$part_index==i),]$Rereaders =    
-    length(rders[which(rders$freq>1),]$user_id) 
+  nodejs.Reads[which(nodejs.Reads$part_id==parts[i]),]$Rereaders =  length(rders[which(rders$freq>1),]$user_id) 
   
-  rdings = count(nodejs[which(nodejs$part_index==i),], "id")
-  nodejs.Reads[which(nodejs.Reads$part_index==i),]$Readings =    
-    sum(rders$freq)
+  rdings = count(nodejs[which(nodejs$part_id==parts[i]),], "id")
+  nodejs.Reads[which(nodejs.Reads$part_id==parts[i]),]$Readings =   sum(rders$freq)
   
-  nodejs.Reads[which(nodejs.Reads$part_index==i),]$Rereadings =    
-    sum(rders$freq)  - length(rders$user_id)   
+  nodejs.Reads[which(nodejs.Reads$part_id==parts[i]),]$Rereadings = sum(rders$freq)  - length(rders$user_id)   
   
 }
+# Aggregate for chapters
+chapters = nodejs.structure[which(nodejs.structure$type=='title-2'),]$part_id
+nchapters = length(unique(chapters))
+for(i in 1:nchapters){
+  children = nodejs.structure[which(nodejs.structure$parent_id==chapters[i]),]$part_id
+  
+  rders = count(nodejs[which(nodejs$part_id%in%children),], "user_id")
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readers =    length(rders$user_id)
+  
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereaders =  length(rders[which(rders$freq>1),]$user_id) 
+  
+  rdings = count(nodejs[which(nodejs$part_id%in%children),], "id")
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readings =   sum(rders$freq)
+  
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereadings = sum(rders$freq)  - length(rders$user_id)  
+  
+}
+# Aggregate for tomes
+tomes = nodejs.structure[which(nodejs.structure$type=='title-1'),]$part_id
+ntomes = length(unique(tomes))
+for(i in 1:ntomes){
+  first_children = nodejs.structure[which(nodejs.structure$parent_id==tomes[i]),]$part_id
+  children = nodejs.structure[which(nodejs.structure$parent_id%in%first_children),]$part_id
+  
+  rders = count(nodejs[which(nodejs$part_id%in%children),], "user_id")
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readers =    length(rders$user_id)
+  
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereaders =  length(rders[which(rders$freq>1),]$user_id) 
+  
+  rdings = count(nodejs[which(nodejs$part_id%in%children),], "id")
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readings =   sum(rders$freq)
+  
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereadings = sum(rders$freq)  - length(rders$user_id)  
+  
+}
+courseId  = nodejs.structure[which(nodejs.structure$type=='course'),]$part_id
+nodejs.Reads[which(nodejs.Reads$part_id==courseId),]$Readers =    length(unique(nodejs$user_id))
+
+
+
+
 
 ### Nombre de relecture successive des parties
 successive.rereads = as.data.table(setNames(replicate(nparts,numeric(0), simplify = F), 1:nparts))
@@ -369,7 +437,7 @@ successive.rereads=successive.rereads[, list(Sequential_rereadings = rowSums(suc
 successive.rereads=successive.rereads[ , ':='( part_index = 1:.N )  ]
 successive.rereads=successive.rereads[,c("part_index","Sequential_rereadings"), with=FALSE]
 
-nodejs.Reads = merge(nodejs.Reads,successive.rereads, by="part_index")
+nodejs.Reads = merge(nodejs.Reads,successive.rereads, by="part_index", all.x = TRUE)
 
 
 ###### RELECTURES DECALEES #########################
@@ -417,11 +485,11 @@ decaled.rereads=decaled.rereads[, list(Decaled_rereadings = rowSums(decaled.rere
 decaled.rereads[ , ':='( part_index = 1:.N )  ]
 decaled.rereads=decaled.rereads[,c("part_index","Decaled_rereadings"), with=FALSE]
 
-nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index")
+nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index", all.x = TRUE)
 save(nodejs.Reads, file="nodejs.Reads.rdata")
 ##############################################"""
 ###### RUPTURE ##################"
-nodejs.Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), title=character(),  duration=numeric(),part_max_duration=numeric(),
+nodejs.Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), 
                          session_shift=logical(),recovery=logical(),shifted_recovery=logical(), back_recovery=logical(), next_recovery=logical() ) 
 
 users=unique(nodejs$user_id)
@@ -445,7 +513,6 @@ for (i in 1:nusers)
     l.next_recovery=FALSE
     
     disconnection= data.frame(user_id=users[i], seance=j,part_index=user$part_index[j],
-                              duration=user$duration[j],part_max_duration=nodejs.structure[which(nodejs.structure$part_index==user$part_index[j]),]$max.duration,
                               session_shift=l.session_shift,direct_recovery=l.direct_recovery, shifted_recovery=l.shifted_recovery, 
                               back_recovery=l.back_recovery, next_recovery=l.next_recovery  ) 
     
@@ -491,7 +558,7 @@ for(i in 1:length(rupture_parts))
 } 
 nodejs.Ruptures$rupture = nodejs.Ruptures$norecovery + nodejs.Ruptures$recovery
 
-RupStats =data.frame(part_index=rupture_parts, Title=rupture_parts, rupture=0, recovery=0,  norecovery=0,
+RupStats =data.frame(part_index=rupture_parts,  rupture=0, recovery=0,  norecovery=0,
                      shifted_recovery=0, back_recovery=0, next_recovery=0, direct_recovery=0) 
 for(k in 1:length(rupture_parts))
 {
@@ -504,11 +571,78 @@ for(k in 1:length(rupture_parts))
   RupStats[which(RupStats$part_index==i),]$next_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$next_recovery),])
   RupStats[which(RupStats$part_index==i),]$direct_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$direct_recovery),])
 }
-nodejs.Ruptures = RupStats
+
+nodejs.Ruptures = merge(nodejs.structure[,c('part_index','part_id')],RupStats, all.x = TRUE )
+# Aggregates
+
+parents = nodejs.structure[which(nodejs.structure$type=='title-2'),]
+nparents = nrow(parents)
+for(i in 1:nparents){
+  children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]$part_id
+  
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$rupture = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$rupture)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$norecovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$norecovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$shifted_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$shifted_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$back_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$back_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$next_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$next_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$direct_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$direct_recovery)
+}
+
+parents = nodejs.structure[which(nodejs.structure$type=='title-1'),]
+nparents = nrow(parents)
+for(i in 1:nparents){
+  children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]$part_id
+  
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$rupture = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$rupture)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$norecovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$norecovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$shifted_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$shifted_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$back_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$back_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$next_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$next_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$direct_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$direct_recovery)
+}
+parents = nodejs.structure[which(nodejs.structure$type=='course'),]
+nparents = nrow(parents)
+for(i in 1:nparents){
+  children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]$part_id
+  
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$rupture = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$rupture)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$norecovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$norecovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$shifted_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$shifted_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$back_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$back_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$next_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$next_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$direct_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$direct_recovery)
+}
+
 save(nodejs.Ruptures,file="nodejs.Ruptures.rdata")
 
 
 ### Parts Follow ###########
+parts=unique(nodejs$part_id)
+nparts=length(parts)
 nodejs.partFollow = matrix(nrow = nparts, ncol = nparts, data=0)
 parPreceed = matrix(nrow = nparts, ncol = nparts, data=0)
 for (u in 1:nusers)

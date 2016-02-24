@@ -45,6 +45,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
       $scope.topSelector = 'Actions_nb';
+      $scope.sectionPstatSelector = 'Actions_nb';
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -1562,7 +1563,8 @@ var ComputeGlobalVisuData=function(){
   var visuData = []
   
   visuData.push({type:'Actions_nb',data:factChart(-1,'Actions_nb')});  
-  visuData.push({type:'q3.duration',data:factChart(-1,'q3.duration')});
+   visuData.push({type:'RS_nb',data:factChart(-1,'RS_nb')});  
+  visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
   visuData.push({type:'Rereadings',data:factChart(-1,'Rereadings')});  
   visuData.push({type:'Sequential_rereadings',data:factChart(-1,'Sequential_rereadings')});  
   visuData.push({type:'Decaled_rereadings',data:factChart(-1,'Decaled_rereadings')});  

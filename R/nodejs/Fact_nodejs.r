@@ -29,13 +29,13 @@ course_facts_read<- function(selectedCourse){
   
   
   ####### NOMBRE DE VISITES
-  Interest = merge(Interest, structure[,c(1,2)])
-  Interest = Interest[,c(6,2,3,4,5,1)]
   
-  Interest$Actions_nb = as.numeric(Interest$Actions_nb) 
+  Interest = Interest[,c(6,2,3,4,5,1,7)]
+ 
   
+  InterestData = Interest[which(Interest$type=='title-3'),-c(7)]
   
-  Interest_nbvisites_vmin = Interest[which(Interest$Actions_nb<quantile(Interest$Actions_nb,0.10,na.rm = TRUE)),c(1,2)]
+  Interest_nbvisites_vmin = InterestData[which(Interest$Actions_nb<quantile(Interest$Actions_nb,0.10,na.rm = TRUE)),c(1,2)]
   Interest_nbvisites_vmin$classe="Readings"
   Interest_nbvisites_vmin$issueCode="RVminVisit"
   Interest_nbvisites_vmin$content="Beaucoup Trop peu de visites"
@@ -51,8 +51,8 @@ course_facts_read<- function(selectedCourse){
   Sinon, le supprimer et revoir le plan du chapitre et du cours. Sinon le reformuler"
   
   
-  Interest_nbvisites_min = Interest[which(Interest$Actions_nb<quantile(Interest$Actions_nb,0.25,na.rm = TRUE) & 
-                                            Interest$Actions_nb>quantile(Interest$Actions_nb,0.10,na.rm = TRUE)),c(1,2)]
+  Interest_nbvisites_min = InterestData[which(Interest$Actions_nb<quantile(Interest$Actions_nb,0.25,na.rm = TRUE) & 
+                                                Interest$Actions_nb>quantile(Interest$Actions_nb,0.10,na.rm = TRUE)),c(1,2)]
   Interest_nbvisites_min$classe="Readings"
   Interest_nbvisites_min$issueCode="RminVisit"
   Interest_nbvisites_min$content="Trop peu de visites"
@@ -67,7 +67,7 @@ course_facts_read<- function(selectedCourse){
   Si cet élément est réellement nécessaire : peut-il être reformulé, voire intégré dans une autre partie du cours ?
   Sinon, le supprimer et revoir le plan du chapitre et du cours. Sinon le reformuler"
   
-  Interest_nbvisites_max = Interest[which(Interest$Actions_nb>quantile(Interest$Actions_nb,0.9,na.rm = TRUE) ),c(1,2)]
+  Interest_nbvisites_max = InterestData[which(Interest$Actions_nb>quantile(Interest$Actions_nb,0.9,na.rm = TRUE) ),c(1,2)]
   Interest_nbvisites_max$classe="Readings"
   Interest_nbvisites_max$issueCode="RVmaxVisit"
   Interest_nbvisites_max$content="Trop de visites"
@@ -85,15 +85,15 @@ course_facts_read<- function(selectedCourse){
   ####### DURATION
  
   
-  # RVminDuration : q3 duration
-  Interest_duration_vmin = structure[which(structure$q3.duration<=quantile(structure$q3.duration,0.10,na.rm = TRUE)),c('id','q3.duration')]
+  # RVminDuration : mean duration
+  Interest_duration_vmin = structure[which(structure$mean.duration<=quantile(structure$mean.duration,0.10,na.rm = TRUE)),c('part_index','mean.duration')]
   Interest_duration_vmin$classe="Readings"
   Interest_duration_vmin$issueCode="RVminDuration"
   Interest_duration_vmin$content="Temps de lecture beaucoup trop court"
-  val = round(median(structure$q3.duration,na.rm = TRUE) / Interest_duration_vmin$q3.duration,0)
+  val = round(median(structure$mean.duration,na.rm = TRUE) / Interest_duration_vmin$mean.duration,0)
   Interest_duration_vmin$description=paste(" Cette partie est plutôt survolés : son temps de lecture est en général",val," fois inférieur au temps de lecture des autres parties")
-  Interest_duration_vmin$norm_value=round(median(structure$q3.duration,na.rm = TRUE) ,1)
-  dif = abs(Interest_duration_vmin$max.duration  - median(structure$q3.duration,na.rm = TRUE))
+  Interest_duration_vmin$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
+  dif = abs(Interest_duration_vmin$max.duration  - median(structure$mean.duration,na.rm = TRUE))
   Interest_duration_vmin$gravity=''
   Interest_duration_vmin$suggestion_title="Réviser ou supprimer la partie"
   Interest_duration_vmin$suggestion_content="La partie doit apporter plus d'informations nouvelles / intéressantes : 
@@ -101,16 +101,16 @@ course_facts_read<- function(selectedCourse){
   Sinon, le supprimer et revoir le plan du chapitre et du cours."
   
   #RminDuration
-  Interest_duration_min = structure[which(structure$q3.duration>quantile(structure$q3.duration,0.10,na.rm = TRUE) &
-                                            structure$q3.duration<quantile(structure$q3.duration,0.25,na.rm = TRUE)),c('id','q3.duration')]
+  Interest_duration_min = structure[which(structure$mean.duration>quantile(structure$mean.duration,0.10,na.rm = TRUE) &
+                                            structure$mean.duration<quantile(structure$mean.duration,0.25,na.rm = TRUE)),c('part_index','mean.duration')]
   Interest_duration_min$classe="Readings"
   Interest_duration_min$issueCode="RminDuration"
   Interest_duration_min$content="Temps de lecture trop court"
-  val = round(median(structure$q3.duration,na.rm = TRUE) / Interest_duration_min$q3.duration,0)
+  val = round(median(structure$mean.duration,na.rm = TRUE) / Interest_duration_min$mean.duration,0)
   Interest_duration_min$description=paste("Cette partie est plutôt survolés : son temps de lecture est",val,"fois inférieur au temps médian")
-  Interest_duration_min$norm_value=round(median(structure$q3.duration,na.rm = TRUE) ,1)
-  dif = abs(Interest_duration_min$q3.duration  - median(structure$q3.duration,na.rm = TRUE))
-  Interest_duration_min$gravity=round(5 * dif / median(structure$q3.duration,na.rm = TRUE),0)
+  Interest_duration_min$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
+  dif = abs(Interest_duration_min$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
+  Interest_duration_min$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
   Interest_duration_min$suggestion_title="Réviser ou supprimer la partie"
   Interest_duration_min$suggestion_content="La partie doit apporter plus d'informations nouvelles / intéressantes : 
   Si cet élément est réellement nécessaire : peut-il être reformulé, voire intégré dans un autre chapitre ou une autre partie du cours ?
@@ -118,15 +118,15 @@ course_facts_read<- function(selectedCourse){
   
   
   #RmaxDuration
-  Interest_duration_max = structure[which(structure$q3.duration>quantile(structure$q3.duration,0.9,na.rm = TRUE)),c('id','q3.duration')]
+  Interest_duration_max = structure[which(structure$mean.duration>quantile(structure$mean.duration,0.9,na.rm = TRUE)),c('part_index','mean.duration')]
   Interest_duration_max$classe="Readings"
   Interest_duration_max$issueCode="RmaxDuration"
   Interest_duration_max$content="Temps de lecture trop long"
-  Interest_duration_max$description=paste("La durée de visite sur cette partie est relativement très élevée:",Interest_duration_max$q3.duration,
-                                          "secondes. La durée  médiane de lecture d'une partie est de: ",round(median(structure$q3.duration,na.rm = TRUE) ,1) ,"secondes.")
-  Interest_duration_max$norm_value=round(median(structure$q3.duration,na.rm = TRUE) ,1)
-  dif = abs(Interest_duration_max$q3.duration  - median(structure$q3.duration,na.rm = TRUE))
-  Interest_duration_max$gravity=round(5 * dif / median(structure$q3.duration,na.rm = TRUE),0)
+  Interest_duration_max$description=paste("La durée de visite sur cette partie est relativement très élevée:",Interest_duration_max$mean.duration,
+                                          "secondes. La durée  médiane de lecture d'une partie est de: ",round(median(structure$mean.duration,na.rm = TRUE) ,1) ,"secondes.")
+  Interest_duration_max$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
+  dif = abs(Interest_duration_max$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
+  Interest_duration_max$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
   Interest_duration_max$suggestion_title="Réccrire la partie"
   Interest_duration_max$suggestion_content="La partie doit être plus simple ?  lire/comprendre : 
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
@@ -145,16 +145,11 @@ course_facts_reread<- function(selectedCourse){
   RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
   CourseStats =  eval(parse(text = paste(selectedCourse,"CourseStats",sep=".")))
   
-  
-  
   Reads$Rereadings = as.numeric(Reads$Rereadings) 
   # rereadings
   # parts data and course stats
   
  
-  
-  
-  
   
   ################################################
   Rereads_rereadings_vmax = Reads[which(Reads$Rereadings>quantile(Reads$Rereadings,0.9,na.rm = TRUE) ),c('part_index','Rereadings')] 
@@ -278,10 +273,10 @@ course_facts_transition<- function(selectedCourse){
   RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
   partFollow = eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
   
-  part_indexes=1:(max(structure$id))
+  part_indexes=1:(max(structure$part_index))
   
   Destinations_stats = data.frame(part_index=part_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_back=0)
-  for(aPart in 1:max(structure$id))
+  for(aPart in 1:max(structure$part_index))
   {
     aPartDest = data.frame(part=1:(nrow(partFollow)), frequence=partFollow[aPart,])
     
@@ -308,7 +303,7 @@ course_facts_transition<- function(selectedCourse){
   
   partPrecedent <- t(partFollow)
   Provenances_stats = data.frame(part_index=part_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_next=0)
-  for(aPart in 1:max(structure$id))
+  for(aPart in 1:max(structure$part_index))
   {
     aPartProv = data.frame(part=1:nrow(partPrecedent), frequence=partPrecedent[aPart,])
     
@@ -705,19 +700,16 @@ facts =
     Transition_provenance_shiftednext,
     Transition_provenance_shiftednext_v,
     Transition_provenance_shiftedpast,
-    ""    Transition_provenance_shiftedpast_v,
+   #   Transition_provenance_shiftedpast_v,
     
-    Transition_Destination_next,
-    Transition_Destination_next_v,
-    Transition_Destination_prev,
-    Transition_Destination_prev_v,
+#    Transition_Destination_next,
+ 
+ #   Transition_Destination_prev,
+    #Transition_Destination_prev_v,
     Transition_Destination_shiftedback,
         Transition_Destination_shiftedback_v,
-        Transition_Destination_shiftednext,
-        Transition_Destination_shiftednext_v,
-    
-    
-    
+    #    Transition_Destination_shiftednext,
+     #   Transition_Destination_shiftednext_v,
     
     ##################################"
     
@@ -725,28 +717,7 @@ facts =
    Stop_next_recovery,
     Stop_back_recovery,
     Stop_shifted_recovery)
-/****************/
-facts = rbind(
-  facts,
-  Transition_provenance_precedent,
-  Transition_provenance_precedent_v,
-  Transition_provenance_next,
-  #Transition_provenance_next_v,
-  Transition_provenance_shiftednext,
-  Transition_provenance_shiftednext_v,
-  Transition_provenance_shiftedpast,
-  #Transition_provenance_shiftedpast_v,
-  Transition_Destination_next,
-  Transition_Destination_next_v,
-  Transition_Destination_prev,
-  #Transition_Destination_prev_v,
-  Transition_Destination_shiftedback,
-  Transition_Destination_shiftedback_v,
-  Transition_Destination_shiftednext,
-  Transition_Destination_shiftednext_v
-)
-/****************/
-  
+
   
 names(facts)[1]="part_index"
 facts$part_index=as.numeric(facts$part_index)
@@ -764,9 +735,8 @@ cat(facts.json, file="nodejs.facts.json")
 
 
 PartData = structure
-
-nParties=nrow(PartData[which(PartData$id==0),])
-PartData[which(PartData$id==0),]$id=-1*(0:(nParties-1))
+names(PartData)[1]=c('part_index')
+PartData[which(PartData$id==0),]$part_index=-1*(0:(nParties-1))
 
 
 
@@ -774,12 +744,13 @@ PartData[which(PartData$type=='title-1'),]$type='partie'
 PartData[which(PartData$type=='title-2'),]$type='chapitre'
 PartData[which(PartData$type=='title-3'),]$type='section'
 
-PartData = merge(PartData, Interest[,-c(3,6)], by= 'id',all.x = TRUE)
-names(PartData)[1]='part_index'
+PartData = merge(PartData, Interest[,c(2,3,4,5,6)],all.x = TRUE)
+
+names(PartData)[2]='part_index'
 names(PartData)[3]='part_parent'
 names(PartData)[4]='part_title'
 names(PartData)[5]='part_type'
-PartData = merge(PartData, Reads,  by = 'part_index',all.x = TRUE)
+PartData = merge(PartData, Reads, all.x = TRUE)
 PartData = merge(PartData, Ruptures[,-c(2)],  by = 'part_index',all.x = TRUE)
 
 names(Provenances_stats)=c("part_index","provenance_precedent","provenance_shifted_past", "provenance_identity","provenance_next_p","provenance_shifted_next","provenance_total_next")
@@ -793,10 +764,6 @@ save(PartData, file='PartData.rdata')
 
 
 colnames(PartData)[1]="id"
-
-# Aggregate children data
-
-
 
 meltParts=melt(PartData, id.vars = 'id')
 PartsData.json = toJSON(unname(split(meltParts,1:nrow(meltParts))))

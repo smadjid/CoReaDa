@@ -1556,7 +1556,15 @@ marker#arrow {
 
 .componentInfo{
   font-size: 17px;
-   vertical-align: middle;  
+   vertical-align: middle; 
+   width:100%; 
+
+
+}
+.componentInfo.active{
+   color: #ffffff;
+    background-color: #404F70;
+    font-weight: bold;
 }
 
 span.blue {
@@ -1628,3 +1636,7 @@ hr {
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+
+
+
