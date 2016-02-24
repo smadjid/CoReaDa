@@ -1111,6 +1111,7 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     
 
 $scope.observedElt={'type':'Cette section ',
+      'id':element.id,
       'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
       'Actions_nb':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
@@ -1575,10 +1576,8 @@ var ComputeGlobalVisuData=function(){
   visuData.push({type:'shifted_recovery',data:factChart(-1,'shifted_recovery')});    
   
 
-visuData.push({type:'provenance',data:globalTransitionsProvenance('provenance')});    
-visuData.push({type:'destination',data:globalTransitionsProvenance('destination')});    
-
-  
+  visuData.push({type:'provenance',data:globalTransitionsProvenance('provenance')});    
+  visuData.push({type:'destination',data:globalTransitionsProvenance('destination')});      
 
   return visuData;
 }
@@ -1715,11 +1714,11 @@ var shifted_next= mean(($.grep(chartData, function(e){ return  e.property === cl
       .map(function(d) { return parseInt(d.value); }));
 var somme = identity + precedent + next_p + shifted_past + shifted_next;
 var chartData=[
-      {'classe':chartData, "property":"identity", value: identity * 100 / somme},
-      {'classe':chartData, "property":"precedent", value: precedent * 100 / somme},
-      {'classe':chartData, "property":"next_p", value: next_p * 100 / somme},
-      {'classe':chartData, "property":"shifted_past", value: shifted_past * 100 / somme},
-      {'classe':chartData, "property":"shifted_next", value: shifted_next * 100 / somme}]
+      {'classe':'transition', "property":"identity", value: identity * 100 / somme},
+      {'classe':'transition', "property":"precedent", value: precedent * 100 / somme},
+      {'classe':'transition', "property":"next_p", value: next_p * 100 / somme},
+      {'classe':'transition', "property":"shifted_past", value: shifted_past * 100 / somme},
+      {'classe':'transition', "property":"shifted_next", value: shifted_next * 100 / somme}]
 
 return(chartData)
 
@@ -1746,7 +1745,7 @@ var factChart = function(factedPartID, issueCode){
         })
       })
     });
-   
+ 
 return chartData;
 
 }
