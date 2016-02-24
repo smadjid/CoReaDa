@@ -1690,17 +1690,23 @@ var globalTransitionsProvenance=function(classe){
   var chartData = [];
   
    angular.forEach($scope.course.tomes, function(tome){
+    var d= tome.properties.filter(function(value){ 
+              return value.property.split('_')[0]===classe    
+            });
+          d.part=tome.id;
+          chartData=chartData.concat({'part':tome.id,'type':classe, elementType:'tome', 'transitions':d})
           angular.forEach(tome.chapters, function(chapter){
+            var d= chapter.properties.filter(function(value){ 
+              return value.property.split('_')[0]===classe    
+            });
+          d.part=chapter.id;
+          chartData=chartData.concat({'part':chapter.id,'type':classe, elementType:'chapter', 'transitions':d})
         angular.forEach(chapter.parts, function(part){
           var d= part.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    
             });
           d.part=part.id;
-
-          console.log('d: ');
-          console.log(d)
-          
-            chartData=chartData.concat({'part':part.id,'type':classe, 'transitions':d})
+          chartData=chartData.concat({'part':part.id,'type':classe, elementType:'part', 'transitions':d})
          
         })
       })
@@ -1726,6 +1732,7 @@ var glob=[
       { "property":"shifted_next", value: shifted_next * 100 / somme}]
 
 chartData=chartData.concat({'part':0,'type':classe, 'transitions':glob})*/
+console.log(chartData)
 return chartData
 
 }
@@ -1740,10 +1747,25 @@ var factChart = function(factedPartID, issueCode){
    var cpt = 0;
 
    angular.forEach($scope.course.tomes, function(tome){
+    chartData.push({'part':tome.id,
+            'title':tome.title,
+             'elementType':'tome',
+            'route':tome.route,
+            'value': parseInt(tome.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'color':parseInt(factedPartID)===parseInt(tome.id)?'#45348A':'grey'
+          })
           angular.forEach(tome.chapters, function(chapter){
+            chartData.push({'part':chapter.id,
+            'title':chapter.title,
+             'elementType':'chapter',
+            'route':chapter.route,
+            'value': parseInt(chapter.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'color':parseInt(factedPartID)===parseInt(chapter.id)?'#45348A':'grey'
+          })
         angular.forEach(chapter.parts, function(part){
           chartData.push({'part':part.id,
             'title':part.title,
+             'elementType':'part',
             'route':part.route,
             'value': parseInt(part.properties.filter(function(value){ return  value.property === issueCode})[0].value),
             'color':parseInt(factedPartID)===parseInt(part.id)?'#45348A':'grey'

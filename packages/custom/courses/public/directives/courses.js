@@ -545,7 +545,7 @@ var inspectorCharts = function(scope, element, title){
 scope.renderBars = function(globalData, classe) {
   svg.selectAll("*").remove();
  
-
+ 
           
     svg.attr('class','barChart')
           .append("g")
@@ -567,8 +567,9 @@ scope.renderBars = function(globalData, classe) {
         //Render graph based on 'data'
        
           
-
-          var data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
+          var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
+          data = data.filter(function(e){ return e.elementType === 'part' });
+          console.log(data)
 
           //Set our scale's domains
           x.domain(data.map(function(d) { return d.part; }));
@@ -671,7 +672,9 @@ scope.renderNodes = function(data, classe) {
   var color = d3.scale.category10();
   var  radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}
 
+
  var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
+ globalData = globalData.filter(function(e){ return e.elementType === 'part' });
 
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
 console.log(globalData)
@@ -833,7 +836,9 @@ scope.$watch('d3opts', function(){
           }, true);  
 };
 
-        var barChart = function(scope, element, title){   
+
+
+var barChart = function(scope, element, title){   
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 580 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
@@ -862,6 +867,7 @@ scope.$watch('d3opts', function(){
         scope.render = function(data) {
 
           //Set our scale's domains
+          data = data.filter(function(e){ return e.elementType === 'part' });
           x.domain(data.map(function(d) { return d.part; }));
           y.domain([0, d3.max(data, function(d) { return d.value; })]);
           
