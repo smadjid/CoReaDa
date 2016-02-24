@@ -77,7 +77,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
     $scope.context.d3.stats =courseFactsStat();
     $scope.context.Tops = computeTopParts();
 
-   
+   console.log($scope.context.d3)
 
     
      
@@ -1692,16 +1692,21 @@ var globalTransitionsProvenance=function(classe){
    angular.forEach($scope.course.tomes, function(tome){
           angular.forEach(tome.chapters, function(chapter){
         angular.forEach(chapter.parts, function(part){
-          
-            chartData=chartData.concat(part.properties.filter(function(value){ 
+          var d= part.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    
-            }))
+            });
+          d.part=part.id;
+
+          console.log('d: ');
+          console.log(d)
+          
+            chartData=chartData.concat({'part':part.id,'type':classe, 'transitions':d})
          
         })
       })
     });
   
-  
+  /*
 var identity= mean(($.grep(chartData, function(e){ return  e.property === classe+"_identity" }))
   .map(function(d) { return parseInt(d.value); }));
 var precedent= mean(($.grep(chartData, function(e){ return  e.property === classe+"_precedent" }))
@@ -1713,14 +1718,15 @@ var shifted_past= mean(($.grep(chartData, function(e){ return  e.property === cl
 var shifted_next= mean(($.grep(chartData, function(e){ return  e.property === classe+"_shifted_next" }))
       .map(function(d) { return parseInt(d.value); }));
 var somme = identity + precedent + next_p + shifted_past + shifted_next;
-var chartData=[
-      {'classe':'transition', "property":"identity", value: identity * 100 / somme},
-      {'classe':'transition', "property":"precedent", value: precedent * 100 / somme},
-      {'classe':'transition', "property":"next_p", value: next_p * 100 / somme},
-      {'classe':'transition', "property":"shifted_past", value: shifted_past * 100 / somme},
-      {'classe':'transition', "property":"shifted_next", value: shifted_next * 100 / somme}]
+var glob=[
+      { "property":"identity", value: identity * 100 / somme},
+      { "property":"precedent", value: precedent * 100 / somme},
+      { "property":"next_p", value: next_p * 100 / somme},
+      { "property":"shifted_past", value: shifted_past * 100 / somme},
+      { "property":"shifted_next", value: shifted_next * 100 / somme}]
 
-return(chartData)
+chartData=chartData.concat({'part':0,'type':classe, 'transitions':glob})*/
+return chartData
 
 }
 var factChart = function(factedPartID, issueCode){

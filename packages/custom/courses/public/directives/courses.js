@@ -545,15 +545,13 @@ var inspectorCharts = function(scope, element, title){
 scope.renderBars = function(globalData, classe) {
   svg.selectAll("*").remove();
  
+
           
     svg.attr('class','barChart')
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
-
- 
-       
 
 
 
@@ -667,25 +665,28 @@ legend.append("rect")
 
 scope.renderNodes = function(data, classe) {
 
+  var elementID = parseInt(scope.d3opts.elementId);
+
   svg.selectAll("*").remove();
   var color = d3.scale.category10();
   var  radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}
 
- var globalData = $.grep(data, function(e){ return e.type === "provenance" })[0];
-console.log(globalData);
+ var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
 
+ globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
+console.log(globalData)
   var data = {
-  'identity': parseInt($.grep(globalData, function(e){ return e.property == 'identity'; })[0].value),
-  'next_p': parseInt($.grep(globalData, function(e){ return e.property =='next_p'; })[0].value),
-  'precedent' : parseInt($.grep(globalData, function(e){ return e.property == 'precedent'; })[0].value),
-  'shifted_next' : parseInt($.grep(globalData, function(e){ return e.property == 'shifted_next'; })[0].value),
-  'shifted_past': parseInt($.grep(globalData, function(e){ return e.property == 'shifted_past'; })[0].value)
+  'identity': parseInt(globalData.filter(function(e){ return e.property == classe+'_identity'; })[0].value),
+  'next_p': parseInt(globalData.filter(function(e){ return e.property == classe+'_next_p'; })[0].value),
+  'precedent' : parseInt(globalData.filter(function(e){ return e.property == classe+'_precedent'; })[0].value),
+  'shifted_next' : parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_next'; })[0].value),
+  'shifted_past': parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_past'; })[0].value)
   }  
 
   var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
-  {id: 'P-1',name:'precedent', value:data.precedent, color:'#008cba'}, 
-  {id: 'P',name:'identity', value:data.identity, color:'#45348A'},
-  {id: 'P+1',name:'next_p', value:data.next_p, color:'#008cba'}, 
+  {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
+  {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
+  {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
   {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}];
   
   
@@ -825,13 +826,10 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
-                        'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
-                      })
+            if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
+              scope.renderNodes(scope.data, scope.d3opts.issueCode)
+            else 
               scope.renderBars(scope.data, scope.d3opts.issueCode)
-            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
-
           }, true);  
 };
 
