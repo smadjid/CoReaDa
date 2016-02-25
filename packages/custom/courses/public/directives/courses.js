@@ -534,9 +534,9 @@ scope.$watch('d3opts', function(){
 
 var inspectorCharts = function(scope, element, title){  
 
-        var margin = {top: 20, right: 10, bottom: 30, left: 40},
+        var margin = {top: 20, right: 10, bottom: 100, left: 40},
           width = 530 - margin.left - margin.right,
-          height = 250 - margin.top - margin.bottom;
+          height = 350 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -544,8 +544,6 @@ var inspectorCharts = function(scope, element, title){
 
 scope.renderBars = function(globalData, classe) {
   svg.selectAll("*").remove();
- 
- 
           
     svg.attr('class','barChart')
           .append("g")
@@ -558,7 +556,9 @@ scope.renderBars = function(globalData, classe) {
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
-
+              
+        if(scope.d3opts.elementType!=='part') 
+            xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
@@ -568,8 +568,7 @@ scope.renderBars = function(globalData, classe) {
        
           
           var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
-          data = data.filter(function(e){ return e.elementType === 'part' });
-          console.log(data)
+          data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
 
           //Set our scale's domains
           x.domain(data.map(function(d) { return d.part; }));
@@ -579,10 +578,17 @@ scope.renderBars = function(globalData, classe) {
           svg.selectAll('g.axis').remove();
           svg.selectAll('path').remove();
           //X axis
-          svg.append("g")
+          var xax = svg.append("g")
               .attr("class", "x axis")
               .attr("transform", "translate(0," + height + ")")
               .call(xAxis);
+
+if(scope.d3opts.elementType!=='part') 
+              xax.selectAll("text")   
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-60)" );;
               
           //Y axis
           svg.append("g")
@@ -592,8 +598,7 @@ scope.renderBars = function(globalData, classe) {
               .attr("transform", "rotate(-90)")
               .attr("y", 6)
               .attr("dy", ".71em")
-              .style("text-anchor", "end")
-              .text("Valeur");
+              .style("text-anchor", "end");
               
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
@@ -667,15 +672,19 @@ legend.append("rect")
 scope.renderNodes = function(data, classe) {
 
   var elementID = parseInt(scope.d3opts.elementId);
+  var elementIDTxt = (scope.d3opts.elementType==='chapter')? 'CH':'P';
+  
 
   svg.selectAll("*").remove();
+  svg.attr('class','nodeChart')
   var color = d3.scale.category10();
   var  radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}
 
 
  var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
- globalData = globalData.filter(function(e){ return e.elementType === 'part' });
+ globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
 
+console.log(globalData);
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
 console.log(globalData)
   var data = {
@@ -685,12 +694,23 @@ console.log(globalData)
   'shifted_next' : parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_next'; })[0].value),
   'shifted_past': parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_past'; })[0].value)
   }  
+  
+   
 
-  var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+  var datum =[] ;
+  if(scope.d3opts.elementType==='part') 
+    datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
   {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
   {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
   {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
-  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}];
+  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+  else
+    datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+  {id: elementIDTxt+"-1",name:'precedent', value:data.precedent, color:'#008cba'}, 
+  {id: elementIDTxt,name:'identity', value:data.identity, color:'#45348A'},
+  {id: elementIDTxt+"+ 1",name:'next_p', value:data.next_p, color:'#008cba'}, 
+  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+  
   
   
   var identity = {id:'c3', x:gap * 3, y:height/2}

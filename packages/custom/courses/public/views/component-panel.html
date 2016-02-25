@@ -1,15 +1,47 @@
 
 <div class='row' style="margin:10px;color: #1C383F; " >
+<table class='col-lg-6 coreada-box' class="btn-group">
+<tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'Actions_nb'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité {{observedElt.typeTxt}} </td></tr>
+
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'RS_nb'"><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent {{observedElt.typeTxt}}</td></tr>
+	<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'mean.duration'"><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans {{observedElt.typeTxt}}. </td></tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'Rereadings'"><span class="blue">{{observedElt.meanRereads}}</span> des lectures de {{observedElt.typeTxt}} sont des <b>relectures</b>.</td></tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'rupture'"><span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur {{observedElt.typeTxt}}</td></tr>
+
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'provenance'">
+		La section lue <b>avant</b> celle-ci est <span class="blue">la section 6 (titre_section)</span>, se situtant juste avant celle-ci.
+	</td></tr>
+
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'destination'">
+		La section lue <b>après</b> celle-ci est <span class="blue">la section 6 (titre_section)</span>, se situtant juste avant celle-ci.
+	</td></tr>
+	
+    </tr>
+	</table>
+
 	<div class='col-lg-6 coreada-box'>
-	    <span class='componentInfo'>En moyenne, les sections de {{observedElt.type}} sont visitées par <span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours</span>
+	
+
+    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:sectionPstatSelector}'></d3-chart>
+	</div>
+</div>
+
+
+
+<!--
+
+<div class='row' style="margin:10px;color: #1C383F; " >
+	<div class='col-lg-6 coreada-box'>
+	    <span class='componentInfo'>En moyenne, les sections de {{observedElt.typeTxt}} sont visitées par <span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours</span>
 		<hr/>
-	    <span class='componentInfo'><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent des sections de {{observedElt.type}}</span>
+	    <span class='componentInfo'><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent des sections de {{observedElt.typeTxt}}</span>
 		<hr/>
-	    <span class='componentInfo'><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans les section de {{observedElt.type}}. </span>
+	    <span class='componentInfo'><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans les section de {{observedElt.typeTxt}}. </span>
 		<hr/>
-		<span class='componentInfo'><span class="blue">{{observedElt.meanRereads}}</span> des lectures des sections de {{observedElt.type}} sont des <b>relectures</b>.</span>
+		<span class='componentInfo'><span class="blue">{{observedElt.meanRereads}}</span> des lectures des sections de {{observedElt.typeTxt}} sont des <b>relectures</b>.</span>
 		<hr/>
-	    <span class='componentInfo'>Les sections de {{observedElt.type}} représentent en moyenne <span class="blue">{{observedElt.meanStops}}</span> des points d'arrêts définitifs de la lecture</span>
+	    <span class='componentInfo'>Les sections de {{observedElt.typeTxt}} représentent en moyenne <span class="blue">{{observedElt.meanStops}}</span> des points d'arrêts définitifs de la lecture</span>
 	</div>
 	<div class='col-lg-6 coreada-box'>
 	
@@ -19,3 +51,4 @@
 </div>
 
 
+-->

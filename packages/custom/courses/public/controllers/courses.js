@@ -1110,7 +1110,9 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     var stopTx = Math.floor(100 * stop / nrs)+'%';
     
 
-$scope.observedElt={'type':'Cette section ',
+$scope.observedElt={
+      'type':'part',
+      'typeTxt':'Cette section ',
       'id':element.id,
       'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
@@ -1147,7 +1149,9 @@ var nbUsers = 0;
 var nbRS = 0;
 var Actions_nb=0;
 
-$scope.observedElt={'type':'Ce cours',
+$scope.observedElt={'type':'course',
+      'id':0,
+  'typeTxt':'Ce cours',
       'nbUsers':0,//$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
       'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
       'Actions_nb':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
@@ -1205,7 +1209,10 @@ var sec_num = Math.round(d3.mean(times),2);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
 
 
-$scope.observedElt={'type':'cette partie',
+$scope.observedElt={'type':'tome',
+
+      'id':element.id,
+      'typeTxt': 'cette partie',
       'nbUsers':Math.round(d3.mean(users),2)+'%',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_nb':0,
@@ -1273,7 +1280,10 @@ var sec_num = Math.round(d3.mean(times),2);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
 
 console.log(users);console.log(d3.mean(users));
-$scope.observedElt={'type':'ce chapitre ',
+$scope.observedElt={'type':'chapter',
+      'typeTxt':'ce chapitre ',
+      
+      'id':element.id,
       'nbUsers':Math.round(d3.mean(users),2)+'%',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_nb':0,
@@ -1695,12 +1705,14 @@ var globalTransitionsProvenance=function(classe){
             });
           d.part=tome.id;
           chartData=chartData.concat({'part':tome.id,'type':classe, elementType:'tome', 'transitions':d})
+
           angular.forEach(tome.chapters, function(chapter){
             var d= chapter.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    
             });
           d.part=chapter.id;
           chartData=chartData.concat({'part':chapter.id,'type':classe, elementType:'chapter', 'transitions':d})
+          
         angular.forEach(chapter.parts, function(part){
           var d= part.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    

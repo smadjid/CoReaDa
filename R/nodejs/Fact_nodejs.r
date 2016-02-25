@@ -736,7 +736,8 @@ cat(facts.json, file="nodejs.facts.json")
 
 PartData = structure
 names(PartData)[1]=c('part_index')
-PartData[which(PartData$id==0),]$part_index=-1*(0:(nParties-1))
+nParties = nrow(PartData[which(PartData$part_index==0),])
+PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))
 
 
 
@@ -744,19 +745,89 @@ PartData[which(PartData$type=='title-1'),]$type='partie'
 PartData[which(PartData$type=='title-2'),]$type='chapitre'
 PartData[which(PartData$type=='title-3'),]$type='section'
 
-PartData = merge(PartData, Interest[,c(2,3,4,5,6)],all.x = TRUE)
+PartData = merge(PartData, Interest[,c(1,2,3,4,5)],all.x = TRUE)
 
 names(PartData)[2]='part_index'
-names(PartData)[3]='part_parent'
+names(PartData)[3]='part_parent' 
 names(PartData)[4]='part_title'
 names(PartData)[5]='part_type'
-PartData = merge(PartData, Reads, all.x = TRUE)
-PartData = merge(PartData, Ruptures[,-c(2)],  by = 'part_index',all.x = TRUE)
+PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
+PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
 
 names(Provenances_stats)=c("part_index","provenance_precedent","provenance_shifted_past", "provenance_identity","provenance_next_p","provenance_shifted_next","provenance_total_next")
 names(Destinations_stats)=c("part_index","destination_precedent","destination_shifted_past", "destination_identity","destination_next_p","destination_shifted_next","destination_total_next") 
 PartData = merge(PartData, Provenances_stats,  by = 'part_index',all.x = TRUE)
 PartData = merge(PartData, Destinations_stats,  by = 'part_index',all.x = TRUE)
+# Compute provenance/destination for chapters
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_total_next)
+ 
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_total_next)
+}
+
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_total_next)
+  
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_total_next)
+}
+
+
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(tomesIds)){
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_precedent)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_shifted_past)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_identity)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_next_p)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_shifted_next)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_total_next)
+  
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_precedent)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_shifted_past)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_identity)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_next_p)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_shifted_next)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_total_next)
+}
+
+# Compute duration for chapters and tomes
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$max.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$max.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$q1.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$q1.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$q3.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$q3.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$mean.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$mean.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$median.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$median.duration)
+}
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(tomesIds)){
+  PartData[which(PartData$part_id==tomesIds[i]),]$max.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$max.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$q1.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$q1.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$q3.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$q3.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$mean.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$mean.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$median.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$median.duration)
+}
 
 PartData$Readers_tx = round(PartData$Readers / nusers, 4)
 PartData$RS_tx = round(PartData$RS_nb / nrow(nodejs.RS), 4)

@@ -1,8 +1,7 @@
-
 <div class='row' style="margin:10px;color: #1C383F; " >
-<table class='col-lg-5 coreada-box' class="btn-group">
+<table class='col-lg-6 coreada-box' class="btn-group">
 <tr>
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'Actions_nb'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité cette section </td></tr>
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'Actions_nb'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité cette {{observedElt.type}} </td></tr>
 
 	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'RS_nb'"><span class="blue">{{observedElt.nbRS}}</span> de séances de lectures contiennent cette section</td></tr>
 	<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="sectionPstatSelector" uib-btn-radio="'mean.duration'"><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans cette section. </td></tr>
@@ -20,9 +19,9 @@
     </tr>
 	</table>
 
-	<div class='col-lg-7 coreada-box'>
+	<div class='col-lg-6 coreada-box'>
 	
 
-    <d3-chart data='context.d3' d3opts='{type:"inspector",granularity:"part",elementId:observedElt.id,issueCode:sectionPstatSelector}'></d3-chart>
+    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:"part",elementId:observedElt.id,issueCode:sectionPstatSelector}'></d3-chart>
 	</div>
 </div>

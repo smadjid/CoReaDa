@@ -467,7 +467,7 @@ module.exports = function(Courses) {
                         if(part_data[i]['variable']=='part_type')
                             part.type=part_data[i]['value']
                         else
-                            if(part_data[i]['variable']=='part_parent')
+                            if(part_data[i]['variable']=='parent_id')
                                 part.parent_id=part_data[i]['value']
             };
 
@@ -508,6 +508,7 @@ module.exports = function(Courses) {
             
         };
         if(part.type==='chapitre') {
+
             var chapter={
                 'id':part.id,
                 'part_id':part.part_id,
@@ -522,7 +523,7 @@ module.exports = function(Courses) {
            
             
             
-            
+            console.log(part);
             courseChapters.push(chapter);            
 
            
