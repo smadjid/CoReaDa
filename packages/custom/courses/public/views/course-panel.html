@@ -39,7 +39,17 @@
 </div>
 
 <div class="widget" style="width:33%; ">
-    <div class="header">Top parties</div>
+    <div class="header">Top <span class="btn-group"  >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="topSelector1" uib-btn-radio="'tome'">Parties</label>
+        <label class="btn btn-xs btn-achievement" ng-model="topSelector1" uib-btn-radio="'chapter'">Chapitre</label>
+        <label class="btn btn-xs btn-achievement" ng-model="topSelector1" uib-btn-radio="'part'">Section</label>
+        
+    </span> 
+
+         
+</div>
+
     <div class="btn-group" style="width:100%; text-align:center; padding-left:20%;" >
      
         <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">Visites</label>
