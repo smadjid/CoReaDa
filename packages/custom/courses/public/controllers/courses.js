@@ -77,7 +77,7 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
     $scope.context.d3.stats =courseFactsStat();
     $scope.context.Tops = computeTopParts();
 
-   console.log($scope.context.d3)
+   //console.log($scope.context.d3)
 
     
      
@@ -1279,7 +1279,7 @@ var sec_num = Math.round(d3.mean(times),2);
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
 
-console.log(users);console.log(d3.mean(users));
+
 $scope.observedElt={'type':'chapter',
       'typeTxt':'ce chapitre ',
       
@@ -1698,26 +1698,28 @@ var median=function(numbers) {
 }
 var globalTransitionsProvenance=function(classe){
   var chartData = [];
+  var dd= [];
   
    angular.forEach($scope.course.tomes, function(tome){
     var d= tome.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    
             });
           d.part=tome.id;
+          dd=dd.concat(d);
           chartData=chartData.concat({'part':tome.id,'type':classe, elementType:'tome', 'transitions':d})
 
           angular.forEach(tome.chapters, function(chapter){
             var d= chapter.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    
             });
-          d.part=chapter.id;
+          d.part=chapter.id; dd=dd.concat(d);
           chartData=chartData.concat({'part':chapter.id,'type':classe, elementType:'chapter', 'transitions':d})
-          
+
         angular.forEach(chapter.parts, function(part){
           var d= part.properties.filter(function(value){ 
               return value.property.split('_')[0]===classe    
             });
-          d.part=part.id;
+          d.part=part.id; dd=dd.concat(d);
           chartData=chartData.concat({'part':part.id,'type':classe, elementType:'part', 'transitions':d})
          
         })
@@ -1744,7 +1746,33 @@ var glob=[
       { "property":"shifted_next", value: shifted_next * 100 / somme}]
 
 chartData=chartData.concat({'part':0,'type':classe, 'transitions':glob})*/
-console.log(chartData)
+
+var identity = dd.filter(function(value){ return  value.property === classe+'_identity'});
+identity=mean(identity.map(function(o){return parseInt(o.value);}));
+var precedent = dd.filter(function(value){ return  value.property === classe+'_precedent'});
+precedent=mean(precedent.map(function(o){return parseInt(o.value);}));
+var next_p = dd.filter(function(value){ return  value.property === classe+'_next_p'});
+next_p=mean(next_p.map(function(o){return parseInt(o.value);}));
+var shifted_past = dd.filter(function(value){ return  value.property === classe+'_shifted_past'});
+shifted_past=mean(shifted_past.map(function(o){return parseInt(o.value);}));
+var shifted_next = dd.filter(function(value){ return  value.property === classe+'_shifted_next'});
+shifted_next=mean(shifted_next.map(function(o){return parseInt(o.value);}));
+
+
+
+chartData=chartData.concat({'part':0,'type':classe, elementType:'course', 
+  'transitions':[
+              {'property':classe+'_identity', 'value':identity },
+              {'property':classe+'_precedent', 'value':precedent },
+              {'property':classe+'_next_p', 'value':next_p },
+              {'property':classe+'_shifted_past', 'value':shifted_past },
+              {'property':classe+'_shifted_next', 'value':shifted_next }
+  ]  
+})
+
+
+
+
 return chartData
 
 }

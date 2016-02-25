@@ -68,8 +68,7 @@ angular.module('mean.courses')
         }
 
         scope.renderGlobal = function(courseData, attr){
-          console.log(attr);
-
+          
           var data = courseData.map(function(a) {return parseInt(a[attr]);});
           data = filterOutliers(data);
           
@@ -429,6 +428,7 @@ var globalBarChart = function(scope, element, title){
 
           var data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
 
+          data = data.filter(function(e){ return e.elementType === 'part' });
           //Set our scale's domains
           x.domain(data.map(function(d) { return d.part; }));
           y.domain([0, d3.max(data, function(d) { return d.value; })]);
@@ -543,11 +543,15 @@ var inspectorCharts = function(scope, element, title){
           .attr('height', height + margin.top + margin.bottom)
 
 scope.renderBars = function(globalData, classe) {
-  svg.selectAll("*").remove();
-          
-    svg.attr('class','barChart')
+  d3.select(element[0]).selectAll("*").remove();
+          svg = d3.select(element[0])
+          .append("svg")          
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('class','barChart')
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
@@ -649,9 +653,7 @@ if(scope.d3opts.elementType!=='part')
     .data(["Médiane"])
     .enter().append("g")
     .attr("class", "legend")
-    .attr("transform", function (d, i) {
-    return "translate(0," + i * 20 + ")";
-});
+    .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
 
 legend.append("text")
     .attr("x", width - 10)
@@ -684,9 +686,9 @@ scope.renderNodes = function(data, classe) {
  var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
  globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
 
-console.log(globalData);
+
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
-console.log(globalData)
+
   var data = {
   'identity': parseInt(globalData.filter(function(e){ return e.property == classe+'_identity'; })[0].value),
   'next_p': parseInt(globalData.filter(function(e){ return e.property == classe+'_next_p'; })[0].value),
@@ -1006,12 +1008,39 @@ scope.renderGlobal=function(data){
    
    svg.selectAll('g').remove();
    svg.selectAll('defs').remove();
-
+ 
     var color = d3.scale.category10();
+ 
+  
 
  var globalData = $.grep(data, function(e){ return e.type === classe; })[0].data;
 
+  globalData = globalData.filter(function(e){ return e.elementType === 'course' })[0].transitions;
 
+
+
+
+  var data = {
+  'identity': parseInt(globalData.filter(function(e){ return e.property == classe+'_identity'; })[0].value),
+  'next_p': parseInt(globalData.filter(function(e){ return e.property == classe+'_next_p'; })[0].value),
+  'precedent' : parseInt(globalData.filter(function(e){ return e.property == classe+'_precedent'; })[0].value),
+  'shifted_next' : parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_next'; })[0].value),
+  'shifted_past': parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_past'; })[0].value)
+  }  
+  
+     
+     var elementIDTxt = "S"
+
+  var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+  {id: elementIDTxt+"-1",name:'precedent', value:data.precedent, color:'#008cba'}, 
+  {id: elementIDTxt,name:'identity', value:data.identity, color:'#45348A'},
+  {id: elementIDTxt+"+ 1",name:'next_p', value:data.next_p, color:'#008cba'}, 
+  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+  
+  
+
+
+/*
   var data = {
   'identity': parseInt($.grep(globalData, function(e){ return e.property == 'identity'; })[0].value),
   'next_p': parseInt($.grep(globalData, function(e){ return e.property =='next_p'; })[0].value),
@@ -1025,7 +1054,7 @@ scope.renderGlobal=function(data){
   {id: 'P',name:'identity', value:data.identity, color:'#45348A'},
   {id: 'P+1',name:'next_p', value:data.next_p, color:'#008cba'}, 
   {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}];
-  
+  */
   
   var identity = {id:'c3', x:gap * 3, y:height/2}
   datum.forEach(function(c, i) {
