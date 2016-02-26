@@ -36,10 +36,11 @@
 </div>
 
 <div class="widget" style="width:33%; ">
-    <div class="header">Top <span class="btn-group"  >     
+    <div class="header">Top 
+    <span class="btn-group"  >     
         <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties</label>
         <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitre</label>
-        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'sections'">Section</label>        
+        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'sections'">Section</label>
     </span> 
 
          
@@ -127,51 +128,90 @@
  
     </div>
 
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Readings'"  >
+<div class='row'  ng-show="indicatorInspectorShow=='Readings'"  >
+<div class='col-lg-3'>
+<strong>Distribution des</strong>
+    <ul class="btn-group"  >     
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitres
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'sections'">Sections
+    </ul> 
+   
+    <strong>Distribution selon</strong>
+  <ul class="btn-group" >     
+        <li class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="readingChartSelector" uib-btn-radio="'Actions_nb '">Nombre de visites
+        <li class="btn btn-xs btn-primary"  style='width:100%; margin:2px'  ng-model="readingChartSelector" uib-btn-radio="'mean.duration'" >Durées de lecture
+        <li class="btn btn-xs btn-primary"  style='width:100%; margin:2px' ng-model="readingChartSelector" uib-btn-radio="'RS_nb'" >Sessions
+    </ul>
 
-  <div class="btn-group" style="width:100%; text-align:center" >
-     
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'Actions_nb '">Nombre de visites</label>
-        <label class="btn btn-xs btn-primary" ng-model="readingChartSelector" uib-btn-radio="'q3.duration'" >Durées de lecture</label>
-        
-    </div>
 
+</div>
+<div class='col-lg-3'>
     <d3-chart data='context.d3' d3opts='{type:"global",issueCode:readingChartSelector}'></d3-chart>
+</div>
 </div>
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Rereading'"  >
-
-  <div class="btn-group" style="width:100%; text-align:center" >
-     
-        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Rereadings'">Nombre total de relectures</label>
-        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Sequential_rereadings'">Nombre de relectures séquantielles</label>
-        <label class="btn btn-xs btn-primary" ng-model="rereadingChartSelector" uib-btn-radio="'Decaled_rereadings'">Nombre de relectures distantes</label>
-
+<div class='col-lg-3'>
+<strong>Distribution des</strong>
+    <ul class="btn-group"  >     
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitres
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'sections'">Sections
+    </ul> 
+   
+    <strong>Distribution selon</strong> 
+  <div class="btn-group" >     
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="rereadingChartSelector" uib-btn-radio="'Rereadings'">Nombre total de relectures</label>
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="rereadingChartSelector" uib-btn-radio="'Sequential_rereadings'">Nombre de relectures séquantielles</label>
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="rereadingChartSelector" uib-btn-radio="'Decaled_rereadings'">Nombre de relectures distantes</label>
     </div>
-
+</div>
+<div class='col-lg-6'>
     <d3-chart data='context.d3' d3opts='{type:"global",issueCode:rereadingChartSelector}'></d3-chart>
+</div>
 </div>
 
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Stop'"  >
-    <div class="btn-group" style="width:100%; text-align:center">
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'rupture'">Fin de séances sur la partie</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'norecovery'">Fin définitive de la lecture</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'next_recovery'">Fin avec reprise sur la partie qui suit</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'back_recovery'">Fin avec reprise sur une partie qui précède</label>
-        <label class="btn btn-xs btn-primary" ng-model="stopChartSelector" uib-btn-radio="'shifted_recovery'">Fin avec reprise sur une partie distante</label>
-    </div>
+<div class='col-lg-3'>
+<strong>Distribution des</strong>
+    <ul class="btn-group"  >     
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitres
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'sections'">Sections
+    </ul> 
+   
+    <strong>Distribution selon</strong> 
 
+    <div class="btn-group" style="width:100%; text-align:center">
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="stopChartSelector" uib-btn-radio="'rupture'">Fin de séances sur la partie</label>
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="stopChartSelector" uib-btn-radio="'norecovery'">Fin définitive de la lecture</label>
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="stopChartSelector" uib-btn-radio="'next_recovery'">Reprise sur la partie qui suit</label>
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="stopChartSelector" uib-btn-radio="'back_recovery'">Reprise sur une partie qui précède</label>
+        <label class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="stopChartSelector" uib-btn-radio="'shifted_recovery'">Reprise sur une partie distante</label>
+    </div>
+</div>
+<div class='col-lg-6'>
 <d3-chart data='context.d3' d3opts='{type:"global",issueCode:stopChartSelector}'></d3-chart>
 </div>
+</div>
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='Transition'"  >
- 
+ <div class='col-lg-3'>
+<strong>Distribution des</strong>
+    <ul class="btn-group"  >     
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitres
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="topElementSelector" uib-btn-radio="'sections'">Sections
+    </ul> 
+</div>
+<div class='col-lg-6'>
        <table>
            <td><h3>Provenance</h3>
          <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance"}'></d3-chart></td>
          <td><h3>Destination</h3>
          <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"destination"}'></d3-chart></td>
        </table>
-
+</div>
  
     
 
