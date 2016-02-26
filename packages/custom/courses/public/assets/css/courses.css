@@ -1519,11 +1519,9 @@ marker#arrow {
     color:#929DAF;
     text-align: center;
     line-height: 30px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
     font-weight: 300;
     font-size: 1.5em;
-    text-shadow: 1px 1px #06060d;
+
 }
 
 .widget.chart-container{
@@ -1548,10 +1546,10 @@ marker#arrow {
     border-color: #ffffff;
 }
 .btn-achievement.active{
-    color: #404F70;
-    background-color: #67BAF5;
-    border-color: #ffffff;
-    font-weight: bold;
+    color: #151619;
+    background-color: #ADD3EF;
+    
+   
 }
 
 .componentInfo{
