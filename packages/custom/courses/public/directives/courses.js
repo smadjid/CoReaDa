@@ -397,18 +397,30 @@ scope.$watch('data', function(){
 };
         
 
-var globalBarChart = function(scope, element, title){             
+var globalCharts = function(scope, element, title){   
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 780 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom;
 
-        var svg = d3.select(element[0])
-          .append("svg")
-          .attr('class','barChart')
+
+
+          var svg = d3.select(element[0])
+          .append("svg")          
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
+    
+    scope.renderBars = function(globalData, classe) {
+      d3.select(element[0]).selectAll("*").remove();
+
+          svg = d3.select(element[0])
+          .append("svg")          
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('class','barChart')
           .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
 
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
@@ -422,13 +434,13 @@ var globalBarChart = function(scope, element, title){
             .orient("left")
             .ticks(10);
 
-        //Render graph based on 'data'
-        scope.renderGlobal = function(globalData, classe) {
-          
+         if(scope.d3opts.elementType!=='part') 
+            xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
+       
 
           var data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
 
-          data = data.filter(function(e){ return e.elementType === 'part' });
+          data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
           //Set our scale's domains
           x.domain(data.map(function(d) { return d.part; }));
           y.domain([0, d3.max(data, function(d) { return d.value; })]);
@@ -437,10 +449,17 @@ var globalBarChart = function(scope, element, title){
           svg.selectAll('g.axis').remove();
           svg.selectAll('path').remove();
           //X axis
-          svg.append("g")
+       var xax = svg.append("g")
               .attr("class", "x axis")
               .attr("transform", "translate(0," + height + ")")
               .call(xAxis);
+
+if(scope.d3opts.elementType!=='part') 
+              xax.selectAll("text")   
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-20)" );
               
           //Y axis
           svg.append("g")
@@ -520,16 +539,184 @@ legend.append("rect")
     .style("fill", 'orange');
 
 
-scope.$watch('data', function(){
+scope.renderNodes=function(data){
+  var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}    
+       svg.selectAll("*").remove();
+  svg.attr('class','nodeChart')
 
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
+  var classe = scope.d3opts.issueCode;  
+   
+    var color = d3.scale.category10();
+ 
+  
+
+ var globalData = $.grep(data, function(e){ return e.type === classe; })[0].data;
+
+  globalData = globalData.filter(function(e){ return e.elementType === 'course' })[0].transitions;
+
+
+
+
+  var data = {
+  'identity': parseInt(globalData.filter(function(e){ return e.property == classe+'_identity'; })[0].value),
+  'next_p': parseInt(globalData.filter(function(e){ return e.property == classe+'_next_p'; })[0].value),
+  'precedent' : parseInt(globalData.filter(function(e){ return e.property == classe+'_precedent'; })[0].value),
+  'shifted_next' : parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_next'; })[0].value),
+  'shifted_past': parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_past'; })[0].value)
+  }  
+  
+     
+     var elementIDTxt = "S"
+
+  var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+  {id: elementIDTxt+"-1",name:'precedent', value:data.precedent, color:'#008cba'}, 
+  {id: elementIDTxt,name:'identity', value:data.identity, color:'#45348A'},
+  {id: elementIDTxt+"+ 1",name:'next_p', value:data.next_p, color:'#008cba'}, 
+  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+  
+  
+  
+  var identity = {id:'c3', x:gap * 3, y:height/2}
+  datum.forEach(function(c, i) {
+            c.x = gap * (i +1);
+            c.y = height/2  ;
+            graph.nodes.push(c);
+            var node = {id:c.id,x:c.x, y:c.y};
+            if(classe=='destination')
+              graph.links.push({source: identity, target: node, value:c.value})
+            else
+              graph.links.push({source: node, target: identity, value:c.value})
+        });
+
+svg.append("defs").selectAll('marker')
+    .data(graph.links)
+    .enter()
+    .append('svg:marker')
+      .attr('id', function(d){ return 'marker'})
+     .attr("refX", 1) /*must be smarter way to calculate shift*/
+    .attr("refY", 5)
+    .attr( "viewBox","0 0 10 10")
+    .attr("markerWidth", 4)
+    .attr("markerHeight", 4)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M 0 0 L 10 5 L 0 10 z") //this is actual shape for arrowhead
+    .attr('fill', "#1FB1E6");
+
+  var circle = svg.append("g").selectAll(".circle")
+            .data(graph.nodes)
+            .enter()
+            .append("g")
+            .attr("class", "circle")
+            .attr("fill",  function(d) {return d.color});
+    var el = circle.append("circle")
+            .attr("cx", function(d) {return d.x})
+            .attr("cy", function(d) {return d.y})
+            .attr("r", radius);
+    var cTitle = circle.append("text")
+      .text(function(d){
+          return d.id;
+      })
+      .attr("dx",  function(d) {return d.x})
+      .attr("dy",  function(d) {return d.y + radius/3})
+      .attr("stroke", "white");
+ var radians = d3.scale.linear()
+  .range([Math.PI / 2, 3 * Math.PI / 2]);
+
+  var arc = d3.svg.line.radial()
+    .interpolate("basis")
+    .tension(0)
+    .angle(function(d) { return radians(d); });
+
+  var  linkArc=function(d) {
+       var x1 = d.source.x,
+          y1 = d.source.y - 20,
+          x2 = d.target.x ,
+          y2 = d.target.y - 30,
+          dx = x2 - x1,
+          dy = y2 - y1,
+          dr = Math.sqrt(dx * dx + dy * dy),
+
+          // Defaults for normal edge.
+          drx = dr,
+          dry = dr - 35,
+          xRotation = 90, // degrees
+          largeArc = 0, // 1 or 0
+          
+         sweep = (dx>0) ? 1 : 0; // 1 or 0
+
+          // Self edge.
+          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+             x1 = d.source.x - 20,
+             x2 = d.target.x + 20,
+            y1 = d.source.y + 15,
+            y2 = d.target.y + 15,
+            dx = x2 - x1,
+          dy = y2 - y1, 
+          dx = x2 - x1,
+          dy = y2 - y1,
+          dr = Math.sqrt(dx * dx + dy * dy),
+            // Fiddle with this angle to get loop oriented.
+            xRotation = -90;
+            // Needs to be 1.
+            largeArc = 1;
+            // Change sweep to change orientation of loop. 
+            sweep = 0;
+            // Make drx and dry different to get an ellipse
+            // instead of a circle.
+            drx = 30;
+            dry = 30;            
+            // For whatever reason the arc collapses to a point if the beginning
+            // and ending points of the arc are the same, so kludge it.
+            x2 = x2 + 1;
+            y2 = y2 + 1;
+          } 
+
+     return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + 
+     largeArc + "," + sweep + " " + x2 + "," + y2;
+}
+
+
+var url =window.location.pathname;
+
+
+var path = svg.append("g").selectAll("path")
+    .data(graph.links)
+  .enter().append("path")
+    .attr("class", function(d) { return "link"; })
+    .attr("marker-end", function(d) { return "url("+url+"#marker)"; });
+ path.attr("d", linkArc);
+
+svg.append("g").selectAll("g.linklabelholder")
+    .data(graph.links).enter().append("g")
+    .attr("class", "linklabelholder")    
+
+    .append("text")
+      .text(function(d){
+          return d.value+"%";
+      })
+      
+      .attr("stroke-width", ".2px")
+      .attr("stroke", function(d) {return d.target.color})
+      .attr("dx",  function(d) {return ((classe=='provenance')?d.source.x:d.target.x)  })
+      .attr("dy",  function(d) {return ((classe=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
+}
+
+scope.$watch('data', function(){
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+                        'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
+                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      })              scope.renderBars(scope.data, scope.d3opts.issueCode)
+            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
    
 
 scope.$watch('d3opts', function(){
-
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
-          }, true);  
+            if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
+              scope.renderNodes(scope.data, scope.d3opts.issueCode)
+            else 
+              scope.renderBars(scope.data, scope.d3opts.issueCode)
+          }, true); 
 };
 
 var inspectorCharts = function(scope, element, title){  
@@ -592,7 +779,7 @@ if(scope.d3opts.elementType!=='part')
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
-            .attr("transform", "rotate(-60)" );;
+            .attr("transform", "rotate(-60)" );
               
           //Y axis
           svg.append("g")
@@ -1349,7 +1536,7 @@ if(scope.d3opts.type === 'global')
 if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
-                      })  globalBarChart(scope, element,'titre')
+                      })  globalCharts(scope, element,'titre')
 
 else 
   if(scope.d3opts.issueCode in {'provenance':'','destination':''})  

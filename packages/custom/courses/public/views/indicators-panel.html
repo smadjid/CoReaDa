@@ -1,0 +1,36 @@
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow!=='ALL'"  >
+<div class='col-lg-3' >
+<strong>Distribution des</strong>
+    <ul class="btn-group"  >     
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="elementTypeSelector" uib-btn-radio="'tome'">Parties
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="elementTypeSelector" uib-btn-radio="'chapter'">Chapitres
+        <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="elementTypeSelector" uib-btn-radio="'part'">Sections
+    </ul> 
+   
+    <strong>Distribution selon</strong>
+  <div class="btn-group" ng-model="globalChartSelector">     
+        <label  ng-show="indicatorInspectorShow=='Readings'"  class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>
+        <label ng-show="indicatorInspectorShow=='Readings'"  class="btn btn-xs btn-primary"  style='width:100%; margin:2px'  ng-model="$parent.globalChartSelector" uib-btn-radio="'mean.duration'" >Durées de lecture</label>
+        <label  ng-show="indicatorInspectorShow=='Readings'"  class="btn btn-xs btn-primary"  style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'RS_nb'" >Sessions</label>
+    
+        <label ng-show="indicatorInspectorShow=='Rereading'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'Rereadings'">Nombre total de relectures</label>
+        <label ng-show="indicatorInspectorShow=='Rereading'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'Sequential_rereadings'">Nombre de relectures séquentielles</label>
+        <label ng-show="indicatorInspectorShow=='Rereading'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'Decaled_rereadings'">Nombre de relectures distantes</label>
+    
+        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'rupture'">Fin de séances sur la partie</label>
+        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'norecovery'">Fin définitive de la lecture</label>
+        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'next_recovery'">Reprise sur la partie qui suit</label>
+        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'back_recovery'">Reprise sur une partie qui précède</label>
+        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'shifted_recovery'">Reprise sur une partie distante</label>
+         
+        <label ng-show="indicatorInspectorShow=='Transition'"  class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'provenance'">La provenance</label>
+        <label ng-show="indicatorInspectorShow=='Transition'"  class="btn btn-xs btn-primary"  style='width:100%; margin:2px'  ng-model="$parent.globalChartSelector" uib-btn-radio="'destination'" >La destination</label>
+    </div>
+</div>
+
+<div class='col-lg-6'>
+    <d3-chart data='context.d3' d3opts='{type:"global",issueCode:globalChartSelector, elementType:elementTypeSelector}'></d3-chart>
+</div>
+
+
+</div>

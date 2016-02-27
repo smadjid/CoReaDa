@@ -35,13 +35,12 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
       $scope.formData='';
       $scope.textBtnForm='';
       $scope.chartType = 'Actions_nb';
+      $scope.globalChartSelector = 'Actions_nb';
+      $scope.elementTypeSelector = 'part';
       $scope.chartedElement = {};
       $scope.factChart={};
-      $scope.componentChart={};
-
-      $scope.readingChartSelector = 'Actions_nb';
-      $scope.rereadingChartSelector = 'Rereadings';
-      $scope.stopChartSelector = 'rupture';
+      $scope.componentChart={};      
+      
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
       $scope.topSelector = 'Actions_nb';
@@ -86,7 +85,22 @@ var app=angular.module('mean.courses').controller('CoursesController', ['$scope'
 $(window).bind('hashchange',function(){ 
   loadContext();
 });
-      
+
+$scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
+            if(newValue==='Readings')
+              $scope.globalChartSelector = 'Actions_nb'
+            else
+              if(newValue==='Rereading')
+                $scope.globalChartSelector = 'Rereadings'
+              else
+                if(newValue==='Stop')
+                  $scope.globalChartSelector = 'rupture'
+                else
+                  if(newValue==='Transition')
+                    $scope.globalChartSelector = 'provenance';
+
+       
+    });
 
     if($('.course_title_top').length<1)
         $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
