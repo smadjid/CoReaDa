@@ -1222,7 +1222,8 @@ $scope.observedElt={'type':'course',
       'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
       'Actions_nb':$scope.course.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
     };
-  $scope.inspectorShow = 'course';
+  if(indicator==='ALL') $scope.inspectorShow = 'course'
+    else $scope.inspectorShow = 'indicators';
 
 }
 

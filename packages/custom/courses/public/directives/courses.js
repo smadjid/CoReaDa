@@ -407,11 +407,14 @@ var globalCharts = function(scope, element, title){
           var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
+          .attr('height', height + margin.top + margin.bottom);
     
+
+         
+
     scope.renderBars = function(globalData, classe) {
       d3.select(element[0]).selectAll("*").remove();
-
+width = $(element[0]).parent().width() - margin.left - margin.right ;
           svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -702,6 +705,20 @@ svg.append("g").selectAll("g.linklabelholder")
       .attr("dy",  function(d) {return ((classe=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
 }
 
+ scope.$watch(function(){
+            width = $(element[0]).parent().width();     
+            return width 
+          }, resize);
+
+    function resize(){
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+                        'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
+                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      })              scope.renderBars(scope.data, scope.d3opts.issueCode)
+            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
+    
+    }
+
 scope.$watch('data', function(){
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
@@ -731,6 +748,7 @@ var inspectorCharts = function(scope, element, title){
 
 scope.renderBars = function(globalData, classe) {
   d3.select(element[0]).selectAll("*").remove();
+  width = $(element[0]).parent().width() - margin.left - margin.right ;
           svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -1027,6 +1045,20 @@ svg.append("g").selectAll("g.linklabelholder")
       .attr("dx",  function(d) {return ((classe=='provenance')?d.source.x:d.target.x)  })
       .attr("dy",  function(d) {return ((classe=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
 }
+scope.$watch(function(){
+            width = $(element[0]).parent().width();     
+            return width 
+          }, resize);
+
+    function resize(){
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+                        'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
+                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      })              scope.renderBars(scope.data, scope.d3opts.issueCode)
+            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
+    
+    }
+    
 
 scope.$watch('data', function(){
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',

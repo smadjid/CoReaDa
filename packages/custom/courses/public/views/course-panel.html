@@ -1,4 +1,4 @@
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec" ng-show="indicatorInspectorShow=='ALL'"  >
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
 <div class="widget" style="width:62%">
     <div class="header">Statistiques  <span class="btn-group">     
         <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'visits'">Lecture</label>
@@ -93,3 +93,9 @@
         </ol>
     </div>
 </div>
+
+
+ <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
+ 
+    </div>
+
