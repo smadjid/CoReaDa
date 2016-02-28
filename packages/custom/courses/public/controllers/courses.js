@@ -101,6 +101,32 @@ $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
 
        
     });
+$scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
+  console.log($scope.sectionPstatSelector);
+  switch($scope.sectionPstatSelector) {
+    case "Actions_nb":
+        $scope.graphTitle='Distribution selon le nombre d\'observations'
+        break;
+    case 'RS_nb':
+        $scope.graphTitle='Distribution selon le nombre de sessions de lecture'
+        break;
+    case 'mean.duration':
+        $scope.graphTitle='Distribution selon la durée moyenne de lecture (en minutes)'
+        break;
+    case 'Rereadings':
+        $scope.graphTitle='Distribution selon le nombre de relecteurs'
+        break;
+    case 'rupture':
+        $scope.graphTitle='Distribution selon le nombre des arrêts de lecture'
+        break;
+    case 'provenance':
+        $scope.graphTitle='Distribution des classes de provenance'
+        break;
+    case 'destination':
+        $scope.graphTitle='Distribution des classes de destination'
+        break;
+}
+});
 
     if($('.course_title_top').length<1)
         $('.navbar-brand').after('<a role="button" href="#" ng-click="resetPath();goHome()" class="course_title_top"> <span class="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');

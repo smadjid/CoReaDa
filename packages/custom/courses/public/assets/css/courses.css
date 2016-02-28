@@ -526,11 +526,6 @@ a.list-warning-item:hover {
   fill: #555;
 }
 
-.line {
-  fill: none;
-  stroke: #ef0d0c;
-  stroke-width: 1.5px;
-}
 
 #graph {
   width: 100%;
@@ -1447,11 +1442,19 @@ float: left;
   display: none;
 }
   
-.line {
+.meanLine {
   fill: none;
-  stroke: orange;
+  stroke: #d35400;
   stroke-width: 2px;
 }
+
+.medianeLine {
+  fill: none;
+  stroke: #F39C12;
+  stroke-width: 2px;
+}
+
+
 .title {
     font-size: 10pt;
 }
@@ -1635,7 +1638,15 @@ hr {
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
+.chart-title{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    text-align: center;
+    color: #404F70;
+    font-weight: bold;
+    font-style: oblique
+}
 
 
 

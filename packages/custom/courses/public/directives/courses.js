@@ -113,9 +113,6 @@ angular.module('mean.courses')
 
 
 var globalProgressChart = function(scope, element, title){  
-
-   
-
     var pie=d3.layout.pie()
             .value(function(d){return d})
             .sort(null);
@@ -397,7 +394,7 @@ scope.$watch('data', function(){
 };
         
 
-var globalCharts = function(scope, element, title){   
+var globalCharts = function(scope, element){   
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 780 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom;
@@ -472,8 +469,8 @@ if(scope.d3opts.elementType!=='part')
               .attr("transform", "rotate(-90)")
               .attr("y", 6)
               .attr("dy", ".71em")
-              .style("text-anchor", "end")
-              .text("Valeur");
+              .style("text-anchor", "end");
+              //.text("Valeur");
               
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
@@ -504,43 +501,52 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMediane); }) 
 
+    var xmean = d3.scale.ordinal()
+        .rangeBands([0, width], 0);
+    xmean.domain(data.map(function(d) { return d.part; }));
+
+    var dataMean = d3.mean(data, function(d) { return parseInt(d.value); }); 
+    var ymean = d3.svg.line()
+        .x(function(d, i) { 
+          return xmedian(d.part) + i; })
+        .y(function(d, i) { return y(dataMean); }) 
+
   svg.append("path")
       .datum(data)
-      .attr("class", "line")
+      .attr("class", "medianeLine")
       .attr("d", ymedian);
+  svg.append("path")
+      .datum(data)
+      .attr("class", "meanLine")
+      .attr("d", ymean);
   
-  // Add title     
-    svg.append("svg:text")
-        .attr("class", "title")
-       .attr("x", -25)
-       .attr("y", -10)
-       .text(title);
+  var legend = svg.selectAll(".legend")
+      .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
 
-        };
 
-  // add legend   
-var legend = svg.selectAll(".legend")
-    .data(["Médiane"])
-    .enter().append("g")
-    .attr("class", "legend")
-    .attr("transform", function (d, i) {
-    return "translate(0," + i * 20 + ")";
-});
 
 legend.append("text")
     .attr("x", width - 10)
-    .attr("y", -10)
+    .attr("y", -15)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
-    .text(function (d) {return d;});
+    .text(function (d) {return d.text;});
 
 legend.append("rect")
-    .attr("x", width - 100)
+    .attr("x", width - 90)
     .attr("y", -15)
     .attr("width", 30)
     .attr("height", 3)    
-    .style("fill", 'orange');
+    .style("fill", function (d) {return d.color;});
 
+  
+
+        };
+
+ 
 
 scope.renderNodes=function(data){
   var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}    
@@ -736,7 +742,7 @@ scope.$watch('d3opts', function(){
           }, true); 
 };
 
-var inspectorCharts = function(scope, element, title){  
+var inspectorCharts = function(scope, element){  
 
         var margin = {top: 20, right: 10, bottom: 100, left: 40},
           width = 530 - margin.left - margin.right,
@@ -829,50 +835,65 @@ if(scope.d3opts.elementType!=='part')
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
               .attr('stroke', 'white')
-               .attr("fill", function(d) { return ("#"+d.route===window.location.hash)? 'red':'#008cba'; });
+               .attr("fill", function(d) { return ("#"+d.route===window.location.hash)? '#45348A':'#008cba'; });
 
 
     var xmedian = d3.scale.ordinal()
-        .rangeBands([0, width], 0);
+        .rangeBands([0, width], 0); 
     xmedian.domain(data.map(function(d) { return d.part; }));
+
+
 
     var dataMediane = d3.median(data, function(d) { return parseInt(d.value); }); 
     var ymedian = d3.svg.line()
         .x(function(d, i) { 
-          return xmedian(d.part) + i; })
+          return xmedian(d.part) ; })
         .y(function(d, i) { return y(dataMediane); }) 
+
+
+  
+
+  var xmean = d3.scale.ordinal()
+        .rangeBands([0, width], 0);
+    xmean.domain(data.map(function(d) { return d.part; }));
+
+    var dataMean = d3.mean(data, function(d) { return parseInt(d.value); }); 
+    var ymean = d3.svg.line()
+        .x(function(d, i) { 
+          return xmedian(d.part) + i; })
+        .y(function(d, i) { return y(dataMean); }) 
 
   svg.append("path")
       .datum(data)
-      .attr("class", "line")
+      .attr("class", "medianeLine")
       .attr("d", ymedian);
+  svg.append("path")
+      .datum(data)
+      .attr("class", "meanLine")
+      .attr("d", ymean);
   
-  // Add title     
-    svg.append("svg:text")
-        .attr("class", "title")
-       .attr("x", -25)
-       .attr("y", -10)
-       .text(title);
 
-       var legend = svg.selectAll(".legend")
-    .data(["Médiane"])
-    .enter().append("g")
-    .attr("class", "legend")
-    .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
+ var legend = svg.selectAll(".legend")
+      .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
+
+
 
 legend.append("text")
     .attr("x", width - 10)
-    .attr("y", -10)
+    .attr("y", -15)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
-    .text(function (d) {return d;});
+    .text(function (d) {return d.text;});
 
 legend.append("rect")
-    .attr("x", width - 100)
+    .attr("x", width - 90)
     .attr("y", -15)
     .attr("width", 30)
     .attr("height", 3)    
-    .style("fill", 'orange');
+    .style("fill", function (d) {return d.color;});
 
         };
 
@@ -1128,8 +1149,8 @@ var barChart = function(scope, element, title){
               .attr("transform", "rotate(-90)")
               .attr("y", 6)
               .attr("dy", ".71em")
-              .style("text-anchor", "end")
-              .text("Valeur");
+              .style("text-anchor", "end");
+//              .text("Valeur");
               
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
@@ -1160,42 +1181,58 @@ var barChart = function(scope, element, title){
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMediane); }) 
 
+var xmean = d3.scale.ordinal()
+        .rangeBands([0, width], 0);
+    xmean.domain(data.map(function(d) { return d.part; }));
+
+    var dataMean = d3.mean(data, function(d) { return parseInt(d.value); }); 
+    var ymean = d3.svg.line()
+        .x(function(d, i) { 
+          return xmedian(d.part) + i; })
+        .y(function(d, i) { return y(dataMean); }) 
+
   svg.append("path")
       .datum(data)
-      .attr("class", "line")
+      .attr("class", "medianeLine")
       .attr("d", ymedian);
+  svg.append("path")
+      .datum(data)
+      .attr("class", "meanLine")
+      .attr("d", ymean);
+  
   
   // Add title     
-    svg.append("svg:text")
+  /*  svg.append("svg:text")
         .attr("class", "title")
        .attr("x", -25)
        .attr("y", -10)
-       .text(title);
+       .text(title);*/
 
         };
 
   // add legend   
 var legend = svg.selectAll(".legend")
-    .data(["Médiane"])
-    .enter().append("g")
-    .attr("class", "legend")
-    .attr("transform", function (d, i) {
-    return "translate(0," + i * 20 + ")";
-});
+      .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
+
+
 
 legend.append("text")
     .attr("x", width - 10)
-    .attr("y", -10)
+    .attr("y", -15)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
-    .text(function (d) {return d;});
+    .text(function (d) {return d.text;});
 
 legend.append("rect")
-    .attr("x", width - 100)
+    .attr("x", width - 90)
     .attr("y", -15)
     .attr("width", 30)
     .attr("height", 3)    
-    .style("fill", 'orange');
+    .style("fill", function (d) {return d.color;});
+
 
 
 scope.$watch('data', function(){
@@ -1568,7 +1605,7 @@ if(scope.d3opts.type === 'global')
 if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
-                      })  globalCharts(scope, element,'titre')
+                      })  globalCharts(scope, element)
 
 else 
   if(scope.d3opts.issueCode in {'provenance':'','destination':''})  
