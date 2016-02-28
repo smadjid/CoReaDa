@@ -102,7 +102,7 @@ $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
        
     });
 $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
-  console.log($scope.sectionPstatSelector);
+  
   switch($scope.sectionPstatSelector) {
     case "Actions_nb":
         $scope.graphTitle='Distribution selon le nombre d\'observations'
@@ -415,7 +415,7 @@ var computeCourseStats=function(){
       'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
     }
   }
-console.log(result);
+
   return result;
 }
 
@@ -1200,7 +1200,34 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     var stop = parseInt(element.properties.filter(function(value){ return value.property === 'rupture'})[0].value);
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
     var stopTx = Math.floor(100 * stop / nrs)+'%';
-    
+
+    var provData =[
+    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'provenance_identity'})[0].value),
+    text:'est la même section (relectures)'},
+    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_precedent"})[0].value),
+    text:'est la section qui la précède'},
+    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_next_p"})[0].value),
+    text:'est la section qui la suit'},
+    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_past"})[0].value),
+    text:'est une section plus en arrière'},
+    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_next"})[0].value),
+    text:'est une section plus en avant'}
+    ];
+
+var destData =[
+    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'destination_identity'})[0].value),
+    text:'est la même section (relectures)'},
+    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_precedent"})[0].value),
+    text:'est la section qui la précède'},
+    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_next_p"})[0].value),
+    text:'est la section qui la suit'},
+    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_past"})[0].value),
+    text:'est une section plus en arrière'},
+    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_next"})[0].value),
+    text:'est une section plus en avant'}
+    ];    
+   
+
 
 $scope.observedElt={
       'type':'part',
@@ -1211,7 +1238,11 @@ $scope.observedElt={
       'Actions_nb':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
       'meanTime': meanTime,
       'meanRereads':rereadTx,
-      'meanStops':stopTx
+      'meanStops':stopTx,
+      'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
+      'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
+      'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
+      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     };    
 
 $scope.inspectorShow = 'section';
@@ -1301,9 +1332,33 @@ var sec_num = Math.round(d3.mean(times),2);
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
 
+    var provData =[
+    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'provenance_identity'})[0].value),
+    text:'est la même section (relectures)'},
+    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_precedent"})[0].value),
+    text:'est la section qui la précède'},
+    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_next_p"})[0].value),
+    text:'est la section qui la suit'},
+    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_past"})[0].value),
+    text:'est une section plus en arrière'},
+    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_next"})[0].value),
+    text:'est une section plus en avant'}
+    ];
+
+var destData =[
+    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'destination_identity'})[0].value),
+    text:'est la même section (relectures)'},
+    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_precedent"})[0].value),
+    text:'est la section qui la précède'},
+    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_next_p"})[0].value),
+    text:'est la section qui la suit'},
+    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_past"})[0].value),
+    text:'est une section plus en arrière'},
+    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_next"})[0].value),
+    text:'est une section plus en avant'}
+    ];    
 
 $scope.observedElt={'type':'tome',
-
       'id':element.id,
       'typeTxt': 'cette partie',
       'nbUsers':Math.round(d3.mean(users),2)+'%',
@@ -1311,7 +1366,11 @@ $scope.observedElt={'type':'tome',
       'Actions_nb':0,
       'meanTime': meanTime,
       'meanRereads':Math.floor(100*d3.mean(rereadings),2)+'%',
-      'meanStops':stopTx
+      'meanStops':stopTx,
+      'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
+      'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
+      'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
+      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     }; 
 $scope.context.inspector_title = "Partie: "+element.title
 $scope.inspectorShow = 'component';
@@ -1372,17 +1431,46 @@ var sec_num = Math.round(d3.mean(times),2);
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
 
+    var provData =[
+    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'provenance_identity'})[0].value),
+    text:'est la même section (relectures)'},
+    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_precedent"})[0].value),
+    text:'est la section qui la précède'},
+    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_next_p"})[0].value),
+    text:'est la section qui la suit'},
+    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_past"})[0].value),
+    text:'est une section plus en arrière'},
+    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_next"})[0].value),
+    text:'est une section plus en avant'}
+    ];
 
+var destData =[
+    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'destination_identity'})[0].value),
+    text:'est la même section (relectures)'},
+    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_precedent"})[0].value),
+    text:'est la section qui la précède'},
+    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_next_p"})[0].value),
+    text:'est la section qui la suit'},
+    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_past"})[0].value),
+    text:'est une section plus en arrière'},
+    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_next"})[0].value),
+    text:'est une section plus en avant'}
+    ];    
+   
+   
 $scope.observedElt={'type':'chapter',
-      'typeTxt':'ce chapitre ',
-      
+      'typeTxt':'ce chapitre ',      
       'id':element.id,
       'nbUsers':Math.round(d3.mean(users),2)+'%',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_nb':0,
       'meanTime': meanTime,
       'meanRereads':Math.floor(100*d3.mean(rereadings),2)+'%',
-      'meanStops':stopTx
+      'meanStops':stopTx,
+      'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
+      'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
+      'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
+      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     }; 
 }
 
