@@ -7,6 +7,7 @@
     </span>  
     </div>
     <div>
+    <br/>
         <ul ng-show="statSelector=='visits'">
             <li>Le cours est visité par {{context.stats.reading.nusers}} lecteurs. 
             <li>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de {{context.stats.achievement.mean}}%. Le taux médian est de {{context.stats.achievement.median}}%.
@@ -14,19 +15,19 @@
             
         </ul>
         <ul ng-show="statSelector=='rs'">
-            <li>En moyenne, chaque lecteur consacre 2 séances de lecture pour ce cours. Le nombre maximal de séances est de 12.  
-            <li>Une séance de lecture est en moyenne composée de {{context.stats.rs.mean.nparts}} sections.
+            <li>En moyenne, chaque lecteur consacre 2 séances de lecture pour ce cours. 
+            <li>Une séance de lecture est en moyenne composée de {{context.stats.rs.mean_nparts}} sections.
             <li>Une séance de lecture dure en moyenne {{context.stats.rs.mean_duration}} minutes.
         </ul>
         <ul ng-show="statSelector=='issue'">
-            <li>Au total, 325 problèmes de lecture ont été détectés, réparties comme suit:
+            <li>Au total, {{context.stats.issues.all}} problèmes de lecture ont été détectés, réparties comme suit:
             <ul>
-                <li>39 problèmes relatifs à la lecture
-                <li>39 problèmes relatifs à la relecture
-                <li>39 problèmes relatifs à la navigation
-                <li>39 problèmes relatifs aux arrêts
+                <li>{{context.stats.issues.readings}} problèmes relatifs à la lecture
+                <li>{{context.stats.issues.rereading}} problèmes relatifs à la relecture
+                <li>{{context.stats.issues.transition}} problèmes relatifs à la navigation
+                <li>{{context.stats.issues.stop}} problèmes relatifs aux arrêts
             </ul>
-            <li>En termes de nombre, la partie avec plus de remarques est la suivante: ....
+
 
         </ul>
     </div>

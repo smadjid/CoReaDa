@@ -413,7 +413,14 @@ var computeCourseStats=function(){
       'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
       'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
       'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
-    }
+    },
+    'issues':{ 
+      'all':$scope.context.d3.stats.filter(function(value){ return value.indicator === 'ALL'})[0].count,
+      'readings':$scope.context.d3.stats.filter(function(value){ return value.indicator === 'Readings'})[0].count,
+      'rereading':$scope.context.d3.stats.filter(function(value){ return value.indicator === 'Rereading'})[0].count,
+      'transition':$scope.context.d3.stats.filter(function(value){ return value.indicator === 'Transition'})[0].count,
+      'stop':$scope.context.d3.stats.filter(function(value){ return value.indicator === 'Stop'})[0].count
+    },
   }
 
   return result;
@@ -1457,7 +1464,7 @@ var destData =[
     text:'est une section plus en avant'}
     ];    
    
-   
+
 $scope.observedElt={'type':'chapter',
       'typeTxt':'ce chapitre ',      
       'id':element.id,
