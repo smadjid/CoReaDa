@@ -286,7 +286,7 @@ ul.alert-dropdown {
 }
   
 .coreada-box{
-  padding:5px!important;
+  padding:3px!important;
 }  
 
  .data-table{
@@ -1563,6 +1563,7 @@ marker#arrow {
    vertical-align: middle; 
    width:100%;    
    margin:0;
+   border: 1px solid rgba(0,0,0,.15);
 
 
 }

@@ -411,14 +411,14 @@ var globalCharts = function(scope, element){
 
     scope.renderBars = function(globalData, classe) {
       d3.select(element[0]).selectAll("*").remove();
-width = $(element[0]).parent().width() - margin.left - margin.right ;
-          svg = d3.select(element[0])
-          .append("svg")          
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .attr('class','barChart')
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      width = $(element[0]).parent().width() - margin.left - margin.right ;
+      svg = d3.select(element[0])
+        .append("svg")          
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .attr('class','barChart')
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 
@@ -515,7 +515,7 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
-  svg.append("path")
+svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
       .attr("d", ymedian);
@@ -523,8 +523,13 @@ if(scope.d3opts.elementType!=='part')
       .datum(data)
       .attr("class", "meanLine")
       .attr("d", ymean);
+
+var midBox = svg.append("g")
+                .attr('class','midBox')
+                .attr("transform", "translate("+width*4/5+",00)");
   
-  var legend = svg.selectAll(".legend")
+  
+  var legend = midBox.selectAll(".legend")
       .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
       .enter().append("g")
       .attr("class", "legend")
@@ -533,15 +538,15 @@ if(scope.d3opts.elementType!=='part')
 
 
 legend.append("text")
-    .attr("x", width - 10)
-    .attr("y", -15)
+    .attr("x", 0)
+    .attr("y", 0)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function (d) {return d.text;});
 
 legend.append("rect")
-    .attr("x", width - 90)
-    .attr("y", -15)
+    .attr("x", 10)
+    .attr("y", 0)
     .attr("width", 30)
     .attr("height", 3)    
     .style("fill", function (d) {return d.color;});
@@ -716,11 +721,13 @@ svg.append("g").selectAll("g.linklabelholder")
 }
 
  scope.$watch(function(){
+  if(typeof scope.data ==='undefined') return;
             width = $(element[0]).parent().width();     
             return width 
           }, resize);
 
     function resize(){
+      if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
@@ -730,6 +737,7 @@ svg.append("g").selectAll("g.linklabelholder")
     }
 
 scope.$watch('data', function(){
+  if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
@@ -739,6 +747,7 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
+  if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
               scope.renderNodes(scope.data, scope.d3opts.issueCode)
             else 
@@ -1071,11 +1080,13 @@ svg.append("g").selectAll("g.linklabelholder")
       .attr("dy",  function(d) {return ((classe=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
 }
 scope.$watch(function(){
+  
             width = $(element[0]).parent().width();     
             return width 
           }, resize);
 
     function resize(){
+      if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
@@ -1086,6 +1097,7 @@ scope.$watch(function(){
     
 
 scope.$watch('data', function(){
+  if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
@@ -1095,6 +1107,7 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
+  if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
               scope.renderNodes(scope.data, scope.d3opts.issueCode)
             else 
@@ -1244,6 +1257,7 @@ legend.append("rect")
 
 
 scope.$watch('data', function(){
+  if(typeof scope.data ==='undefined') return;
 
               scope.render(scope.data);
           }, true);  
@@ -1448,7 +1462,8 @@ svg.append("g").selectAll("g.linklabelholder")
 
 
    scope.$watch('data', function(){  
-    if(typeof scope.data!=='undefined')
+    if(typeof scope.data ==='undefined') return;
+    
               scope.renderGlobal(scope.data);
               
           }, true);  
