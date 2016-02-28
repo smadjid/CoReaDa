@@ -478,13 +478,17 @@ if(scope.d3opts.elementType!=='part')
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })
             .attr("width", x.rangeBand())
-            .on("click", function(d) {  console.log(d.route);scope.loadURL()(d.route)  })
+            .on("click", function(d) {  
+              //console.log(d.route);scope.loadURL()(d.route)  
+              if("#"+d.route!==window.location.hash)
+               window.location.hash = "#"+d.route
+            })
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
           bars
               .transition()
-              .duration(500)
+              .duration(0)
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
               .attr('stroke', 'white')
@@ -823,15 +827,15 @@ if(scope.d3opts.elementType!=='part')
             .attr("width", x.rangeBand())
             .on("click", function(d) {  
               //console.log(d.route);scope.loadURL()(d.route)  
-              if("#"+d.route===window.location.hash)
-              alert(window.location.hash)
+              if("#"+d.route!==window.location.hash)
+               window.location.hash = "#"+d.route
             })
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
           bars
               .transition()
-              .duration(500)
+              .duration(0)
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
               .attr('stroke', 'white')
@@ -1158,13 +1162,17 @@ var barChart = function(scope, element, title){
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })
             .attr("width", x.rangeBand())
-            .on("click", function(d) {  console.log(d.route);scope.loadURL()(d.route)  })
+            .on("click", function(d) {  
+              //console.log(d.route);scope.loadURL()(d.route)  
+              if("#"+d.route!==window.location.hash)
+               window.location.hash = "#"+d.route
+            })
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
           bars
               .transition()
-              .duration(500)
+              .duration(0)
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
               .attr('stroke', 'white')

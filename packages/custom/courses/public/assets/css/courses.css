@@ -1498,6 +1498,9 @@ marker#arrow {
   stroke-width: 2px;
 }
 
+.bar{
+  cursor: pointer;
+}
 .barChart text {
   font: 10px sans-serif;
   pointer-events: none;
