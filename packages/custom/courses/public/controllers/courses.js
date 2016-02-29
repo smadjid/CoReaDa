@@ -52,6 +52,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.topElementSelector ='tomes',
       $scope.statSelector ='visits';
       $scope.sectionPstatSelector = 'Actions_nb';
+      $scope.studiedPart = ''
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -377,21 +378,23 @@ var taskIndicator =regExp.indicator;
   if(arr.length>=5)   factId =  arr[4] ;
 
 if(tomeId ==0){
-route =route+'/'+taskId;
+route =route+'/0/'+taskId;
 }
 else
   if(chapterId ==0){
-    route =route+'/'+tomeId+'/'+taskId;
+    route =route+'/'+tomeId+'/0/'+taskId;
+    scope ='tome';
   }
   else
     if(partId ==0){
-      route = route+'/'+tomeId+'/'+chapterId+'/'+taskId;
+      route = route+'/'+tomeId+'/'+chapterId+'/0/'+taskId;
       scope ='chapter';
     }
     else
       {
+
         if(factId ==0){
-          route = route+'/'+tomeId+'/'+chapterId+'/'+partId+'/'+taskId;
+          route = route+'/'+tomeId+'/'+chapterId+'/'+partId+'/0/'+taskId;
           scope ='part';
         }
         else{
@@ -707,21 +710,25 @@ var addTask = function(route,params) {
 var  deleteTask = function(params) {
         if(params.scope =='course')
           return $http.delete('/api/course/tasks/delete/'+params.route);  
-        if(params.scope =='partie')
+        if(params.scope =='tome')
           return $http.delete('/api/tome/tasks/delete/'+params.route);  
-        if(params.scope =='chapitre')
+        if(params.scope =='chapter')
           return $http.delete('/api/chapter/tasks/delete/'+params.route);  
-        if(params.scope =='section')
+        if(params.scope =='part')
+          return $http.delete('/api/part/tasks/delete/'+params.route);  
+        if(params.scope =='fact')
           return $http.delete('/api/part/tasks/delete/'+params.route);  
       };
-var editTask = function(params, task) {        
+var editTask = function(params, task) { 
         if(params.scope =='course')          
           return $http.post('/api/course/tasks/edit/'+params.route, task);  
-        if(params.scope =='partie')
+        if(params.scope =='tome')
           return $http.post('/api/tome/tasks/edit/'+params.route, task);  
-        if(params.scope =='chapitre')
+        if(params.scope =='chapter')
           return $http.post('/api/chapter/tasks/edit/'+params.route, task);  
-        if(params.scope =='section')
+        if(params.scope =='part')
+          return $http.post('/api/part/tasks/edit/'+params.route, task); 
+        if(params.scope =='fact')
           return $http.post('/api/part/tasks/edit/'+params.route, task);  
       };
 var getTasks = function(courseId, partId, todoData) {  
@@ -825,6 +832,7 @@ if(arr.length ==5) {
   fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0]; 
   partElt = $('.part_index[data-part ='+part.id+']'); 
    
+   $scope.studiedPart = part.id
      displayIssue(route, task, part, indicator);
      $scope.context.taskText ='(nouvelle tâche pour cette section)';
 }
@@ -1192,7 +1200,7 @@ var element = resolveRoute(url);
   $('.inspector-item[data-fact ="'+element._id+'"]').addClass('inspector-item-selected');
 
   showTasksAndFacts(element, indicator, task);
-  
+   
   
     $scope.barchartData = [element.d3];
   
@@ -1704,7 +1712,11 @@ var insertLocalTask =function(route, task){
   $scope.context.subtasks =computeAllTasks();
 
   //reloadURL();
-  loadURL(route+';'+task._id);
+
+  //console.log(route+';'+task._id+'@'+task.classof);
+  var rt = route+';'+task._id;
+  if(task.classof!=='ALL') rt = rt + '@'+task.classof
+  loadURL(rt);
  
 }
 
@@ -1720,8 +1732,10 @@ window.setTimeout(function() {
 
 }
 $scope.createTask =function($event){
-  $scope.formData =  "Nouvelle tâche"; 
+  $scope.formData =  "Nouvelle tâche ("+"Sec. "+$scope.studiedPart+")"; 
 $('#taskInput').focus();  
+var element = resolveRoute($($event.currentTarget).attr('href'));
+
   $scope.context.route = $($event.currentTarget).attr('href');
   
 window.setTimeout(function() {

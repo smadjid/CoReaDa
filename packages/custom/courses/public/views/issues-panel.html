@@ -10,7 +10,7 @@
   <uib-accordion close-others="oneAtATime" >
    <uib-accordion-group is-open="status.open" class='inspector-issue'>
       <uib-accordion-heading>
-      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  <button class="btn btn-primary btn-xs pull-right " ng-click="createTask($event);" onclick="  document.getElementById('form-controlA').click()" href={{fact.route}}><span class="glyphicon glyphicon-plus"></span> Nouvelle tâche</button>
+      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  <button class="btn btn-primary btn-xs pull-right " ng-click="createTask($event);" onclick="  document.getElementById('form-controlA').click()" href={{fact.route}}><span class="glyphicon glyphicon-plus"></span>Ajouter une tâche</button>
       </uib-accordion-heading>
       <table style="table-layout: fixed;">
       <td style="width: 50%">
@@ -28,7 +28,7 @@
       <uib-accordion-heading >
       <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
       
-      </i> <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)" onclick="  document.getElementById('form-controlA').click()" data-path={{fact.route}}><span class="glyphicon glyphicon-ok" ></span>Comme tâche</button> 
+      </i> <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)" onclick="  document.getElementById('form-controlA').click()" data-path={{fact.route}}><span class="glyphicon glyphicon-ok" ></span>Définir comme tâche</button> 
       </uib-accordion-heading>
       {{fact.suggestion_content}}
     </uib-accordion-group>

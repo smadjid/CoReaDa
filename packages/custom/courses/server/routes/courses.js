@@ -13,12 +13,13 @@ module.exports = function(Courses, app) {
 
 
   app.route('/api/tasks/add/:courseId/:tomeId/:chapterId/:partId/:factId')
-      .post(courses.addTodo);
-  
+      .post(courses.addTodo);  
   app.route('/api/course/tasks/edit/:courseId/:factId/:todoId')
       .post(courses.editCourseTodo);
-    app.route('/api/chapter/tasks/edit/:courseId/:tomeId/:factId/:todoId')
+
+    app.route('/api/tome/tasks/edit/:courseId/:tomeId/:factId/:todoId')
       .post(courses.editTomeTodo);
+      
     app.route('/api/chapter/tasks/edit/:courseId/:tomeId/:chapterId/:factId/:todoId')
       .post(courses.editChapterTodo);
     app.route('/api/part/tasks/edit/:courseId/:tomeId/:chapterId/:partId/:factId/:todoId')
@@ -26,7 +27,7 @@ module.exports = function(Courses, app) {
 
     app.route('/api/course/tasks/delete/:courseId/:factId/:todoId')
       .delete(courses.removeCourseTodo);
-    app.route('/api/chapter/tasks/delete/:courseId/:tomeId/:factId/:todoId')
+    app.route('/api/tome/tasks/delete/:courseId/:tomeId/:factId/:todoId')
       .delete(courses.removeTomeTodo);
     app.route('/api/chapter/tasks/delete/:courseId/:tomeId/:chapterId/:factId/:todoId')
       .delete(courses.removeChapterTodo);

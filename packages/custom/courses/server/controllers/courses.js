@@ -182,7 +182,7 @@ module.exports = function(Courses) {
         removePartTodo:function(req, res) {
        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");    
-            var _tome = _course.chapters.id(req.params.chapterId);           
+            var _tome = _course.tomes.id(req.params.tomeId);           
             var _chapter = _tome.chapters.id(req.params.chapterId); 
             var _part = _chapter.parts.id(req.params.partId);
             if(req.params.factId != 0){
