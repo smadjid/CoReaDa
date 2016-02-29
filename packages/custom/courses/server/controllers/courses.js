@@ -22,99 +22,12 @@ module.exports = function(Courses) {
                 next();
             });
         },
-        /**
-         * Create an course
-         */
-        create: function(req, res) {
-            var course = new Course(req.body);
-            course.user = req.user;
-
-            course.save(function(err) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot save the course'
-                    });
-                }
-
-                Courses.events.publish({
-                    action: 'created',
-                    user: {
-                        name: req.user.name
-                    },
-                    url: config.hostname + '/courses/' + course._id,
-                    name: course.title
-                });
-
-                res.json(course);
-            });
-        },
-        /**
-         * Update an course
-         */
-        update: function(req, res) {
-            var course = req.course;
-
-            course = _.extend(course, req.body);
-
-
-            course.save(function(err) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot update the course'
-                    });
-                }
-
-                Courses.events.publish({
-                    action: 'updated',
-                    user: {
-                        name: req.user.name
-                    },
-                    name: course.title,
-                    url: config.hostname + '/courses/' + course._id
-                });
-
-                res.json(course);
-            });
-        },
-        /**
-         * Delete an course
-         */
-        destroy: function(req, res) {
-            var course = req.course;
-
-
-            course.remove(function(err) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot delete the course'
-                    });
-                }
-
-                Courses.events.publish({
-                    action: 'deleted',
-                    user: {
-                        name: req.user.name
-                    },
-                    name: course.title
-                });
-
-                res.json(course);
-            });
-        },
+        
+       
         /**
          * Show a course
          */
         show: function(req, res) {
-
-         /*   Courses.events.publish({
-                action: 'viewed',
-                user: {
-                    name: req.user.name
-                },
-                name: req.course.title,
-                url: config.hostname + '/courses/' + req.course._id
-            });*/
-
             res.json(req.course);
         },
         /**

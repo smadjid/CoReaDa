@@ -1,9 +1,9 @@
 {
   "name": "courses",
   "version": "0.0.1",
-  "description": "Courses example package",
+  "description": "Courses",
   "author": {
-    "name": "Linnovate"
+    "name": "Madjid SADALLAH"
   },
   "mean": "0.4.x",
   "engines": {

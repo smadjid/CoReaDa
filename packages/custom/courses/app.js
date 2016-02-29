@@ -11,29 +11,11 @@ var Courses = new Module('courses');
  * All MEAN packages require registration
  * Dependency injection is used to define required modules
  */
-Courses.register(function(app, auth, database, swagger) {
-
-  //We enable routing. By default the Package Object is passed to the routes
+Courses.register(function(app, auth, database) {
   Courses.routes(app, auth, database);
 
-  
-
-  
-  //We are adding a link to the main menu for all authenticated users
- /* Courses.menus.add({
-    'roles': ['authenticated'],
-    'title': 'Courses',
-    'link': 'all courses'
-  });*/
- 
 
 
-  Courses.events.defaultData({
-    type: 'post',
-    subtype: 'course'
-  });
-
-  
 
   Courses.aggregateAsset('js',"../lib/d3/d3.min.js");
   
@@ -67,9 +49,7 @@ Courses.register(function(app, auth, database, swagger) {
         //you now have the settings object
     });
 
-  // Only use swagger.add if /docs and the corresponding files exists
-  swagger.add(__dirname);
-
+  
   Courses.angularDependencies(['xeditable','perfect_scrollbar']);
 
 
