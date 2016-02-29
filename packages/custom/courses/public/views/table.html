@@ -1,6 +1,6 @@
     <thead>
         <tr class='tomes-header'>
-        <th role="button" ng-click='resetPath();goHome()'><span class="glyphicon glyphicon-home" ></span></th>         
+        <th role="button" ng-click='resetPath();goHome()' ng-mouseover="triggerHover(null)"><span class="glyphicon glyphicon-home" ></span></th>         
             <th role='button' ng-click='triggerClick($event)' class="tome_index" ng-repeat="tome in course.tomes"  colspan={{tome.parts_count}} ng-mouseover="triggerHover($event)" data-part={{tome.id}} data-path={{tome.route}}>
               <span class="display-tome-info"  > {{tome.title}}</span>
             </th>  

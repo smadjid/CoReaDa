@@ -9,23 +9,23 @@
     <div>
     <br/>
         <ul ng-show="statSelector=='visits'">
-            <li>Le cours est visité par {{context.stats.reading.nusers}} lecteurs. 
-            <li>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de {{context.stats.achievement.mean}}%. Le taux médian est de {{context.stats.achievement.median}}%.
-            <li>Le temps moyen de la lecture du cours est de 56 minutes.            
+            <li class='statElement'>Le cours est visité par {{context.stats.reading.nusers}} lecteurs. 
+            <li class='statElement'>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de {{context.stats.achievement.mean}}%. Le taux médian est de {{context.stats.achievement.median}}%.
+            <li class='statElement'>Le temps moyen de la lecture du cours est de 56 minutes.            
             
         </ul>
         <ul ng-show="statSelector=='rs'">
-            <li>En moyenne, chaque lecteur consacre 2 séances de lecture pour ce cours. 
-            <li>Une séance de lecture est en moyenne composée de {{context.stats.rs.mean_nparts}} sections.
-            <li>Une séance de lecture dure en moyenne {{context.stats.rs.mean_duration}} minutes.
+            <li class='statElement'>En moyenne, chaque lecteur consacre 2 séances de lecture pour ce cours. 
+            <li class='statElement'>Une séance de lecture est en moyenne composée de {{context.stats.rs.mean_nparts}} sections.
+            <li class='statElement'>Une séance de lecture dure en moyenne {{context.stats.rs.mean_duration}} minutes.
         </ul>
         <ul ng-show="statSelector=='issue'">
-            <li>Au total, {{context.stats.issues.all}} problèmes de lecture ont été détectés, réparties comme suit:
+            <li class='statElement'>Au total, {{context.stats.issues.all}} problèmes de lecture ont été détectés, réparties comme suit:
             <ul>
-                <li>{{context.stats.issues.readings}} problèmes relatifs à la lecture
-                <li>{{context.stats.issues.rereading}} problèmes relatifs à la relecture
-                <li>{{context.stats.issues.transition}} problèmes relatifs à la navigation
-                <li>{{context.stats.issues.stop}} problèmes relatifs aux arrêts
+                <li class='statElement'>{{context.stats.issues.readings}} problèmes relatifs à la lecture
+                <li class='statElement'>{{context.stats.issues.rereading}} problèmes relatifs à la relecture
+                <li class='statElement'>{{context.stats.issues.transition}} problèmes relatifs à la navigation
+                <li class='statElement'>{{context.stats.issues.stop}} problèmes relatifs aux arrêts
             </ul>
 
 
@@ -45,7 +45,6 @@
 
          
 </div>
-
     <div class="btn-group" style="width:100%; text-align:center; padding-left:5%;" >
      
         <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">Visites</label>
@@ -54,43 +53,44 @@
     </div>  
 
     <div ng-show="topElementSelector=='tomes'">    
+
         <ol ng-show="topSelector=='Actions_nb'">
-        <li ng-repeat="top in context.Tops.Tomes.Actions_nb">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Actions_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
-        <li ng-repeat="top in context.Tops.Tomes.Readers">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Readers" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='RS_nb'">
-        <li ng-repeat="top in context.Tops.Tomes.RS_nb">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.RS_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
     </div>
 
     <div ng-show="topElementSelector=='chapters'">    
         <ol ng-show="topSelector=='Actions_nb'">
-        <li ng-repeat="top in context.Tops.Chapters.Actions_nb">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Actions_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
-        <li ng-repeat="top in context.Tops.Chapters.Readers">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Readers" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='RS_nb'">
-        <li ng-repeat="top in context.Tops.Chapters.RS_nb">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.RS_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
     </div>
     <div ng-show="topElementSelector=='sections'">    
         <ol ng-show="topSelector=='Actions_nb'">
-        <li ng-repeat="top in context.Tops.Sections.Actions_nb">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Actions_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
-        <li ng-repeat="top in context.Tops.Sections.Readers">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Readers" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='RS_nb'">
-        <li ng-repeat="top in context.Tops.Sections.RS_nb">{{top}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.RS_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
         </ol>
     </div>
 </div>
