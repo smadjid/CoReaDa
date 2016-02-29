@@ -9,6 +9,10 @@ angular.module('mean.courses')
 
 
 
+var stopHover = function(url){ 
+  $('#divHoverOverlay').css('visibility','hidden');
+ }
+ 
 
 var app =angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope','$stateParams', '$location', '$http','Global', 'Courses', 'MeanUser', 'Circles','$http','$uibModal',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, MeanUser, Circles) {
@@ -991,13 +995,11 @@ if ($event!==null)  url = $($event.currentTarget).attr('data-path');
 $scope.hoverElements(msg)        
       });
 
- $scope.stopHover = function(url){ 
-  $('#divHoverOverlay').css('visibility','hidden');
- }
+  $scope.stopHover =  stopHover();
 $scope.hoverElements = function(url){
 
    var currentUrl = location.hash.slice(1);
-   if(url===currentUrl) {$scope.stopHover();return;}
+   if(url===currentUrl) {stopHover();return;}
  
     var element = resolveRoute(url); 
    

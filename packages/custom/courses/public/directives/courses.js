@@ -486,6 +486,7 @@ if(scope.d3opts.elementType!=='part')
             .on("mouseover", function(d) {  
              scope.$emit('hover',d.route)
             })
+            .attr('onmouseout','stopHover()' )
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
@@ -845,6 +846,7 @@ if(scope.d3opts.elementType!=='part')
              .on("mouseover", function(d) {  
               scope.$emit('hover',d.route)
             })
+             .attr('onmouseout','stopHover()' )
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
@@ -1188,9 +1190,8 @@ var barChart = function(scope, element, title){
             })
              .on("mouseover", function(d) {  
               scope.$emit('hover',d.route)
-              //if("#"+d.route!==window.location.hash)
-               //window.location.hash = "#"+d.route
             })
+             .attr('onmouseout','stopHover()' )
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
