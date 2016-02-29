@@ -483,6 +483,9 @@ if(scope.d3opts.elementType!=='part')
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
+            .on("mouseover", function(d) {  
+             scope.$emit('hover',d.route)
+            })
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
@@ -839,6 +842,9 @@ if(scope.d3opts.elementType!=='part')
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
+             .on("mouseover", function(d) {  
+              scope.$emit('hover',d.route)
+            })
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
@@ -1179,6 +1185,11 @@ var barChart = function(scope, element, title){
               //console.log(d.route);scope.loadURL()(d.route)  
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
+            })
+             .on("mouseover", function(d) {  
+              scope.$emit('hover',d.route)
+              //if("#"+d.route!==window.location.hash)
+               //window.location.hash = "#"+d.route
             })
             .append("title") .text(function(d) {return d.title;   });;
 
@@ -1698,7 +1709,6 @@ if(scope.d3opts.issueCode === 'StopRecShift')
 //if(scope.d3opts.type === 'Transition')
    // arcChart(scope, element);
 
-          
         }
     };
   }

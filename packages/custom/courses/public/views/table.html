@@ -14,7 +14,7 @@
         </tr>
          <tr class='parts-header'>
          <th><b>Sections du cours</b></th>         
-            <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts" data-part={{part.id}} data-path={{part.route}} >
+            <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts" ng-mouseover="triggerHover($event)" data-part={{part.id}} data-path={{part.route}} >
 
                 <span class="display-part-info" uib-tooltip={{part.title}}>{{part.id}}</span>
                 <br/>
@@ -39,12 +39,12 @@
 
         </tr>
         <tr>
-            <th role='button' class="indicators-header" data-indicator='Rereading' ng-click='triggerClick($event)' data-path='@Rereading'>
+            <th role='button' class="indicators-header" data-indicator='Rereading' ng-click='triggerClick($event)' data-path='@Rereading' >
                 <i class="fa fa-repeat  fa-2x"></i>
                 <span class="fat">Relecture</span>
             </th>
 
-            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Rereading' ng-click='triggerClick($event)' data-path={{part.route}}@Rereading>
+            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Rereading' ng-click='triggerClick($event)'  data-path={{part.route}}@Rereading>
                     <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};' class='display-part-issues' > 
                         {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
                     </span>
