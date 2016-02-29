@@ -454,7 +454,7 @@ angular.forEach($scope.course.tomes, function(tome) {
     angular.forEach(chapter.parts, function(part) {
       part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
       partsData.push({
-                        'title':part.title+' (Section '+part.id+' )',
+                        'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
                         'Actions_nb':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
                         'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
