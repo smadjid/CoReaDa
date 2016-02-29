@@ -55,42 +55,42 @@
     <div ng-show="topElementSelector=='tomes'">    
 
         <ol ng-show="topSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Actions_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Actions_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Readers" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Readers" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='RS_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.RS_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.RS_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
     </div>
 
     <div ng-show="topElementSelector=='chapters'">    
         <ol ng-show="topSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Actions_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Actions_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Readers" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Readers" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='RS_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.RS_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.RS_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
     </div>
     <div ng-show="topElementSelector=='sections'">    
         <ol ng-show="topSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Actions_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Actions_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Readers" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Readers" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='RS_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.RS_nb" data-path={{top.route}} ng-mouseover="triggerHover($event)">{{top.title}} 
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.RS_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
     </div>
 </div>
