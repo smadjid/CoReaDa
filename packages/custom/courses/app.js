@@ -15,8 +15,6 @@ Courses.register(function(app, auth, database) {
   Courses.routes(app, auth, database);
 
 
-
-
   Courses.aggregateAsset('js',"../lib/d3/d3.min.js");
   
 
@@ -32,7 +30,7 @@ Courses.register(function(app, auth, database) {
   Courses.aggregateAsset('css',"../lib/perfect-scrollbar/min/perfect-scrollbar.min.css");
   Courses.aggregateAsset('js',"../lib/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js");
 
-  Courses.aggregateAsset('js',"../lib/d3/box.js");
+ 
 
 
   /*
@@ -49,6 +47,7 @@ Courses.register(function(app, auth, database) {
         //you now have the settings object
     });
 
+ Courses.aggregateAsset('js',"../lib/d3/box.js");
   
   Courses.angularDependencies(['xeditable','perfect_scrollbar']);
 

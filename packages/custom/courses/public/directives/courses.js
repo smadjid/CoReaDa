@@ -78,8 +78,6 @@ angular.module('mean.courses')
            min = Math.min.apply(Math, data); 
            
            data = [data];
-          
-           //data = [[1,5,8,9,3,6,7,10]];
 
           chart.domain([min, max]);
 
@@ -483,10 +481,16 @@ if(scope.d3opts.elementType!=='part')
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
-            .on("mouseover", function(d) {  
-             scope.$emit('hover',d.route)
-            })
-            .attr('onmouseout','stopHover()' )
+            .on("mouseover", function (d) {
+                  d3.select(this).attr("stroke-width", '3')
+                  d3.select(this).attr("stroke", '#4169E1')
+                  scope.$emit('hover',d.route)
+              }) 
+              .on("mouseout", function (d) {
+                  d3.select(this).attr("stroke", 'none')
+                  
+                  stopHover();
+              })  
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
@@ -562,9 +566,22 @@ legend.append("rect")
  
 
 scope.renderNodes=function(data){
-  var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}    
-       svg.selectAll("*").remove();
-  svg.attr('class','nodeChart')
+  
+  var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
+  var gap = parseInt(width /6) ;
+  var radius = gap / 4;
+  var height = gap * 2;
+
+  var   graph={nodes:[], links:[]}    
+  
+  
+  d3.select(element[0]).selectAll("*").remove();
+
+  svg = d3.select(element[0])
+          .append("svg")          
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('class','nodeChart');
 
   var classe = scope.d3opts.issueCode;  
    
@@ -652,9 +669,9 @@ svg.append("defs").selectAll('marker')
 
   var  linkArc=function(d) {
        var x1 = d.source.x,
-          y1 = d.source.y - 20,
+          y1 = d.source.y - radius,
           x2 = d.target.x ,
-          y2 = d.target.y - 30,
+          y2 = d.target.y - radius - 10,
           dx = x2 - x1,
           dy = y2 - y1,
           dr = Math.sqrt(dx * dx + dy * dy),
@@ -669,10 +686,10 @@ svg.append("defs").selectAll('marker')
 
           // Self edge.
           if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
-             x1 = d.source.x - 20,
-             x2 = d.target.x + 20,
-            y1 = d.source.y + 15,
-            y2 = d.target.y + 15,
+             x1 = d.source.x - radius/2,
+             x2 = d.target.x + radius/2,
+            y1 = d.source.y + radius,
+            y2 = d.target.y + radius,
             dx = x2 - x1,
           dy = y2 - y1, 
           dx = x2 - x1,
@@ -843,10 +860,17 @@ if(scope.d3opts.elementType!=='part')
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
-             .on("mouseover", function(d) {  
-              scope.$emit('hover',d.route)
-            })
-             .attr('onmouseout','stopHover()' )
+            .on("mouseover", function (d) {
+                  d3.select(this).attr("stroke-width", '3')
+                  d3.select(this).attr("stroke", '#4169E1')
+                  scope.$emit('hover',d.route)
+              }) 
+              .on("mouseout", function (d) {
+                  d3.select(this).attr("stroke", 'none')
+                  
+                  stopHover();
+              })             
+           
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
@@ -919,16 +943,27 @@ legend.append("rect")
         };
 
 scope.renderNodes = function(data, classe) {
+var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
+  var gap = parseInt(width /6) ;
+  var radius = gap / 4;
+  var height = gap * 2;
+
+  var   graph={nodes:[], links:[]}    
+  
+  
+  d3.select(element[0]).selectAll("*").remove();
+
+  svg = d3.select(element[0])
+          .append("svg")          
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('class','nodeChart');
 
   var elementID = parseInt(scope.d3opts.elementId);
   var elementIDTxt = (scope.d3opts.elementType==='chapter')? 'CH':'P';
   
 
-  svg.selectAll("*").remove();
-  svg.attr('class','nodeChart')
-  var color = d3.scale.category10();
-  var  radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}
-
+  
 
  var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
  globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
@@ -1125,7 +1160,7 @@ scope.$watch('d3opts', function(){
 
 
 
-var barChart = function(scope, element, title){   
+var barChart = function(scope, element, title){    
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 580 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
@@ -1176,7 +1211,7 @@ var barChart = function(scope, element, title){
               .attr("dy", ".71em")
               .style("text-anchor", "end");
 //              .text("Valeur");
-              
+               
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
             .append("rect")
@@ -1188,10 +1223,17 @@ var barChart = function(scope, element, title){
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
-             .on("mouseover", function(d) {  
-              scope.$emit('hover',d.route)
-            })
-             .attr('onmouseout','stopHover()' )
+             .on("mouseover", function (d) {
+                  d3.select(this).attr("stroke-width", '3');
+                  d3.select(this).attr("stroke", '#4169E1');
+
+                  scope.$emit('hover',d.route)
+              }) 
+              .on("mouseout", function (d) {
+                  d3.select(this).attr("stroke", 'none')
+                  
+                  stopHover();
+              })  
             .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
