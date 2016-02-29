@@ -979,7 +979,7 @@ $scope.triggerClick =function($event){
  }
 
  $scope.triggerHover =function($event){ 
-  console.log($($event.currentTarget).attr('data-path'));
+  
 var url = $($event.currentTarget).attr('data-path');
   $scope.hoverElements(url); 
   
@@ -988,10 +988,14 @@ var url = $($event.currentTarget).attr('data-path');
  $scope.$on("hover", function (e, msg) {
 $scope.hoverElements(msg)        
       });
+
+ $scope.stopHover = function(url){ 
+  $('#divHoverOverlay').css('visibility','hidden');
+ }
 $scope.hoverElements = function(url){
 
    var currentUrl = location.hash.slice(1);
-   if(url===currentUrl) {return;}
+   if(url===currentUrl) {$scope.stopHover();return;}
  
     var element = resolveRoute(url); 
    
