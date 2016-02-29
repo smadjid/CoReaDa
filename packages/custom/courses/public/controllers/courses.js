@@ -862,6 +862,7 @@ if(arr.length ==5) {
   
   $('.tableScroller').scroll();
 
+
 }
 
 var scale = chroma.scale('OrRd');
@@ -1205,7 +1206,9 @@ var element = resolveRoute(url);
     $scope.barchartData = [element.d3];
   
  
-  
+$("#inspectorScroller").scrollTop(0);
+$("#inspectorScroller").perfectScrollbar('update');
+
 
   
   }
