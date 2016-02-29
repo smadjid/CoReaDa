@@ -997,12 +997,12 @@ text-decoration:none!important;
   cursor: pointer;
 }
 .inspector-issue span, .inspector-issue span:hover{
-  font-size: 14px;
+  font-size: 17px;
   font-weight: normal;
   cursor: default;
 }
 .inspector-hint span,.inspector-hint span:hover{
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   cursor: default;
 }
@@ -1674,5 +1674,7 @@ hr {
     font-style: oblique
 }
 
-
+.factDescription, .suggestDescription{
+  font-size: 16px;
+}
 
