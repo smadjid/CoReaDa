@@ -49,7 +49,9 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
       $scope.topSelector = 'Actions_nb';
+      $scope.flopSelector = 'Actions_nb';
       $scope.topElementSelector ='tomes',
+      $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';
       $scope.sectionPstatSelector = 'Actions_nb';
       $scope.studiedPart = ''
@@ -81,6 +83,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $scope.context.d3 = ComputeGlobalVisuData();
     $scope.context.d3.stats =courseFactsStat();
     $scope.context.Tops = computeTopParts();
+    $scope.context.Flops = computeFlopParts();
     $scope.context.stats = computeCourseStats();
 
    //console.log($scope.context.d3)
@@ -111,7 +114,7 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
   
   switch($scope.sectionPstatSelector) {
     case "Actions_nb":
-        $scope.graphTitle ='Distribution selon le nombre d\'observations'
+        $scope.graphTitle ='Distribution selon le nombre de visites'
         break;
     case 'RS_nb':
         $scope.graphTitle ='Distribution selon le nombre de sessions de lecture'
@@ -120,16 +123,16 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
         $scope.graphTitle ='Distribution selon la durée moyenne de lecture (en minutes)'
         break;
     case 'Rereadings':
-        $scope.graphTitle ='Distribution selon le nombre de relecteurs'
+        $scope.graphTitle ='Distribution selon le nombre de relectures'
         break;
     case 'rupture':
         $scope.graphTitle ='Distribution selon le nombre des arrêts de lecture'
         break;
     case 'provenance':
-        $scope.graphTitle ='Distribution des classes de provenance'
+        $scope.graphTitle ='Distribution selon les sections de provenance'
         break;
     case 'destination':
-        $scope.graphTitle ='Distribution des classes de destination'
+        $scope.graphTitle ='Distribution selon les sections de destination'
         break;
 }
 });
@@ -185,18 +188,24 @@ return [
 
   
 var completeCourseParts =function(course, courseParts, courseChapters){
+  var base_url = "https://openclassrooms.com/courses";
+  course.url = base_url+'/'+course.properties.filter(function(value){ return value.property === 'slug'})[0].value
   var course_route = course._id;
   angular.forEach(course.tomes, function(tome) {
     tome.parts_count = 0;
-    tome.route =course_route+','+tome._id
+    tome.route =course_route+','+tome._id;
+    tome.url = course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
     angular.forEach(tome.chapters, function(chapter) { 
       chapter.parts_count = 0;
-      chapter.route =tome.route+','+chapter._id
+      chapter.route =tome.route+','+chapter._id;
+      chapter.url = tome.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value
       angular.forEach(chapter.parts, function(part) {
         part.parent = chapter._id;
         tome.parts_count = tome.parts_count + 1;
         chapter.parts_count = chapter.parts_count + 1;
         part.route =chapter.route+','+part._id;
+        part.url = chapter.url+'/'+'#/id/r-'+part.id;
+        //part.properties.filter(function(value){ return value.property === 'slug'})[0].value
         angular.forEach(part.facts,function(fact){
           fact.route =part.route+','+fact._id;
           fact.d3 =[];
@@ -209,6 +218,8 @@ var completeCourseParts =function(course, courseParts, courseChapters){
       courseChapters.push( chapter );
     });
   });
+
+  
 }
 
 
@@ -510,6 +521,84 @@ tomesData = {'Actions_nb':topActions_nb, 'Readers':topReaders,'RS_nb':topRS_nb};
 
 return{'Sections':partsData, 'Chapters':chapsData, 'Tomes':tomesData}
 }
+
+var computeFlopParts =function(){ 
+ 
+var partsData =[], chapsData =[], tomesData =[];
+
+angular.forEach($scope.course.tomes, function(tome) {  
+      tome.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
+      tomesData.push({
+                        'title':tome.title,
+                        'route':tome.route,
+                        'Actions_nb':parseInt(tome.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'Readers':parseInt(tome.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
+                        'RS_nb':parseInt(tome.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                      })
+
+  angular.forEach(tome.chapters, function(chapter) {  
+    chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
+      chapsData.push({
+                        'title':chapter.title,
+                        'route':chapter.route,
+                        'Actions_nb':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
+                        'RS_nb':parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                      })
+
+    angular.forEach(chapter.parts, function(part) {
+      part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value
+      partsData.push({
+                        'title':part.title+' (Sec. '+part.id+' )',
+                        'route':part.route,
+                        'Actions_nb':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
+                        'RS_nb':parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                      })
+          
+                
+              
+    })                                 
+  })
+})
+
+partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_nb, y.Actions_nb);})
+var Actions_nb = partsData.slice(-3);
+var flopActions_nb =Actions_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
+var Readers = partsData.slice(-3);
+var flopReaders =Readers.map(function(o){return {'title':o.title, 'route':o.route}})
+partsData = partsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
+var RS_nb = partsData.slice(-3);
+var flopRS_nb =RS_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+partsData = {'Actions_nb':flopActions_nb, 'Readers':flopReaders,'RS_nb':flopRS_nb};
+
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Actions_nb, y.Actions_nb);})
+Actions_nb = chapsData.slice(-3);
+flopActions_nb =Actions_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
+Readers = chapsData.slice(-3);
+flopReaders =Readers.map(function(o){return {'title':o.title, 'route':o.route}})
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
+RS_nb = chapsData.slice(-3);
+flopRS_nb =RS_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+chapsData = {'Actions_nb':flopActions_nb, 'Readers':flopReaders,'RS_nb':flopRS_nb};
+
+tomesData = tomesData.sort(function(x, y){   return d3.descending(x.Actions_nb, y.Actions_nb);})
+Actions_nb = tomesData.slice(-3);
+flopActions_nb =Actions_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+tomesData = tomesData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
+Readers = tomesData.slice(-3);
+flopReaders =Readers.map(function(o){return {'title':o.title, 'route':o.route}})
+tomesData = tomesData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
+RS_nb = tomesData.slice(-3);
+flopRS_nb =RS_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+tomesData = {'Actions_nb':flopActions_nb, 'Readers':flopReaders,'RS_nb':flopRS_nb};
+console.log(tomesData);
+return{'Sections':partsData, 'Chapters':chapsData, 'Tomes':tomesData}
+}
+
+
 var computeAllTasks =function(){ 
  var tasks =angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
@@ -618,6 +707,7 @@ var computeAllFacts =function(element, indicator){
             });
     });
   $scope.context.inspector_title = "Partie: "+element.title +" - " +facts.length +" problèmes potentiels";
+  $scope.context.url = element.url
   }
 
   /******Chapter*******/
@@ -632,6 +722,7 @@ var computeAllFacts =function(element, indicator){
                  }                
     });
   $scope.context.inspector_title = "Chapitre: "+element.title +" - " +facts.length +" problèmes potentiels";
+  $scope.context.url = element.url
   }
   /******Part*******/
   if(type =='section'){
@@ -772,11 +863,6 @@ var loadContext = function(){
       {
         displayCourseInfos(indicator, task);
         $scope.context.taskText ='(nouvelle tâche globale)';
-/*
-        if(indicator ==='Readings') elementStatsChart(course);
-        if(indicator ==='Rereading') indicatorRereadingChart(course);
-        if(indicator ==='Stop') indicatorStopChart(course);
-        if(indicator ==='Transition') transitionStopChart(course);*/
     };
 
   /********************************hhhhhhhhhhhhhhhh***********/
@@ -1245,6 +1331,7 @@ var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text(
                 (indicator ==='Rereading')?'à la relecture':
                 (indicator ==='Transition')?'à la navigation' :'aux arrêts et reprises de la lecture';
      $scope.context.inspector_title = "Section: "+ part.title+' - '+nb+ txt ;
+     $scope.context.url = part.url
   showTasksAndFacts(element, indicator, task);
 
   $scope.inspectorShow = 'issue';
@@ -1411,7 +1498,8 @@ $scope.observedElt ={
     };    
 
 $scope.inspectorShow = 'section';
-$scope.context.inspector_title = "Section: "+element.title
+$scope.context.inspector_title = "Section: "+element.title;
+$scope.context.url = element.url;
 }
 
 var displayCourseInfos =function(indicator, task){ 
@@ -1419,6 +1507,7 @@ var displayCourseInfos =function(indicator, task){
   resetPath(); 
   
   $scope.context.inspector_title = "Cours: "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
+  $scope.context.url = $scope.course.url
     selectIndictor(indicator); 
 
 showTasksAndFacts($scope.course, indicator,task);
@@ -1539,6 +1628,7 @@ $scope.observedElt ={'type':'tome',
     }; 
 $scope.context.inspector_title = "Partie: "+element.title
 $scope.inspectorShow = 'component';
+$scope.context.url = element.url
 
 
     
@@ -1570,7 +1660,8 @@ var displayChapterInfos =function(partElt, task){
   })
 
 $scope.inspectorShow = 'component';
-$scope.context.inspector_title = "Chapitre: "+element.title
+$scope.context.inspector_title = "Chapitre: "+element.title;
+$scope.context.url = element.url;
 
 
 var times =[], users =[], rss =[], rereadings =[], stops =[];

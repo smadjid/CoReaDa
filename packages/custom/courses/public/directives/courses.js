@@ -110,287 +110,6 @@ angular.module('mean.courses')
 
 
 
-var globalProgressChart = function(scope, element, title){  
-    var pie=d3.layout.pie()
-            .value(function(d){return d})
-            .sort(null);
-
-    var w=250,h=250;
-    var svg=d3.select("#chart")
-            .append("svg")
-            .attr({
-                width:w,
-                height:h,
-                class:'shadow'
-            }).append('g')
-            .attr({
-                transform:'translate('+w/2+','+h/2+')'
-            });
-
-    var outerRadius=(w/2)-10;
-    var innerRadius=(w/2)-15;
-
-
-    var color = ['#B9B3B3','#404F70','white'];
-
-    var arc=d3.svg.arc()
-            .innerRadius(innerRadius)
-            .outerRadius(outerRadius)
-            .startAngle(0)
-            .endAngle(2*Math.PI);
-
-
-    var arcLine=d3.svg.arc()
-            .innerRadius(innerRadius)
-            .outerRadius(outerRadius)
-            .cornerRadius(20)
-            .startAngle(-0.05);
-
-    
-
-    var defs = svg.append("svg:defs");
-
-    var inset_shadow = defs.append("svg:filter")
-            .attr("id", "inset-shadow");
-
-    inset_shadow.append("svg:feOffset")
-            .attr({
-                dx:0,
-                dy:0
-            });
-
-    inset_shadow.append("svg:feGaussianBlur")
-            .attr({
-                stdDeviation:8,
-                result:'offset-blur'
-            });
-
-    inset_shadow.append("svg:feComposite")
-            .attr({
-                operator:'out',
-                in:'SourceGraphic',
-                in2:'offset-blur',
-                result:'inverse'
-            });
-
-    inset_shadow.append("svg:feFlood")
-            .attr({
-                'flood-color':'black',
-                'flood-opacity':1,
-                result:'color'
-            });
-
-    inset_shadow.append("svg:feComposite")
-            .attr({
-                operator:'in',
-                in:'color',
-                in2:'inverse',
-                result:'shadow'
-            });
-
-    inset_shadow.append("svg:feComposite")
-            .attr({
-                operator:'over',
-                in:'shadow',
-                in2:'SourceGraphic'
-            });
-
-    var pathBackground=svg.append('path')
-            .attr({
-                d:arc
-            })
-            .style({
-                fill:color[0],
-                filter:'url(#inset-shadow)'
-            });
-
-
-    var pathForeground=svg.append('path')
-            .datum({endAngle:0})
-            .attr({
-                d:arcLine
-            })
-            .style({
-                fill:color[1],
-                filter:'url(#inset-shadow)'
-            });
-    var circle=svg.append('circle')
-            .attr({
-                cx:0,
-                cy:0,
-                r:innerRadius
-            })
-            .style({
-                fill:color[2],
-                'fill-opacity':.5
-            });
-
-    var middleCount=svg.append('text')
-            .datum(0)
-            .text(function(d){
-                return d+'%';
-            })
-
-            .attr({
-                class:'middleText',
-                'text-anchor':'middle',
-                dy:27
-            })
-            .style({
-                fill:'#29384D',
-                'font-size':'80px'
-
-
-            });
-
-    var oldValue=0;
-    var arcTween=function(transition, newValue,oldValue) {
-        transition.attrTween("d", function (d) {
-            var interpolate = d3.interpolate(d.endAngle, ((2*Math.PI))*(newValue/100));
-
-            var interpolateCount = d3.interpolate(oldValue, newValue);
-            return function (t) {
-                d.endAngle = interpolate(t);
-                middleCount.text(Math.floor(interpolateCount(t))+'%');
-                return arcLine(d);
-            };
-        });
-    };
-    
-
-   scope.renderGlobal = function(courseData, attr){
-    
-          
-    var animate=function(){
-      var percent = parseInt(parseFloat(courseData[attr])+0.5);
-    var ratio=percent/100;
-
-        pathForeground.transition()
-                .duration(750)
-                .ease('cubic')
-                .call(arcTween,percent,oldValue);
-        oldValue=percent;
-        percent=(Math.random() * 60) + 20;
-       // setTimeout(animate,3000);
-    };
-
-    setTimeout(animate,50);
-  }
-
-  scope.$watch('data', function(){
-
-          if(typeof scope.data!=='undefined')
-
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
-          }, true);  
-  scope.$watch('d3opts', function(){
-
-          if(typeof scope.data!=='undefined')
-
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
-          }, true);  
-
-      }    
-        var globalBubbleChart = function(scope, element, title){  
-          var w = 500,
-          h = 500;
-         
-
-
-var svg = d3.select("body").append("svg:svg")
-    .attr("width", w)
-    .attr("height", h);
-
- scope.renderGlobal = function(data, classe) {  
-   svg.selectAll('g').remove();
-  svg.selectAll('line').remove();
-    
- var nodes = data,
-          links = [];
-
-
-for (i=0; i<5; i++) {
-
-    links.push({
-        source: nodes[i],
-        target: nodes[0]
-    });
-}
-
-
-
-
-var countLinks = function(n) {
-    var count = 0;
-    links.forEach(function(l) {
-        if (l.source === n || l.target === n) {
-            count++;
-        }
-    });
-
-    return count;
-}
-
-/////////////////////////////////////////////
-var force = d3.layout.force()
-    .nodes(nodes)
-    .links([])
-    .gravity(0.05)
-    .charge(function(d) {
-        return countLinks(d) * -50;     
-     })
-    .linkDistance(300)
-    .size([w, h]);
-
-
- var link = svg.selectAll(".link")
-        .data(links)
-        .enter().append("line")
-        .attr("class", "link")
-        .attr("stroke", "#CCC")
-        .attr("fill", "none");
-
- var node = svg.selectAll("circle.node")
-     .data(nodes)
-     .enter().append("g")
-     .attr("class", "node")
-     .call(force.drag);
-
-node.append("svg:circle")
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .attr("r", 50)
-    .style("fill", "#CCC")
-    .style("stroke", "#AAA")
-    .style("stroke-width", 1.5)
-
-node.append("text").text(function(d) { return d.indicator; })
-    .attr("x", -6)
-    .attr("y", 6);
-
-force.on("tick", function(e) {
-    node.attr("transform", function(d, i) {
-        return "translate(" + d.x + "," + d.y + ")"; 
-    });
-
-    link.attr("x1", function(d)   { return d.source.x; })
-        .attr("y1", function(d)   { return d.source.y; })
-        .attr("x2", function(d)   { return d.target.x; })
-        .attr("y2", function(d)   { return d.target.y; }) 
-});
-
-force.start();           
-}        
-
-scope.$watch('data', function(){
-
-          if(typeof scope.data!=='undefined')
-
-              scope.renderGlobal(scope.data, scope.d3opts.issueCode);
-          }, true);  
-         
-};
-        
 
 var globalCharts = function(scope, element){   
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
@@ -430,7 +149,8 @@ var globalCharts = function(scope, element){
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .ticks(10);
+            .ticks(10)
+            .tickFormat(d3.format("d"));
 
          if(scope.d3opts.elementType!=='part') 
             xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
@@ -594,8 +314,6 @@ scope.renderNodes=function(data){
   globalData = globalData.filter(function(e){ return e.elementType === 'course' })[0].transitions;
 
 
-
-
   var data = {
   'identity': parseInt(globalData.filter(function(e){ return e.property == classe+'_identity'; })[0].value),
   'next_p': parseInt(globalData.filter(function(e){ return e.property == classe+'_next_p'; })[0].value),
@@ -749,7 +467,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
     function resize(){
       if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
@@ -759,7 +477,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
 scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
@@ -811,7 +529,8 @@ scope.renderBars = function(globalData, classe) {
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .ticks(10);
+            .ticks(10)
+            .tickFormat(d3.format("d"));
 
         //Render graph based on 'data'
        
@@ -960,14 +679,15 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
           .attr('class','nodeChart');
 
   var elementID = parseInt(scope.d3opts.elementId);
-  var elementIDTxt = (scope.d3opts.elementType==='chapter')? 'CH':'P';
+  var elementIDTxt = (scope.d3opts.elementType==='chapter')? 'S':'S';
   
 
   
 
  var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
- globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
 
+ globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
+ console.log(globalData)
 
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
 
@@ -983,11 +703,18 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
 
   var datum =[] ;
   if(scope.d3opts.elementType==='part') 
-    if(elementID===1)
-    datum = [ 
-  {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
-  {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
-  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+    {if(elementID===1)
+        datum = [ 
+      {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
+      {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
+      {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+      else
+          datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+              {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
+              {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
+              {id: elementID+ 1,name:'next_p', value:data.next_p, color:'#008cba'}, 
+              {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+    }
   else
     datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
   {id: elementIDTxt+"-1",name:'precedent', value:data.precedent, color:'#008cba'}, 
@@ -1132,7 +859,7 @@ scope.$watch(function(){
 
     function resize(){
       if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
@@ -1143,7 +870,7 @@ scope.$watch(function(){
 
 scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
@@ -1185,7 +912,8 @@ var barChart = function(scope, element, title){
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .ticks(10);
+            .ticks(10)
+            .tickFormat(d3.format("d"));
 
         //Render graph based on 'data'
         scope.render = function(data) {
@@ -1681,7 +1409,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
 if(scope.d3opts.type === 'global') 
 {  
-if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
                       })  globalCharts(scope, element)
@@ -1695,7 +1423,7 @@ else
 if(scope.d3opts.type === 'inspector'){
   
 
-if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
+if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'Rereadings':'','Sequential_rereadings':'','Decaled_rereadings':'',
                       'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
                       })  inspectorCharts(scope, element,'titre')
@@ -1705,12 +1433,7 @@ if(scope.d3opts.issueCode in {'Actions_nb':'', 'q3.duration':'',
 
 }
 else
-if(scope.d3opts.type === 'indicator'){
 
-  globalProgressChart(scope, element, ' '); 
-
-}
-else
 if(scope.d3opts.type === 'rs'){
 
   rsBxChart(scope, element, ' '); 

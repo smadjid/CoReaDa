@@ -1,5 +1,5 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
-<div class="widget" style="width:62%">
+<div class="widget" style="width:40%">
     <div class="header">Statistiques  <span class="btn-group">     
         <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'visits'">Lecture</label>
         <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'rs'">Séances de lecture</label>
@@ -9,23 +9,24 @@
     <div>
     <br/>
         <ul ng-show="statSelector=='visits'">
-            <li class='statElement'>Le cours est visité par {{context.stats.reading.nusers}} lecteurs. 
-            <li class='statElement'>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de {{context.stats.achievement.mean}}%. Le taux médian est de {{context.stats.achievement.median}}%.
-            <li class='statElement'>Le temps moyen de la lecture du cours est de 56 minutes.            
-            
+        <li class='statElement'>Pour la période allant du <b>15 octobre 2015</b> au <b>22 décembre 2015</b>, le cours est visité par <b>{{context.stats.reading.nusers}} lecteurs.</b> 
+                <li class='statElement'>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de <b>{{context.stats.achievement.mean}}%</b>. 
+            <!--Le taux médian est de {{context.stats.achievement.median}}%.-->
+            <li class='statElement'>Le temps moyen de la lecture d'une sectiondu cours est de <b>4.5 minutes.</b>
+            <li class='statElement'>Le temps moyen de la lecture du cours est de <b>56 minutes.</b>            
         </ul>
         <ul ng-show="statSelector=='rs'">
-            <li class='statElement'>En moyenne, chaque lecteur consacre 2 séances de lecture pour ce cours. 
-            <li class='statElement'>Une séance de lecture est en moyenne composée de {{context.stats.rs.mean_nparts}} sections.
-            <li class='statElement'>Une séance de lecture dure en moyenne {{context.stats.rs.mean_duration}} minutes.
+            <li class='statElement'>En moyenne, chaque lecteur consacre <b>2 séances</b> de lecture pour ce cours. 
+                <li class='statElement'>Une séance de lecture est en moyenne composée de <b>{{context.stats.rs.mean_nparts}} sections.</b>
+                    <li class='statElement'>Une séance de lecture dure en moyenne <b>{{context.stats.rs.mean_duration}} minutes</b>.
         </ul>
         <ul ng-show="statSelector=='issue'">
-            <li class='statElement'>Au total, {{context.stats.issues.all}} problèmes de lecture ont été détectés, réparties comme suit:
+            <li class='statElement'>Un total de <b>{{context.stats.issues.all}} problèmes</b> détectés dont:
             <ul>
-                <li class='statElement'>{{context.stats.issues.readings}} problèmes relatifs à la lecture
-                <li class='statElement'>{{context.stats.issues.rereading}} problèmes relatifs à la relecture
-                <li class='statElement'>{{context.stats.issues.transition}} problèmes relatifs à la navigation
-                <li class='statElement'>{{context.stats.issues.stop}} problèmes relatifs aux arrêts
+                <li class='statElement'><b>{{context.stats.issues.readings}}</b> sont relatifs à la lecture
+                    <li class='statElement'><b>{{context.stats.issues.rereading}}</b> sont relatifs à la relecture
+                    <li class='statElement'><b>{{context.stats.issues.transition}}</b> sont relatifs à la transition
+                    <li class='statElement'><b>{{context.stats.issues.stop}}</b> sont relatifs aux arrêts
             </ul>
 
 
@@ -35,7 +36,8 @@
 
 </div>
 
-<div class="widget" style="width:33%; ">
+
+<div class="widget" style="width:27%; ">
     <div class="header">Top 
     <span class="btn-group"  >     
         <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties</label>
@@ -47,8 +49,8 @@
 </div>
     <div class="btn-group" style="width:100%; text-align:center; padding-left:5%;padding-bottom: 10px;" >
      
-        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">Visites</label>
-        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Readers'">Lecteurs</label>
+        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>
+        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Readers'">Nombre de lecteurs</label>
         
     </div>  
 
@@ -95,6 +97,66 @@
     </div>
 </div>
 
+
+<div class="widget" style="width:27%; ">
+    <div class="header">Flop 
+    <span class="btn-group"  >     
+        <label class="btn btn-xs btn-achievement" ng-model="flopElementSelector" uib-btn-radio="'tomes'">Parties</label>
+        <label class="btn btn-xs btn-achievement" ng-model="flopElementSelector" uib-btn-radio="'chapters'">Chapitre</label>
+        <label class="btn btn-xs btn-achievement" ng-model="flopElementSelector" uib-btn-radio="'sections'">Section</label>
+    </span> 
+
+         
+</div>
+    <div class="btn-group" style="width:100%; text-align:center; padding-left:5%;padding-bottom: 10px;" >
+     
+        <label class="btn btn-xs btn-achievement" ng-model="flopSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>
+        <label class="btn btn-xs btn-achievement" ng-model="flopSelector" uib-btn-radio="'Readers'">Nombre de lecteurs</label>
+        
+    </div>  
+
+    <div ng-show="flopElementSelector=='tomes'">    
+
+        <ol ng-show="flopSelector=='Actions_nb'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Tomes.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='Readers'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Tomes.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='RS_nb'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Tomes.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+    </div>
+
+    <div ng-show="flopElementSelector=='chapters'">    
+        <ol ng-show="flopSelector=='Actions_nb'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='Readers'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='RS_nb'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+    </div>
+    <div ng-show="flopElementSelector=='sections'">    
+        <ol ng-show="flopSelector=='Actions_nb'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='Readers'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='RS_nb'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+    </div>
+</div>
 
  <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
  

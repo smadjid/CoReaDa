@@ -1,12 +1,12 @@
 <div class='row'>
 <div class='col-lg-3' >
-<strong>Distribution des</strong>
-    <ul class="btn-group"  >     
+<strong ng-show="indicatorInspectorShow!='Transition'">Distribution des</strong>
+    <ul class="btn-group"  ng-show="indicatorInspectorShow!='Transition'">     
         <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="elementTypeSelector" uib-btn-radio="'tome'">Parties
         <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="elementTypeSelector" uib-btn-radio="'chapter'">Chapitres
         <li class="btn btn-xs btn-achievement" style='width:100%; margin:2px' ng-model="elementTypeSelector" uib-btn-radio="'part'">Sections
     </ul> 
-   
+    
     <strong>Distribution selon</strong>
   <div class="btn-group" ng-model="globalChartSelector">     
         <label  ng-show="indicatorInspectorShow=='Readings'"  class="btn btn-xs btn-primary" style='width:100%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>

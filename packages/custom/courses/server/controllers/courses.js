@@ -370,6 +370,7 @@ module.exports = function(Courses) {
                     property : part_data[i]['variable'],
                     value : part_data[i]['value']
                 } 
+                if(prop.property==='mean.duration') prop.value = parseInt(prop.value/60)
                 part.properties.push(prop);
                 if(part_data[i]['variable']=='part_id') 
                     part.part_id=part_data[i]['value']
@@ -436,7 +437,7 @@ module.exports = function(Courses) {
            
             
             
-            console.log(part);
+            
             courseChapters.push(chapter);            
 
            

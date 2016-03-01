@@ -22,7 +22,9 @@
         <div class="panel panel-flat" style="margin-bottom:0">
             <div class="panel-heading">
                 <div> <span class="fat" ></span><!--<small ng-bind-html="context_path">{{context_path}}</small>-->
-                   <em>{{context.inspector_title}}</em> </div>
+                <em><a style='padding-left:10px ;color:white' title="Ouvrir la page dans une nouvelle fenêtre" target='_blank' data-ng-href="{{context.url}}" > {{context.inspector_title}}
+                <span style='padding-left:10px' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                </a></em> </div>
             </div>
             <div class="panel-body inspector-body" ng-show="inspectorShow=='issue'"  data-ng-include src="'courses/views/issues-panel.html'"></div>
             <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='section'" src="'courses/views/section-panel.html'"></div>
