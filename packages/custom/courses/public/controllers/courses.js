@@ -1441,8 +1441,8 @@ var part = $(partElt).attr('data-part');
 var sec_num = parseInt(element.properties.filter(function(value){ return value.property === 'mean.duration'})[0].value, 10); 
     var minutes = Math.floor(sec_num  / 60);
     var seconds = sec_num -  (minutes * 60);
-    var meanTime    = minutes+' min '+seconds+' s';
-    if (minutes == 0) meanTime = seconds+' s';
+    var meanTime    = minutes+' h '+seconds+' min';
+    if (minutes == 0) meanTime = seconds+' minutes';
 
     var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
     var rereads = parseInt(element.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value)
@@ -1577,11 +1577,11 @@ angular.forEach(chapter.parts, function(part){
 });
 var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
 
-var sec_num = Math.round(d3.mean(times),2); 
+var sec_num = d3.sum(times); 
     var minutes = Math.floor(sec_num  / 60);
     var seconds = sec_num -  (minutes * 60);
-    var meanTime    = minutes+' min '+seconds+' s';
-    if (minutes == 0) meanTime = seconds+' s';
+    var meanTime    = minutes+' h '+seconds+' min';
+    if (minutes == 0) meanTime = seconds+' minutes';
 
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
@@ -1678,11 +1678,11 @@ angular.forEach(element.parts, function(part){
 
 var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
 
-var sec_num = Math.round(d3.mean(times),2); 
+var sec_num = Math.round(d3.sum(times),2); 
     var minutes = Math.floor(sec_num  / 60);
     var seconds = sec_num -  (minutes * 60);
-    var meanTime    = minutes+' min '+seconds+' s';
-    if (minutes == 0) meanTime = seconds+' s';
+    var meanTime    = minutes+' h '+seconds+' min';
+    if (minutes == 0) meanTime = seconds+' minutes';
 
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
     var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
@@ -1959,7 +1959,7 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
       fact.d3 = factChart(factedPartID,'Actions_nb');
     
     if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
-      fact.d3 = factChart(factedPartID,'q3.duration' );
+      fact.d3 = factChart(factedPartID,'mean.duration' );
 
     if(fact.issueCode in {'RRmax':''}) 
       fact.d3 = factChart(factedPartID,'Rereadings' );
