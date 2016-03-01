@@ -983,8 +983,8 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
 
   var datum =[] ;
   if(scope.d3opts.elementType==='part') 
-    datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
-  {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
+    if(elementID===1)
+    datum = [ 
   {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
   {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
   {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
@@ -997,7 +997,9 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
   
   
   
-  var identity = {id:'c3', x:gap * 3, y:height/2}
+  var identity ={};
+   if(elementID===1) identity ={id:'c1', x:gap , y:height/2}
+    else identity ={id:'c3', x:gap * 3, y:height/2}
   datum.forEach(function(c, i) {
             c.x = gap * (i +1);
             c.y = height/2  ;
