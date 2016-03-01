@@ -1,5 +1,5 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
-<div class="widget" style="width:40%">
+<div class="widget" style="width:48%">
     <div class="header">Statistiques  <span class="btn-group">     
         <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'visits'">Lecture</label>
         <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'rs'">Séances de lecture</label>
@@ -37,22 +37,19 @@
 </div>
 
 
-<div class="widget" style="width:27%; ">
+<div class="widget" style="width:48%; ">
     <div class="header">Top 
     <span class="btn-group"  >     
-        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'tomes'">Parties</label>
-        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitre</label>
         <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'sections'">Section</label>
-    </span> 
-
+        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitre</label>
+    </span> par nombre de
+    <span class="btn-group">
+      <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">visites</label>
+      <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Readers'">lecteurs</label>
+    </span>
          
 </div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:5%;padding-bottom: 10px;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>
-        <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Readers'">Nombre de lecteurs</label>
-        
-    </div>  
+      <br/>
 
     <div ng-show="topElementSelector=='tomes'">    
 
@@ -81,6 +78,18 @@
         <ol ng-show="topSelector=='RS_nb'">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.RS_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
+        <hr/>
+            <ol ng-show="flopSelector=='Actions_nb'" start="9">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='Readers'" start="9">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
+
+        <ol ng-show="flopSelector=='RS_nb'" start="9">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        </ol>
     </div>
     <div ng-show="topElementSelector=='sections'">    
         <ol ng-show="topSelector=='Actions_nb'">
@@ -94,69 +103,23 @@
         <ol ng-show="topSelector=='RS_nb'">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.RS_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
-    </div>
-</div>
 
+        <hr/>
 
-<div class="widget" style="width:27%; ">
-    <div class="header">Flop 
-    <span class="btn-group"  >     
-        <label class="btn btn-xs btn-achievement" ng-model="flopElementSelector" uib-btn-radio="'tomes'">Parties</label>
-        <label class="btn btn-xs btn-achievement" ng-model="flopElementSelector" uib-btn-radio="'chapters'">Chapitre</label>
-        <label class="btn btn-xs btn-achievement" ng-model="flopElementSelector" uib-btn-radio="'sections'">Section</label>
-    </span> 
-
-         
-</div>
-    <div class="btn-group" style="width:100%; text-align:center; padding-left:5%;padding-bottom: 10px;" >
-     
-        <label class="btn btn-xs btn-achievement" ng-model="flopSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>
-        <label class="btn btn-xs btn-achievement" ng-model="flopSelector" uib-btn-radio="'Readers'">Nombre de lecteurs</label>
-        
-    </div>  
-
-    <div ng-show="flopElementSelector=='tomes'">    
-
-        <ol ng-show="flopSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Tomes.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
-        </ol>
-
-        <ol ng-show="flopSelector=='Readers'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Tomes.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
-        </ol>
-
-        <ol ng-show="flopSelector=='RS_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Tomes.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
-        </ol>
-    </div>
-
-    <div ng-show="flopElementSelector=='chapters'">    
-        <ol ng-show="flopSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
-        </ol>
-
-        <ol ng-show="flopSelector=='Readers'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
-        </ol>
-
-        <ol ng-show="flopSelector=='RS_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
-        </ol>
-    </div>
-    <div ng-show="flopElementSelector=='sections'">    
-        <ol ng-show="flopSelector=='Actions_nb'">
+        <ol ng-show="flopSelector=='Actions_nb'" start="24">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
 
-        <ol ng-show="flopSelector=='Readers'">
+        <ol ng-show="flopSelector=='Readers'" start="24">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
 
-        <ol ng-show="flopSelector=='RS_nb'">
+        <ol ng-show="flopSelector=='RS_nb'" start="24">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
     </div>
 </div>
+
 
  <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
  

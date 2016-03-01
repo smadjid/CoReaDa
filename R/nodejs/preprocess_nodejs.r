@@ -309,7 +309,7 @@ for(i in 1:nusers)
     seance = user[which(user$seance==seances[j]),]
     cpt = cpt +1
     
-    RS[which(RS$id==cpt),]$nparts = length(seance$part_id)
+    RS[which(RS$id==cpt),]$nparts = length(unique(seance$part_id))
     RS[which(RS$id==cpt),]$nsessions = length(seance$session_id)
     RS[which(RS$id==cpt),]$duration = sum(seance$duration, na.rm = TRUE)
     print(paste('duration: ',RS[which(RS$id==cpt),]$duration))
@@ -332,7 +332,8 @@ library(plyr)
 library(data.table)
 
 ### Nombre de lecteurs (RDer), de relecteurs (Rereaders), de lectures (RDing) et de relectures (RRDing)
-nodejs.Reads = data.frame(part_index=nodejs.structure$part_index,part_id=nodejs.structure$part_id,Readers=0,Rereaders=0,Readings = 0, Rereadings = 0 )
+nodejs.Reads = data.frame(part_index=nodejs.structure$part_index,part_id=nodejs.structure$part_id,Readers=0,
+                          Rereaders=0,Readings = 0, Rereadings = 0 )
 parts=unique(nodejs$part_id)
 nparts=length(parts)
 for(i in 1:(nparts))
@@ -438,7 +439,7 @@ successive.rereads=successive.rereads[ , ':='( part_index = 1:.N )  ]
 successive.rereads=successive.rereads[,c("part_index","Sequential_rereadings"), with=FALSE]
 
 nodejs.Reads = merge(nodejs.Reads,successive.rereads, by="part_index", all.x = TRUE)
-
+ 
 
 ###### RELECTURES DECALEES #########################
 
@@ -486,12 +487,19 @@ decaled.rereads[ , ':='( part_index = 1:.N )  ]
 decaled.rereads=decaled.rereads[,c("part_index","Decaled_rereadings"), with=FALSE]
 
 nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index", all.x = TRUE)
+
+nodejs.Reads$mean.rereads = nodejs.Reads$Rereadings / nodejs.Reads$Readers
+nodejs.Reads$mean.seq_rereads = (nodejs.Reads$Sequential_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads
+nodejs.Reads$mean.dec_rereads = (nodejs.Reads$Decaled_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads
+nodejs.Reads$mean.tx_total_readers = round(100 * nodejs.Reads$Readers / nusers, 2) 
+nodejs.Reads$mean.tx_total_rereaders = round(100 * nodejs.Reads$Rereaders / nusers, 2) 
 save(nodejs.Reads, file="nodejs.Reads.rdata")
 ##############################################"""
 ###### RUPTURE ##################"
-nodejs.Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), 
-                         session_shift=logical(),recovery=logical(),shifted_recovery=logical(), back_recovery=logical(), next_recovery=logical() ) 
-
+nodejs.Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), recovery=logical(),
+                        direct_recovery=logical(),next_recovery=logical(), distant_next_recovery=logical(),
+                        prev_recovery=logical(), distant_prev_recovery=logical())
+                         
 users=unique(nodejs$user_id)
 nusers=length(users)
 for (i in 1:nusers)
@@ -506,31 +514,28 @@ for (i in 1:nusers)
   {
     seance=user[which(user$seance==j),]
     end = seance[which(seance$id==max(seance$id)),]$part_index
-    l.session_shift=TRUE
     l.direct_recovery=FALSE
-    l.shifted_recovery=FALSE
-    l.back_recovery=FALSE
     l.next_recovery=FALSE
+    l.distant_next_recovery = FALSE
+    l.prev_recovery = FALSE
+    l.distant_prev_recovery = FALSE
     
     disconnection= data.frame(user_id=users[i], seance=j,part_index=user$part_index[j],
-                              session_shift=l.session_shift,direct_recovery=l.direct_recovery, shifted_recovery=l.shifted_recovery, 
-                              back_recovery=l.back_recovery, next_recovery=l.next_recovery  ) 
+                              direct_recovery=l.direct_recovery, distant_next_recovery=l.distant_next_recovery, 
+                              next_recovery = l.next_recovery,
+                              prev_recovery=l.prev_recovery, distant_prev_recovery=l.distant_prev_recovery  ) 
     
     
     if(j==length(user.seances)){nodejs.Ruptures=rbind(nodejs.Ruptures,disconnection)}
-    else{
-      disconnection$session_shift=FALSE
+    else{      
       nextseance=user[which(user$seance==j+1),]
       nextbegin = nextseance[which(nextseance$id==min(nextseance$id)),]$part_index
       if(nextbegin==end) { disconnection$direct_recovery=TRUE}
-      else{
-        if(end %in% nextseance$part_index) 
-        {
-          disconnection$shifted_recovery=TRUE
-          if(nextbegin < end) {disconnection$back_recovery=TRUE   }         
-          if(nextbegin == (end + 1) ) {disconnection$next_recovery=TRUE}
-        }
-      }
+      if(nextbegin>end+1) { disconnection$distant_next_recovery=TRUE}
+      if(nextbegin==end+1) { disconnection$next_recovery=TRUE}
+      if(nextbegin==end - 1) { disconnection$prev_recovery=TRUE}
+      if(nextbegin<end - 1) { disconnection$distant_prev_recovery=TRUE}
+     
     }
     nodejs.Ruptures=rbind(nodejs.Ruptures,disconnection)    
     
@@ -540,7 +545,11 @@ for (i in 1:nusers)
 
 rupture_parts=unique(nodejs.Ruptures$part_index)
 
-norecovery_Ruptures=nodejs.Ruptures[which((!nodejs.Ruptures$direct_recovery)&(!nodejs.Ruptures$shifted_recovery)),]
+norecovery_Ruptures=nodejs.Ruptures[which((!nodejs.Ruptures$direct_recovery)&
+                                            (!nodejs.Ruptures$distant_next_recovery)&
+                                            (!nodejs.Ruptures$next_recovery)&
+                                            (!nodejs.Ruptures$prev_recovery)&
+                                            (!nodejs.Ruptures$distant_prev_recovery)),]
 nodejs.Ruptures$norecovery = 0
 for(i in 1:length(rupture_parts))
 {
@@ -548,7 +557,11 @@ for(i in 1:length(rupture_parts))
   nodejs.Ruptures[which(nodejs.Ruptures$part_index==rupt),]$norecovery = 
     nrow(norecovery_Ruptures[which(norecovery_Ruptures$part_index==rupt),])
 }
-recovery_Ruptures=nodejs.Ruptures[which((nodejs.Ruptures$direct_recovery)|(nodejs.Ruptures$shifted_recovery)),]
+recovery_Ruptures=nodejs.Ruptures[which((nodejs.Ruptures$direct_recovery)|
+                        (nodejs.Ruptures$distant_next_recovery)|
+                        (nodejs.Ruptures$next_recovery)|
+                        (nodejs.Ruptures$prev_recovery)|
+                        (nodejs.Ruptures$distant_prev_recovery)),]
 nodejs.Ruptures$recovery = 0
 for(i in 1:length(rupture_parts))
 {
@@ -558,17 +571,18 @@ for(i in 1:length(rupture_parts))
 } 
 nodejs.Ruptures$rupture = nodejs.Ruptures$norecovery + nodejs.Ruptures$recovery
 
-RupStats =data.frame(part_index=rupture_parts,  rupture=0, recovery=0,  norecovery=0,
-                     shifted_recovery=0, back_recovery=0, next_recovery=0, direct_recovery=0) 
+RupStats =data.frame(part_index=rupture_parts,  rupture=0, recovery=0,  norecovery=0,direct_recovery=0,
+                     distant_next_recovery=0, next_recovery=0, prev_recovery=0, distant_prev_recovery=0) 
 for(k in 1:length(rupture_parts))
 {
   i = rupture_parts[k]
   RupStats[which(RupStats$part_index==i),]$rupture= max(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i),]$rupture)
   RupStats[which(RupStats$part_index==i),]$recovery= max(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i),]$recovery)
   RupStats[which(RupStats$part_index==i),]$norecovery= max(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i),]$norecovery)
-  RupStats[which(RupStats$part_index==i),]$shifted_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$shifted_recovery),])
-  RupStats[which(RupStats$part_index==i),]$back_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$back_recovery),])
+  RupStats[which(RupStats$part_index==i),]$distant_next_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$distant_next_recovery),])
   RupStats[which(RupStats$part_index==i),]$next_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$next_recovery),])
+  RupStats[which(RupStats$part_index==i),]$prev_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$prev_recovery),])
+  RupStats[which(RupStats$part_index==i),]$distant_prev_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$distant_prev_recovery),])
   RupStats[which(RupStats$part_index==i),]$direct_recovery= nrow(nodejs.Ruptures[which(nodejs.Ruptures$part_index==i & nodejs.Ruptures$direct_recovery),])
 }
 
@@ -586,12 +600,14 @@ for(i in 1:nparents){
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$norecovery)
-  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$shifted_recovery = 
-    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$shifted_recovery)
-  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$back_recovery = 
-    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$back_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$distant_next_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$distant_next_recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$next_recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$next_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$prev_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$prev_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$distant_prev_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$distant_prev_recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$direct_recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$direct_recovery)
 }
@@ -601,18 +617,21 @@ nparents = nrow(parents)
 for(i in 1:nparents){
   children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]$part_id
   
+  
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$rupture = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$rupture)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$norecovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$norecovery)
-  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$shifted_recovery = 
-    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$shifted_recovery)
-  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$back_recovery = 
-    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$back_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$distant_next_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$distant_next_recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$next_recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$next_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$prev_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$prev_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$distant_prev_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$distant_prev_recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$direct_recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$direct_recovery)
 }
@@ -621,18 +640,21 @@ nparents = nrow(parents)
 for(i in 1:nparents){
   children = nodejs.structure[which(nodejs.structure$parent_id==parents$part_id[i]),]$part_id
   
+  
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$rupture = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$rupture)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$norecovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$norecovery)
-  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$shifted_recovery = 
-    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$shifted_recovery)
-  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$back_recovery = 
-    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$back_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$distant_next_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$distant_next_recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$next_recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$next_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$prev_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$prev_recovery)
+  nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$distant_prev_recovery = 
+    sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$distant_prev_recovery)
   nodejs.Ruptures[which(nodejs.Ruptures$part_id==parents$part_id[i]),]$direct_recovery = 
     sum( nodejs.Ruptures[which(nodejs.Ruptures$part_id%in%children),]$direct_recovery)
 }
