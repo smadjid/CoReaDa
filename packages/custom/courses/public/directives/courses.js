@@ -946,7 +946,7 @@ scope.renderNodes = function(data, classe) {
 var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
   var gap = parseInt(width /6) ;
   var radius = gap / 4;
-  var height = gap * 2;
+  var height = gap * 3;
 
   var   graph={nodes:[], links:[]}    
   
