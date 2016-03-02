@@ -694,7 +694,7 @@ var inspectorCharts = function(scope, element){
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
 
-scope.renderBars = function(globalData, classe) {
+scope.renderBars = function(globalData, classe) {   
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
           svg = d3.select(element[0])
@@ -722,9 +722,11 @@ var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .ticks(10)
-            .tickFormat(d3.format("d"));
-
+            .ticks(10);
+if(classe=="mean.duration")    
+          yAxis.tickFormat(d3.format("d"))
+        else
+          yAxis.tickFormat(d3.format("%"));
         //Render graph based on 'data'
        
           
@@ -800,7 +802,7 @@ if(scope.d3opts.elementType!=='part')
 
 
 
-    var dataMediane = d3.median(data, function(d) { return parseInt(d.value); }); 
+    var dataMediane = d3.median(data, function(d) { return parseFloat(d.value); }); 
     var ymedian = d3.svg.line()
         .x(function(d, i) { 
           return xmedian(d.part) ; })
@@ -813,7 +815,7 @@ if(scope.d3opts.elementType!=='part')
         .rangeBands([0, width], 0);
     xmean.domain(data.map(function(d) { return d.part; }));
 
-    var dataMean = d3.mean(data, function(d) { return parseInt(d.value); }); 
+    var dataMean = d3.mean(data, function(d) { return parseFloat(d.value); }); 
     var ymean = d3.svg.line()
         .x(function(d, i) { 
           return xmedian(d.part) + i; })
