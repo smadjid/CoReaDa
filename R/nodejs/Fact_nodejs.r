@@ -713,7 +713,7 @@ PartData[which(PartData$type=='title-3'),]$type='section'
 
 PartData = merge(PartData, Interest[,c(1,2,3,4,5)],all.x = TRUE)
 
-names(PartData)[2]='part_index'
+names(PartData)[1]='part_index'
 names(PartData)[3]='part_parent' 
 names(PartData)[4]='part_title'
 names(PartData)[5]='part_type'
@@ -801,6 +801,7 @@ save(PartData, file='PartData.rdata')
 
 
 colnames(PartData)[1]="id"
+colnames(PartData)[3]="parent_id"
 
 meltParts=melt(PartData, id.vars = 'id')
 PartsData.json = toJSON(unname(split(meltParts,1:nrow(meltParts))))

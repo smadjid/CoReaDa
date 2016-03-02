@@ -360,6 +360,7 @@ module.exports = function(Courses) {
         var computePart = function(p, part_data, part_facts){            
         var part = {
                 'id':part_data[0]['id'],
+                'parent_id':part_data[0]['parent_id'],
                 'title':part_data[0]['part_title'],
                 'elementType':part_data[0]['part_type'],
                 'properties':[],
@@ -434,7 +435,7 @@ module.exports = function(Courses) {
                 'facts':[],
                 'parts':[]
             }
-           
+           console.log(part);
             
             
             
@@ -458,7 +459,7 @@ module.exports = function(Courses) {
       
         };
         
-        if(tomesCount<0)
+     //   if(tomesCount<0)
         for (var i = -1; i >=tomesCount ; i--){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
@@ -479,6 +480,7 @@ module.exports = function(Courses) {
         };
 
 
+
         for (var i = 0; i < courseChapters.length ; i++){ 
                     var self = courseChapters[i]['id'];
                     var parent = courseChapters[i]['parent_id'];           
@@ -488,6 +490,7 @@ module.exports = function(Courses) {
                     if(courseTomes[j].part_id==parent)
                         courseTomes[j].chapters.push(courseChapters[i]);
         };
+
 
        
 

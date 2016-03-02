@@ -491,10 +491,13 @@ nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index", all.x = TRUE
 nodejs.Reads$mean.rereads = nodejs.Reads$Rereadings / nodejs.Reads$Readers
 nodejs.Reads$mean.seq_rereads = (nodejs.Reads$Sequential_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads
 nodejs.Reads$mean.dec_rereads = (nodejs.Reads$Decaled_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads
-nodejs.Reads$mean.tx_total_readers = round(100 * nodejs.Reads$Readers / nusers, 2) 
-nodejs.Reads$mean.tx_total_rereaders = round(100 * nodejs.Reads$Rereaders / nusers, 2) 
+nodejs.Reads$mean.tx_total_rereaders = round(100 * nodejs.Reads$Rereaders / nodejs.Reads$Readers, 2) 
+nodejs.Reads$mean.tx_total_readers = round(100 * nodejs.Reads$Rereaders / nusers, 2) 
 save(nodejs.Reads, file="nodejs.Reads.rdata")
 ##############################################"""
+
+PartData$mean.tx_total_rereaders = round(100 * PartData$Rereaders / PartData$Readers, 2) 
+PartData$mean.tx_total_readers = round(100 * PartData$Rereaders / nusers, 2) 
 ###### RUPTURE ##################"
 nodejs.Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), recovery=logical(),
                         direct_recovery=logical(),next_recovery=logical(), distant_next_recovery=logical(),

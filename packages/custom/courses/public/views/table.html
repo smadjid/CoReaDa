@@ -1,20 +1,20 @@
     <thead>
         <tr class='tomes-header'>
-        <th role="button" ng-click='resetPath();goHome()' onmouseout='stopHover()' ng-mouseover="triggerHover(null)"><span class="glyphicon glyphicon-home" ></span></th>         
-            <th role='button' ng-click='triggerClick($event)' class="tome_index" ng-repeat="tome in course.tomes"  colspan={{tome.parts_count}} ng-mouseover="triggerHover($event)" onmouseout='stopHover()' data-part={{tome.id}} data-path={{tome.route}}>
+        <th role="button" ng-click='resetPath();goHome()'ng-mouseover="triggerHover(null)"><span class="glyphicon glyphicon-home" ></span></th>         
+            <th role='button' ng-click='triggerClick($event)' class="tome_index" ng-repeat="tome in course.tomes"  colspan={{tome.parts_count}} data-part={{tome.id}} data-path={{tome.route}}>
               <span class="display-tome-info"  > {{tome.title}}</span>
             </th>  
         </tr>
 
         <tr class='chapters-header'>
         <th><b>Chapitres du cours</b></th>         
-            <th role='button' ng-click='triggerClick($event)'  class="chapter_index" ng-repeat="chapter in courseChapters" ng-mouseover="triggerHover($event)" onmouseout='stopHover()'  colspan={{chapter.parts_count}}  data-part={{chapter.id}} data-path={{chapter.route}}>
+            <th role='button' ng-click='triggerClick($event)'  class="chapter_index" ng-repeat="chapter in courseChapters"  colspan={{chapter.parts_count}}  data-part={{chapter.id}} data-path={{chapter.route}}>
               <span class="display-chapter-info"  > {{chapter.title}}</span>
             </th>  
         </tr>
          <tr class='parts-header'>
          <th><b>Sections du cours</b></th>         
-            <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts" ng-mouseover="triggerHover($event)" onmouseout='stopHover()'  data-part={{part.id}} data-path={{part.route}} >
+            <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts"  data-part={{part.id}} data-path={{part.route}} >
 
                 <span class="display-part-info" uib-tooltip={{part.title}}>{{part.id}}</span>
                 <br/>

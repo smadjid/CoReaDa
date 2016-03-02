@@ -100,7 +100,7 @@ $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
               $scope.globalChartSelector = 'Actions_nb'
             else
               if(newValue ==='Rereading')
-                $scope.globalChartSelector = 'Rereadings'
+                $scope.globalChartSelector = 'txReads'
               else
                 if(newValue ==='Stop')
                   $scope.globalChartSelector = 'rupture'
@@ -122,7 +122,7 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
     case 'mean.duration':
         $scope.graphTitle ='Distribution selon la durée moyenne de lecture (en minutes)'
         break;
-    case 'Rereadings':
+    case 'txReads':
         $scope.graphTitle ='Distribution selon le nombre de relectures'
         break;
     case 'rupture':
@@ -210,7 +210,7 @@ var completeCourseParts =function(course, courseParts, courseChapters){
           fact.route =part.route+','+fact._id;
           fact.d3 =[];
           //fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
-          appendD3Facts(fact,part.id,chapter.route);
+       //   appendD3Facts(fact,part.id,chapter.route);
 
         });
         courseParts.push( part );
@@ -1445,7 +1445,7 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     if (minutes == 0) meanTime = seconds+' minutes';
 
     var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-    var rereads = parseInt(element.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value)
+    var rereads = parseInt(element.properties.filter(function(value){ return value.property === 'txReads'})[0].value)
     var rereadTx = (rereads ==0)?0:rereads/reads;    
     rereadTx = Math.floor(rereadTx * 100)+'%';
 
@@ -1562,7 +1562,7 @@ var displayTomeInfos =function(partElt, task){
 
   });
 
-var times =[], users =[], rss =[], rereadings =[], stops =[];
+var times =[], users =[], rss =[], txReads =[], stops =[];
 
 angular.forEach(element.chapters, function(chapter){
 angular.forEach(chapter.parts, function(part){
@@ -1570,8 +1570,8 @@ angular.forEach(chapter.parts, function(part){
   users.push(100*part.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value);
   rss.push(100*part.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value);
   var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value);
-  rereadings.push((rereads ==0)?0:rereads/reads);
+  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'txReads'})[0].value);
+  txReads.push((rereads ==0)?0:rereads/reads);
   stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
   })
 });
@@ -1619,7 +1619,7 @@ $scope.observedElt ={'type':'tome',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_nb':0,
       'meanTime': meanTime,
-      'meanRereads':Math.floor(100*d3.mean(rereadings),2)+'%',
+      'meanRereads':Math.floor(100*d3.mean(txReads),2)+'%',
       'meanStops':stopTx,
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
@@ -1664,15 +1664,15 @@ $scope.context.inspector_title = "Chapitre: "+element.title;
 $scope.context.url = element.url;
 
 
-var times =[], users =[], rss =[], rereadings =[], stops =[];
+var times =[], users =[], rss =[], txReads =[], stops =[];
 
 angular.forEach(element.parts, function(part){
   times.push(parseInt(part.properties.filter(function(value){ return value.property === 'mean.duration'})[0].value)); 
   users.push(100*part.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value);
   rss.push(100*part.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value);
   var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'Rereadings'})[0].value);
-  rereadings.push((rereads ==0)?0:rereads/reads);
+  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'txReads'})[0].value);
+  txReads.push((rereads ==0)?0:rereads/reads);
   stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
 });
 
@@ -1721,7 +1721,7 @@ $scope.observedElt ={'type':'chapter',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_nb':0,
       'meanTime': meanTime,
-      'meanRereads':Math.floor(100*d3.mean(rereadings),2)+'%',
+      'meanRereads':Math.floor(100*d3.mean(txReads),2)+'%',
       'meanStops':stopTx,
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
@@ -1938,14 +1938,14 @@ var ComputeGlobalVisuData =function(){
   visuData.push({type:'Actions_nb',data:factChart(-1,'Actions_nb')});  
    visuData.push({type:'RS_nb',data:factChart(-1,'RS_nb')});  
   visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
-  visuData.push({type:'Rereadings',data:factChart(-1,'Rereadings')});  
-  visuData.push({type:'Sequential_rereadings',data:factChart(-1,'Sequential_rereadings')});  
-  visuData.push({type:'Decaled_rereadings',data:factChart(-1,'Decaled_rereadings')});  
+  visuData.push({type:'txReads',data:factChart(-1,'txReads')});  
+  visuData.push({type:'mean.tx_total_readers',data:factChart(-1,'mean.tx_total_readers')});  
+  visuData.push({type:'mean.tx_total_rereaders',data:factChart(-1,'mean.tx_total_rereaders')});  
   visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
   visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
-  visuData.push({type:'next_recovery',data:factChart(-1,'next_recovery')});    
-  visuData.push({type:'back_recovery',data:factChart(-1,'back_recovery')});    
-  visuData.push({type:'shifted_recovery',data:factChart(-1,'shifted_recovery')});    
+ // visuData.push({type:'next_recovery',data:factChart(-1,'next_recovery')});    
+  //visuData.push({type:'back_recovery',data:factChart(-1,'back_recovery')});    
+  //visuData.push({type:'shifted_recovery',data:factChart(-1,'shifted_recovery')});    
   
 
   visuData.push({type:'provenance',data:globalTransitionsProvenance('provenance')});    
@@ -1962,14 +1962,14 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
       fact.d3 = factChart(factedPartID,'mean.duration' );
 
     if(fact.issueCode in {'RRmax':''}) 
-      fact.d3 = factChart(factedPartID,'Rereadings' );
+      fact.d3 = factChart(factedPartID,'txReads' );
 
-    if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
-      fact.d3 = factChart(factedPartID,'Sequential_rereadings');
+  /*  if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
+      fact.d3 = factChart(factedPartID,'mean.tx_total_readers');
 
-    if(fact.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
-      fact.d3 = factChart(factedPartID,'Decaled_rereadings');
-
+   if(fact.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
+      fact.d3 = factChart(factedPartID,'mean.tx_total_rereaders');
+*/
 
     if(fact.issueCode ==='StopRSEnd')
       fact.d3 = factChart(factedPartID,'rupture' );
@@ -1977,10 +1977,10 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
       fact.d3 = factChart(factedPartID,'norecovery');
     if(fact.issueCode === 'StopRecNext')
       fact.d3 = factChart(factedPartID,'next_recovery' );
-    if(fact.issueCode === 'StopRecback')
+   /* if(fact.issueCode === 'StopRecback')
       fact.d3 = factChart(factedPartID,'back_recovery' );
     if(fact.issueCode === 'StopRecShift')
-      fact.d3 = factChart(factedPartID,'shifted_recovery' );
+      fact.d3 = factChart(factedPartID,'shifted_recovery' );*/
 
 
     if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
