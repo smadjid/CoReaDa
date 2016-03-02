@@ -469,7 +469,7 @@ svg.append("g").selectAll("g.linklabelholder")
       if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
             else scope.renderNodes(scope.data, scope.d3opts.issueCode)
     
@@ -479,7 +479,7 @@ scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
             else scope.renderNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
@@ -861,7 +861,7 @@ scope.$watch(function(){
       if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
             else scope.renderNodes(scope.data, scope.d3opts.issueCode)
     
@@ -872,7 +872,7 @@ scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
             else scope.renderNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
@@ -1411,7 +1411,7 @@ if(scope.d3opts.type === 'global')
 {  
 if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })  globalCharts(scope, element)
 
 else 
@@ -1425,7 +1425,7 @@ if(scope.d3opts.type === 'inspector'){
 
 if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
                         'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','back_recovery':'','shifted_recovery':''
+                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })  inspectorCharts(scope, element,'titre')
 
   if(scope.d3opts.issueCode in {'provenance':'','transition':''})

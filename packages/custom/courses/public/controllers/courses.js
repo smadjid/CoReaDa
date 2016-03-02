@@ -1943,9 +1943,9 @@ var ComputeGlobalVisuData =function(){
   visuData.push({type:'mean.tx_total_rereaders',data:factChart(-1,'mean.tx_total_rereaders')});  
   visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
   visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
- // visuData.push({type:'next_recovery',data:factChart(-1,'next_recovery')});    
-  //visuData.push({type:'back_recovery',data:factChart(-1,'back_recovery')});    
-  //visuData.push({type:'shifted_recovery',data:factChart(-1,'shifted_recovery')});    
+  visuData.push({type:'next_recovery',data:factChart(-1,'next_recovery')});    
+  visuData.push({type:'prev_recovery',data:factChart(-1,'prev_recovery')});    
+  visuData.push({type:'distant_prev_recovery',data:factChart(-1,'distant_prev_recovery')});    
   
 
   visuData.push({type:'provenance',data:globalTransitionsProvenance('provenance')});    
@@ -1978,9 +1978,9 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
     if(fact.issueCode === 'StopRecNext')
       fact.d3 = factChart(factedPartID,'next_recovery' );
    /* if(fact.issueCode === 'StopRecback')
-      fact.d3 = factChart(factedPartID,'back_recovery' );
+      fact.d3 = factChart(factedPartID,'prev_recovery' );
     if(fact.issueCode === 'StopRecShift')
-      fact.d3 = factChart(factedPartID,'shifted_recovery' );*/
+      fact.d3 = factChart(factedPartID,'distant_prev_recovery' );*/
 
 
     if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
@@ -2088,7 +2088,7 @@ var globalTransitionsProvenance =function(classe){
       })
     });
   
-  /*
+  
 var identity = mean(($.grep(chartData, function(e){ return  e.property === classe+"_identity" }))
   .map(function(d) { return parseInt(d.value); }));
 var precedent = mean(($.grep(chartData, function(e){ return  e.property === classe+"_precedent" }))
@@ -2107,7 +2107,7 @@ var glob =[
       { "property":"shifted_past", value: shifted_past * 100 / somme},
       { "property":"shifted_next", value: shifted_next * 100 / somme}]
 
-chartData =chartData.concat({'part':0,'type':classe, 'transitions':glob})*/
+chartData =chartData.concat({'part':0,'type':classe, 'transitions':glob})
 
 var identity = dd.filter(function(value){ return  value.property === classe+'_identity'});
 identity =mean(identity.map(function(o){return parseInt(o.value);}));
