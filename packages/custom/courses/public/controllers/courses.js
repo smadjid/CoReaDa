@@ -209,8 +209,8 @@ var completeCourseParts =function(course, courseParts, courseChapters){
         angular.forEach(part.facts,function(fact){
           fact.route =part.route+','+fact._id;
           fact.d3 =[];
-          //fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
-       //   appendD3Facts(fact,part.id,chapter.route);
+          fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
+         appendD3Facts(fact,part.id,chapter.route);
 
         });
         courseParts.push( part );
@@ -1619,7 +1619,7 @@ $scope.observedElt ={'type':'tome',
       'Actions_tx':0,
       'meanTime': meanTime,
       'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
-      'meanStops':stopTx,
+      'meanStops':parseInt(100*element.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)+'%',
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
@@ -1720,8 +1720,8 @@ $scope.observedElt ={'type':'chapter',
       'nbRS':parseInt(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value)+'%',
       'Actions_tx':0,
       'meanTime': meanTime,
-      'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
-      'meanStops':Math.floor(d3.mean(stops),2)+'%',
+      'meanRereads':parseInt(100*element.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)+'%',
+      'meanStops':parseInt(100*element.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)+'%',
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
@@ -1977,6 +1977,8 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
 
     if(fact.issueCode in {'RRmax':''}) 
       fact.d3 = factChart(factedPartID,'rereadings_tx' );
+    if(fact.issueCode in {'RerRmax':''}) 
+      fact.d3 = factChart(factedPartID,'part_readers_rereaders' );
 
   /*  if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
       fact.d3 = factChart(factedPartID,'course_readers_rereaders');
@@ -1986,15 +1988,15 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
 */
 
     if(fact.issueCode ==='StopRSEnd')
-      fact.d3 = factChart(factedPartID,'rupture' );
+      fact.d3 = factChart(factedPartID,'rupture_tx' );
     if(fact.issueCode === 'StopRSExit')
-      fact.d3 = factChart(factedPartID,'norecovery');
+      fact.d3 = factChart(factedPartID,'norecovery_tx');
     if(fact.issueCode === 'StopRecNext')
       fact.d3 = factChart(factedPartID,'next_recovery' );
-   /* if(fact.issueCode === 'StopRecback')
-      fact.d3 = factChart(factedPartID,'prev_recovery' );
-    if(fact.issueCode === 'StopRecShift')
-      fact.d3 = factChart(factedPartID,'distant_prev_recovery' );*/
+    if(fact.issueCode === 'StopRecback')
+      fact.d3 = factChart(factedPartID,'distant_prev_recovery_tx' );
+    if(fact.issueCode === 'StopRecNext')
+      fact.d3 = factChart(factedPartID,'distant_next_recovery_tx' );
 
 
     if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
@@ -2014,7 +2016,7 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
       {fact.d3 = transitionFactChart(factedPartID,'destination_next_p' );}
     if(fact.issueCode in{'TransDestPrev':'', 'TransDestPrevV':''})       
       {fact.d3 = transitionFactChart(factedPartID,'destination_precedent' );}
-    if(fact.issueCode in{'TransDestPast':'', 'TransDestPastV':''})       
+    if(fact.issueCode in{'TransDestPast':'', 'TransDestShiftPast':''})       
       {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' );}
     if(fact.issueCode in{'TransDestShiftNext':'', 'TransDestShiftNextV':''})       
       {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' );}

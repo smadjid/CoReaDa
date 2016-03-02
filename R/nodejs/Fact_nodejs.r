@@ -81,6 +81,7 @@ Si oui :  Est-ce que cette section est  réellement intéressante par rapport au
   
   
   
+  
   ####### DURATION
  
   
@@ -535,7 +536,7 @@ course_facts_stop<- function(selectedCourse){
   Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
   RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
   
-  
+   
   # arrets de seances
   medianR = round(100* median(Ruptures$rupture)/sum(Ruptures$rupture),2)
   Stop_stop_max = Ruptures[which(Ruptures$rupture>quantile(Ruptures$rupture,0.9,na.rm = TRUE)),c('part_index','rupture')]
@@ -804,7 +805,7 @@ PartData$Readers_tx = round(PartData$Readers / nusers, 4)
 allRup = max(PartData$rupture)
 finalRupt = max(PartData$norecovery)
 PartData$RS_tx = round(PartData$RS_nb /nrow(RS),4)
-PartData$rupture_tx = round(PartData$rupture/courseRup,4)
+PartData$rupture_tx = round(PartData$rupture/allRup,4)
 PartData$norecovery_tx = round(PartData$norecovery/finalRupt,4)
 PartData$direct_recovery_tx= round(PartData$direct_recovery /PartData$recovery,4)
 PartData$distant_next_recovery_tx= round(PartData$distant_next_recovery /PartData$recovery,4)

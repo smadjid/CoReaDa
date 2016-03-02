@@ -1635,10 +1635,13 @@ if(scope.d3opts.type === 'rs'){
 
 }
 else{
-
-if(scope.d3opts.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
+if(scope.d3opts.issueClass ==='Transition')
+   nodeChart(scope, element)
+ else barChart(scope, element, ' ');
+ /*
+if(scope.d3opts.issueCode in {'RminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
   barChart(scope, element, 'Nombre de visites'); 
-if(scope.d3opts.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+if(scope.d3opts.issueCode in {'RminDuration':'','RminDuration':'','RmaxDuration':''}) 
   barChart(scope, element, 'Durée de lecture (en secondes)');
 if(scope.d3opts.issueCode in {'RRmax':''}) 
   barChart(scope, element, 'Nombre de relectures');
@@ -1649,8 +1652,7 @@ if(scope.d3opts.issueCode in {'RRmaxS':'','RRVmaxS':''})
 if(scope.d3opts.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
   barChart(scope, element, 'Nombre de relectures dans des séances distinctes');
 
-if(scope.d3opts.issueClass ==='Transition')
-   nodeChart(scope, element);
+
 
 if(scope.d3opts.issueCode ==='StopRSEnd')
   barChart(scope, element, 'Nombre de fins de séance');
@@ -1666,7 +1668,7 @@ if(scope.d3opts.issueCode === 'StopRecback')
 
 if(scope.d3opts.issueCode === 'StopRecShift')
   barChart(scope, element, 'Nombre de fins de séance avec reprise sur des parties lointanines');
-
+*/
 }
 
 //if(scope.d3opts.type === 'Transition')

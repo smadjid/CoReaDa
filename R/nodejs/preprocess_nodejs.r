@@ -353,17 +353,12 @@ for(i in 1:(nparts))
 chapters = nodejs.structure[which(nodejs.structure$type=='title-2'),]$part_id
 nchapters = length(unique(chapters))
 for(i in 1:nchapters){
-  children = nodejs.structure[which(nodejs.structure$parent_id==chapters[i]),]$part_id
-  
-  rders = count(nodejs[which(nodejs$part_id%in%children),], "user_id")
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readers =    length(rders$user_id)
-  
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereaders =  length(rders[which(rders$freq>1),]$user_id) 
-  
-  rdings = count(nodejs[which(nodejs$part_id%in%children),], "id")
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readings =   sum(rders$freq)
-  
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereadings = sum(rders$freq)  - length(rders$user_id)  
+  children = nodejs.structure[which(nodejs.structure$parent_id==chapters[i]),]$part_id  
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readers = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)
+    length(rders$user_id)
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)    
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
   
 }
 # Aggregate for tomes
@@ -373,15 +368,13 @@ for(i in 1:ntomes){
   first_children = nodejs.structure[which(nodejs.structure$parent_id==tomes[i]),]$part_id
   children = nodejs.structure[which(nodejs.structure$parent_id%in%first_children),]$part_id
   
-  rders = count(nodejs[which(nodejs$part_id%in%children),], "user_id")
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readers =    length(rders$user_id)
-  
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereaders =  length(rders[which(rders$freq>1),]$user_id) 
-  
-  rdings = count(nodejs[which(nodejs$part_id%in%children),], "id")
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readings =   sum(rders$freq)
-  
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereadings = sum(rders$freq)  - length(rders$user_id)  
+
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readers = 
+    mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)
+  length(rders$user_id)
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)    
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
   
 }
 courseId  = nodejs.structure[which(nodejs.structure$type=='course'),]$part_id
