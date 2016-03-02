@@ -1504,7 +1504,7 @@ $scope.context.url = element.url;
 var displayCourseInfos =function(indicator, task){ 
   $scope.indicatorInspectorShow = indicator;
   resetPath(); 
-  
+  //if(indicator==='ALL')
   $scope.context.inspector_title = "Cours : "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
   $scope.context.url = $scope.course.url
     selectIndictor(indicator); 
@@ -1569,8 +1569,8 @@ angular.forEach(chapter.parts, function(part){
   users.push(100*part.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value);
   rss.push(100*part.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value);
   var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value);
-  rereadings_tx.push((rereads ==0)?0:rereads/reads);
+  var rereads = parseInt(100*part.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value);
+  rereadings_tx.push(rereads);
   stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
   })
 });
@@ -1618,7 +1618,7 @@ $scope.observedElt ={'type':'tome',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_tx':0,
       'meanTime': meanTime,
-      'meanRereads':Math.floor(100*d3.mean(rereadings_tx),2)+'%',
+      'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
       'meanStops':stopTx,
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
@@ -1670,8 +1670,8 @@ angular.forEach(element.parts, function(part){
   users.push(100*part.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value);
   rss.push(100*part.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value);
   var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-  var rereads = parseInt(part.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value);
-  rereadings_tx.push((rereads ==0)?0:rereads/reads);
+  var rereads = parseInt(100*part.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value);
+  rereadings_tx.push(rereads);
   stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
 });
 
@@ -1720,7 +1720,7 @@ $scope.observedElt ={'type':'chapter',
       'nbRS':Math.round(d3.mean(rss),2)+'%',
       'Actions_tx':0,
       'meanTime': meanTime,
-      'meanRereads':Math.floor(100*d3.mean(rereadings_tx),2)+'%',
+      'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
       'meanStops':stopTx,
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,

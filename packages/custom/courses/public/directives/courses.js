@@ -708,7 +708,10 @@ scope.renderBars = function(globalData, classe) {
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
+console.log(globalData);
+var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
 
+          data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -725,8 +728,7 @@ scope.renderBars = function(globalData, classe) {
         //Render graph based on 'data'
        
           
-          var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
-          data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
+          
 
           //Set our scale's domains
           x.domain(data.map(function(d) { return d.part; }));
