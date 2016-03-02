@@ -114,25 +114,25 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
   
   switch($scope.sectionPstatSelector) {
     case "Actions_tx":
-        $scope.graphTitle ='Distribution selon le nombre de visites'
+        $scope.graphTitle ='Taux des visites du cours qui portent sur la section'
         break;
     case 'RS_nb':
-        $scope.graphTitle ='Distribution selon le nombre de sessions de lecture'
+        $scope.graphTitle ='Nombre de sessions de lecture où la section a été lues'
         break;
     case 'mean.duration':
-        $scope.graphTitle ='Distribution selon la durée moyenne de lecture (en minutes)'
+        $scope.graphTitle ='Durée moyenne de lecture de la section(en minutes)'
         break;
     case 'rereadings_tx':
-        $scope.graphTitle ='Distribution selon le nombre de relectures'
+        $scope.graphTitle ='Taux de lectures qui sont des relectures relectures'
         break;
     case 'rupture':
-        $scope.graphTitle ='Distribution selon le nombre des arrêts de lecture'
+        $scope.graphTitle ='Taux des arrêts définitifs de lecture sur la section'
         break;
     case 'provenance':
-        $scope.graphTitle ='Distribution selon les sections de provenance'
+        $scope.graphTitle ='Sections de provenance (lues juste avant celle-ci)'
         break;
     case 'destination':
-        $scope.graphTitle ='Distribution selon les sections de destination'
+        $scope.graphTitle ='Sections de destination (lues juste après celle-ci)'
         break;
 }
 });
@@ -705,7 +705,7 @@ var computeAllFacts =function(element, indicator){
                    }                
             });
     });
-  $scope.context.inspector_title = "Partie: "+element.title +" - " +facts.length +" problèmes potentiels";
+  $scope.context.inspector_title = "Partie : "+element.title +" - " +facts.length +" problèmes potentiels";
   $scope.context.url = element.url
   }
 
@@ -720,13 +720,13 @@ var computeAllFacts =function(element, indicator){
                   facts.push(partFacts[i]);
                  }                
     });
-  $scope.context.inspector_title = "Chapitre: "+element.title +" - " +facts.length +" problèmes potentiels";
+  $scope.context.inspector_title = "Chapitre : "+element.title +" - " +facts.length +" problèmes potentiels";
   $scope.context.url = element.url
   }
   /******Part*******/
   if(type =='section'){
     facts =angular.copy(element.facts);
-    $scope.context.inspector_title = "Section: "+element.title +" - " +facts.length +" problèmes potentiels";
+    $scope.context.inspector_title = "Section : "+element.title +" - " +facts.length +" problèmes potentiels";
     for (var i = 0; i < facts.length; i++)   {facts[i].source = element.route; facts[i].sourceTitle = 'This part';}
       
   }
@@ -1329,7 +1329,7 @@ var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text(
  var txt = (indicator ==='Readings')?'à la lecture':
                 (indicator ==='Rereading')?'à la relecture':
                 (indicator ==='Transition')?'à la navigation' :'aux arrêts et reprises de la lecture';
-     $scope.context.inspector_title = "Section: "+ part.title+' - '+nb+ txt ;
+     $scope.context.inspector_title = "Section : "+ part.title+' - '+nb+ txt ;
      $scope.context.url = part.url
   showTasksAndFacts(element, indicator, task);
 
@@ -1444,9 +1444,9 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     if (minutes == 0) meanTime = seconds+' minutes';
 
     var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-    var rereads = parseInt(element.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)
-    var rereadTx = (rereads ==0)?0:rereads/reads;    
-    rereadTx = Math.floor(rereadTx * 100)+'%';
+    var rereads = parseInt(100*element.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)
+    var rereadTx = rereads ;    
+    rereadTx = Math.floor(rereadTx)+'%';
 
     var stop = parseInt(element.properties.filter(function(value){ return value.property === 'rupture'})[0].value);
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
@@ -1497,7 +1497,7 @@ $scope.observedElt ={
     };    
 
 $scope.inspectorShow = 'section';
-$scope.context.inspector_title = "Section: "+element.title;
+$scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
 }
 
@@ -1505,7 +1505,7 @@ var displayCourseInfos =function(indicator, task){
   $scope.indicatorInspectorShow = indicator;
   resetPath(); 
   
-  $scope.context.inspector_title = "Cours: "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
+  $scope.context.inspector_title = "Cours : "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
   $scope.context.url = $scope.course.url
     selectIndictor(indicator); 
 
@@ -1625,7 +1625,7 @@ $scope.observedElt ={'type':'tome',
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
       'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     }; 
-$scope.context.inspector_title = "Partie: "+element.title
+$scope.context.inspector_title = "Partie : "+element.title
 $scope.inspectorShow = 'component';
 $scope.context.url = element.url
 
@@ -1659,7 +1659,7 @@ var displayChapterInfos =function(partElt, task){
   })
 
 $scope.inspectorShow = 'component';
-$scope.context.inspector_title = "Chapitre: "+element.title;
+$scope.context.inspector_title = "Chapitre : "+element.title;
 $scope.context.url = element.url;
 
 

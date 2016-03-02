@@ -55,7 +55,7 @@
         <tr>
             <th role='button' class="indicators-header" data-indicator='Transition' ng-click='triggerClick($event)' data-path='@Transition'>
                 <i class="fa fa-random fa-2x"></i>
-                <span class="fat">Transition</span>
+                <span class="fat">Navigation</span>
                 
             </th>
              <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Transition' ng-click='triggerClick($event)' data-path={{part.route}}@Transition>
