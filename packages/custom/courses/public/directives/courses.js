@@ -149,8 +149,11 @@ var globalCharts = function(scope, element){
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .ticks(10)
-            .tickFormat(d3.format("d"));
+            .ticks(10);
+        if(classe=="mean.duration")    
+          yAxis.tickFormat(d3.format("d"))
+        else
+          yAxis.tickFormat(d3.format("%"));
 
          if(scope.d3opts.elementType!=='part') 
             xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
@@ -225,9 +228,9 @@ if(scope.d3opts.elementType!=='part')
 
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0);
-    xmedian.domain(data.map(function(d) { return d.part; }));
+    xmedian.domain(data.map(function(d) { return d.part; })); 
 
-    var dataMediane = d3.median(data, function(d) { return parseInt(d.value); }); 
+    var dataMediane = d3.median(data, function(d) { return parseFloat(d.value); }); 
     var ymedian = d3.svg.line()
         .x(function(d, i) { 
           return xmedian(d.part) + i; })
@@ -237,7 +240,7 @@ if(scope.d3opts.elementType!=='part')
         .rangeBands([0, width], 0);
     xmean.domain(data.map(function(d) { return d.part; }));
 
-    var dataMean = d3.mean(data, function(d) { return parseInt(d.value); }); 
+    var dataMean = d3.mean(data, function(d) { return parseFloat(d.value); }); 
     var ymean = d3.svg.line()
         .x(function(d, i) { 
           return xmedian(d.part) + i; })
@@ -285,7 +288,184 @@ legend.append("rect")
 
  
 
-scope.renderNodes=function(data){
+scope.renderResumeNodes=function(data){
+  
+  var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
+  var gap = parseInt(width /6) ;
+  var radius = gap / 4;
+  var height = gap * 2;
+
+  var   graph={nodes:[], links:[]}    
+  
+  
+  d3.select(element[0]).selectAll("*").remove();
+
+  svg = d3.select(element[0])
+          .append("svg")          
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('class','nodeChart');
+
+  var classe = scope.d3opts.issueCode;  
+   
+    var color = d3.scale.category10();
+ 
+  var  globalData = data.filter(function(e){ 
+    return e.type in
+     {'direct_recovery':'', 'next_recovery':'','prev_recovery':'','distant_next_recovery':'',
+     'distant_prev_recovery':''} });
+  var total_recoveries =data.filter(function(e){ return e.type ==='recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value; 
+  var next_recovery = data.filter(function(e){ return e.type ==='next_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
+  var direct_recovery = data.filter(function(e){ return e.type ==='direct_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
+  var prev_recovery = data.filter(function(e){ return e.type ==='prev_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
+  var distant_next_recovery = data.filter(function(e){ return e.type ==='distant_next_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
+  var distant_prev_recovery = data.filter(function(e){ return e.type ==='distant_prev_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
+
+
+  var data = {
+  'identity':  parseInt(direct_recovery * 100 / total_recoveries),
+  'next_p': parseInt(next_recovery * 100 / total_recoveries),
+  'precedent' : parseInt(prev_recovery * 100 / total_recoveries),
+  'shifted_next' : parseInt(distant_next_recovery * 100 / total_recoveries),
+  'shifted_past': parseInt(distant_prev_recovery * 100 / total_recoveries)
+  }  
+  
+     
+     var elementIDTxt = "S"
+
+  var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
+  {id: elementIDTxt+"-1",name:'precedent', value:data.precedent, color:'#008cba'}, 
+  {id: elementIDTxt,name:'identity', value:data.identity, color:'#45348A'},
+  {id: elementIDTxt+"+ 1",name:'next_p', value:data.next_p, color:'#008cba'}, 
+  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
+  
+  
+  
+  var identity = {id:'c3', x:gap * 3, y:height/2}
+  datum.forEach(function(c, i) {
+            c.x = gap * (i +1);
+            c.y = height/2  ;
+            graph.nodes.push(c);
+            var node = {id:c.id,x:c.x, y:c.y};
+            
+              graph.links.push({source: identity, target: node, value:c.value})
+            
+        });
+
+svg.append("defs").selectAll('marker')
+    .data(graph.links)
+    .enter()
+    .append('svg:marker')
+      .attr('id', function(d){ return 'marker'})
+     .attr("refX", 1) /*must be smarter way to calculate shift*/
+    .attr("refY", 5)
+    .attr( "viewBox","0 0 10 10")
+    .attr("markerWidth", 4)
+    .attr("markerHeight", 4)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M 0 0 L 10 5 L 0 10 z") //this is actual shape for arrowhead
+    .attr('fill', "#1FB1E6");
+
+  var circle = svg.append("g").selectAll(".circle")
+            .data(graph.nodes)
+            .enter()
+            .append("g")
+            .attr("class", "circle")
+            .attr("fill",  function(d) {return d.color});
+    var el = circle.append("circle")
+            .attr("cx", function(d) {return d.x})
+            .attr("cy", function(d) {return d.y})
+            .attr("r", radius);
+    var cTitle = circle.append("text")
+      .text(function(d){
+          return d.id;
+      })
+      .attr("dx",  function(d) {return d.x})
+      .attr("dy",  function(d) {return d.y + radius/3})
+      .attr("stroke", "white");
+ var radians = d3.scale.linear()
+  .range([Math.PI / 2, 3 * Math.PI / 2]);
+
+  var arc = d3.svg.line.radial()
+    .interpolate("basis")
+    .tension(0)
+    .angle(function(d) { return radians(d); });
+
+  var  linkArc=function(d) {
+       var x1 = d.source.x,
+          y1 = d.source.y - radius,
+          x2 = d.target.x ,
+          y2 = d.target.y - radius - 10,
+          dx = x2 - x1,
+          dy = y2 - y1,
+          dr = Math.sqrt(dx * dx + dy * dy),
+
+          // Defaults for normal edge.
+          drx = dr,
+          dry = dr - 35,
+          xRotation = 90, // degrees
+          largeArc = 0, // 1 or 0
+          
+         sweep = (dx>0) ? 1 : 0; // 1 or 0
+
+          // Self edge.
+          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+             x1 = d.source.x - radius/2,
+             x2 = d.target.x + radius/2,
+            y1 = d.source.y + radius,
+            y2 = d.target.y + radius,
+            dx = x2 - x1,
+          dy = y2 - y1, 
+          dx = x2 - x1,
+          dy = y2 - y1,
+          dr = Math.sqrt(dx * dx + dy * dy),
+            // Fiddle with this angle to get loop oriented.
+            xRotation = -90;
+            // Needs to be 1.
+            largeArc = 1;
+            // Change sweep to change orientation of loop. 
+            sweep = 0;
+            // Make drx and dry different to get an ellipse
+            // instead of a circle.
+            drx = 30;
+            dry = 30;            
+            // For whatever reason the arc collapses to a point if the beginning
+            // and ending points of the arc are the same, so kludge it.
+            x2 = x2 + 1;
+            y2 = y2 + 1;
+          } 
+
+     return "M" + x1 + "," + y1 + "A" + drx + "," + dry + " " + xRotation + "," + 
+     largeArc + "," + sweep + " " + x2 + "," + y2;
+}
+
+
+var url =window.location.pathname;
+
+
+var path = svg.append("g").selectAll("path")
+    .data(graph.links)
+  .enter().append("path")
+    .attr("class", function(d) { return "link"; })
+    .attr("marker-end", function(d) { return "url("+url+"#marker)"; });
+ path.attr("d", linkArc);
+
+svg.append("g").selectAll("g.linklabelholder")
+    .data(graph.links).enter().append("g")
+    .attr("class", "linklabelholder")  
+    .append("text")
+      .text(function(d){
+          return d.value+"%";
+      })      
+      .attr("stroke-width", ".2px")
+      .attr("stroke", function(d) {return d.target.color})
+      .attr("dx",  function(d) {return (d.target.x)  })
+      .attr("dy",  function(d) {return (d.target.y) + 1.75 * radius });
+}
+
+
+scope.renderTransitionNodes=function(data){
   
   var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
   var gap = parseInt(width /6) ;
@@ -467,30 +647,40 @@ svg.append("g").selectAll("g.linklabelholder")
 
     function resize(){
       if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
-                        'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                   'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
-            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
+            else if(scope.d3opts.issueCode in {'recoveries':''})
+                scope.renderResumeNodes(scope.data, scope.d3opts.issueCode)
+              else
+                scope.renderTransitionNodes(scope.data, scope.d3opts.issueCode)
+
     
     }
 
 scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
-                        'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                      'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
-            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
+            else if(scope.d3opts.issueCode in {'recoveries':''})
+                scope.renderResumeNodes(scope.data, scope.d3opts.issueCode)
+              else
+                scope.renderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
    
 
 scope.$watch('d3opts', function(){
   if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
-              scope.renderNodes(scope.data, scope.d3opts.issueCode)
+              scope.renderTransitionNodes(scope.data, scope.d3opts.issueCode)
             else 
-              scope.renderBars(scope.data, scope.d3opts.issueCode)
+              if(scope.d3opts.issueCode in {'recoveries':''})
+                scope.renderResumeNodes(scope.data, scope.d3opts.issueCode)
+                else
+                  scope.renderBars(scope.data, scope.d3opts.issueCode)
           }, true); 
 };
 
@@ -661,7 +851,7 @@ legend.append("rect")
 
         };
 
-scope.renderNodes = function(data, classe) {
+scope.renderTransitionNodes = function(data, classe) {
 var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
   var gap = parseInt(width /6) ;
   var radius = gap / 4;
@@ -687,7 +877,7 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
  var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
 
  globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
- console.log(globalData)
+ 
 
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
 
@@ -859,29 +1049,29 @@ scope.$watch(function(){
 
     function resize(){
       if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
-                        'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
-            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
+            else scope.renderTransitionNodes(scope.data, scope.d3opts.issueCode)
     
     }
     
 
 scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
-                        'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.renderBars(scope.data, scope.d3opts.issueCode)
-            else scope.renderNodes(scope.data, scope.d3opts.issueCode)
+            else scope.renderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
    
 
 scope.$watch('d3opts', function(){
   if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
-              scope.renderNodes(scope.data, scope.d3opts.issueCode)
+              scope.renderTransitionNodes(scope.data, scope.d3opts.issueCode)
             else 
               scope.renderBars(scope.data, scope.d3opts.issueCode)
           }, true);  
@@ -1104,11 +1294,11 @@ scope.renderGlobal=function(data){
 
 /*
   var data = {
-  'identity': parseInt($.grep(globalData, function(e){ return e.property == 'identity'; })[0].value),
-  'next_p': parseInt($.grep(globalData, function(e){ return e.property =='next_p'; })[0].value),
-  'precedent' : parseInt($.grep(globalData, function(e){ return e.property == 'precedent'; })[0].value),
-  'shifted_next' : parseInt($.grep(globalData, function(e){ return e.property == 'shifted_next'; })[0].value),
-  'shifted_past': parseInt($.grep(globalData, function(e){ return e.property == 'shifted_past'; })[0].value)
+  'identity': parseFloat($.grep(globalData, function(e){ return e.property == 'identity'; })[0].value),
+  'next_p': parseFloat($.grep(globalData, function(e){ return e.property =='next_p'; })[0].value),
+  'precedent' : parseFloat($.grep(globalData, function(e){ return e.property == 'precedent'; })[0].value),
+  'shifted_next' : parseFloat($.grep(globalData, function(e){ return e.property == 'shifted_next'; })[0].value),
+  'shifted_past': parseFloat($.grep(globalData, function(e){ return e.property == 'shifted_past'; })[0].value)
   }  
 
   var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
@@ -1261,13 +1451,13 @@ var nodeChart = function(scope, element){
   var width = 500, height = 200, radius = 20, gap = 80 , yfixed= height/2 + radius, graph={nodes:[], links:[]}
   var classe = scope.data.issueCode.split('_')[0];
   var variable = scope.data.issueCode.split('_')[1];
-  var elementID = parseInt(scope.data.partIndex);
+  var elementID = parseFloat(scope.data.partIndex);
   var data = {
-  'identity': parseInt($.grep(scope.data.transition, function(e){ return e.property == classe+'_identity'; })[0].value),
-  'next_p': parseInt($.grep(scope.data.transition, function(e){ return e.property == classe+'_next_p'; })[0].value),
-  'precedent' : parseInt($.grep(scope.data.transition, function(e){ return e.property == classe+'_precedent'; })[0].value),
-  'shifted_next' : parseInt($.grep(scope.data.transition, function(e){ return e.property == classe+'_shifted_next'; })[0].value),
-  'shifted_past': parseInt($.grep(scope.data.transition, function(e){ return e.property == classe+'_shifted_past'; })[0].value)
+  'identity': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_identity'; })[0].value),
+  'next_p': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_next_p'; })[0].value),
+  'precedent' : parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_precedent'; })[0].value),
+  'shifted_next' : parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_shifted_next'; })[0].value),
+  'shifted_past': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_shifted_past'; })[0].value)
   }  
   var datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
   {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
@@ -1409,23 +1599,24 @@ svg.append("g").selectAll("g.linklabelholder")
 
 if(scope.d3opts.type === 'global') 
 {  
-if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
-                        'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
+if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                      'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  globalCharts(scope, element)
 
 else 
   if(scope.d3opts.issueCode in {'provenance':'','destination':''})  
-          globalNodeChart(scope, element)
+       //   globalNodeChart(scope, element)
+      globalCharts(scope, element)
     //else globalBubbleChart(scope, element,'titre');
 }
 else
 if(scope.d3opts.type === 'inspector'){
   
 
-if(scope.d3opts.issueCode in {'Actions_nb':'', 'mean.duration':'',
-                        'txReads':'','mean.tx_total_readers':'','mean.tx_total_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
+if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                      'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  inspectorCharts(scope, element,'titre')
 
   if(scope.d3opts.issueCode in {'provenance':'','transition':''})

@@ -1543,12 +1543,14 @@ marker#arrow {
 
 .widget .header{
     background-color: #29384D;
-    height:30px;
+    
     color:#D1DDF3;
-    text-align: center;
-    line-height: 30px;
-    font-weight: 300;
-    font-size: 1.5em;
+    text-align: left;
+    padding-left: 10px;
+    padding-top, padding-bottom: 2px;
+    vertical-align: middle;
+    font-size: 20px;
+    
 
 }
 
@@ -1572,13 +1574,14 @@ marker#arrow {
     color: #ffffff;
     background-color: #404F70;
     border-color: #ffffff;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    height: 100%!important;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 14px;
 }
-.btn-achievement.active{
-    color: #151619;
-    background-color: #ADD3EF;
-    
-   
-}
+
 
 .componentInfo{
   font-size: 14px;

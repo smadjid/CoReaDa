@@ -487,12 +487,12 @@ decaled.rereads[ , ':='( part_index = 1:.N )  ]
 decaled.rereads=decaled.rereads[,c("part_index","Decaled_rereadings"), with=FALSE]
 
 nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index", all.x = TRUE)
-
-nodejs.Reads$mean.rereads = nodejs.Reads$Rereadings / nodejs.Reads$Readers
-nodejs.Reads$mean.seq_rereads = (nodejs.Reads$Sequential_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads
-nodejs.Reads$mean.dec_rereads = (nodejs.Reads$Decaled_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads
-nodejs.Reads$mean.tx_total_rereaders = round(100 * nodejs.Reads$Rereaders / nodejs.Reads$Readers, 2) 
-nodejs.Reads$mean.tx_total_readers = round(100 * nodejs.Reads$Rereaders / nusers, 2) 
+#Reads= Reads[,c(1,2,3,4,5,6,7,8)]
+nodejs.Reads$rereadings_tx = nodejs.Reads$Rereadings / nodejs.Reads$Readings
+nodejs.Reads$seq_rereads_tx = round((nodejs.Reads$Sequential_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads, 4) 
+nodejs.Reads$dec_rereads_tx = round((nodejs.Reads$Decaled_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads, 4) 
+nodejs.Reads$part_readers_rereaders = round(nodejs.Reads$Rereaders / nodejs.Reads$Readers, 4) 
+nodejs.Reads$course_readers_rereaders = round(nodejs.Reads$Rereaders / nusers, 4) 
 save(nodejs.Reads, file="nodejs.Reads.rdata")
 ##############################################"""
 

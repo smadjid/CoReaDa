@@ -713,8 +713,8 @@ PartData[which(PartData$type=='title-3'),]$type='section'
 
 PartData = merge(PartData, Interest[,c(1,2,3,4,5)],all.x = TRUE)
 
-names(PartData)[1]='part_index'
-names(PartData)[3]='part_parent' 
+names(PartData)[2]='part_index'
+names(PartData)[3]='parent_id' 
 names(PartData)[4]='part_title'
 names(PartData)[5]='part_type'
 PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
@@ -797,9 +797,22 @@ for(i in 1:length(tomesIds)){
 
 PartData$Readers_tx = round(PartData$Readers / nusers, 4)
 PartData$RS_tx = round(PartData$RS_nb / nrow(nodejs.RS), 4)
+
+
+PartData$Actions_tx = round(PartData$Actions_nb / nrow(nodejs), 4)
+PartData$Readers_tx = round(PartData$Readers / nusers, 4)
+allRup = max(PartData$rupture)
+finalRupt = max(PartData$norecovery)
+PartData$RS_tx = round(PartData$RS_nb /nrow(RS),4)
+PartData$rupture_tx = round(PartData$rupture/courseRup,4)
+PartData$norecovery_tx = round(PartData$norecovery/finalRupt,4)
+PartData$direct_recovery_tx= round(PartData$direct_recovery /PartData$recovery,4)
+PartData$distant_next_recovery_tx= round(PartData$distant_next_recovery /PartData$recovery,4)
+PartData$next_recovery_tx= round(PartData$next_recovery /PartData$recovery,4)
+PartData$prev_recovery_tx= round(PartData$prev_recovery /PartData$recovery,4)
+PartData$distant_prev_recovery_tx= round(PartData$distant_prev_recovery /PartData$recovery,4)
+
 save(PartData, file='PartData.rdata')
-
-
 colnames(PartData)[1]="id"
 colnames(PartData)[3]="parent_id"
 

@@ -1,13 +1,17 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
 <div class="widget" style="width:48%">
-    <div class="header">Statistiques  <span class="btn-group">     
-        <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'visits'">Lecture</label>
-        <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'rs'">Séances de lecture</label>
-        <label class="btn btn-xs btn-achievement" ng-model="statSelector" uib-btn-radio="'issue'">Problèmes de lecture</label>        
-    </span>  
+    <div class="header">Statistiques  de
+    <select class="btn-xs btn-achievement" ng-model="statSelector">
+      <option value="visits">Lecture</option>
+      <option value="rs">Séances de lecture</option> 
+      <option value="issues">Problèmes de lecture</option>
+    </select><br>
+
+    
     </div>
     <div>
     <br/>
+
         <ul ng-show="statSelector=='visits'">
         <li class='statElement'>Pour la période allant du <b>15 octobre 2015</b> au <b>22 décembre 2015</b>, le cours est visité par <b>{{context.stats.reading.nusers}} lecteurs.</b> 
                 <li class='statElement'>Le taux moyen du cours lu (en termes de nombre de sections) par chaque lecteur est de <b>{{context.stats.achievement.mean}}%</b>. 
@@ -20,7 +24,7 @@
                 <li class='statElement'>Une séance de lecture est en moyenne composée de <b>{{context.stats.rs.mean_nparts}} sections.</b>
                     <li class='statElement'>Une séance de lecture dure en moyenne <b>{{context.stats.rs.mean_duration}} minutes</b>.
         </ul>
-        <ul ng-show="statSelector=='issue'">
+        <ul ng-show="statSelector=='issues'">
             <li class='statElement'>Un total de <b>{{context.stats.issues.all}} problèmes</b> détectés dont:
             <ul>
                 <li class='statElement'><b>{{context.stats.issues.readings}}</b> sont relatifs à la lecture
@@ -39,22 +43,25 @@
 
 <div class="widget" style="width:48%; ">
     <div class="header">Top 
-    <span class="btn-group"  >     
-        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'sections'">Section</label>
-        <label class="btn btn-xs btn-achievement" ng-model="topElementSelector" uib-btn-radio="'chapters'">Chapitre</label>
-    </span> par nombre de
-    <span class="btn-group">
-      <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Actions_nb'">visites</label>
-      <label class="btn btn-xs btn-achievement" ng-model="topSelector" uib-btn-radio="'Readers'">lecteurs</label>
-    </span>
+    <select class="btn-xs btn-achievement" ng-model="topElementSelector">
+      <option value="sections">Sections</option> <!-- not selected / blank option -->
+      <option value="chapters">Chapitres</option> <!-- interpolation -->
+    </select>   
+    par nombre de
+    <select class="btn-xs btn-achievement"  ng-model="topSelector">
+      <option value="Actions_tx">Visites</option> <!-- not selected / blank option -->
+      <option value="Readers">Lecteurs</option> <!-- interpolation -->
+    </select> 
+
+   
          
 </div>
       <br/>
 
     <div ng-show="topElementSelector=='tomes'">    
 
-        <ol ng-show="topSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Actions_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
+        <ol ng-show="topSelector=='Actions_tx'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Tomes.Actions_tx" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
@@ -67,8 +74,8 @@
     </div>
 
     <div ng-show="topElementSelector=='chapters'">    
-        <ol ng-show="topSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Actions_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
+        <ol ng-show="topSelector=='Actions_tx'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.Actions_tx" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
@@ -79,21 +86,21 @@
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Chapters.RS_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
         <hr/>
-            <ol ng-show="flopSelector=='Actions_nb'" start="9">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+            <ol ng-show="topSelector=='Actions_tx'" start="9">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Actions_tx" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
 
-        <ol ng-show="flopSelector=='Readers'" start="9">
+        <ol ng-show="topSelector=='Readers'" start="9">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
 
-        <ol ng-show="flopSelector=='RS_nb'" start="9">
+        <ol ng-show="topSelector=='RS_nb'" start="9">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Chapters.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
     </div>
     <div ng-show="topElementSelector=='sections'">    
-        <ol ng-show="topSelector=='Actions_nb'">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Actions_nb" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
+        <ol ng-show="topSelector=='Actions_tx'">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="top in context.Tops.Sections.Actions_tx" data-path={{top.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{top.title}} 
         </ol>
 
         <ol ng-show="topSelector=='Readers'">
@@ -106,15 +113,15 @@
 
         <hr/>
 
-        <ol ng-show="flopSelector=='Actions_nb'" start="24">
-        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Actions_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
+        <ol ng-show="topSelector=='Actions_tx'" start="24">
+        <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Actions_tx" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
 
-        <ol ng-show="flopSelector=='Readers'" start="24">
+        <ol ng-show="topSelector=='Readers'" start="24">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.Readers" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
 
-        <ol ng-show="flopSelector=='RS_nb'" start="24">
+        <ol ng-show="topSelector=='RS_nb'" start="24">
         <li role='button' ng-click='triggerClick($event)' class='topElement' ng-repeat="flop in context.Flops.Sections.RS_nb" data-path={{flop.route}}  ng-mouseover="triggerHover($event)" onmouseout='stopHover()' >{{flop.title}} 
         </ol>
     </div>

@@ -2,24 +2,19 @@
 <div class='col-lg-12' ng-show="indicatorInspectorShow!='Transition'">
 
     
+   <select class="btn-xs btn-achievement" ng-model="globalChartSelector">
+      <option value="Actions_tx" ng-show="indicatorInspectorShow=='Readings'">Taux de visites</option>
+      <option value="Readers_tx"ng-show="indicatorInspectorShow=='Readings'">Taux de lecteurs</option>
+      <option value="mean.duration" ng-show="indicatorInspectorShow=='Readings'">Durées de lecture</option>      
    
-  <span class="btn-group" ng-model="globalChartSelector" style='width:100%; '>    
-   
-        <label  ng-show="indicatorInspectorShow=='Readings'"  class="btn btn-xs btn-primary" style='width:30%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'Actions_nb'">Nombre de visites</label>
-        <label ng-show="indicatorInspectorShow=='Readings'"  class="btn btn-xs btn-primary"  style='width:30%; margin:2px'  ng-model="$parent.globalChartSelector" uib-btn-radio="'mean.duration'" >Durées de lecture</label>
-      
-    
-        <label ng-show="indicatorInspectorShow=='Rereading'" class="btn btn-xs btn-primary" style='width:30%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'txReads'">Taux de lectures qui sont des relectures</label>
-        <label ng-show="indicatorInspectorShow=='Rereading'" class="btn btn-xs btn-primary" style='width:30%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'mean.tx_total_readers'">Lecteurs du cours qui sont relecteurs de la partie</label>
-        <label ng-show="indicatorInspectorShow=='Rereading'" class="btn btn-xs btn-primary" style='width:30%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'mean.tx_total_rereaders'">Lecteurs de la partie qui sont relecteurs de la partie</label>
-    
-        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:50%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'rupture'">Taux de fin de séances sur la partie</label>
-        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:30%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'norecovery'">Taux de fins de la lecture sur la partie</label>
-        <label ng-show="indicatorInspectorShow=='Stop'" class="btn btn-xs btn-primary" style='width:30%; margin:2px' ng-model="$parent.globalChartSelector" uib-btn-radio="'recoveries'">Parties de reprises</label>
-       
-         
-      
-    </span>
+      <option value="rereadings_tx" ng-show="indicatorInspectorShow=='Rereading'">Taux de lectures qui sont des relectures</option>
+      <option value="course_readers_rereaders" ng-show="indicatorInspectorShow=='Rereading'">Taux de lecteurs du cours qui sont relecteurs de la partie</option>
+      <option value="part_readers_rereaders" ng-show="indicatorInspectorShow=='Rereading'">Taux de lecteurs de la section qui sont également ses relecteurs</option>  
+
+      <option value="rupture_tx" ng-show="indicatorInspectorShow=='Stop'">Taux de fin de séances sur la partie</option> <option value="norecovery_tx" ng-show="indicatorInspectorShow=='Stop'">Taux de fin de la lecture sur la partie</option>
+      <option value="recoveries" ng-show="indicatorInspectorShow=='Stop'">Parties de reprises</option>
+    </select><br>
+  
 
 
 
