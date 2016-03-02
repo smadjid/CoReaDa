@@ -1448,9 +1448,9 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     var rereadTx = rereads ;    
     rereadTx = Math.floor(rereadTx)+'%';
 
-    var stop = parseInt(element.properties.filter(function(value){ return value.property === 'rupture'})[0].value);
+    var stop = parseInt(100*element.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value);
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
-    var stopTx = Math.floor(100 * stop / nrs)+'%';
+    var stopTx = Math.floor(stop)+'%';
 
     var provData =[
     {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'provenance_identity'})[0].value),
@@ -1495,7 +1495,7 @@ $scope.observedElt ={
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
       'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     };    
-
+console.log(stopTx);
 $scope.inspectorShow = 'section';
 $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
@@ -1571,7 +1571,7 @@ angular.forEach(chapter.parts, function(part){
   var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
   var rereads = parseInt(100*part.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value);
   rereadings_tx.push(rereads);
-  stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
+  stops.push(parseInt(100*part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value));
   })
 });
 var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
@@ -1583,7 +1583,7 @@ var sec_num = d3.sum(times);
     if (minutes == 0) meanTime = seconds+' minutes';
 
     var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
-    var stopTx = Math.floor(100 * Math.round(d3.mean(stops),2) / nrs)+'%';
+    var stopTx = Math.floor(Math.round(d3.mean(stops),2))+'%';
 
     var provData =[
     {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'provenance_identity'})[0].value),
@@ -1614,8 +1614,8 @@ var destData =[
 $scope.observedElt ={'type':'tome',
       'id':element.id,
       'typeTxt': 'cette partie',
-      'nbUsers':Math.round(d3.mean(users),2)+'%',
-      'nbRS':Math.round(d3.mean(rss),2)+'%',
+      'nbUsers':parseInt(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value)+'%',
+      'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
       'Actions_tx':0,
       'meanTime': meanTime,
       'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
@@ -1672,7 +1672,7 @@ angular.forEach(element.parts, function(part){
   var reads = parseInt(part.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
   var rereads = parseInt(100*part.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value);
   rereadings_tx.push(rereads);
-  stops.push(parseInt(part.properties.filter(function(value){ return value.property === 'rupture'})[0].value));
+  stops.push(parseInt(100*part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value));
 });
 
 var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
@@ -1716,12 +1716,12 @@ var destData =[
 $scope.observedElt ={'type':'chapter',
       'typeTxt':'ce chapitre ',      
       'id':element.id,
-      'nbUsers':Math.round(d3.mean(users),2)+'%',
-      'nbRS':Math.round(d3.mean(rss),2)+'%',
+      'nbUsers':parseInt(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value)+'%',
+      'nbRS':parseInt(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value)+'%',
       'Actions_tx':0,
       'meanTime': meanTime,
       'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
-      'meanStops':stopTx,
+      'meanStops':Math.floor(d3.mean(stops),2)+'%',
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
