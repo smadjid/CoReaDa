@@ -1456,6 +1456,7 @@ var nodeChart = function(scope, element){
   var classe = scope.data.issueCode.split('_')[0];
   var variable = scope.data.issueCode.split('_')[1];
   var elementID = parseFloat(scope.data.partIndex);
+  console.log(scope.data.transition)
   var data = {
   'identity': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_identity'; })[0].value),
   'next_p': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_next_p'; })[0].value),
@@ -1623,7 +1624,7 @@ if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
                       'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  inspectorCharts(scope, element,'titre')
 
-  if(scope.d3opts.issueCode in {'provenance':'','transition':''})
+  if(scope.d3opts.issueCode in {'provenance':'','destination':''})
       nodeChart(scope, element);
 
 }

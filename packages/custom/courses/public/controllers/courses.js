@@ -2000,32 +2000,32 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
 
 
     if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent','provenance' );}
 
     if(fact.issueCode in{'TransProvNext':'', 'TransProvNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_next_p' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_next_p','provenance' );}
 
     if(fact.issueCode in{'TransProvShiftNext':'', 'TransProvShiftNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_next' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_next','provenance' );}
 
     if(fact.issueCode in{'TransProvShiftPast':'', 'TransProvShiftPastV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_past' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_past','provenance' );}
 
 
     if(fact.issueCode in{'TransDestNext':'', 'TransDestNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_next_p' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_next_p','destination' );}
     if(fact.issueCode in{'TransDestPrev':'', 'TransDestPrevV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_precedent' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_precedent','destination' );}
     if(fact.issueCode in{'TransDestPast':'', 'TransDestShiftPast':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' ,'destination');}
     if(fact.issueCode in{'TransDestShiftNext':'', 'TransDestShiftNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' ,'destination');}
  
 
 }
 
-var transitionFactChart = function(factedPartID, issueCode){
-  var classe ='provenance'
+var transitionFactChart = function(factedPartID, issueCode, classe){
+  
   if(typeof $scope.course =='undefined') return;
     
     var chartData =[];
@@ -2165,7 +2165,7 @@ var factChart = function(factedPartID, issueCode){
     var colorsEntries =[];
    
    var cpt = 0;
-console.log("ComputeGlobalVisuData:"+issueCode);
+
 chartData.push({'part':$scope.course._id,
             'title':$scope.course.title,
              'elementType':'course',
