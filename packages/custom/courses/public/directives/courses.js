@@ -708,7 +708,7 @@ scope.renderBars = function(globalData, classe) {
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
-console.log(globalData);
+
 var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
 
           data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
@@ -1084,7 +1084,7 @@ scope.$watch('d3opts', function(){
 
 var RereadingsChart = function(scope, element, title){  
    
-   console.log(scope.data.seq_reread);
+   
     var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 580 - margin.left - margin.right,
           height = 320 - margin.top - margin.bottom;
@@ -1114,7 +1114,7 @@ arcs.append("svg:path")
     })
     .attr("d", function (d) {
         // log the result of the arc generator to show how cool it is :)
-        console.log(arc(d));
+        
         return arc(d);
     });
 
@@ -1505,7 +1505,6 @@ var nodeChart = function(scope, element){
   var classe = scope.data.issueCode.split('_')[0];
   var variable = scope.data.issueCode.split('_')[1];
   var elementID = parseFloat(scope.data.partIndex);
-  console.log(scope.data.transition)
   var data = {
   'identity': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_identity'; })[0].value),
   'next_p': parseFloat($.grep(scope.data.transition, function(e){ return e.property == classe+'_next_p'; })[0].value),

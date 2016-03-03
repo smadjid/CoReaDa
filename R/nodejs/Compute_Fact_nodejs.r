@@ -320,7 +320,7 @@ Rereads_rereaders_max$suggestion_content="la section doit être plus simple à  
 
 Rereads_Sequential_rereadings_max = subset(FactDataPart, FactDataPart$rereads_seq_tx>80 , select=c(id,rereads_seq_tx)) 
 Rereads_Sequential_rereadings_max$classe="Rereading"
-Rereads_Sequential_rereadings_max$issueCode="RRmaxS"
+Rereads_Sequential_rereadings_max$issueCode="RRmaxSeq"
 Rereads_Sequential_rereadings_max$content="Beaucoup trop de relectures conjointes (i.e. dans une même séance de lecture)"
 Rereads_Sequential_rereadings_max$description=paste(Rereads_Sequential_rereadings_max$rereads_seq_tx," des relectures de cette section sont faites dans les mêmes séances de lecture.")
 Rereads_Sequential_rereadings_max$norm_value=0
@@ -334,7 +334,7 @@ Rereads_Sequential_rereadings_max$suggestion_content="cette section doit être p
 
 Rereads_Decaled_rereadings_vmax = subset(FactDataPart, FactDataPart$rereads_dec_tx>80 , select=c(id,rereads_dec_tx)) 
 Rereads_Decaled_rereadings_vmax$classe="Rereading"
-Rereads_Decaled_rereadings_vmax$issueCode="RRmaxS"
+Rereads_Decaled_rereadings_vmax$issueCode="RRmaxD"
 Rereads_Decaled_rereadings_vmax$content="Beaucoup trop de relectures disjointes (i.e. dans des séances de lecture distinctes)"
 Rereads_Decaled_rereadings_vmax$description=paste(Rereads_Decaled_rereadings_vmax$rereads_dec_tx,"% des relectures de cette section sont faites dans des séances disjointes.")
 Rereads_Decaled_rereadings_vmax$norm_value=0

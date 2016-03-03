@@ -445,7 +445,7 @@ var computeCourseStats =function(){
       'stop':$scope.context.d3.stats.filter(function(value){ return value.indicator === 'Stop'})[0].count
     },
   }
-console.log(result);
+
   return result;
 }
 
@@ -1501,7 +1501,7 @@ $scope.observedElt ={
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
       'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     };    
-console.log(stopTx);
+
 $scope.inspectorShow = 'section';
 $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
