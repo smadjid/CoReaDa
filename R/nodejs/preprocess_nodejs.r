@@ -5,7 +5,7 @@ library('Peirce')
 
 selectedCourse='nodejs'
 
-setwd(paste('/home/madjid/dev/R/',selectedCourse, sep='/'))
+setwd(paste('/home/madjid/dev/CoReaDa/R/',selectedCourse, sep='/'))
 #http://codebeautify.org/jsonviewer#
 load('nodejs.rdata')
 load('course.structure.rdata')
