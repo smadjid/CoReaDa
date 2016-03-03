@@ -2156,6 +2156,8 @@ return chartData
 }
 var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course =='undefined') return;
+  
+//console.log(visuData);
     
     var chartData =[];
     var meanData =[];
@@ -2163,7 +2165,7 @@ var factChart = function(factedPartID, issueCode){
     var colorsEntries =[];
    
    var cpt = 0;
-
+console.log("ComputeGlobalVisuData:"+issueCode);
 chartData.push({'part':$scope.course._id,
             'title':$scope.course.title,
              'elementType':'course',
