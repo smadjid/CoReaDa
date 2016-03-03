@@ -1492,6 +1492,8 @@ $scope.observedElt ={
       'meanStops':stopTx,
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
+      'provLinearity':provData.filter(function(value){ return value.property === 'precedent'})[0].value+'%',
+      'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%',
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
       'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     };    
@@ -1623,7 +1625,9 @@ $scope.observedElt ={'type':'tome',
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
-      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
+      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text,
+      'provLinearity':provData.filter(function(value){ return value.property === 'precedent'})[0].value+'%',
+      'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%'
     }; 
 $scope.context.inspector_title = "Partie : "+element.title
 $scope.inspectorShow = 'component';
@@ -1725,7 +1729,9 @@ $scope.observedElt ={'type':'chapter',
       'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
       'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
       'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
-      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
+      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text,
+      'provLinearity':provData.filter(function(value){ return value.property === 'precedent'})[0].value+'%',
+      'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%'
     }; 
 }
 
