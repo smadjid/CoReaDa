@@ -1,6 +1,8 @@
 <div class='row' style="margin:10px;color: #1C383F; " >
 <table class='col-lg-6 coreada-box' class="btn-group">
 <tr ng-model="sectionPstatSelector">
+<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'"><span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} </td></tr>	
+
 	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité cette section </td></tr>
 
 	
@@ -23,7 +25,7 @@
 	Le plus souvent (<b>{{observedElt.maxDestPercent}}%</b> des cas), la section lue juste après  celle-ci <span class="blue">{{observedElt.maxDestTxt}}</span>.-->
 	</td></tr>
 	
-    </tr>
+    
 	</table>
 
 	<div class='col-lg-6 coreada-box'>

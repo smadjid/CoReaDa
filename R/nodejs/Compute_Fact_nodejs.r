@@ -204,8 +204,6 @@ PartData$prev_recovery_tx= round(PartData$prev_recovery /PartData$recovery,4)
 PartData$distant_prev_recovery_tx= round(PartData$distant_prev_recovery /PartData$recovery,4)
 
 
-#Add the element_id
-jsonstructure <- fromJSON("jsonstructure.json")
 
 
 save(PartData, file='PartData.rdata')
@@ -278,7 +276,7 @@ Interest_duration_max$suggestion_content="La section doit être plus simple à  
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
 - vérifier l'enchaînement logique des propos
 - ajouter des exemples/analogies pour améliorer la compréhension
-- éviter les dispersions : aller à  l’essentiel"
+- éviter les dispersions : aller à  l'essentiel"
 
 
 
@@ -298,7 +296,7 @@ Rereads_rereadings_max$suggestion_content="la section doit être plus simple à 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
 - vérifier l'enchaînement logique des propos
 - ajouter des exemples/analogies pour améliorer la compréhension
-- éviter les dispersions : aller ?  l’essentiel"
+- éviter les dispersions : aller ?  l'essentiel"
 
 
 
@@ -317,7 +315,33 @@ Rereads_rereaders_max$suggestion_content="la section doit être plus simple à  
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
 - vérifier l'enchaînement logique des propos
 - ajouter des exemples/analogies pour améliorer la compréhension
-- éviter les dispersions : aller à  l’essentiel"
+- éviter les dispersions : aller à  l'essentiel"
+
+
+Rereads_Sequential_rereadings_max = subset(FactDataPart, FactDataPart$rereads_seq_tx>80 , select=c(id,rereads_seq_tx)) 
+Rereads_Sequential_rereadings_max$classe="Rereading"
+Rereads_Sequential_rereadings_max$issueCode="RRmaxS"
+Rereads_Sequential_rereadings_max$content="Beaucoup trop de relectures conjointes (i.e. dans une même séance de lecture)"
+Rereads_Sequential_rereadings_max$description=paste(Rereads_Sequential_rereadings_max$rereads_seq_tx," des relectures de cette section sont faites dans les mêmes séances de lecture.")
+Rereads_Sequential_rereadings_max$norm_value=0
+Rereads_Sequential_rereadings_max$gravity=0
+Rereads_Sequential_rereadings_max$suggestion_title="Simplifier la section"
+Rereads_Sequential_rereadings_max$suggestion_content="cette section doit être plus simple ?  lire/comprendre : 
+  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+  - vérifier l'enchaînement logique des propos
+  - ajouter des exemples/analogies pour améliorer la compréhension
+  - éviter les dispersions : aller à  l'essentiel"
+
+Rereads_Decaled_rereadings_vmax = subset(FactDataPart, FactDataPart$rereads_dec_tx>80 , select=c(id,rereads_dec_tx)) 
+Rereads_Decaled_rereadings_vmax$classe="Rereading"
+Rereads_Decaled_rereadings_vmax$issueCode="RRmaxS"
+Rereads_Decaled_rereadings_vmax$content="Beaucoup trop de relectures disjointes (i.e. dans des séances de lecture distinctes)"
+Rereads_Decaled_rereadings_vmax$description=paste(Rereads_Decaled_rereadings_vmax$rereads_dec_tx,"% des relectures de cette section sont faites dans des séances disjointes.")
+Rereads_Decaled_rereadings_vmax$norm_value=0
+Rereads_Decaled_rereadings_vmax$gravity=0
+Rereads_Decaled_rereadings_vmax$suggestion_title="Restructurer le cours et/ou ajouter des mémos/rappels"
+Rereads_Decaled_rereadings_vmax$suggestion_content="cette section doit probablement être un pré-requis important pour d'autres éléments du cours.
+  N'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène (déplacer cette section ou l'englober dans une autre partie ou chapitre) ?"
 
 #################Transition Facts#####################
 Transition_provenance_shiftednext = subset(FactDataPart, FactDataPart$provenance_shifted_next>20 & FactDataPart$id>1 , select=c(id,provenance_shifted_next)) 
@@ -325,12 +349,12 @@ Transition_provenance_shiftednext$classe="Transition"
 Transition_provenance_shiftednext$issueCode="TransProvShiftNext"
 Transition_provenance_shiftednext$content="Trop d\'arrivées depuis des sections suivantes"
 val = 0
-Transition_provenance_shiftednext$description=paste("Dans",Transition_provenance_shiftednext$provenance_shifted_next,"% des cas, la partie lue avant n’est pas celle qui précède mais est une partie située après")
+Transition_provenance_shiftednext$description=paste("Dans",Transition_provenance_shiftednext$provenance_shifted_next,"% des cas, la partie lue avant n'est pas celle qui précède mais est une partie située après")
 Transition_provenance_shiftednext$norm_value=0
 dif = 0
 Transition_provenance_shiftednext$gravity=0
-Transition_provenance_shiftednext$suggestion_title="Déplacer cette section ou l’englober dans une autre section ou chapitre"
-Transition_provenance_shiftednext$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou section(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
+Transition_provenance_shiftednext$suggestion_title="Déplacer cette section ou l'englober dans une autre section ou chapitre"
+Transition_provenance_shiftednext$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d'autre(s) chapitre(s) ou section(s), n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
 
 
 Transition_provenance_shiftedpast = subset(FactDataPart, FactDataPart$provenance_shifted_past>20 , select=c(id,provenance_shifted_past)) 
@@ -433,7 +457,7 @@ Est-ce que cette section  et celles voisines suivantes sont réellement pertinen
 
 
 ####### SUM UP FACTS ########
-names(Interest_nbvisites_vmin)[c(1,2)]=
+
   names(Interest_nbvisites_min)[c(1,2)]=
   names(Interest_nbvisites_max)[c(1,2)]=
   names(Interest_duration_min)[c(1,2)]=
@@ -441,6 +465,8 @@ names(Interest_nbvisites_vmin)[c(1,2)]=
   
   names(Rereads_rereadings_max)[c(1,2)]=
   names(Rereads_rereaders_max)[c(1,2)]=
+  names(Rereads_Decaled_rereadings_vmax)[c(1,2)]=
+  #names(Rereads_Sequential_rereadings_max)[c(1,2)]=
   
   names(Transition_provenance_shiftednext)[c(1,2)]=
   names(Transition_provenance_shiftedpast)[c(1,2)]=
@@ -462,6 +488,7 @@ facts =
     
     Rereads_rereadings_max,
     Rereads_rereaders_max,
+    Rereads_Decaled_rereadings_vmax,
     
     Transition_provenance_shiftednext,
     Transition_provenance_shiftedpast,

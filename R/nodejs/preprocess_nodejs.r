@@ -349,13 +349,69 @@ for(i in 1:(nparts))
   nodejs.Reads[which(nodejs.Reads$part_id==parts[i]),]$Rereadings = sum(rders$freq)  - length(rders$user_id)   
   
 }
+
+### Nombre de relecture successive des parties
+users=unique(nodejs$user_id)
+nusers=length(users)
+successive.rereads = data.frame(part_index=1:nparts, Sequential_rereadings = 0)
+for (i in 1:nusers)
+{
+  print(i)
+  user.seances = subset(nodejs, nodejs$user_id==users[i], select=c('seance','part_index','date'))
+  user.seances=user.seances[order(user.seances$date),]
+  seances=unique(user.seances[["seance"]])
+  nseances=length(seances)
+  
+  for(j in 1:nseances)
+  {
+    seance = user.seances[which(user.seances$seance==seances[j]),]
+    for(mm in 1:nparts){
+      n = nrow(seance[which(seance$part_index==mm),])
+      if(!is.null(n)){
+        if(n>1) successive.rereads[which(successive.rereads$part_index==mm),]$Sequential_rereadings = successive.rereads[which(successive.rereads$part_index==mm),]$Sequential_rereadings +1
+      }
+    }
+  }
+}
+
+
+
+nodejs.Reads = merge(nodejs.Reads,successive.rereads, by="part_index", all.x = TRUE)
+ 
+
+###### RELECTURES DECALEES #########################
+
+
+decaled.rereads = data.frame(part_index=1:nparts, Decaled_rereadings = 0)
+
+for (i in 1:nusers)
+{
+  print(paste("USER: ",i))
+  user.seances = subset(nodejs, nodejs$user_id==users[i], select=c(seance,part_index,date))
+  user.seances=user.seances[order(user.seances$date),]
+  nseances=length(unique(user.seances[["seance"]]))
+  dr.by.user=vector(mode="numeric", length=nparts)
+  for(mm in 1:nparts){
+    
+      res = length(unique(user.seances[which(user.seances$part_index==mm),]$seance) )
+      add = 0
+      if(!is.null(res))
+        add = res - 1
+      if(add>0)
+        decaled.rereads[which(decaled.rereads$part_index==mm),]$Decaled_rereadings = decaled.rereads[which(decaled.rereads$part_index==mm),]$Decaled_rereadings + add
+  }
+  
+}
+nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index", all.x = TRUE)
+
+nodejs.Reads$Rereadings =  nodejs.Reads$Decaled_rereadings +  nodejs.Reads$Sequential_rereadings
 # Aggregate for chapters
 chapters = nodejs.structure[which(nodejs.structure$type=='title-2'),]$part_id
 nchapters = length(unique(chapters))
 for(i in 1:nchapters){
   children = nodejs.structure[which(nodejs.structure$parent_id==chapters[i]),]$part_id  
   nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readers = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)
-    length(rders$user_id)
+  length(rders$user_id)
   nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Rereaders)  
   nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readings)    
   nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Rereadings)  
@@ -368,7 +424,7 @@ for(i in 1:ntomes){
   first_children = nodejs.structure[which(nodejs.structure$parent_id==tomes[i]),]$part_id
   children = nodejs.structure[which(nodejs.structure$parent_id%in%first_children),]$part_id
   
-
+  
   nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readers = 
     mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)
   length(rders$user_id)
@@ -380,112 +436,12 @@ for(i in 1:ntomes){
 courseId  = nodejs.structure[which(nodejs.structure$type=='course'),]$part_id
 nodejs.Reads[which(nodejs.Reads$part_id==courseId),]$Readers =    length(unique(nodejs$user_id))
 
-
-
-
-
-### Nombre de relecture successive des parties
-successive.rereads = as.data.table(setNames(replicate(nparts,numeric(0), simplify = F), 1:nparts))
-for (i in 1:nusers)
-{
-  sr.by.user = vector(mode="numeric", length=nparts)
-  print(paste("USER: ",i))
-  user.seances = subset(nodejs, nodejs$user_id==users[i], select=c('seance','part_index','date'))
-  user.seances=user.seances[order(user.seances$date),]
-  nseances=length(unique(user.seances[["seance"]]))
-  sr.by.seance =vector(mode="numeric", length=nparts)
-  
-  for(j in 1:nseances)
-  {
-    print(paste("user: ",i," seance: ",j))
-    seance = subset(user.seances, user.seances$seance==j, select=c(part_index))
-    
-    
-    
-    sr.by.seance =vector(mode="numeric", length=nparts)    
-    for (k in 1:length(seance[,1]) )
-    {
-      sr.by.seance[seance[k,1]]=sr.by.seance[seance[k,1]]+1
-    }
-    
-    sr.by.seance[which(sr.by.seance==0)]=NA
-    
-    sr.by.seance[which(sr.by.seance>0)]=sr.by.seance[which(sr.by.seance>0)]-1
-    sr.by.user  = sr.by.user + sr.by.seance
-    
-    
-  }
-  
-  
-  
-  sr.by.user=as.data.table(t(sr.by.user))
-  setnames(sr.by.user,as.character(c(1:nparts)))
-  
-  successive.rereads=rbind(successive.rereads,sr.by.user)
-}
-
-
-
-successive.rereads = data.table(t(successive.rereads))
-successive.rereads=successive.rereads[, list(Sequential_rereadings = rowSums(successive.rereads, na.rm=TRUE)) ]
-successive.rereads=successive.rereads[ , ':='( part_index = 1:.N )  ]
-successive.rereads=successive.rereads[,c("part_index","Sequential_rereadings"), with=FALSE]
-
-nodejs.Reads = merge(nodejs.Reads,successive.rereads, by="part_index", all.x = TRUE)
- 
-
-###### RELECTURES DECALEES #########################
-
-decaled.rereads = as.data.table(setNames(replicate(nparts,numeric(0), simplify = F), 1:nparts))
-
-for (i in 1:nusers)
-{
-  print(paste("USER: ",i))
-  user.seances = subset(nodejs, nodejs$user_id==users[i], select=c(seance,part_index,date))
-  user.seances=user.seances[order(user.seances$date),]
-  nseances=length(unique(user.seances[["seance"]]))
-  dr.by.user=vector(mode="numeric", length=nparts)
-  
-  
-  for(j in 1:nseances)
-  {
-    print(paste("user: ",i," seance: ",j))
-    seance = subset(user.seances, user.seances$seance==j, select=c(part_index))
-    
-    dr.by.seance =vector(mode="numeric", length=nparts)
-    
-    
-    for (l in 1:length(seance[,1]) )
-    {
-      
-      t = subset(user.seances, (user.seances$seance > j & user.seances$part_index == l), select=c(part_index))
-      if(length(t[,1]) > 0) dr.by.seance[seance[l,1]]=dr.by.seance [seance[l,1]]+1
-    }
-    dr.by.user  = dr.by.user + dr.by.seance   
-    
-  }
-  
-  
-  dr.by.user=as.data.table(t(dr.by.user))  
-  setnames(dr.by.user,as.character(c(1:nparts)))  
-  decaled.rereads=rbind(decaled.rereads,dr.by.user)
-  
-  
-}
-
-
-decaled.rereads = data.table(t(decaled.rereads))
-decaled.rereads=decaled.rereads[, list(Decaled_rereadings = rowSums(decaled.rereads, na.rm=TRUE)) ]
-decaled.rereads[ , ':='( part_index = 1:.N )  ]
-decaled.rereads=decaled.rereads[,c("part_index","Decaled_rereadings"), with=FALSE]
-
-nodejs.Reads = merge(nodejs.Reads,decaled.rereads, by="part_index", all.x = TRUE)
-#Reads= Reads[,c(1,2,3,4,5,6,7,8)]
 nodejs.Reads$rereadings_tx = nodejs.Reads$Rereadings / nodejs.Reads$Readings
-nodejs.Reads$seq_rereads_tx = round((nodejs.Reads$Sequential_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads, 4) 
-nodejs.Reads$dec_rereads_tx = round((nodejs.Reads$Decaled_rereadings / nodejs.Reads$Readings) * nodejs.Reads$mean.rereads, 4) 
+
 nodejs.Reads$part_readers_rereaders = round(nodejs.Reads$Rereaders / nodejs.Reads$Readers, 4) 
 nodejs.Reads$course_readers_rereaders = round(nodejs.Reads$Rereaders / nusers, 4) 
+nodejs.Reads$rereads_seq_tx = round(100 * nodejs.Reads$Sequential_rereadings / nodejs.Reads$Rereadings,0)
+nodejs.Reads$rereads_dec_tx = round(100 * nodejs.Reads$Decaled_rereadings / nodejs.Reads$Rereadings,0)
 save(nodejs.Reads, file="nodejs.Reads.rdata")
 ##############################################"""
 

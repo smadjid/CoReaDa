@@ -2,9 +2,8 @@
 <div class='row' style="margin:10px;color: #1C383F; " >
 <table class='col-lg-6 coreada-box' class="btn-group">
 <tr ng-model="sectionPstatSelector">
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité {{observedElt.typeTxt}} </td></tr>
-
-	
+	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'"><span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} </td></tr>	
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité {{observedElt.typeTxt}} </td></tr>
 	<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'mean.duration'"><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture de {{observedElt.typeTxt}}. </td></tr>
 	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rereadings_tx'"><span class="blue">{{observedElt.meanRereads}}</span> des lectures de {{observedElt.typeTxt}} sont des <b>relectures</b>.</td></tr>
 	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rupture_tx'"><span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur {{observedElt.typeTxt}}</td></tr>

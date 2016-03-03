@@ -8,22 +8,27 @@
       <option value="mean.duration" ng-show="indicatorInspectorShow=='Readings'">Durées de lecture</option>      
    
       <option value="rereadings_tx" ng-show="indicatorInspectorShow=='Rereading'">Taux de lectures qui sont des relectures</option>
-      <option value="course_readers_rereaders" ng-show="indicatorInspectorShow=='Rereading'">Taux de lecteurs du cours qui sont relecteurs de la partie</option>
-      <option value="part_readers_rereaders" ng-show="indicatorInspectorShow=='Rereading'">Taux de lecteurs de la section qui sont également ses relecteurs</option>  
+     <!-- <option value="course_readers_rereaders" ng-show="indicatorInspectorShow=='Rereading'">Taux de lecteurs du cours qui sont relecteurs</option>-->
+      <option value="part_readers_rereaders" ng-show="indicatorInspectorShow=='Rereading'">Taux de lecteurs qui sont également relecteurs</option>  
 
-      <option value="rupture_tx" ng-show="indicatorInspectorShow=='Stop'">Taux de fin de séances sur la partie</option> <option value="norecovery_tx" ng-show="indicatorInspectorShow=='Stop'">Taux de fin de la lecture sur la partie</option>
-      <option value="recoveries" ng-show="indicatorInspectorShow=='Stop'">Parties de reprises</option>
+      <option value="rupture_tx" ng-show="indicatorInspectorShow=='Stop'">Taux de fin de séances</option> <option value="norecovery_tx" ng-show="indicatorInspectorShow=='Stop'">Taux de fin définitive de la lecture</option>
+      <option value="recoveries" ng-show="indicatorInspectorShow=='Stop'">Sections de reprises</option>
+
+
+       
+
     </select><br>
   
 
 
-
+    <span ng-show="globalChartSelector=='recoveries'" style="padding:10px">Lors d’une nouvelle séance lecture, la section sur laquelle la lecture reprend est : dans <b>10%</b> des cas sur la section d’arrêt, dans <b>32%</b> des cas sur la section suivante, dans <b>15%</b> des cas sur une section plus en avant, dans <b>7%</b> des cas sur la section précédente et dans <b>30%</b> des cas sur une section plus en arrière </span>
     <d3-chart data='context.d3' d3opts='{type:"global",issueCode:globalChartSelector, elementType:elementTypeSelector}'></d3-chart>
 
     </div>
 <div class='col-lg-12' ng-show="indicatorInspectorShow=='Transition'" >
 <div class='col-lg-6'>
 <h4>Sections de provenance</h4>
+
     <d3-chart data='context.d3' d3opts='{type:"global",issueCode:"provenance", elementType:elementTypeSelector}'>
     </d3-chart>
 </div>

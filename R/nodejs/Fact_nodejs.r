@@ -208,7 +208,7 @@ course_facts_reread<- function(selectedCourse){
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
   - vérifier l'enchaînement logique des propos
   - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller ?  l’essentiel"
+  - éviter les dispersions : aller à  l’essentiel"
   
   Rereads_Sequential_rereadings_max = Reads[which(Reads$Sequential_rereadings>quantile(Reads$Sequential_rereadings,0.75,na.rm = TRUE)& 
                                                     Reads$Sequential_rereadings<quantile(Reads$Sequential_rereadings,0.9,na.rm = TRUE))
@@ -225,7 +225,7 @@ course_facts_reread<- function(selectedCourse){
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
   - vérifier l'enchaînement logique des propos
   - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller ?  l’essentiel"
+  - éviter les dispersions : aller à  l’essentiel"
   
   
   

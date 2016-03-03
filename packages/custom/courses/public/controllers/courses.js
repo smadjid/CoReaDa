@@ -114,19 +114,20 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
   
   switch($scope.sectionPstatSelector) {
     case "Actions_tx":
-        $scope.graphTitle ='Taux des visites du cours qui portent sur la section'
+        $scope.graphTitle ='Taux des visites'
         break;
-    case 'RS_nb':
-        $scope.graphTitle ='Nombre de sessions de lecture où la section a été lues'
+    case "Readers_tx":
+        $scope.graphTitle ='Taux de lecteurs '
         break;
+    
     case 'mean.duration':
         $scope.graphTitle ='Durée moyenne de lecture de la section(en minutes)'
         break;
     case 'rereadings_tx':
-        $scope.graphTitle ='Taux de lectures qui sont des relectures relectures'
+        $scope.graphTitle ='Taux de lectures qui sont des relectures'
         break;
     case 'rupture':
-        $scope.graphTitle ='Taux des arrêts définitifs de lecture sur la section'
+        $scope.graphTitle ='Taux des arrêts définitifs de la lecture'
         break;
     case 'provenance':
         $scope.graphTitle ='Sections de provenance (lues juste avant celle-ci)'
@@ -419,6 +420,7 @@ else
 }
 
 var computeCourseStats =function(){ 
+
   var result = {
     'reading' :{
       'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
@@ -922,6 +924,7 @@ if(arr.length ==5) {
      displayIssue(route, task, part, indicator);
      $scope.context.taskText ='(nouvelle tâche pour cette section)';
 }
+
 /*************************************************/
   var totalWidth = $('.col-lg-9').width();
         $('.data-table').css('width',totalWidth);
@@ -1487,7 +1490,7 @@ $scope.observedElt ={
       'id':element.id,
       'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
-      'Actions_tx':parseInt(element.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+      'Actions_tx':Math.round(100*element.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
       'meanTime': meanTime,
       'meanRereads':rereadTx,
       'meanStops':stopTx,
@@ -1619,7 +1622,7 @@ $scope.observedElt ={'type':'tome',
       'typeTxt': 'cette partie',
       'nbUsers':parseInt(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value)+'%',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
-      'Actions_tx':0,
+      'Actions_tx':Math.round(100*element.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
       'meanTime': meanTime,
       'meanRereads':Math.floor(d3.mean(rereadings_tx),2)+'%',
       'meanStops':parseInt(100*element.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)+'%',
@@ -1723,7 +1726,7 @@ $scope.observedElt ={'type':'chapter',
       'id':element.id,
       'nbUsers':parseInt(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value)+'%',
       'nbRS':parseInt(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value)+'%',
-      'Actions_tx':0,
+      'Actions_tx':Math.round(100*element.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
       'meanTime': meanTime,
       'meanRereads':parseInt(100*element.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)+'%',
       'meanStops':parseInt(100*element.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)+'%',
@@ -1995,12 +1998,12 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
       fact.d3.title="Taux des lectures des parties qui sont des relecteurs";
       }
 
-  /*  if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
-      fact.d3 = factChart(factedPartID,'course_readers_rereaders');
+    if(fact.issueCode in {'RRmaxD':''}) 
+      fact.d3 = rereadChart(factedPartID,'rereads_dec_tx');
 
-   if(fact.issueCode in {'RRVmaxD':'','RRmaxD':''}) 
-      fact.d3 = factChart(factedPartID,'part_readers_rereaders');
-*/
+   if(fact.issueCode in {'RRVmaxSeq':''}) 
+      fact.d3 = rereadChart(factedPartID,'rereads_seq_tx');
+
 
     if(fact.issueCode ==='StopRSEnd'){
       fact.d3 = factChart(factedPartID,'rupture_tx' );
@@ -2057,6 +2060,23 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
 
 }
 
+var rereadChart = function(factedPartID, issueCode, classe){
+  if(typeof $scope.course =='undefined') return;
+  var seq = 0, dec = 0;
+  var chartData =[];
+   angular.forEach($scope.course.tomes, function(tome){
+      angular.forEach(tome.chapters, function(chapter){
+        angular.forEach(chapter.parts, function(part){
+          if(parseInt(factedPartID) ===parseInt(part.id)){
+            seq = part.properties.filter(function(value){ return value.property === 'rereads_seq_tx'})[0].value;
+            dec = part.properties.filter(function(value){ return value.property === 'rereads_dec_tx'})[0].value;
+
+        }
+      })
+    })
+  });
+   return {'partIndex':factedPartID,'issueCode':issueCode ,'seq_rereads':seq,'dec_rereads':dec};
+}
 var transitionFactChart = function(factedPartID, issueCode, classe){
   
   if(typeof $scope.course =='undefined') return;
