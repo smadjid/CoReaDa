@@ -246,10 +246,10 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
-svg.append("path")
+/*svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
-      .attr("d", ymedian);
+      .attr("d", ymedian);*/
   svg.append("path")
       .datum(data)
       .attr("class", "meanLine")
@@ -261,7 +261,7 @@ var midBox = svg.append("g")
   
   
   var legend = midBox.selectAll(".legend")
-      .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
+      .data([{"text":"Moyenne","color":"#d35400"}])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
@@ -821,10 +821,10 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
-  svg.append("path")
+ /* svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
-      .attr("d", ymedian);
+      .attr("d", ymedian);*/
   svg.append("path")
       .datum(data)
       .attr("class", "meanLine")
@@ -832,7 +832,7 @@ if(scope.d3opts.elementType!=='part')
   
 
  var legend = svg.selectAll(".legend")
-      .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
+      .data([{"text":"Moyenne","color":"#d35400"}/*,{"text":"Médiane","color":"#F39C12"}*/])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
@@ -1083,7 +1083,8 @@ scope.$watch('d3opts', function(){
 
 
 
-var barChart = function(scope, element, title){    
+var barChart = function(scope, element, classe){    
+  
         var margin = {top: 20, right: 10, bottom: 30, left: 40},
           width = 580 - margin.left - margin.right,
           height = 200 - margin.top - margin.bottom;
@@ -1106,8 +1107,11 @@ var barChart = function(scope, element, title){
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
-            .ticks(10)
-            .tickFormat(d3.format("d"));
+            .ticks(10);
+        if(scope.d3opts.issueCode in {'RminDuration':'','RmaxDuration':''}) 
+          yAxis.tickFormat(d3.format("d"))
+        else
+          yAxis.tickFormat(d3.format("%"));
 
         //Render graph based on 'data'
         scope.render = function(data) {
@@ -1184,16 +1188,16 @@ var xmean = d3.scale.ordinal()
         .rangeBands([0, width], 0);
     xmean.domain(data.map(function(d) { return d.part; }));
 
-    var dataMean = d3.mean(data, function(d) { return parseInt(d.value); }); 
+    var dataMean = d3.mean(data, function(d) { return parseFloat(d.value); }); 
     var ymean = d3.svg.line()
         .x(function(d, i) { 
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
-  svg.append("path")
+  /*svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
-      .attr("d", ymedian);
+      .attr("d", ymedian);*/
   svg.append("path")
       .datum(data)
       .attr("class", "meanLine")
@@ -1211,7 +1215,7 @@ var xmean = d3.scale.ordinal()
 
   // add legend   
 var legend = svg.selectAll(".legend")
-      .data([{"text":"Moyenne","color":"#d35400"},{"text":"Médiane","color":"#F39C12"}])
+      .data([{"text":"Moyenne","color":"#d35400"}/*,{"text":"Médiane","color":"#F39C12"}*/])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
