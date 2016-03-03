@@ -356,9 +356,9 @@ for(i in 1:nchapters){
   children = nodejs.structure[which(nodejs.structure$parent_id==chapters[i]),]$part_id  
   nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readers = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)
     length(rders$user_id)
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)    
-  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Rereaders)  
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readings)    
+  nodejs.Reads[which(nodejs.Reads$part_id==chapters[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Rereadings)  
   
 }
 # Aggregate for tomes
@@ -372,9 +372,9 @@ for(i in 1:ntomes){
   nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readers = 
     mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)
   length(rders$user_id)
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)    
-  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readers)  
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereaders =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Rereaders)  
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Readings =  mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Readings)    
+  nodejs.Reads[which(nodejs.Reads$part_id==tomes[i]),]$Rereadings = mean(nodejs.Reads[which(nodejs.Reads$part_id%in%children),]$Rereadings)  
   
 }
 courseId  = nodejs.structure[which(nodejs.structure$type=='course'),]$part_id

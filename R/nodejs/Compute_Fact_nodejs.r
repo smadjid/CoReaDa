@@ -14,6 +14,7 @@ load(paste(selectedCourse,"partFollow.rdata",sep="."))
 load(paste(selectedCourse,"achievement.rdata",sep="."))
 
 
+
 structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
 names(structure)[1] = 'id'
 Interest = eval(parse(text = paste(selectedCourse,"Interest",sep=".")))
@@ -24,6 +25,10 @@ partFollow=eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
 data = eval(parse(text = paste(selectedCourse,sep=".")))
 achievement = eval(parse(text = paste(selectedCourse,"achievement",sep=".")))
 
+parts = unique(nodejs$part_id)
+nparts = length(parts)
+users = unique(nodejs$user_id)
+nusers = length(users)
 #################Prepare Transitions#####################
 names(structure)[1]='part_index'
 part_indexes=1:(max(structure$part_index))
@@ -470,3 +475,9 @@ save(facts, file="nodejs.facts.rdata")
 names(facts)[1]='id'
 facts.json = toJSON(unname(split(facts, 1:nrow(facts))))
 cat(facts.json, file="facts.json")
+
+
+
+
+
+View(PartData[which(PartData$part_type=='chapitre'),])
