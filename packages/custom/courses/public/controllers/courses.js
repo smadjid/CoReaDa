@@ -198,14 +198,15 @@ var completeCourseParts =function(course, courseParts, courseChapters){
     angular.forEach(tome.chapters, function(chapter) { 
       chapter.parts_count = 0;
       chapter.route =tome.route+','+chapter._id;
-      chapter.url = tome.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value
+      chapter.url = course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
+      
       angular.forEach(chapter.parts, function(part) {
         part.parent = chapter._id;
         tome.parts_count = tome.parts_count + 1;
+        if(tome.parts_count===1) tome.url = chapter.url;
         chapter.parts_count = chapter.parts_count + 1;
         part.route =chapter.route+','+part._id;
-        part.url = chapter.url+'/'+'#/id/r-'+part.id;
-        //part.properties.filter(function(value){ return value.property === 'slug'})[0].value
+        part.url = chapter.url+'/'+'#/id/r-'+part.properties.filter(function(value){ return value.property === 'part_id'})[0].value
         angular.forEach(part.facts,function(fact){
           fact.route =part.route+','+fact._id;
           fact.d3 =[];

@@ -203,6 +203,11 @@ PartData$next_recovery_tx= round(PartData$next_recovery /PartData$recovery,4)
 PartData$prev_recovery_tx= round(PartData$prev_recovery /PartData$recovery,4)
 PartData$distant_prev_recovery_tx= round(PartData$distant_prev_recovery /PartData$recovery,4)
 
+
+#Add the element_id
+jsonstructure <- fromJSON("jsonstructure.json")
+
+
 save(PartData, file='PartData.rdata')
 colnames(PartData)[1]="id"
 colnames(PartData)[3]="parent_id"
@@ -478,6 +483,3 @@ cat(facts.json, file="facts.json")
 
 
 
-
-
-View(PartData[which(PartData$part_type=='chapitre'),])
