@@ -17,7 +17,7 @@
       <span class='factDescription'>{{fact.description}} </span>
     </td>
     <td>
-      <h5>Distribution...</h5>
+      <h4>{{fact.d3.title}}</h4>
       <d3-chart data='fact.d3' d3opts='{type:"fact",issueCode:fact.issueCode, issueClass:fact.classof}'></d3-chart>
     </td>
     </table>
@@ -31,7 +31,11 @@
       
       </i> <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)" onclick="  document.getElementById('form-controlA').click()" data-path={{fact.route}}><span class="glyphicon glyphicon-ok" ></span>Définir comme tâche</button> 
       </uib-accordion-heading>
+      <table style="table-layout: fixed;width:100%; padding:10px">
+      <td style="width: 100%">
       <span class='suggestDescription'>{{fact.suggestion_content}}</span>
+    </td>
+  </table>
     </uib-accordion-group>
   </uib-accordion>
 </div>

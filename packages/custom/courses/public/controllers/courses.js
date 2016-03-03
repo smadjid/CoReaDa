@@ -1975,16 +1975,24 @@ var ComputeGlobalVisuData =function(){
 }
 var appendD3Facts =function(fact, factedPartID, contextElement){ 
  
-    if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
-      fact.d3 = factChart(factedPartID,'Actions_tx');
+    if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}){
+        fact.d3 = factChart(factedPartID,'Actions_tx');
+        fact.d3.title="Taux de visites par partie";
+      }
     
-    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) 
+    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) {
       fact.d3 = factChart(factedPartID,'mean.duration' );
+      fact.d3.title="Durée moyenne de lecture des sections";
+      }
 
-    if(fact.issueCode in {'RRmax':''}) 
+    if(fact.issueCode in {'RRmax':''}) {
       fact.d3 = factChart(factedPartID,'rereadings_tx' );
-    if(fact.issueCode in {'RerRmax':''}) 
+      fact.d3.title="Taux de lectures qui sont des relectures par section";
+      }
+    if(fact.issueCode in {'RerRmax':''}) {
       fact.d3 = factChart(factedPartID,'part_readers_rereaders' );
+      fact.d3.title="Taux des lectures des parties qui sont des relecteurs";
+      }
 
   /*  if(fact.issueCode in {'RRmaxS':'','RRVmaxS':''}) 
       fact.d3 = factChart(factedPartID,'course_readers_rereaders');
@@ -1993,39 +2001,57 @@ var appendD3Facts =function(fact, factedPartID, contextElement){
       fact.d3 = factChart(factedPartID,'part_readers_rereaders');
 */
 
-    if(fact.issueCode ==='StopRSEnd')
+    if(fact.issueCode ==='StopRSEnd'){
       fact.d3 = factChart(factedPartID,'rupture_tx' );
-    if(fact.issueCode === 'StopRSExit')
+    fact.d3.title="Taux de fins de séances";
+      }
+    if(fact.issueCode === 'StopRSExit'){
       fact.d3 = factChart(factedPartID,'norecovery_tx');
-    if(fact.issueCode === 'StopRecNext')
+    fact.d3.title="Taux de fins défintives de la lecture";
+      }
+    if(fact.issueCode === 'StopRecNext'){
       fact.d3 = factChart(factedPartID,'next_recovery' );
-    if(fact.issueCode === 'StopRecback')
+    fact.d3.title="Taux de reprises de la lecture sur la section suivante";
+      }
+    if(fact.issueCode === 'StopRecback'){
       fact.d3 = factChart(factedPartID,'distant_prev_recovery_tx' );
-    if(fact.issueCode === 'StopRecNext')
+    fact.d3.title="Taux de reprises de la lecture sur des sections précédentes";
+      }
+    if(fact.issueCode === 'StopRecNext'){
       fact.d3 = factChart(factedPartID,'distant_next_recovery_tx' );
+    fact.d3.title="Taux de reprises de la lecture sur la section précédente";
+      }
 
 
     if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent','provenance' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent','provenance' );
+  fact.d3.title="Sections de provenance";}
 
     if(fact.issueCode in{'TransProvNext':'', 'TransProvNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_next_p','provenance' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_next_p','provenance' );
+  fact.d3.title="Sections de provenance";}
 
     if(fact.issueCode in{'TransProvShiftNext':'', 'TransProvShiftNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_next','provenance' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_next','provenance' );
+  fact.d3.title="Sections de provenance";}
 
     if(fact.issueCode in{'TransProvShiftPast':'', 'TransProvShiftPastV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_past','provenance' );}
+      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_past','provenance' );
+  fact.d3.title="Sections de provenance";}
 
 
     if(fact.issueCode in{'TransDestNext':'', 'TransDestNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_next_p','destination' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_next_p','destination' );
+  fact.d3.title="Sections de destination";}
     if(fact.issueCode in{'TransDestPrev':'', 'TransDestPrevV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_precedent','destination' );}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_precedent','destination' );
+  fact.d3.title="Sections de destination";}
     if(fact.issueCode in{'TransDestPast':'', 'TransDestShiftPast':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' ,'destination');}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' ,'destination');
+  fact.d3.title="Sections de destination";}
     if(fact.issueCode in{'TransDestShiftNext':'', 'TransDestShiftNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' ,'destination');}
+      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' ,'destination');
+  fact.d3.title="Sections de destination";}
  
 
 }

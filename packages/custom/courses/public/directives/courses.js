@@ -1082,6 +1082,49 @@ scope.$watch('d3opts', function(){
 };
 
 
+var RereadingsChart = function(scope, element, title){  
+   
+    var margin = {top: 20, right: 10, bottom: 30, left: 40},
+          width = 580 - margin.left - margin.right,
+          height = 200 - margin.top - margin.bottom;
+          var color = d3.scale.category20c();
+          var r = height/2;
+
+          var data = [{"label":"A", "value":50}, 
+              {"label":"B", "value":50}];
+
+        var vis = d3.select(element[0])
+          .append("svg")
+          .data([data])
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
+var pie = d3.layout.pie().value(function(d){return d.value;});
+
+// declare an arc generator function
+var arc = d3.svg.arc().outerRadius(r);
+
+// select paths, use arc generator to draw
+var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+arcs.append("svg:path")
+    .attr("fill", function(d, i){
+        return color(i);
+    })
+    .attr("d", function (d) {
+        // log the result of the arc generator to show how cool it is :)
+        console.log(arc(d));
+        return arc(d);
+    });
+
+// add the text
+arcs.append("svg:text").attr("transform", function(d){
+      d.innerRadius = 0;
+      d.outerRadius = r;
+    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
+    return data[i].value;}
+    );
+
+      }    
 
 var barChart = function(scope, element, classe){    
   
@@ -1642,6 +1685,7 @@ if(scope.d3opts.type === 'rs'){
 else{
 if(scope.d3opts.issueClass ==='Transition')
    nodeChart(scope, element)
+ //RereadingsChart(scope, element)
  else barChart(scope, element, ' ');
  /*
 if(scope.d3opts.issueCode in {'RminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}) 
