@@ -28,7 +28,11 @@ var issuesTableDisplay=function(){
   d3.select(element[0]).selectAll('td').remove();
 
 var html=[];
-
+var heatMapColorforValue=function (value){
+  console.log(value);
+  var h = (1.0 - value) * 240
+  return "hsl(" + h + ", 100%, 50%)";
+}
 
 scope.data.forEach(function(chapter, i) {
   
@@ -65,6 +69,7 @@ else
     var span = $("<span  class=display-part-issues></span>");
     switch(attrs.classof) {
     case "Readings":
+
       span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
       break;
     case "Rereading":
@@ -81,7 +86,7 @@ else
     
 //span.css('color', computeTextColor(relatedFacts.length));
       
-
+      
     var td=$("<td></td>");
     $(td).attr('class','td_issue')
             .attr('data-part',chapter.id)
@@ -95,6 +100,8 @@ else
                window.location.hash = "#"+chapter.route+"@"+attrs.classof
             })
             .html(span);
+        console.log(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
+    td.css('background-color', heatMapColorforValue(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value));
     html.push(td)  
   }
 });
