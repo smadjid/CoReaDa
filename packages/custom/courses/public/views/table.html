@@ -23,61 +23,40 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
+        <tr table-td chapdetails='chapdetails' classof='Readings' data="courseChapters">
             <th  role='button' class="indicators-header" data-indicator='Readings' ng-click='triggerClick($event)' data-path='@Readings'>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >Lecture</span>
                 
             </th>
 
-            <td  class="td_issue" role="button"  ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}}@Readings>
-                    <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; ' class='display-part-issues'> 
-                        {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
-                    </span>
-           
-            </td>
 
         </tr>
-        <tr>
+       <tr table-td chapdetails='chapdetails' classof='Rereading' data="courseChapters">
             <th role='button' class="indicators-header" data-indicator='Rereading' ng-click='triggerClick($event)' data-path='@Rereading' >
                 <i class="fa fa-repeat  fa-2x"></i>
                 <span class="fat">Relecture</span>
             </th>
 
-            <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Rereading"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Rereading' ng-click='triggerClick($event)'  data-path={{part.route}}@Rereading>
-                    <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};' class='display-part-issues' > 
-                        {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
-                    </span>
-           
-            </td>
+          
 
         </tr>
-        <tr>
+       <tr table-td chapdetails='chapdetails' classof='Transition' data="courseChapters">
             <th role='button' class="indicators-header" data-indicator='Transition' ng-click='triggerClick($event)' data-path='@Transition'>
                 <i class="fa fa-random fa-2x"></i>
                 <span class="fat">Navigation</span>
                 
             </th>
-             <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Transition"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Transition' ng-click='triggerClick($event)' data-path={{part.route}}@Transition>
-                    <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Transition"}).length)}}; ' class='display-part-issues' > 
-                        {{(part.facts | filter:{'classof':'Transition'}).length >0 ?(part.facts | filter:{'classof':'Transition'}).length:""}}
-                    </span>
-           
-            </td>
+            
 
         </tr>
-        <tr>
+        <tr table-td chapdetails='chapdetails' classof='Stop' data="courseChapters">
             <th role='button' class="indicators-header" data-indicator='Stop' ng-click='triggerClick($event)' data-path='@Stop'>
                 <i class="fa fa-pause fa-2x"></i>
                 <span class="fat">Arrêts</span>
                 
             </th>
-             <td  class="td_issue" role="button"  width={{width}} ng-repeat="part in courseParts" style=' background-color:{{computeBgColor((part.facts | filter:{"classof":"Stop"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Stop' ng-click='triggerClick($event)' data-path={{part.route}}@Stop>
-                    <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Stop"}).length)}};' class='display-part-issues'> 
-                        {{(part.facts | filter:{'classof':'Stop'}).length >0 ?(part.facts | filter:{'classof':'Stop'}).length:""}}
-                    </span>
            
-            </td>
         </tr>
     </tbody>
 

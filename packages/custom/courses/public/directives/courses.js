@@ -1,4 +1,236 @@
 angular.module('mean.courses')
+
+.directive('tableTd', [
+  function () {
+    return {
+        restrict: 'A',
+        scope:{
+          data:'=',
+          chapdetails:'='
+        },
+
+        link: function (scope, element, attrs) {
+var scale = chroma.scale('OrRd');
+var computeBgColor =function(val){
+
+  return   scale(val/5).hex();
+}
+
+var computeTextColor =function(val){
+  if(val ==0) return '#464242';
+  if(val ==1) return '#354831';
+  if(val ==2) return '#716F6F';
+  if(val ==3) return '#F5F5F5';
+  if(val>=4) return 'white';
+}
+
+var issuesTableDisplay=function(){
+  d3.select(element[0]).selectAll('td').remove();
+
+var html=[];
+
+
+scope.data.forEach(function(chapter, i) {
+  
+
+if(chapter._id===scope.chapdetails){ 
+   chapter.parts.forEach(function(part, i) {
+       var relatedFacts = part.facts.filter(function(e){ return e.classof === attrs.classof });
+  
+      var span = $("<span  class=display-part-issues></span>");
+      span.text(relatedFacts.length>0?relatedFacts.length:'');
+  span.css('color', computeTextColor(relatedFacts.length));
+        
+  
+      var td=$("<td></td>");
+      $(td).attr('class','td_issue')
+              .attr('data-part',part.id)
+              .attr('data-indicator',attrs.classof)
+              .attr('data-path',part.route+'@'+attrs.classof)
+              .css('background-color',computeBgColor(relatedFacts.length))
+              .on("click", function() {  
+                //console.log(d.route);scope.loadURL()(d.route)  
+                if("#"+part.route!==window.location.hash)
+                 window.location.hash = "#"+part.route+"@"+attrs.classof
+              })
+              .html(span);
+      html.push(td)
+  
+    })
+}
+else
+  {
+   
+
+    var span = $("<span  class=display-part-issues></span>");
+    switch(attrs.classof) {
+    case "Readings":
+      span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
+      break;
+    case "Rereading":
+      span.text(parseInt(100*chapter.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)+'%');
+      break;
+    case "Transition":
+      span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
+      break;
+    case "Stop":
+      span.text(parseInt(100*chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)+'%');
+      break;
+
+  }
+    
+//span.css('color', computeTextColor(relatedFacts.length));
+      
+
+    var td=$("<td></td>");
+    $(td).attr('class','td_issue')
+            .attr('data-part',chapter.id)
+            .attr('colspan',chapter.parts.length)
+            .attr('data-indicator',attrs.classof)
+            .attr('data-path',chapter.route+'@'+attrs.classof)
+            //.css('background-color',computeBgColor(relatedFacts.length))
+            .on("click", function() {  
+              //console.log(d.route);scope.loadURL()(d.route)  
+              if("#"+chapter.route!==window.location.hash)
+               window.location.hash = "#"+chapter.route+"@"+attrs.classof
+            })
+            .html(span);
+    html.push(td)  
+  }
+});
+  
+  $(element).append(html);
+  
+
+  
+
+}
+var chapsTableDisplay=function(){
+  d3.select(element[0]).selectAll('td').remove();
+
+var html=[];
+
+
+scope.data.forEach(function(chapter, i) { 
+
+    var span = $("<span  class=display-part-issues></span>");
+    span.text('chap');//relatedFacts.length>0?relatedFacts.length:'');
+//span.css('color', computeTextColor(relatedFacts.length));
+      
+
+    var td=$("<td></td>");
+    $(td).attr('class','td_issue')
+            .attr('data-part',chapter.id)
+            .attr('colspan',chapter.parts.length)
+            .attr('data-indicator',attrs.classof)
+            .attr('data-path',chapter.route+'@'+attrs.classof)
+            //.css('background-color',computeBgColor(relatedFacts.length))
+            .on("click", function() {  
+              //console.log(d.route);scope.loadURL()(d.route)  
+              if("#"+chapter.route!==window.location.hash)
+               window.location.hash = "#"+chapter.route+"@"+attrs.classof
+            })
+            .html(span);
+    html.push(td)
+
+  
+});
+  
+  $(element).append(html);
+  
+
+  
+
+}
+
+  scope.$watch('data', function(){
+   
+         issuesTableDisplay()
+   
+          }, true); 
+
+    scope.$watch('chapdetails', function(){
+      console.log(scope.chapdetails);
+    
+         issuesTableDisplay()
+    
+          }, true); 
+            
+        }
+    }
+}])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.directive('issueTd', [
+  function () {
+    return {
+        restrict: 'A',
+        scope:{
+          data:'='
+        },
+
+        link: function (scope, element, attrs) {
+var scale = chroma.scale('OrRd');
+var computeBgColor =function(val){
+
+  return   scale(val/5).hex();
+}
+
+var computeTextColor =function(val){
+  if(val ==0) return '#464242';
+  if(val ==1) return '#354831';
+  if(val ==2) return '#716F6F';
+  if(val ==3) return '#F5F5F5';
+  if(val>=4) return 'white';
+}
+
+var issuesTableDisplay=function(){
+  
+  var relatedFacts = scope.data.facts.filter(function(e){ return e.classof === attrs.classof });
+//<span style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};' 
+
+  //                      {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
+    //                </span>
+    var span = $("<span  class=display-part-issues></span>");
+    span.text(relatedFacts.length>0?relatedFacts.length:'');
+span.css('color', computeTextColor(relatedFacts.length));
+      
+  
+
+  $(element).attr('class','td_issue')
+            .attr('data-part',scope.data.id)
+            .attr('data-indicator',attrs.classof)
+            .attr('data-path',scope.data.route+'@'+attrs.classof)
+            .css('background-color',computeBgColor(relatedFacts.length));
+  $(element).html(span);
+  
+
+  
+
+}
+
+  scope.$watch('data', function(){
+         issuesTableDisplay();
+          }, true); 
+            
+        }
+    }
+}])
 .directive( 'd3Chart', [
   function () {
     return {
