@@ -867,20 +867,25 @@ var loadContext = function(){
   if(arr.length<2) 
     
       {
-        $scope.sectionDisplay = false;
+        
         $scope.chapdetails = 0;
         
         $scope.context.taskText ='(nouvelle tâche globale)';
 
-        window.setTimeout(function() {
- displayCourseInfos(indicator, task);
-        }, 20);
+       // window.setTimeout(function() {
+         
+          
+          displayCourseInfos(indicator, task);
+           $scope.sectionDisplay = false;
+               $(':focus').blur();
+          
+      //  }, 10);
     };
 
   /********************************hhhhhhhhhhhhhhhh***********/
 
  if(arr.length ==2) {  
-  $scope.sectionDisplay = false;
+  
   $scope.chapdetails = 0;
 
    tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
@@ -890,14 +895,16 @@ var loadContext = function(){
    
 
    window.setTimeout(function() {
+    $scope.sectionDisplay = false;
  displayTomeInfos(partElt, task);
-        }, 20);
+ 
+        }, 10);
    
  }
 
 
  if(arr.length ==3) {  
-  $scope.sectionDisplay = true;
+  
   tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
    chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
 
@@ -912,8 +919,10 @@ var loadContext = function(){
 
   
    window.setTimeout(function() {
+    $scope.sectionDisplay = true;
  displayChapterInfos(partElt, task);
-        }, 20);
+ 
+        }, 10);
    
  }
 
@@ -929,7 +938,7 @@ var loadContext = function(){
 
     window.setTimeout(function() {
  displayPartInfos(partElt, task);
-        }, 20);
+        }, 10);
   
 }
 if(arr.length ==4 && indicator!="ALL") { 
@@ -943,7 +952,7 @@ if(arr.length ==4 && indicator!="ALL") {
 
   window.setTimeout(function() {
  displayPartIssues(route, task, part, indicator);
-        }, 20);
+        }, 10);
 }
 
 
@@ -962,7 +971,7 @@ if(arr.length ==5) {
 
      window.setTimeout(function() {
  displayIssue(route, task, part, indicator);
-        }, 20);
+        }, 10);
 }
 
 /*************************************************/
@@ -978,8 +987,8 @@ if(arr.length ==5) {
         
         $('.data-table td').each(function() {
    
-    $(this).css('min-width', 20);     // css attribute of your <td> width:15px; i.e.
-    $(this).css('max-width', 20);     // css attribute of your <td> width:15px; i.e.
+    $(this).css('min-width', 10);     // css attribute of your <td> width:15px; i.e.
+    $(this).css('max-width', 10);     // css attribute of your <td> width:15px; i.e.
 });
        // $scope.width =tdW;
         //$('.data-table td').css('width',tdW+'px!important');
@@ -1078,7 +1087,7 @@ var reloadURL =function(){
   var url = window.location.hash
 window.setTimeout(function() {
 goHome();
-        }, 20);
+        }, 10);
 
 window.setTimeout(function() {
 loadURL(url) 
@@ -1399,7 +1408,7 @@ var selectIndictor =function(indicator){
     $('#divOverlay').height(height);
     $('#divOverlay').width(width);
     $('#divOverlay').css('visibility','visible');
-    $('#divOverlay').delay(500).slideDown('fast');    
+    $('#divOverlay').slideDown('fast');    
   }  
 
 }
@@ -1548,7 +1557,7 @@ $scope.context.url = element.url;
     $(':focus').blur();
     selectPart($(partElt).index() + 1);
     $scope.inspectorShow = 'section';
-  }, 20);
+  }, 10);
 }
 
 var displayCourseInfos =function(indicator, task){ 
@@ -1584,13 +1593,13 @@ $scope.observedElt ={'type':'course',
       'Actions_tx':$scope.course.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
     };
 
-window.setTimeout(function() {
+//window.setTimeout(function() {
     resetPath();
     $(':focus').blur();
     selectIndictor(indicator); 
       if(indicator ==='ALL') $scope.inspectorShow = 'course'
     else $scope.inspectorShow = 'indicators';
-  }, 20);
+ // }, 10);
 }
 
 
@@ -1688,7 +1697,7 @@ window.setTimeout(function() {
     $(':focus').blur();
     selectTome($(partElt).index() + 1);
     $scope.inspectorShow = 'component';
-  }, 20);
+  }, 10);
 
     
 }
@@ -1792,7 +1801,7 @@ window.setTimeout(function() {
     $(':focus').blur();
     selectChapter($(partElt).index() + 1);
     $scope.inspectorShow = 'component';
-  }, 20);
+  }, 10);
 }
 
 var tabsFn = (function() {  
