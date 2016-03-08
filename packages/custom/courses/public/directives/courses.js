@@ -69,16 +69,16 @@ else
     var span = $("<span  class=display-part-issues></span>");
     switch(attrs.classof) {
     case "Readings":
-      span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
+      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_readings'})[0].value);
       break;
     case "Rereading":
-      span.text(chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value+'%');
+      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_rereading'})[0].value);
       break;
     case "Transition":
-      span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
+      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_transition'})[0].value);
       break;
     case "Stop":
-      span.text(parseInt(100*chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)+'%');
+      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_stop'})[0].value);
       break;
 
   }

@@ -823,7 +823,35 @@ for(i in 1:length(chaptersIds)){
 }
 
 
-
+PartData$nfacts = 0
+PartData$nfacts_readings = 0
+PartData$nfacts_rereading = 0
+PartData$nfacts_transition = 0
+PartData$nfacts_stop = 0
+sections =  PartData[which(PartData$part_type=='section'),]$part_index
+for(i in 1:length(sections)){
+  part =sections[i]
+  PartData[which(PartData$part_index==part),]$nfacts_readings=nrow(facts[which(facts$part_index==part & facts$classe=='Readings'),])
+  PartData[which(PartData$part_index==part),]$nfacts_rereading=nrow(facts[which(facts$part_index==part & facts$classe=='Rereading'),])
+  PartData[which(PartData$part_index==part),]$nfacts_transition=nrow(facts[which(facts$part_index==part & facts$classe=='Transition'),])
+  PartData[which(PartData$part_index==part),]$nfacts_stop=nrow(facts[which(facts$part_index==part & facts$classe=='Stop'),])
+}
+# Compute nfacts for chapters and tomes
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_readings =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_readings)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_rereading =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_rereading)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_transition =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_transition)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_stop =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_stop)
+}
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(tomesIds)){
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_readings =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_readings)
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_rereading =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_rereading)
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_transition =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_transition)
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_stop =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_stop)
+}
+PartData$nfacts = PartData$nfacts_readings + PartData$nfacts_rereading + PartData$nfacts_transition + PartData$nfacts_stop 
 
 save(PartData, file='PartData.rdata')
 colnames(PartData)[1]="id"
@@ -832,6 +860,7 @@ colnames(PartData)[3]="parent_id"
 meltParts=melt(PartData, id.vars = 'id')
 PartsData.json = toJSON(unname(split(meltParts,1:nrow(meltParts))))
 cat(PartsData.json, file="structure.json")
+
 
 ########## RS stats
 CourseStats = data.frame(id=0, title='title')
