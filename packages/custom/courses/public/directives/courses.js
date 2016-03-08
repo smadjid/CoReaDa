@@ -29,9 +29,9 @@ var issuesTableDisplay=function(){
 
 var html=[];
 var heatMapColorforValue=function (value){
-  console.log(value);
-  var h = (1.0 - value) * 240
-  return "hsl(" + h + ", 100%, 50%)";
+  value = value;
+  var h = (1.0 - value) * 60;
+  return "hsl(" + h + ", 80%, 50%)";
 }
 
 scope.data.forEach(function(chapter, i) {
@@ -69,11 +69,10 @@ else
     var span = $("<span  class=display-part-issues></span>");
     switch(attrs.classof) {
     case "Readings":
-
       span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
       break;
     case "Rereading":
-      span.text(parseInt(100*chapter.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)+'%');
+      span.text(chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value+'%');
       break;
     case "Transition":
       span.text(Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%');
@@ -85,7 +84,7 @@ else
   }
     
 //span.css('color', computeTextColor(relatedFacts.length));
-      
+      var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'red']);
       
     var td=$("<td></td>");
     $(td).attr('class','td_issue')
@@ -100,8 +99,25 @@ else
                window.location.hash = "#"+chapter.route+"@"+attrs.classof
             })
             .html(span);
-        console.log(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
-    td.css('background-color', heatMapColorforValue(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value));
+
+var color = 0;
+    switch(attrs.classof) {
+    case "Readings":
+      color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+      break;
+    case "Rereading":
+      color = colorScale(0.3 * chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
+      break;
+    case "Transition":
+      color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+      break;
+    case "Stop":
+      color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
+      break;
+
+  }
+        
+    td.css('background-color',color );
     html.push(td)  
   }
 });

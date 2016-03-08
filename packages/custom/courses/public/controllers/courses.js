@@ -868,20 +868,30 @@ var loadContext = function(){
     
       {
         $scope.sectionDisplay = false;
-        displayCourseInfos(indicator, task);
+        $scope.chapdetails = 0;
+        
         $scope.context.taskText ='(nouvelle tâche globale)';
+
+        window.setTimeout(function() {
+ displayCourseInfos(indicator, task);
+        }, 20);
     };
 
   /********************************hhhhhhhhhhhhhhhh***********/
 
  if(arr.length ==2) {  
   $scope.sectionDisplay = false;
+  $scope.chapdetails = 0;
 
    tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
    partElt = $('.tome_index[data-part ='+tome.id+']')[0];
    $scope.context.taskText ='(nouvelle tâche pour cette partie)';
    
-   displayTomeInfos(partElt, task);
+   
+
+   window.setTimeout(function() {
+ displayTomeInfos(partElt, task);
+        }, 20);
    
  }
 
@@ -893,12 +903,17 @@ var loadContext = function(){
 
    partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
    
-   displayChapterInfos(partElt, task);
+   
    
 
    $scope.chapdetails = chap._id;
 
    $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+
+  
+   window.setTimeout(function() {
+ displayChapterInfos(partElt, task);
+        }, 20);
    
  }
 
@@ -909,8 +924,12 @@ var loadContext = function(){
    $scope.chapdetails = chap._id;
   part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
   partElt = $('.part_index[data-part ='+part.id+']'); 
-  displayPartInfos(partElt, task);
+  
   $scope.context.taskText ='(nouvelle tâche pour cette section)';
+
+    window.setTimeout(function() {
+ displayPartInfos(partElt, task);
+        }, 20);
   
 }
 if(arr.length ==4 && indicator!="ALL") { 
@@ -919,8 +938,12 @@ if(arr.length ==4 && indicator!="ALL") {
    $scope.chapdetails = chap._id;
   part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
   partElt = $('.part_index[data-part ='+part.id+']'); 
-  displayPartIssues(route, task, part, indicator);
+  
   $scope.context.taskText ='(nouvelle tâche pour cette section)';
+
+  window.setTimeout(function() {
+ displayPartIssues(route, task, part, indicator);
+        }, 20);
 }
 
 
@@ -934,8 +957,12 @@ if(arr.length ==5) {
   partElt = $('.part_index[data-part ='+part.id+']'); 
    
    $scope.studiedPart = part.id
-     displayIssue(route, task, part, indicator);
+     
      $scope.context.taskText ='(nouvelle tâche pour cette section)';
+
+     window.setTimeout(function() {
+ displayIssue(route, task, part, indicator);
+        }, 20);
 }
 
 /*************************************************/

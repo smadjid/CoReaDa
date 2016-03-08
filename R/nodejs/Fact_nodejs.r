@@ -813,6 +813,18 @@ PartData$next_recovery_tx= round(PartData$next_recovery /PartData$recovery,4)
 PartData$prev_recovery_tx= round(PartData$prev_recovery /PartData$recovery,4)
 PartData$distant_prev_recovery_tx= round(PartData$distant_prev_recovery /PartData$recovery,4)
 
+PartData$rereads_tx = 0
+s = s = sum(PartData[which(PartData$part_type=='section'),]$Rereadings)
+PartData[which(PartData$part_type=='section'),]$rereads_tx =  100 * round(PartData[which(PartData$part_type=='section'),]$Rereadings / sum(PartData[which(PartData$part_type=='section'),]$Rereadings),2)
+# for chapters
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$rereads_tx =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$rereads_tx)
+}
+
+
+
+
 save(PartData, file='PartData.rdata')
 colnames(PartData)[1]="id"
 colnames(PartData)[3]="parent_id"
