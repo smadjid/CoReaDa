@@ -1451,12 +1451,10 @@ var rowTop = $('.parts-header > th:nth-child('+index+')').offset();
 var topTop = rowTop.top;
 var left = rowTop.left;
 
-var oneWidth = $('.data-table tbody tr:last-child > td:nth-child('+index+')').innerWidth();
+var oneWidth = $('.parts-header > th:nth-child('+index+')').innerWidth();
 var height = $('.data-table').innerHeight() - $('.chapters-header th:first').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
-var rowBottom = $('.data-table tbody tr:last-child > td:nth-child('+index+')').offset();
-var topBottom = rowBottom.top;
 
  $('#divOverlay').offset({top:topTop -2 ,left:left - 2});
   $('#divOverlay').height(height);
