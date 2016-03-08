@@ -66,7 +66,7 @@ else
   {
    
 
-    var span = $("<span  class='display-part-issues' style='color:#29384D; padding:5px'></span>");
+    var span = $("<span  class='display-part-issues' style='color:red; padding:5px'></span>");
     switch(attrs.classof) {
     case "Readings":
       (chapter.properties.filter(function(value){ return value.property === 'nfacts_readings'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
@@ -84,7 +84,7 @@ else
   }
     
 //span.css('color', computeTextColor(relatedFacts.length));
-      var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'red']);
+      var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
       
     var td=$("<td></td>");
     $(td).attr('class','td_issue')
