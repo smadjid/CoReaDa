@@ -69,16 +69,16 @@ else
     var span = $("<span  class=display-part-issues></span>");
     switch(attrs.classof) {
     case "Readings":
-      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_readings'})[0].value);
+      (chapter.properties.filter(function(value){ return value.property === 'nfacts_readings'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
     case "Rereading":
-      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_rereading'})[0].value);
+      (chapter.properties.filter(function(value){ return value.property === 'nfacts_rereading'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
     case "Transition":
-      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_transition'})[0].value);
+      (chapter.properties.filter(function(value){ return value.property === 'nfacts_transition'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
     case "Stop":
-      span.text(chapter.properties.filter(function(value){ return value.property === 'nfacts_stop'})[0].value);
+      (chapter.properties.filter(function(value){ return value.property === 'nfacts_stop'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
 
   }
