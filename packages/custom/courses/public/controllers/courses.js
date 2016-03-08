@@ -1310,7 +1310,7 @@ var displayIssue =function(url, task, part, indicator){
 
      
 
-$scope.inspectorShow = 'issue';
+
 
      
      $scope.context.route = url;     
@@ -1338,7 +1338,7 @@ var element = resolveRoute(url);
 $("#inspectorScroller").scrollTop(0);
 $("#inspectorScroller").perfectScrollbar('update');
 
-
+$scope.inspectorShow = 'issue';
   
   }
 
@@ -1468,9 +1468,7 @@ $('#divOverlay').delay(500).slideDown('fast');
 
 
 var displayPartInfos =function(partElt, task){
-    resetPath();
-    selectPart($(partElt).index() + 1);
-    $(':focus').blur();
+    
     
     
 var part = $(partElt).attr('data-part');
@@ -1542,9 +1540,17 @@ $scope.observedElt ={
       'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
     };    
 
-$scope.inspectorShow = 'section';
+
 $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
+
+
+  window.setTimeout(function() {
+    resetPath();
+    $(':focus').blur();
+    selectPart($(partElt).index() + 1);
+    $scope.inspectorShow = 'section';
+  }, 20);
 }
 
 var displayCourseInfos =function(indicator, task){ 
@@ -1552,8 +1558,9 @@ var displayCourseInfos =function(indicator, task){
   resetPath(); 
   //if(indicator==='ALL')
   $scope.context.inspector_title = "Cours : "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
-  $scope.context.url = $scope.course.url
-    selectIndictor(indicator); 
+  $scope.context.url = $scope.course.url;
+
+    
 
 showTasksAndFacts($scope.course, indicator,task);
 angular.forEach($scope.course.tomes, function(tome){
@@ -1578,17 +1585,18 @@ $scope.observedElt ={'type':'course',
       'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
       'Actions_tx':$scope.course.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
     };
-  if(indicator ==='ALL') $scope.inspectorShow = 'course'
-    else $scope.inspectorShow = 'indicators';
 
+window.setTimeout(function() {
+    resetPath();
+    $(':focus').blur();
+    selectIndictor(indicator); 
+      if(indicator ==='ALL') $scope.inspectorShow = 'course'
+    else $scope.inspectorShow = 'indicators';
+  }, 20);
 }
 
 
 var displayTomeInfos =function(partElt, task){ 
-  resetPath();
-  
-  selectTome($(partElt).index() + 1);
-  $(':focus').blur();
 
   var route = $(partElt).attr('data-path');
   var element =resolveRoute(route);  
@@ -1674,19 +1682,23 @@ $scope.observedElt ={'type':'tome',
       'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%'
     }; 
 $scope.context.inspector_title = "Partie : "+element.title
-$scope.inspectorShow = 'component';
+
 $scope.context.url = element.url
 
+window.setTimeout(function() {
+    resetPath();
+    $(':focus').blur();
+    selectTome($(partElt).index() + 1);
+    $scope.inspectorShow = 'component';
+  }, 20);
 
     
 }
 
 var displayChapterInfos =function(partElt, task){ 
-  resetPath();
   
-  selectChapter($(partElt).index() + 1);
-  $(':focus').blur();
-
+  
+  
   var route = $(partElt).attr('data-path');
   var element =resolveRoute(route);  
   showTasksAndFacts(element, 'ALL', task);
@@ -1706,7 +1718,7 @@ var displayChapterInfos =function(partElt, task){
     Actions_tx = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
   })
 
-$scope.inspectorShow = 'component';
+
 $scope.context.inspector_title = "Chapitre : "+element.title;
 $scope.context.url = element.url;
 
@@ -1777,6 +1789,12 @@ $scope.observedElt ={'type':'chapter',
       'provLinearity':provData.filter(function(value){ return value.property === 'precedent'})[0].value+'%',
       'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%'
     }; 
+window.setTimeout(function() {
+    resetPath();
+    $(':focus').blur();
+    selectChapter($(partElt).index() + 1);
+    $scope.inspectorShow = 'component';
+  }, 20);
 }
 
 var tabsFn = (function() {  
