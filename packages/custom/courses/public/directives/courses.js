@@ -1,5 +1,4 @@
 angular.module('mean.courses')
-
 .directive('tableTd', [
   function () {
     return {
@@ -34,6 +33,12 @@ var heatMapColorforValue=function (value){
   return "hsl(" + h + ", 80%, 50%)";
 }
 
+var maxReadings = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value });
+var maxRereading = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value });
+var maxTransition = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value });
+var maxStop = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value });
+
+
 scope.data.forEach(function(chapter, i) {
   
 
@@ -64,21 +69,22 @@ if(chapter._id===scope.chapdetails){
 }
 else
   {
+
    
 
     var span = $("<span  class='display-part-issues' style='color:red; padding:5px'></span>");
     switch(attrs.classof) {
     case "Readings":
-      (chapter.properties.filter(function(value){ return value.property === 'nfacts_readings'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
+      (chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value===maxReadings)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
     case "Rereading":
-      (chapter.properties.filter(function(value){ return value.property === 'nfacts_rereading'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
+      (chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value===maxRereading)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
     case "Transition":
-      (chapter.properties.filter(function(value){ return value.property === 'nfacts_transition'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
+      (chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value===maxTransition)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
     case "Stop":
-      (chapter.properties.filter(function(value){ return value.property === 'nfacts_stop'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
+      (chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value===maxStop)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
       break;
 
   }
