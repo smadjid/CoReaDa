@@ -66,7 +66,7 @@ else
   {
    
 
-    var span = $("<span  class=display-part-issues></span>");
+    var span = $("<span  class='display-part-issues' style='color:#29384D; padding:5px'></span>");
     switch(attrs.classof) {
     case "Readings":
       (chapter.properties.filter(function(value){ return value.property === 'nfacts_readings'})[0].value>0)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
