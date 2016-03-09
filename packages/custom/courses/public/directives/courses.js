@@ -5,10 +5,11 @@ angular.module('mean.courses')
         restrict: 'A',
         scope:{
           data:'=',
-          chapdetails:'='
+          granularity:'='
         },
 
         link: function (scope, element, attrs) {
+scope.chapters =[]
 var scale = chroma.scale('OrRd');
 var computeBgColor =function(val){
 
@@ -22,6 +23,70 @@ var computeTextColor =function(val){
   if(val ==3) return '#F5F5F5';
   if(val>=4) return 'white';
 }
+
+var findImportantCourseIssues = function(issueCode){  
+  var allFacts=[];
+
+  scope.chapters.forEach(function(chapter) {
+    chapter.parts.forEach(function(part) {
+      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
+      if(typeof f != 'undefined')
+        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
+
+    })   
+  });
+
+  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
+  if(typeof maxValue != 'undefined')
+    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
+  else 
+    return {}
+
+}
+
+var findImportantTomeIssues = function(issueCode, tomeId){  
+  var allFacts=[];
+ 
+  var tomeChaps = $.grep(scope.data.tomes, function(e){ return e._id === tomeId; })[0].chapters;
+
+  tomeChaps.forEach(function(chapter) {
+    chapter.parts.forEach(function(part) {
+      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
+      if(typeof f != 'undefined')
+        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
+
+    })   
+  });
+
+  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
+  if(typeof maxValue != 'undefined')
+    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
+  else 
+    return {}
+
+}
+
+var findImportantChapterIssues = function(issueCode, chapterId){  
+  var allFacts=[];
+  var chapter = $.grep(scope.chapters, function(e){ return e._id === chapterId; })[0]; 
+
+  
+    chapter.parts.forEach(function(part) {
+      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
+      if(typeof f != 'undefined')
+        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
+
+  
+  });
+
+  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
+  if(typeof maxValue != 'undefined')
+    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
+  else 
+    return {}
+
+}
+
 
 var issuesTableDisplay=function(){
   d3.select(element[0]).selectAll('td').remove();
@@ -33,100 +98,172 @@ var heatMapColorforValue=function (value){
   return "hsl(" + h + ", 80%, 50%)";
 }
 
-var maxReadings = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value });
-var maxRereading = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value });
-var maxTransition = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value });
-var maxStop = d3.max(scope.data, function(chapter) {  return chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value });
+if(scope.granularity.tome===-1)
+{
+  var maxReadings = findImportantCourseIssues('RmaxDuration');
+  var maxRereading = findImportantCourseIssues( 'RerRmax');
+  var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
+  var maxStop = findImportantCourseIssues( 'StopRSExit');
+}
+else
+  if(scope.granularity.chapter===-1)
+  {
+    var maxReadings = findImportantTomeIssues('RmaxDuration',scope.granularity.tome);
+    var maxRereading = findImportantTomeIssues( 'RerRmax',scope.granularity.tome);
+    var maxTransition = findImportantTomeIssues( 'TransDestShiftPast',scope.granularity.tome);
+    var maxStop = findImportantTomeIssues( 'StopRSExit',scope.granularity.tome);
+  }
+  else{
+    var maxReadings = findImportantChapterIssues('RmaxDuration',scope.granularity.chapter);
+    var maxRereading = findImportantChapterIssues( 'RerRmax',scope.granularity.chapter);
+    var maxTransition = findImportantChapterIssues( 'TransDestShiftPast',scope.granularity.chapter);
+    var maxStop = findImportantChapterIssues( 'StopRSExit',scope.granularity.chapter);
+
+  }
 
 
-scope.data.forEach(function(chapter, i) {
+
+scope.chapters.forEach(function(chapter, i) {
   
+    
+    
+      var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
+ if(chapter._id!==scope.granularity.chapter)
+ {   
+ var span = $("<span role='button'  style='color:red; padding:5px'></span>");
 
-if(chapter._id===scope.chapdetails){ 
-   chapter.parts.forEach(function(part, i) {
-       var relatedFacts = part.facts.filter(function(e){ return e.classof === attrs.classof });
+    switch(attrs.classof) {
+    case "Readings":
+      (chapter._id===maxReadings.chapterId)? 
+      span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxReadings.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxReadings.fact.route+"@"+attrs.classof})
+      :span.text("");
+
+      break;
+    case "Rereading":
+      (chapter._id===maxRereading.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxRereading.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxRereading.fact.route+"@"+attrs.classof}):span.text("");
+      break;
+    case "Transition":
+      (chapter._id===maxTransition.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxTransition.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxTransition.fact.route+"@"+attrs.classof}):span.text("");
+      break;
+    case "Stop":
+      (chapter._id===maxStop.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxStop.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
+      break;
+  }
+
+     var td=$("<td></td>");
+     $(td)
+     .attr('class','td_issue')
+             .attr('data-part',chapter.id)
+             .attr('colspan',chapter.parts.length)
+             .attr('data-indicator',attrs.classof)
+             .attr('data-path',chapter.route+'@'+attrs.classof)
+             //.css('background-color',computeBgColor(relatedFacts.length))
+            /* .on("click", function() {  
+               
+               if("#"+chapter.route!==window.location.hash)
+                window.location.hash = "#"+chapter.route+"@"+attrs.classof
+             })*/
+             .html(span);
+ 
+ var color = 0;
+     switch(attrs.classof) {
+     case "Readings":
+       color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+       break;
+     case "Rereading":
+       color = colorScale(0.3 * chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
+       break;
+     case "Transition":
+       color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+       break;
+     case "Stop":
+       color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
+       break;  }
+         
+     td.css('background-color',color );
+     html.push(td)  ;
+ }
+
+else{
+ chapter.parts.forEach(function(part, i) {
+
+  var color = 0;
+  var relatedFacts = part.facts.filter(function(e){ return e.classof === attrs.classof });
   
-      var span = $("<span  class=display-part-issues></span>");
-      span.text(relatedFacts.length>0?relatedFacts.length:'');
-  span.css('color', computeTextColor(relatedFacts.length));
+  var span = $("<span role='button'  style='color:red; padding:5px'></span>");
+    switch(attrs.classof) {
+    case "Readings":
+      (part._id===maxReadings.partId)? 
+      span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxReadings.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxReadings.fact.route+"@"+attrs.classof})
+      :span.text("");
+      break;
+    case "Rereading":
+      (part._id===maxRereading.partId)? span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxRereading.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxRereading.fact.route+"@"+attrs.classof}):span.text("");
+      break;
+    case "Transition":
+      (part._id===maxTransition.partId)? span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxTransition.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxTransition.fact.route+"@"+attrs.classof}):span.text("");
+      break;
+    case "Stop":
+      (part._id===maxStop.partId)? span.addClass("glyphicon glyphicon-warning-sign")
+      .attr('data-fact-id','fact_'+maxStop.fact._id )
+      .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
+      break;
+  }
+  
+     
         
   
+  var color = 0;
+     switch(attrs.classof) {
+     case "Readings":
+       color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+       break;
+     case "Rereading":
+       color = colorScale(0.3 * part.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
+       break;
+     case "Transition":
+       color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+       break;
+     case "Stop":
+       color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
+       break;  }
+
       var td=$("<td></td>");
       $(td).attr('class','td_issue')
               .attr('data-part',part.id)
               .attr('data-indicator',attrs.classof)
               .attr('data-path',part.route+'@'+attrs.classof)
-              .css('background-color',computeBgColor(relatedFacts.length))
-              .on("click", function() {  
+              .css('background-color',color)
+             /* .on("click", function() {  
                 //console.log(d.route);scope.loadURL()(d.route)  
                 if("#"+part.route!==window.location.hash)
                  window.location.hash = "#"+part.route+"@"+attrs.classof
-              })
+              })*/
               .html(span);
       html.push(td)
   
-    })
-}
-else
-  {
+    })}
 
-   
 
-    var span = $("<span  class='display-part-issues' style='color:red; padding:5px'></span>");
-    switch(attrs.classof) {
-    case "Readings":
-      (chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value===maxReadings)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
-      break;
-    case "Rereading":
-      (chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value===maxRereading)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
-      break;
-    case "Transition":
-      (chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value===maxTransition)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
-      break;
-    case "Stop":
-      (chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value===maxStop)? span.addClass("glyphicon glyphicon-warning-sign"):span.text("");
-      break;
 
-  }
-    
-//span.css('color', computeTextColor(relatedFacts.length));
-      var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
-      
-    var td=$("<td></td>");
-    $(td).attr('class','td_issue')
-            .attr('data-part',chapter.id)
-            .attr('colspan',chapter.parts.length)
-            .attr('data-indicator',attrs.classof)
-            .attr('data-path',chapter.route+'@'+attrs.classof)
-            //.css('background-color',computeBgColor(relatedFacts.length))
-            .on("click", function() {  
-              //console.log(d.route);scope.loadURL()(d.route)  
-              if("#"+chapter.route!==window.location.hash)
-               window.location.hash = "#"+chapter.route+"@"+attrs.classof
-            })
-            .html(span);
 
-var color = 0;
-    switch(attrs.classof) {
-    case "Readings":
-      color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-      break;
-    case "Rereading":
-      color = colorScale(0.3 * chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
-      break;
-    case "Transition":
-      color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-      break;
-    case "Stop":
-      color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
-      break;
-
-  }
-        
-    td.css('background-color',color );
-    html.push(td)  
-  }
+  
 });
+
   
   $(element).append(html);
   
@@ -134,52 +271,29 @@ var color = 0;
   
 
 }
-var chapsTableDisplay=function(){
-  d3.select(element[0]).selectAll('td').remove();
 
-var html=[];
-
-
-scope.data.forEach(function(chapter, i) { 
-
-    var span = $("<span  class=display-part-issues></span>");
-    span.text('chap');//relatedFacts.length>0?relatedFacts.length:'');
-//span.css('color', computeTextColor(relatedFacts.length));
-      
-
-    var td=$("<td></td>");
-    $(td).attr('class','td_issue')
-            .attr('data-part',chapter.id)
-            .attr('colspan',chapter.parts.length)
-            .attr('data-indicator',attrs.classof)
-            .attr('data-path',chapter.route+'@'+attrs.classof)
-            //.css('background-color',computeBgColor(relatedFacts.length))
-            .on("click", function() {  
-              //console.log(d.route);scope.loadURL()(d.route)  
-              if("#"+chapter.route!==window.location.hash)
-               window.location.hash = "#"+chapter.route+"@"+attrs.classof
-            })
-            .html(span);
-    html.push(td)
-
-  
-});
-  
-  $(element).append(html);
-  
-
-  
-
-}
 
   scope.$watch('data', function(){
-   
+    
+    if(typeof scope.data==='undefined') return;
+    scope.chapters = [];
+    angular.forEach(scope.data.tomes, function(tome) {
+    angular.forEach(tome.chapters, function(chapter) {     
+      scope.chapters.push( chapter ); 
+    });
+  });   
          issuesTableDisplay()
    
           }, true); 
 
-    scope.$watch('chapdetails', function(){
-      console.log(scope.chapdetails);
+    scope.$watch('granularity', function(){
+    if(typeof scope.data==='undefined') return;
+    scope.chapters = [];
+    angular.forEach(scope.data.tomes, function(tome) {
+    angular.forEach(tome.chapters, function(chapter) {     
+      scope.chapters.push( chapter ); 
+    });
+  });   
     
          issuesTableDisplay()
     
@@ -204,62 +318,6 @@ scope.data.forEach(function(chapter, i) {
 
 
 
-
-.directive('issueTd', [
-  function () {
-    return {
-        restrict: 'A',
-        scope:{
-          data:'='
-        },
-
-        link: function (scope, element, attrs) {
-var scale = chroma.scale('OrRd');
-var computeBgColor =function(val){
-
-  return   scale(val/5).hex();
-}
-
-var computeTextColor =function(val){
-  if(val ==0) return '#464242';
-  if(val ==1) return '#354831';
-  if(val ==2) return '#716F6F';
-  if(val ==3) return '#F5F5F5';
-  if(val>=4) return 'white';
-}
-
-var issuesTableDisplay=function(){
-  
-  var relatedFacts = scope.data.facts.filter(function(e){ return e.classof === attrs.classof });
-//<span style='color:{{computeTextColor((part.facts | filter:{"classof":"Rereading"}).length)}};' 
-
-  //                      {{(part.facts | filter:{'classof':'Rereading'}).length >0 ?(part.facts | filter:{'classof':'Rereading'}).length:""}}
-    //                </span>
-    var span = $("<span  class=display-part-issues></span>");
-    span.text(relatedFacts.length>0?relatedFacts.length:'');
-span.css('color', computeTextColor(relatedFacts.length));
-      
-  
-
-  $(element).attr('class','td_issue')
-            .attr('data-part',scope.data.id)
-            .attr('data-indicator',attrs.classof)
-            .attr('data-path',scope.data.route+'@'+attrs.classof)
-            .css('background-color',computeBgColor(relatedFacts.length));
-  $(element).html(span);
-  
-
-  
-
-}
-
-  scope.$watch('data', function(){
-         issuesTableDisplay();
-          }, true); 
-            
-        }
-    }
-}])
 .directive( 'd3Chart', [
   function () {
     return {
@@ -461,7 +519,7 @@ if(scope.d3opts.elementType!=='part')
             .attr("x", function(d) { return x(d.part); })
             .attr("width", x.rangeBand())
             .on("click", function(d) {  
-              //console.log(d.route);scope.loadURL()(d.route)  
+              
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
@@ -1030,7 +1088,7 @@ if(scope.d3opts.elementType!=='part')
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
             .on("click", function(d) {  
-              //console.log(d.route);scope.loadURL()(d.route)  
+              
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })
@@ -1453,7 +1511,7 @@ var barChart = function(scope, element, classe){
             .attr("x", function(d) { return x(d.part); })
             .attr("width", x.rangeBand())
             .on("click", function(d) {  
-              //console.log(d.route);scope.loadURL()(d.route)  
+              
               if("#"+d.route!==window.location.hash)
                window.location.hash = "#"+d.route
             })

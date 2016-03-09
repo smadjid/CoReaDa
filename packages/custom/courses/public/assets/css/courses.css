@@ -380,13 +380,6 @@ td {
   opacity: .4;
 }
 
-
-td,tr,th{
-    -webkit-transition: all 0.1s ease;
-    -moz-transition: all 0.1s ease;
-    -o-transition: all 0.s ease;
-    transition: all 0.1s ease;
-}
 .part-issues{
   display: inline-flex;
   margin-top:7px;
@@ -1684,3 +1677,15 @@ hr {
 .rereadChart{
   margin-left: 80px;
 }
+
+
+
+td,tr,th, span, div{
+   -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+}
+
+
+

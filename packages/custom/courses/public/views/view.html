@@ -26,6 +26,7 @@
                 <span style='padding-left:10px' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
                 </a></em> </div>
             </div>
+            <div class="panel-body inspector-body" ng-show="inspectorShow=='importantIssue'"  data-ng-include src="'courses/views/important-issue-panel.html'"></div>
             <div class="panel-body inspector-body" ng-show="inspectorShow=='issue'"  data-ng-include src="'courses/views/issues-panel.html'"></div>
             <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='section'" src="'courses/views/section-panel.html'"></div>
             <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='component'" src="'courses/views/component-panel.html'"></div>

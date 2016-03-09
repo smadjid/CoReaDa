@@ -1,0 +1,44 @@
+<perfect-scrollbar id="inspectorScroller" class="inspectorScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+<div class='row' id="scrollCont" style="margin:0;color: #1C383F; background-color:#fff7ec" >  
+ 
+<div class="errors-display" >  
+
+<div class="inspector-item"  data-fact={{context.importantFact._id}} multiple   data-path={{context.importantFact.route}}@{{context.importantFact.classof}}>
+
+  <uib-accordion close-others="oneAtATime" >
+   <uib-accordion-group is-open="status.open" class='inspector-issue'>
+      <uib-accordion-heading>
+      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{context.importantFact.name}} </b>  pour la section <b>{{context.importantFact.section}} </b> 
+      </uib-accordion-heading>
+      <table style="table-layout: fixed;">
+      <td style="width: 50%">
+      <span class='factDescription'>{{context.importantFact.description}} </span>
+    </td>
+    <td>
+      <h4>{{context.importantFact.d3.title}}</h4>
+      <d3-chart data='context.importantFact.d3' d3opts='{type:"fact",issueCode:context.importantFact.issueCode, issueClass:context.importantFact.classof}'></d3-chart>
+    </td>
+    </table>
+    </uib-accordion-group>
+  </uib-accordion>
+
+  <uib-accordion close-others="oneAtATime" class="hint-heading">
+   <uib-accordion-group is-open="status.open" class='inspector-hint'>
+      <uib-accordion-heading >
+      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
+      
+      </i> <em>Suggestion: </em> <span>{{context.importantFact.suggestion_title}} </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,context.importantFact.suggestion_title)"  data-path={{context.importantFact.route}}><span class="glyphicon glyphicon-ok" ></span>Définir comme tâche</button> 
+      </uib-accordion-heading>
+      <table style="table-layout: fixed;width:100%; padding:10px">
+      <td style="width: 100%">
+      <span class='suggestDescription'>{{context.importantFact.suggestion_content}}</span>
+    </td>
+  </table>
+    </uib-accordion-group>
+  </uib-accordion>
+</div>
+
+</div>
+
+</div>
+</perfect-scrollbar>

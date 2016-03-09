@@ -23,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td chapdetails='chapdetails' classof='Readings' data="courseChapters">
+        <tr table-td granularity="context.tableGranularity" classof='Readings' data="course" >
             <th  role='button' class="indicators-header" data-indicator='Readings' ng-click='triggerClick($event)' data-path='@Readings'>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >Lecture</span>
@@ -32,7 +32,7 @@
 
 
         </tr>
-       <tr table-td chapdetails='chapdetails' classof='Rereading' data="courseChapters">
+       <tr table-td granularity="context.tableGranularity" classof='Rereading' data="course">
             <th role='button' class="indicators-header" data-indicator='Rereading' ng-click='triggerClick($event)' data-path='@Rereading' >
                 <i class="fa fa-repeat  fa-2x"></i>
                 <span class="fat">Relecture</span>
@@ -41,7 +41,7 @@
           
 
         </tr>
-       <tr table-td chapdetails='chapdetails' classof='Transition' data="courseChapters">
+       <tr table-td granularity="context.tableGranularity" classof='Transition' data="course">
             <th role='button' class="indicators-header" data-indicator='Transition' ng-click='triggerClick($event)' data-path='@Transition'>
                 <i class="fa fa-random fa-2x"></i>
                 <span class="fat">Navigation</span>
@@ -50,7 +50,7 @@
             
 
         </tr>
-        <tr table-td chapdetails='chapdetails' classof='Stop' data="courseChapters">
+        <tr table-td granularity="context.tableGranularity" classof='Stop' data="course">
             <th role='button' class="indicators-header" data-indicator='Stop' ng-click='triggerClick($event)' data-path='@Stop'>
                 <i class="fa fa-pause fa-2x"></i>
                 <span class="fat">Arrêts</span>
