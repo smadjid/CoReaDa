@@ -96,6 +96,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
      
     /********  Update on @ change ****************/
 $(window).bind('hashchange',function(){ 
+
   loadContext();
 });
 
@@ -841,16 +842,18 @@ var filterTasks = function(studiedPart) {
 
 /********************************************/
 var loadContext = function(){
+  
    var url = location.hash.slice(1);
 
    var searchPattern = new RegExp('^' + 'fact_', 'i');
       if (searchPattern.test(url)) 
         {
+          $scope.inspectorDisplaySrc='important-issue';
           loadImportantFact(url)
-          return;
         }
       else
         loadElements(url)
+  
 }
 
 var loadImportantFact = function(url){
@@ -937,7 +940,7 @@ var loadImportantFact = function(url){
           
           displayCourseInfos(indicator, task);
            $scope.sectionDisplay = false;
-               $(':focus').blur();
+               //$(':focus').blur();
           
       //  }, 10);
     };
@@ -1010,7 +1013,7 @@ if(arr.length ==4 && indicator!="ALL") {
   $scope.context.tableGranularity = {'tome':tome._id, 'chapter':chap._id, 'part':part._id}
   
   $scope.context.taskText ='(nouvelle tâche pour cette section)';
-
+$scope.inspectorDisplaySrc='issues'
   window.setTimeout(function() {
  displayPartIssues(route, task, part, indicator);
         }, 10);
@@ -1031,6 +1034,7 @@ if(arr.length ==5) {
    $scope.studiedPart = part.id
      
      $scope.context.taskText ='(nouvelle tâche pour cette section)';
+     $scope.inspectorDisplaySrc='issues'
 
      window.setTimeout(function() {
  displayIssue(route, task, part, indicator);
@@ -1170,12 +1174,12 @@ window.setTimeout(function() {
     {
       window.location.hash = url;
  window.setTimeout(function() {
-  $scope.$emit('content.changed');
-  $scope.$broadcast('content.reload');
+  //$scope.$emit('content.changed');
+  //$scope.$broadcast('content.reload');
   
         }, 0)
 }
-  $(':focus').blur();
+  ////$(':focus').blur();
 
   return false;
 
@@ -1198,12 +1202,12 @@ $scope.triggerClick =function($event){
 
  $scope.triggerHover =function($event){ 
   var url ="#"
-if ($event!==null)  url = $($event.currentTarget).attr('data-path');  
-    $scope.hoverElements(url); 
+//if ($event!==null)  url = $($event.currentTarget).attr('data-path');  
+  //  $scope.hoverElements(url); 
  }
 
  $scope.$on("hover", function (e, msg) {
-$scope.hoverElements(msg)        
+//$scope.hoverElements(msg)        
       });
 
   $scope.stopHover =  stopHover();
@@ -1373,6 +1377,7 @@ $('.selectedTask').focus().blur().focus();
 }
 var displayImportantIssue =function(url, task, part, indicator){   
   resetPath();
+
   
   
   var regExp = RegXpURL(url); 
@@ -1396,14 +1401,14 @@ $("#inspectorScroller").scrollTop(0);
 $("#inspectorScroller").perfectScrollbar('update');
 
 
-$scope.inspectorDisplaySrc='important-issue'
-  $(':focus').blur(); 
+
+  //$(':focus').blur(); 
 
 
   }
 
 var displayIssue =function(url, task, part, indicator){   
-  $(':focus').blur(); 
+  //$(':focus').blur(); 
   resetPath();
   var regExp = RegXpURL(url); 
   url =regExp.arr;
@@ -1429,13 +1434,13 @@ $("#inspectorScroller").scrollTop(0);
 $("#inspectorScroller").perfectScrollbar('update');
 
 
-$scope.inspectorDisplaySrc='issues'
+
   
   }
 
 var displayPartIssues =function(url, task, part, indicator){   
   
-  $(':focus').blur();
+  //$(':focus').blur();
  
   resetPath();
 
@@ -1469,7 +1474,7 @@ var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text(
   showTasksAndFacts(element, indicator, task);
 
   
-  $scope.inspectorDisplaySrc='issues'
+  
     }
 
 var selectIndictor =function(indicator){
@@ -1634,13 +1639,13 @@ $scope.observedElt ={
 $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
 
-
+$scope.inspectorDisplaySrc='section'
   window.setTimeout(function() {
     resetPath();
-    $(':focus').blur();
+    //$(':focus').blur();
     selectPart($(partElt).index() + 1);
     
-    $scope.inspectorDisplaySrc='section'
+    
   }, 10);
 }
 
@@ -1679,7 +1684,7 @@ $scope.observedElt ={'type':'course',
 
 //window.setTimeout(function() {
     resetPath();
-    $(':focus').blur();
+    //$(':focus').blur();
     selectIndictor(indicator); 
       if(indicator ==='ALL') 
         $scope.inspectorDisplaySrc='course'
@@ -1778,12 +1783,12 @@ $scope.observedElt ={'type':'tome',
 $scope.context.inspector_title = "Partie : "+element.title
 
 $scope.context.url = element.url
-
+$scope.inspectorDisplaySrc='component'
 window.setTimeout(function() {
     resetPath();
-    $(':focus').blur();
+    //$(':focus').blur();
     selectTome($(partElt).index() + 1);
-    $scope.inspectorDisplaySrc='component'
+    
   }, 10);
 
     
@@ -1885,7 +1890,7 @@ $scope.observedElt ={'type':'chapter',
     }; 
 window.setTimeout(function() {
     resetPath();
-    $(':focus').blur();
+    //$(':focus').blur();
     selectChapter($(partElt).index() + 1);
     $scope.inspectorDisplaySrc='component'
   }, 10);

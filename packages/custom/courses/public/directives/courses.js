@@ -173,7 +173,7 @@ scope.chapters.forEach(function(chapter, i) {
                 window.location.hash = "#"+chapter.route+"@"+attrs.classof
              })*/
              .html(span);
- 
+ /*
  var color = 0;
      switch(attrs.classof) {
      case "Readings":
@@ -189,7 +189,7 @@ scope.chapters.forEach(function(chapter, i) {
        color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
        break;  }
          
-     td.css('background-color',color );
+     td.css('background-color',color );*/
      html.push(td)  ;
  }
 
@@ -226,7 +226,7 @@ else{
   }
   
      
-        
+        /*
   
   var color = 0;
      switch(attrs.classof) {
@@ -241,14 +241,14 @@ else{
        break;
      case "Stop":
        color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
-       break;  }
+       break;  }*/
 
       var td=$("<td></td>");
       $(td).attr('class','td_issue')
               .attr('data-part',part.id)
               .attr('data-indicator',attrs.classof)
               .attr('data-path',part.route+'@'+attrs.classof)
-              .css('background-color',color)
+  //            .css('background-color',color)
              /* .on("click", function() {  
                 //console.log(d.route);scope.loadURL()(d.route)  
                 if("#"+part.route!==window.location.hash)
@@ -275,7 +275,7 @@ else{
 
   scope.$watch('data', function(){
    
-    if(typeof scope.data==='undefined') return;
+    if(typeof scope.data==='undefined'  | typeof scope.granularity==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -283,12 +283,11 @@ else{
     });
   });   
          issuesTableDisplay()
-        }, 300);
+        }, true);
      
 
     scope.$watch('granularity', function(){
-  
-    if(typeof scope.data==='undefined') return;
+  if(typeof scope.data==='undefined'  | typeof scope.granularity==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
