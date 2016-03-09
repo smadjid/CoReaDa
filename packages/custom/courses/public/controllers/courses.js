@@ -31,7 +31,8 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   $scope.observedElt ={}
 
      $('table').hide();
-     $scope.inspectorShow = 'course';
+     
+     $scope.inspectorDisplaySrc='course';
      $scope.indicatorInspectorShow = 'course';
      $scope.sectionDisplay = false;
       $scope.courseParts =[];
@@ -1372,7 +1373,7 @@ $('.selectedTask').focus().blur().focus();
 }
 var displayImportantIssue =function(url, task, part, indicator){   
   resetPath();
-  $(':focus').blur(); 
+  
   
   var regExp = RegXpURL(url); 
   url =regExp.arr;
@@ -1394,8 +1395,11 @@ var displayImportantIssue =function(url, task, part, indicator){
 $("#inspectorScroller").scrollTop(0);
 $("#inspectorScroller").perfectScrollbar('update');
 
-$scope.inspectorShow = 'importantIssue';
+
+$scope.inspectorDisplaySrc='important-issue'
   $(':focus').blur(); 
+
+
   }
 
 var displayIssue =function(url, task, part, indicator){   
@@ -1424,7 +1428,8 @@ var displayIssue =function(url, task, part, indicator){
 $("#inspectorScroller").scrollTop(0);
 $("#inspectorScroller").perfectScrollbar('update');
 
-$scope.inspectorShow = 'issue';
+
+$scope.inspectorDisplaySrc='issues'
   
   }
 
@@ -1463,7 +1468,8 @@ var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text(
      $scope.context.url = part.url
   showTasksAndFacts(element, indicator, task);
 
-  $scope.inspectorShow = 'issue';
+  
+  $scope.inspectorDisplaySrc='issues'
     }
 
 var selectIndictor =function(indicator){
@@ -1633,7 +1639,8 @@ $scope.context.url = element.url;
     resetPath();
     $(':focus').blur();
     selectPart($(partElt).index() + 1);
-    $scope.inspectorShow = 'section';
+    
+    $scope.inspectorDisplaySrc='section'
   }, 10);
 }
 
@@ -1674,8 +1681,11 @@ $scope.observedElt ={'type':'course',
     resetPath();
     $(':focus').blur();
     selectIndictor(indicator); 
-      if(indicator ==='ALL') $scope.inspectorShow = 'course'
-    else $scope.inspectorShow = 'indicators';
+      if(indicator ==='ALL') 
+        $scope.inspectorDisplaySrc='course'
+
+    else 
+    $scope.inspectorDisplaySrc='indicators'
  // }, 10);
 }
 
@@ -1773,7 +1783,7 @@ window.setTimeout(function() {
     resetPath();
     $(':focus').blur();
     selectTome($(partElt).index() + 1);
-    $scope.inspectorShow = 'component';
+    $scope.inspectorDisplaySrc='component'
   }, 10);
 
     
@@ -1877,7 +1887,7 @@ window.setTimeout(function() {
     resetPath();
     $(':focus').blur();
     selectChapter($(partElt).index() + 1);
-    $scope.inspectorShow = 'component';
+    $scope.inspectorDisplaySrc='component'
   }, 10);
 }
 

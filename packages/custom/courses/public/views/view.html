@@ -13,7 +13,7 @@
 <div class="col-lg-9 coreada-box">        
 <perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   > 
 
-    <table id="data-table"  class="table data-table"   data-ng-include src="'courses/views/table.html'" ></table>
+    <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
    <div id="divOverlay"> </div> 
    <div id="divHoverOverlay"> </div> 
    
@@ -26,19 +26,22 @@
                 <span style='padding-left:10px' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
                 </a></em> </div>
             </div>
-            <div class="panel-body inspector-body" ng-show="inspectorShow=='importantIssue'"  data-ng-include src="'courses/views/important-issue-panel.html'"></div>
-            <div class="panel-body inspector-body" ng-show="inspectorShow=='issue'"  data-ng-include src="'courses/views/issues-panel.html'"></div>
-            <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='section'" src="'courses/views/section-panel.html'"></div>
-            <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='component'" src="'courses/views/component-panel.html'"></div>
-            <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='course'" src="'courses/views/course-panel.html'"></div>
-            <div class="panel-body  inspector-body" data-ng-include ng-show="inspectorShow=='indicators'" src="'courses/views/indicators-panel.html'"></div>
+
+            <div class="panel-body inspector-body" ng-include src="'courses/views/'+inspectorDisplaySrc+'-panel.html'" ></div>
+            <!--
+            <div class="panel-body inspector-body" ng-if="inspectorShow=='importantIssue'"  ng-include src="'courses/views/important-issue-panel.html'" ></div>
+            <div class="panel-body inspector-body" ng-if="inspectorShow=='issue'"  ng-include src="'courses/views/issues-panel.html'"></div>
+            <div class="panel-body  inspector-body" ng-include ng-if="inspectorShow=='section'" src="'courses/views/section-panel.html'"></div>
+            <div class="panel-body  inspector-body" ng-include ng-if="inspectorShow=='component'" src="'courses/views/component-panel.html'"></div>
+            <div class="panel-body  inspector-body" ng-include ng-if="inspectorShow=='course'" src="'courses/views/course-panel.html'"></div>
+            <div class="panel-body  inspector-body" ng-include ng-if="inspectorShow=='indicators'" src="'courses/views/indicators-panel.html'"></div>-->
             
         </div>
     </div>
 
 </div>
 <div class="col-lg-3 coreada-box" >
-                        <div id="task-panel" class="fadein fadeout showpanel panel"  data-ng-include src="'courses/views/tasks-manager.html'"></div>
+                        <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
     </div>
 </div>
 
