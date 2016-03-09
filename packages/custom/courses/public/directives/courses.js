@@ -89,6 +89,7 @@ var findImportantChapterIssues = function(issueCode, chapterId){
 
 
 var issuesTableDisplay=function(){
+  
   d3.select(element[0]).selectAll('td').remove();
 
 var html=[];
@@ -266,7 +267,6 @@ else{
 
   
   $(element).append(html);
-  
 
   
 
@@ -274,7 +274,7 @@ else{
 
 
   scope.$watch('data', function(){
-    
+   
     if(typeof scope.data==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
@@ -283,10 +283,11 @@ else{
     });
   });   
          issuesTableDisplay()
-   
-          }, true); 
+        }, 300);
+     
 
     scope.$watch('granularity', function(){
+  
     if(typeof scope.data==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
@@ -296,6 +297,7 @@ else{
   });   
     
          issuesTableDisplay()
+        
     
           }, true); 
             
