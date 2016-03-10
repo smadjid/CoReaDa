@@ -3,7 +3,7 @@
 			<i class="panel-title-icon fa fa-tasks"></i>
 			<span class="panel-title">Tâches</span>
 			
-<div id="form-controlA" editable-text="formData" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
+<div id="taskEditor" editable-text="formData" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
 <span id='newTaskSpan'	class="glyphicon glyphicon-plus"></span> 
 				{{formData ||  context.taskText  }}
 
@@ -11,7 +11,6 @@
 		</div>
 	
 
-	
 
 <perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
 

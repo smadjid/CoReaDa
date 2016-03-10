@@ -1680,7 +1680,7 @@ hr {
 
 
 
-td,tr,th, span, div{
+td,tr,th,  div{
    -webkit-transition: all 0.3s linear;
     -moz-transition: all 0.3s linear;
     -o-transition: all 0.3s linear;

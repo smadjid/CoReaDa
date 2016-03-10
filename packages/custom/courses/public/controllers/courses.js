@@ -90,9 +90,6 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $scope.context.Flops = computeFlopParts();
     $scope.context.stats = computeCourseStats();
 
-   //console.log($scope.context.d3)
-
-    
      
     /********  Update on @ change ****************/
 $(window).bind('hashchange',function(){ 
@@ -225,8 +222,6 @@ var completeCourseParts =function(course, courseParts, courseChapters){
       courseChapters.push( chapter ); 
     });
   });
-
- // console.log(courseChapters);
 
   
 }
@@ -895,7 +890,6 @@ var loadImportantFact = function(url){
      window.setTimeout(function() {
  displayImportantIssue(route, task, part, indicator);
  $('span[data-fact-id ="fact_'+fact._id+'"]').parent().addClass('chosenPart');
- console.log($('td[data-fact-id ="fact_'+fact._id+'"]'));
         }, 10);
 
 
@@ -1152,14 +1146,12 @@ window.onresize = function(){reloadURL();}
 
 var reloadURL =function(){
   var url = window.location.hash
-window.setTimeout(function() {
-goHome();
-        }, 10);
+//window.setTimeout(function() {goHome();    }, 10);
 
 window.setTimeout(function() {
 loadURL(url) 
   
-        }, 0);
+        }, 10);
 
 }
 var loadURL =function(url){
@@ -1169,7 +1161,7 @@ var loadURL =function(url){
  {
 window.setTimeout(function() {
   goHome();
-        }, 0);}
+        }, 10);}
   else 
     {
       window.location.hash = url;
@@ -1177,7 +1169,7 @@ window.setTimeout(function() {
   //$scope.$emit('content.changed');
   //$scope.$broadcast('content.reload');
   
-        }, 0)
+        }, 10)
 }
   ////$(':focus').blur();
 
@@ -1971,9 +1963,6 @@ var insertLocalTask =function(route, task){
 
   $scope.context.subtasks =computeAllTasks();
 
-  //reloadURL();
-
-  //console.log(route+';'+task._id+'@'+task.classof);
   var rt = route+';'+task._id;
   if(task.classof!=='ALL') rt = rt + '@'+task.classof
   loadURL(rt);
@@ -1981,14 +1970,14 @@ var insertLocalTask =function(route, task){
 }
 
 $scope.editSuggestion =function($event, suggestion){
+  $scope.formData = suggestion;   
 
-  $scope.formData = suggestion; 
-  $('#taskInput').focus();
-  $scope.context.route = $($event.currentTarget).attr('href');
-  
-window.setTimeout(function() {
-             $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
-        }, 0);
+  window.setTimeout(function() {
+           $("#taskEditor").trigger( "click" );
+           $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
+        }, 500);
+
+
 
 }
 $scope.createTask =function($event){
@@ -2005,6 +1994,7 @@ window.setTimeout(function() {
 }
 
 $scope.addTask = function (data) {
+  
   $scope.dataLoading = true;
       if (data != undefined) {
 
@@ -2366,8 +2356,6 @@ return chartData
 }
 var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course =='undefined') return;
-  
-//console.log(visuData);
     
     var chartData =[];
     var meanData =[];

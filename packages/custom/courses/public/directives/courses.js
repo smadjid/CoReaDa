@@ -125,9 +125,6 @@ else
 
 
 scope.chapters.forEach(function(chapter, i) {
-  
-    
-    
       var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
  if(chapter._id!==scope.granularity.chapter)
  {   
@@ -195,8 +192,44 @@ scope.chapters.forEach(function(chapter, i) {
 
 else{
  chapter.parts.forEach(function(part, i) {
-
   var color = 0;
+
+  
+  if(part._id===scope.granularity.part){
+    var nfacts = part.facts.filter(function(e){ return ((e.classof === attrs.classof))} ).length;
+    var nfactsTxt = nfacts>0?nfacts:''
+
+    var span = $("<span role='button' class='display-part-issues' style='color:red; padding:5px;color:"+computeTextColor(nfacts)+"'>"+nfactsTxt+"</span>");
+//    $(span).text(nfacts).css('color',computeTextColor(nfacts));
+
+/*
+<td ng-show="sectionDisplay"style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}}@Readings>
+                    <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; ' class='display-part-issues'> 
+                        {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
+                    </span>
+           
+            </td>
+            */
+
+    console.log(part.title);
+    var td=$("<td></td>");
+            $(td).attr('class','td_issue')
+                    .attr('data-part',part.id)
+                    .attr('data-indicator',attrs.classof)
+                    .attr('data-path',part.route+'@'+attrs.classof)
+                    .text('text')
+                   .css('background-color',computeBgColor(nfacts))
+                   .on("click", function() {  
+                      console.log(part.route);//scope.loadURL()(d.route)  
+                      //if("#"+part.route!==window.location.hash)
+                       window.location.hash = "#"+part.route+"@"+attrs.classof
+                    })
+                    .html(span);
+            html.push(td)
+
+  }
+  else{
+
   var relatedFacts = part.facts.filter(function(e){ return e.classof === attrs.classof });
   
   var span = $("<span role='button'  style='color:red; padding:5px'></span>");
@@ -222,40 +255,40 @@ else{
       (part._id===maxStop.partId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxStop.fact._id )
       .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
-      break;
-  }
-  
-     
-        /*
-  
-  var color = 0;
-     switch(attrs.classof) {
-     case "Readings":
-       color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-       break;
-     case "Rereading":
-       color = colorScale(0.3 * part.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
-       break;
-     case "Transition":
-       color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-       break;
-     case "Stop":
-       color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
-       break;  }*/
-
-      var td=$("<td></td>");
-      $(td).attr('class','td_issue')
-              .attr('data-part',part.id)
-              .attr('data-indicator',attrs.classof)
-              .attr('data-path',part.route+'@'+attrs.classof)
-  //            .css('background-color',color)
-             /* .on("click", function() {  
-                //console.log(d.route);scope.loadURL()(d.route)  
-                if("#"+part.route!==window.location.hash)
-                 window.location.hash = "#"+part.route+"@"+attrs.classof
-              })*/
-              .html(span);
-      html.push(td)
+      break;  }
+        
+           
+              /*
+        
+        var color = 0;
+           switch(attrs.classof) {
+           case "Readings":
+             color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+             break;
+           case "Rereading":
+             color = colorScale(0.3 * part.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
+             break;
+           case "Transition":
+             color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
+             break;
+           case "Stop":
+             color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
+             break;  }*/
+      
+            var td=$("<td></td>");
+            $(td).attr('class','td_issue')
+                    .attr('data-part',part.id)
+                    .attr('data-indicator',attrs.classof)
+                    .attr('data-path',part.route+'@'+attrs.classof)
+        //            .css('background-color',color)
+                   /* .on("click", function() {  
+                      //console.log(d.route);scope.loadURL()(d.route)  
+                      if("#"+part.route!==window.location.hash)
+                       window.location.hash = "#"+part.route+"@"+attrs.classof
+                    })*/
+                    .html(span);
+            html.push(td)
+          }
   
     })}
 
