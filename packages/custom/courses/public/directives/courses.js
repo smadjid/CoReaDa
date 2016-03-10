@@ -135,6 +135,7 @@ scope.chapters.forEach(function(chapter, i) {
       (chapter._id===maxReadings.chapterId)? 
       span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxReadings.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxReadings.fact.route+"@"+attrs.classof})
       :span.text("");
 
@@ -142,16 +143,19 @@ scope.chapters.forEach(function(chapter, i) {
     case "Rereading":
       (chapter._id===maxRereading.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxRereading.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxRereading.fact.route+"@"+attrs.classof}):span.text("");
       break;
     case "Transition":
       (chapter._id===maxTransition.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxTransition.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxTransition.fact.route+"@"+attrs.classof}):span.text("");
       break;
     case "Stop":
       (chapter._id===maxStop.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxStop.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
       break;
   }
@@ -200,6 +204,7 @@ else{
     var nfactsTxt = nfacts>0?nfacts:''
 
     var span = $("<span role='button' class='display-part-issues' style='color:red; padding:5px;color:"+computeTextColor(nfacts)+"'>"+nfactsTxt+"</span>");
+    span.show(500, "linear");
 //    $(span).text(nfacts).css('color',computeTextColor(nfacts));
 
 /*
@@ -238,22 +243,26 @@ else{
       (part._id===maxReadings.partId)? 
       span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxReadings.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxReadings.fact.route+"@"+attrs.classof})
       :span.text("");
       break;
     case "Rereading":
       (part._id===maxRereading.partId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxRereading.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxRereading.fact.route+"@"+attrs.classof}):span.text("");
       break;
     case "Transition":
       (part._id===maxTransition.partId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxTransition.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxTransition.fact.route+"@"+attrs.classof}):span.text("");
       break;
     case "Stop":
       (part._id===maxStop.partId)? span.addClass("glyphicon glyphicon-warning-sign")
       .attr('data-fact-id','fact_'+maxStop.fact._id )
+      .show(500, "linear")
       .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
       break;  }
         
