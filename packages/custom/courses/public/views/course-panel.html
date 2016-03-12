@@ -1,13 +1,22 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
-<div class="widget" style="width:48%">
+
+
+
+<div class="widget" style="width:49%">
+    <div class="header">Principaux problèmes détectés  </div>
+ <div ng-include src="'courses/views/important-issues-panel.html'"></div> 
+</div>
+
+
+
+
+<div class="widget" style="width:49%">
     <div class="header">Statistiques  de
     <select class="btn-xs btn-achievement" ng-model="statSelector">
       <option value="visits">Lecture</option>
       <option value="rs">Séances de lecture</option> 
       <option value="issues">Problèmes de lecture</option>
-    </select><br>
-
-    
+    </select><br>    
     </div>
     <div>
     <br/>
@@ -40,17 +49,17 @@
 
 </div>
 
-
+<!--
 <div class="widget" style="width:48%; ">
     <div class="header">Top / Flop des 
     <select class="btn-xs btn-achievement" ng-model="topElementSelector">
-      <option value="sections">Sections</option> <!-- not selected / blank option -->
-      <option value="chapters">Chapitres</option> <!-- interpolation -->
+      <option value="sections">Sections</option> 
+      <option value="chapters">Chapitres</option> 
     </select>   
     par nombre de
     <select class="btn-xs btn-achievement"  ng-model="topSelector">
-      <option value="Actions_tx">Visites</option> <!-- not selected / blank option -->
-      <option value="Readers">Lecteurs</option> <!-- interpolation -->
+      <option value="Actions_tx">Visites</option>
+      <option value="Readers">Lecteurs</option> 
     </select> 
 
    
@@ -126,7 +135,7 @@
         </ol>
     </div>
 </div>
-
+-->
 
  <d3-chart data='context.d3.stats' d3opts='{type:"global",issueCode:"all"}'></d3-chart>
  

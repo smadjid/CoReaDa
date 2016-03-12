@@ -59,7 +59,8 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';
       $scope.sectionPstatSelector = 'Actions_tx';
-      $scope.studiedPart = ''
+      $scope.studiedPart = '';
+      $scope.context.importantFacts=[];
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -118,18 +119,15 @@ var appendChart = function(){
   $('.componentInfo.active').append('#statChart')
 }
 $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
+  $scope.context.statChart = false;
   var statChart = $('#statChart').detach();
   switch($scope.sectionPstatSelector) {
     case "Actions_tx":
         $scope.graphTitle ='Taux des visites';
-        //$('#statChart').detach();
-        
         break;
     case "Readers_tx":
-        $scope.graphTitle ='Taux de lecteurs ';
-        
-        break;
-    
+        $scope.graphTitle ='Taux de lecteurs ';        
+        break;    
     case 'mean.duration':
         $scope.graphTitle ='Durée moyenne de lecture de la section(en minutes)'
         break;
@@ -846,6 +844,104 @@ var filterTasks = function(studiedPart) {
           return studiedPart.todos;
       };
 
+
+var findImportantCourseIssues = function(issueCode){  
+  var allFacts=[];
+
+  $scope.courseChapters.forEach(function(chapter) {
+    chapter.parts.forEach(function(part) {
+      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
+      if(typeof f != 'undefined')
+        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
+
+    })   
+  });
+
+  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
+  if(typeof maxValue != 'undefined')
+    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
+  else 
+    return -1
+
+}
+
+var findImportantTomeIssues = function(issueCode, tomeId){  
+  var allFacts=[];
+ 
+  var tomeChaps = $.grep($scope.course.tomes, function(e){ return e._id === tomeId; })[0].chapters;
+
+  tomeChaps.forEach(function(chapter) {
+    chapter.parts.forEach(function(part) {
+      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
+      if(typeof f != 'undefined')
+        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
+
+    })   
+  });
+
+  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
+  if(typeof maxValue != 'undefined')
+    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
+  else 
+    return -1
+
+}
+
+var findImportantChapterIssues = function(issueCode, chapterId){  
+  var allFacts=[];
+  var chapter = $.grep($scope.courseChapters, function(e){ return e._id === chapterId; })[0]; 
+
+  
+    chapter.parts.forEach(function(part) {
+      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
+      if(typeof f != 'undefined')
+        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
+
+  
+  });
+
+  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
+  if(typeof maxValue != 'undefined')
+    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
+  else 
+    return -1
+
+}
+
+var computeImportantFacts = function(granularity, id){
+var results=[];
+if(granularity==='course')
+{
+  var maxReadings = findImportantCourseIssues('RmaxDuration');
+  var maxRereading = findImportantCourseIssues( 'RerRmax');
+  var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
+  var maxStop = findImportantCourseIssues( 'StopRSExit');
+}
+else
+  if(granularity==='tome')
+  {
+    var maxReadings = findImportantTomeIssues('RmaxDuration',id);
+    var maxRereading = findImportantTomeIssues( 'RerRmax',id);
+    var maxTransition = findImportantTomeIssues( 'TransDestShiftPast',id);
+    var maxStop = findImportantTomeIssues( 'StopRSExit',id);
+  }
+  else{
+    var maxReadings = findImportantChapterIssues('RmaxDuration',id);
+    var maxRereading = findImportantChapterIssues( 'RerRmax',id);
+    var maxTransition = findImportantChapterIssues( 'TransDestShiftPast',id);
+    var maxStop = findImportantChapterIssues( 'StopRSExit',id);
+
+  }
+
+(maxReadings!=-1)? results.push(maxReadings):results=results;
+(maxRereading!=-1)? results.push(maxRereading):results=results;
+(maxTransition!=-1)? results.push(maxTransition):results=results;
+(maxStop!=-1)? results.push(maxStop):results=results;
+  
+$scope.context.importantFacts=results;
+
+}
+
 /********************************************/
 var loadContext = function(){
   
@@ -861,6 +957,8 @@ var loadContext = function(){
         loadElements(url)
   
 }
+
+
 
 var loadImportantFact = function(url){
   url = url.split('_')[1];
@@ -944,6 +1042,7 @@ var loadImportantFact = function(url){
          
           
           displayCourseInfos(indicator, task);
+          computeImportantFacts('course');
            $scope.sectionDisplay = false;
                //$(':focus').blur();
           
@@ -957,6 +1056,7 @@ var loadImportantFact = function(url){
   
 
    tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
+   computeImportantFacts('tome', tome._id);
    partElt = $('.tome_index[data-part ='+tome.id+']')[0];
    $scope.context.taskText ='(nouvelle tâche pour cette partie)';
    $scope.context.tableGranularity = {'tome':tome._id, 'chapter':-1, 'part':-1}
@@ -976,6 +1076,7 @@ var loadImportantFact = function(url){
   
   tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
    chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
+   computeImportantFacts('tome', chap._id);
 
    partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
    
