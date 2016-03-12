@@ -49,6 +49,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.factChart ={};
       $scope.componentChart ={};  
       $scope.context.tableGranularity = {'tome':-1, 'chapter':-1, 'part':-1}
+      $scope.context.statChart = false;
       
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
@@ -112,14 +113,21 @@ $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
 
        
     });
+
+var appendChart = function(){
+  $('.componentInfo.active').append('#statChart')
+}
 $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
-  
+  var statChart = $('#statChart').detach();
   switch($scope.sectionPstatSelector) {
     case "Actions_tx":
-        $scope.graphTitle ='Taux des visites'
+        $scope.graphTitle ='Taux des visites';
+        //$('#statChart').detach();
+        
         break;
     case "Readers_tx":
-        $scope.graphTitle ='Taux de lecteurs '
+        $scope.graphTitle ='Taux de lecteurs ';
+        
         break;
     
     case 'mean.duration':
@@ -137,7 +145,10 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
     case 'destination':
         $scope.graphTitle ='Sections de destination (lues juste après celle-ci)'
         break;
-}
+};
+window.setTimeout(function() {
+  statChart.appendTo($('.componentInfo.active'));
+  }, 10);
 });
 
     if($('.course_title_top').length<1)

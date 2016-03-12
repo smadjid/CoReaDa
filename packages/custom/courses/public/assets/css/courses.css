@@ -1578,6 +1578,7 @@ marker#arrow {
 
 .componentInfo{
   font-size: 14px;
+  width:90%;
    vertical-align: middle; 
    width:100%;    
    margin:0;
@@ -1593,8 +1594,7 @@ marker#arrow {
 
 span.blue {
   background: #5178D0;
-  
-  border-radius: 10px;
+    border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   color: #ffffff;
@@ -1614,6 +1614,23 @@ span.blue {
     vertical-align: middle;  
     
 }
+span.white {
+  background: white;
+    border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  text-align: center;
+  
+    display: inline-block;
+    padding: 3px;
+    font-size: 10px;
+   
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;  
+    
+}
+
 hr {
  
     margin-top: 7px;
