@@ -910,26 +910,25 @@ var findImportantChapterIssues = function(issueCode, chapterId){
 
 var computeImportantFacts = function(granularity, id){
 var results=[];
-if(granularity==='course')
-{
-  var maxReadings = findImportantCourseIssues('RmaxDuration');
-  var maxRereading = findImportantCourseIssues( 'RerRmax');
-  var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
-  var maxStop = findImportantCourseIssues( 'StopRSExit');
-}
-else
-  if(granularity==='tome')
-  {
+switch(granularity){
+  case 'course':
+    var maxReadings = findImportantCourseIssues('RmaxDuration');
+    var maxRereading = findImportantCourseIssues( 'RerRmax');
+    var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
+    var maxStop = findImportantCourseIssues( 'StopRSExit');
+  break;
+  case 'tome':
     var maxReadings = findImportantTomeIssues('RmaxDuration',id);
     var maxRereading = findImportantTomeIssues( 'RerRmax',id);
     var maxTransition = findImportantTomeIssues( 'TransDestShiftPast',id);
     var maxStop = findImportantTomeIssues( 'StopRSExit',id);
-  }
-  else{
+    break;
+  case 'chapter':
     var maxReadings = findImportantChapterIssues('RmaxDuration',id);
     var maxRereading = findImportantChapterIssues( 'RerRmax',id);
     var maxTransition = findImportantChapterIssues( 'TransDestShiftPast',id);
     var maxStop = findImportantChapterIssues( 'StopRSExit',id);
+    break
 
   }
 
@@ -1076,7 +1075,7 @@ var loadImportantFact = function(url){
   
   tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
    chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-   computeImportantFacts('tome', chap._id);
+   computeImportantFacts('chapter', chap._id);
 
    partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
    

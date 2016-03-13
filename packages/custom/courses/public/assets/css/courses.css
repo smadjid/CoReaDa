@@ -579,10 +579,9 @@ a.list-warning-item:hover {
 
 
 .btn-group-xs>.btn, .btn-xs {
-    padding: 1px 5px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
+    padding: 1px 3px;
+    font-size: 10px;
+    border-radius: 2px;
 }
 
 /*************SCROLL BAR **************************
@@ -978,24 +977,25 @@ text-decoration:none!important;
 
 .inspector-issue .glyphicon{
   padding-right:10px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: normal;
   cursor: pointer;
 }
 .inspector-hint .glyphicon{
   padding-right:10px;
-  padding-top:5px;
+  padding-top:7px;
   font-size: 10px;
   font-weight: normal;
   cursor: pointer;
+
 }
 .inspector-issue span, .inspector-issue span:hover{
-  font-size: 15px;
+  font-size: 14px;
   font-weight: normal;
   cursor: default;
 }
 .inspector-hint span,.inspector-hint span:hover{
-  font-size: 14px;
+  font-size: 13px;
   font-weight: normal;
   cursor: default;
 }
@@ -1005,7 +1005,7 @@ text-decoration:none!important;
 
 }
 .hint-heading .panel-heading{
-  padding: 5px 15px 5px 30px!important;
+  padding: 0px 7px 3px 20px!important;
 
 }
 .panel-group {
@@ -1213,7 +1213,7 @@ border-radius: 3px;
  padding: 0px; 
 } 
 .topElement, .statElement{
-  font-size: 16px;
+  font-size: 14px;
 }
 .topElement:hover{
   color: RoyalBlue;
