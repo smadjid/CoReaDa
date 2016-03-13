@@ -1,29 +1,61 @@
-<div class='row' style="margin:10px;color: #1C383F; " >
-<table class='col-lg-6 coreada-box' class="btn-group">
-<tr ng-model="sectionPstatSelector">
-<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'"><span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} </td></tr>	
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
 
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'"><span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité cette section </td></tr>
-
-	
-	<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'mean.duration'"><span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture dans cette section. </td></tr>
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rereadings_tx'"><span class="blue">{{observedElt.meanRereads}}</span> des lectures de cette section sont des <b>relectures</b>.</td></tr>
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rupture_tx'"><span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur cette section</td></tr>
-
-
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'provenance'">
-	Le taux des arrivées linéaires (depuis la section précédente) est de  <span class="blue">{{observedElt.provLinearity}}</span>.	</td></tr>
-
-	<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'destination'">
-	Le taux des départs linéaires (vers la section suivante) est de  <span class="blue">{{observedElt.destLinearity}}</span>.	</td></tr>
-	</td></tr>
-	
-    
-	</table>
-
-	<div class='col-lg-6 coreada-box'>
-	<div class='chart-title'><u>{{graphTitle}}</u></div>
-
-    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:"part",elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
-	</div>
+<div class="widget" style="width:59%">
+    <div class="header">Principaux problèmes détectés  </div>
+ <div ng-include src="'courses/views/important-issues-panel.html'"></div> 
+ <br/>
+<hr/>
+ <div class="header">Autres problèmes détectés  </div>
+ <div ng-include src="'courses/views/important-issues-panel.html'"></div> 
 </div>
+
+<div class="widget" style="width:39%">
+    <div class="header">Statistiques  de lecture  </div>
+ <div>
+   
+<table >
+	<tr ng-model="sectionPstatSelector">
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'">
+		 <span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'Actions_tx'" ng-click="context.statChart = !context.statChart"></span>
+		<span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} 
+
+		<div id='statChart' class='statChart'  ng-show="context.statChart">
+
+	<h5 class='chart-title'><u>{{graphTitle}}</u></h5>
+	<d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+</div>
+		</td></tr>	
+			<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'">
+		<span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'Readers_tx'" ng-click="context.statChart = !context.statChart"></span>
+		<span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité {{observedElt.typeTxt}} </td></tr>
+		<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'mean.duration'">
+		<span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'mean.duration'" ng-click="context.statChart = !context.statChart"></span>
+		<span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture de {{observedElt.typeTxt}}. </td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rereadings_tx'">
+		<span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'rereadings_tx'" ng-click="context.statChart = !context.statChart"></span>
+		<span class="blue">{{observedElt.meanRereads}}</span> des lectures de {{observedElt.typeTxt}} sont des <b>relectures</b>.</td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rupture_tx'">
+		<span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'rupture_tx'" ng-click="context.statChart = !context.statChart"></span>
+		<span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur {{observedElt.typeTxt}}</td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'provenance'">
+		<span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'provenance'" ng-click="context.statChart = !context.statChart"></span>
+		Au sein de {{observedElt.typeTxt}}, le taux des arrivées linéaires vers ses sections (depuis les section précédentes) est de  <span class="blue">{{observedElt.provLinearity}}</span>.	</td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'destination'">
+		<span class="white pull-right glyphicon glyphicon-stats" ng-class="{'green': context.statChart, 'white': !context.statChart}"  role='button' ng-show="$parent.sectionPstatSelector == 'destination'" ng-click="context.statChart = !context.statChart"></span>
+		Au sein de {{observedElt.typeTxt}}, le taux des départs linéaires depuis ses sections (vers les section suivantes) est de  <span class="blue">{{observedElt.destLinearity}}</span>.	</td></tr>
+	</tr>
+</table>
+
+
+
+    </div>
+    
+
+</div>
+
+
+
+
+
+
+
