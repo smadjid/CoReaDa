@@ -3,7 +3,7 @@
  
 <div class="errors-display"  >  
 
-<div class="inspector-item" ng-repeat="fact in context.importantFacts" data-fact={{fact.fact._id}} multiple   data-path={{fact.fact.route}}@{{fact.fact.classof}}>
+<div class="inspector-important-item" ng-repeat="fact in context.importantFacts" data-fact={{fact.fact._id}} multiple   data-path={{fact.fact.route}}@{{fact.fact.classof}}>
 
   <uib-accordion close-others="oneAtATime" >
    <uib-accordion-group is-open="status.open" class='inspector-issue'>

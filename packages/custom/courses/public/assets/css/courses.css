@@ -967,6 +967,24 @@ table {
 .inspector-item *{
 text-decoration:none!important; 
 }
+
+.inspector-important-item {
+  border: 2px solid #c0392b;
+  margin-bottom: 0px;
+  padding:3px;
+}
+.inspector-important-item-selected {
+  border: 4px outset #45348A!important;  
+  margin-bottom: 0px;
+  padding:8px;
+
+
+}
+.inspector-important-item *{
+text-decoration:none!important; 
+}
+
+
 .inspector-issue,  .inspector-hint{
   margin:0px;
   padding:0px;
@@ -1542,8 +1560,16 @@ marker#arrow {
     padding-top, padding-bottom: 2px;
     vertical-align: middle;
     font-size: 16px;
-    
+}
 
+.widget .header-important{
+    background-color: #c0392b;    
+    color:#D1DDF3;
+    text-align: left;
+    padding-left: 10px;
+    padding-top, padding-bottom: 2px;
+    vertical-align: middle;
+    font-size: 16px;
 }
 
 .widget.chart-container{

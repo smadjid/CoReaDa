@@ -614,7 +614,7 @@ for(i in 1:nparents){
 save(nodejs.Ruptures,file="nodejs.Ruptures.rdata")
 
 
-### Parts Follow ###########
+######################Parts Follow ######################
 parts=unique(nodejs$part_id)
 nparts=length(parts)
 nodejs.partFollow = matrix(nrow = nparts, ncol = nparts, data=0)
@@ -636,7 +636,71 @@ for (u in 1:nusers)
 
 save(nodejs.partFollow, file="nodejs.partFollow.rdata")
 
+######## Parents Follow
+chaps=data.frame(parent_id= unique(structure[which(structure$type=='title-2'),]$part_id))
+chaps$chap_index=1:nrow(chaps)
+chaps$tome_index=0
 
+
+tomes = data.frame(tome_id= unique(structure[which(structure$type=='title-1'),]$part_id))
+tomes$tome_index=1:nrow(tomes)
+
+for(i in 1:nrow(chaps)){
+  chap =   chaps[which(chaps$chap_index==i),]$parent_id
+  parent = structure[which(structure$part_id==chap),]$parent_id
+  parent_index = tomes[which(tomes$tome_id==parent),]$tome_index
+  chaps[which(chaps$chap_index==i),]$tome_index=parent_index
+}
+
+nodejs.structure = merge(nodejs.structure, chaps, all.x = TRUE)
+nodejs = merge(nodejs, nodejs.structure[,c('part_id','chap_index','tome_index')] , all.x = TRUE)
+
+save(nodejs, file='nodejs.rdata')
+
+save(nodejs.structure, file='nodejs.structure.rdata')
+
+#ChapFollow
+users = unique(nodejs$user_id)
+nusers = length(users)
+
+nchaps=nrow(chaps)
+nodejs.chapFollow = matrix(nrow = nchaps, ncol = nchaps, data=0)
+
+for (u in 1:nusers)
+{
+  print(u)
+  userData = subset(nodejs, nodejs$user_id==users[u], select=c(id,chap_index))  
+  userData=userData[order(userData$id),]
+  userData = userData$chap_index
+  
+  for(i in 1:length(userData)-1)
+  {
+    nodejs.chapFollow[userData[i], userData[i+1]] =
+      nodejs.chapFollow[userData[i], userData[i+1]]  + 1
+  }
+}
+save(nodejs.chapFollow, file='nodejs.chapFollow.rdata')
+#TomeFollow
+users = unique(nodejs$user_id)
+nusers = length(users)
+tomes=unique(chaps$tome_index)
+ntomes=length(tomes)
+nodejs.tomeFollow = matrix(nrow = ntomes, ncol = ntomes, data=0)
+
+for (u in 1:nusers)
+{
+  print(u)
+  userData = subset(nodejs, nodejs$user_id==users[u], select=c(id,tome_index))  
+  userData=userData[order(userData$id),]
+  userData = userData$tome_index
+  
+  for(i in 1:length(userData)-1)
+  {
+    nodejs.tomeFollow[userData[i], userData[i+1]] =
+      nodejs.tomeFollow[userData[i], userData[i+1]]  + 1
+  }
+}
+save(nodejs.tomeFollow, file='nodejs.tomeFollow.rdata')
 
 ### Taux avancement ###########
 #s =  structure[structure$type=='title-3',c('part_id','title')]

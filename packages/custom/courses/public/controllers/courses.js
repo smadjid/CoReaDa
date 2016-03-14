@@ -287,6 +287,7 @@ var resetPath =function(){
   $('#divOverlay').css('visibility','hidden');
   $('#divHoverOverlay').css('visibility','hidden');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
+  $('.inspector-important-item-selected').removeClass('inspector-important-item-selected');
     for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 'notRelevantTask' }
 
@@ -1493,7 +1494,7 @@ var displayImportantIssue =function(url, task, part, indicator){
   var parentUrl = url.substr(0, url.lastIndexOf(','))+'@'+indicator; 
   
   $scope.context.Facts =computeSubFacts(resolveRoute(parentUrl), indicator);
-  $('.inspector-item[data-fact ="'+element._id+'"]').addClass('inspector-item-selected');
+  $('.inspector-important-item[data-fact ="'+element._id+'"]').addClass('inspector-important-item-selected');
 
   showTasksAndFacts(element, indicator, task);  
   

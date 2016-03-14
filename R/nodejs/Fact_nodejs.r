@@ -9,11 +9,12 @@ load(paste(selectedCourse,"Reads.rdata",sep="."))
 load(paste(selectedCourse,"Ruptures.rdata",sep="."))
 load(paste(selectedCourse,"RS.rdata",sep="."))
 load(paste(selectedCourse,"partFollow.rdata",sep="."))
+load(paste(selectedCourse,"chapFollow.rdata",sep="."))
+load(paste(selectedCourse,"tomeFollow.rdata",sep="."))
 load(paste(selectedCourse,"achievement.rdata",sep="."))
 
 
-
-course_facts_read<- function(selectedCourse){
+############################################# I. LECTURE ################################################
   structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
   names(structure)[1] = 'id'
   Interest = eval(parse(text = paste(selectedCourse,"Interest",sep=".")))
@@ -21,472 +22,507 @@ course_facts_read<- function(selectedCourse){
   Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
   RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
   partFollow=eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
+  chapFollow=eval(parse(text = paste(selectedCourse,"chapFollow",sep=".")))
+  tomeFollow=eval(parse(text = paste(selectedCourse,"tomeFollow",sep=".")))
   data = eval(parse(text = paste(selectedCourse,sep=".")))
   achievement = eval(parse(text = paste(selectedCourse,"achievement",sep=".")))
   
  
   
+  ####### NOMBRE DE VISITES TROP PEU
   
   
-  ####### NOMBRE DE VISITES
+  InterestData = Interest[which(Interest$type=='title-3'),]
   
-  Interest = Interest[,c(6,2,3,4,5,1,7)]
-  
-  InterestData = Interest[which(Interest$type=='title-3'),-c(7)]
-  
-  Interest_nbvisites_vmin = InterestData[which(Interest$Actions_nb<quantile(Interest$Actions_nb,0.10,na.rm = TRUE)),c(1,2)]
-  Interest_nbvisites_vmin$classe="Readings"
-  Interest_nbvisites_vmin$issueCode="RVminVisit"
-  Interest_nbvisites_vmin$content="Beaucoup Trop peu de visites"
-  val = round(round(median(Interest$Actions_nb,na.rm = TRUE),0)/ Interest_nbvisites_vmin$Actions_nb,1)
-  Interest_nbvisites_vmin$description=paste("cette section est visitée", val,"fois moins que le nombre médian de visites des autres parties.")
-  Interest_nbvisites_vmin$norm_value=round(median(Interest$Actions_nb,na.rm = TRUE),0)
-  dif = abs(Interest_nbvisites_vmin$Actions_nb  - median(Interest$Actions_nb,na.rm = TRUE))
-  Interest_nbvisites_vmin$gravity=round(5 * dif / median(Interest$Actions_nb,na.rm = TRUE),0) 
-  Interest_nbvisites_vmin$suggestion_title="Revoir le titre et le contenu"
-  Interest_nbvisites_vmin$suggestion_content="Est-ce que le titre de la section résume bien son contenu ? 
+  byParts = subset(InterestData, InterestData$Actions_nb<quantile(InterestData$Actions_nb,0.10,na.rm = TRUE), select=c(part_id,Actions_nb))  
+  byParts$classe="Readings"
+  byParts$issueCode="RminVisit"
+  byParts$content="Trop peu de visites"
+  val = round(round(median(InterestData$Actions_nb,na.rm = TRUE),0)/ byParts$Actions_nb,1)
+  byParts$description=paste("cette section est visitée", val,"fois moins que le nombre médian de visites des autres sections")
+  byParts$suggestion_title="Revoir le titre et le contenu"
+  byParts$suggestion_content="Est-ce que le titre de la section résume bien son contenu ? 
 Si oui :  Est-ce que cette section est  réellement intéressante par rapport au cours ? Si c'est le cas, peut-elle
 être reformulée, voire intégrée ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan du chapitre et du cours. 
   Le cas échéant, il faudrait penser à le reformuler"
   
-  
-  Interest_nbvisites_min = InterestData[which(Interest$Actions_nb<quantile(Interest$Actions_nb,0.25,na.rm = TRUE) & 
-                                                Interest$Actions_nb>quantile(Interest$Actions_nb,0.10,na.rm = TRUE)),c(1,2)]
-  Interest_nbvisites_min$classe="Readings"
-  Interest_nbvisites_min$issueCode="RminVisit"
-  Interest_nbvisites_min$content="Trop peu de visites"
-  val = round(round(median(Interest$Actions_nb,na.rm = TRUE),0)/ Interest_nbvisites_min$Actions_nb,2)
-  Interest_nbvisites_min$description=paste("cette section est visitée", val," fois moins que le nombre médian de visites des autres parties.")
-  Interest_nbvisites_min$norm_value=round(median(Interest$Actions_nb,na.rm = TRUE),0)
-  dif = abs(Interest_nbvisites_min$Actions_nb  - median(Interest$Actions_nb,na.rm = TRUE))
-  Interest_nbvisites_min$gravity=round(5 * dif / median(Interest$Actions_nb,na.rm = TRUE),0) 
-  Interest_nbvisites_min$suggestion_title="Revoir le titre, l'emplacement et le contenu"
-  Interest_nbvisites_min$suggestion_content="Est-ce que le titre de la section résume bien son contenu ? 
-Si oui :  Est-ce que cette section est  réellement intéressante par rapport au cours ? Si c'est le cas, peut-elle
-être reformulée, voire intégrée ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan du chapitre et du cours. 
+  InterestData = Interest[which(Interest$type=='title-2'),]
+  byChaps = subset(InterestData, InterestData$Actions_nb<quantile(InterestData$Actions_nb,0.10,na.rm = TRUE), select=c(part_id,Actions_nb))  
+  byChaps$classe="Readings"
+  byChaps$issueCode="RminVisit"
+  byChaps$content="Trop peu de visites"
+  val = round(round(median(InterestData$Actions_nb,na.rm = TRUE),0)/ byChaps$Actions_nb,1)
+  byChaps$description=paste("cette section est visitée", val,"fois moins que le nombre médian de visites des autres chapitres")
+  byChaps$suggestion_title="Revoir le titre et le contenu"
+  byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
+Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
+être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. 
   Le cas échéant, il faudrait penser à le reformuler"
   
-  Interest_nbvisites_max = InterestData[which(Interest$Actions_nb>quantile(Interest$Actions_nb,0.9,na.rm = TRUE) ),c(1,2)]
-  Interest_nbvisites_max$classe="Readings"
-  Interest_nbvisites_max$issueCode="RVmaxVisit"
-  Interest_nbvisites_max$content="Beaucoup de visites"
-  val = round(Interest_nbvisites_max$Actions_nb/median(Interest$Actions_nb,na.rm = TRUE),2)
-  Interest_nbvisites_max$description=paste("cette section est visitée", val," fois plus que le nombre médian de visites des autres parties.")
-  Interest_nbvisites_max$norm_value=round(median(Interest$Actions_nb,na.rm = TRUE),0)
-  dif = abs(Interest_nbvisites_max$Actions_nb  - median(Interest$Actions_nb,na.rm = TRUE))
-  Interest_nbvisites_max$gravity=round(5 * dif / median(Interest$Actions_nb,na.rm = TRUE),0)
-  Interest_nbvisites_max$suggestion_title=" "
-  Interest_nbvisites_max$suggestion_content=""
+  InterestData = Interest[which(Interest$type=='title-1'),]
+  byTomes = subset(InterestData, InterestData$Actions_nb<quantile(InterestData$Actions_nb,0.10,na.rm = TRUE), select=c(part_id,Actions_nb))  
+  byTomes$classe="Readings"
+  byTomes$issueCode="RminVisit"
+  byTomes$content="Trop peu de visites"
+  val = round(round(median(InterestData$Actions_nb,na.rm = TRUE),0)/ byTomes$Actions_nb,1)
+  byTomes$description=paste("cette partie est visitée", val,"fois moins que le nombre médian de visites des autres parties.")
+  byTomes$suggestion_title="Revoir le titre et le contenu"
+  byTomes$suggestion_content="Est-ce que le titre de la partie résume bien son contenu ? 
+Si oui :  Est-ce que cette partie est  réellement intéressante par rapport au cours ? Si c'est le cas, peut-elle
+être reformulée, voire intégrée ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan du cours. 
+  Le cas échéant, il faudrait penser à la reformuler"
+  
+  minVisits = rbind(byParts,byChaps,byTomes)
   
   
-  
-  
-  
-  ####### DURATION
+  ####### DUREE MIN
  
+  DurationData = structure[which(structure$type=='title-3'),c('part_id','mean.duration')]
   
-  # RVminDuration : mean duration
-  Interest_duration_vmin = structure[which(structure$mean.duration<=quantile(structure$mean.duration,0.10,na.rm = TRUE)),c('part_index','mean.duration')]
-  Interest_duration_vmin$classe="Readings"
-  Interest_duration_vmin$issueCode="RVminDuration"
-  Interest_duration_vmin$content="Temps de lecture beaucoup trop court"
-  val = round(median(structure$mean.duration,na.rm = TRUE) / Interest_duration_vmin$mean.duration,0)
-  Interest_duration_vmin$description=paste("Cette section est plutôt survolés : son temps moyen de lecture est ",val,
-                                           " fois inférieur au temps de lecture des autres sections")
-  Interest_duration_vmin$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
-  dif = abs(Interest_duration_vmin$max.duration  - median(structure$mean.duration,na.rm = TRUE))
-  Interest_duration_vmin$gravity=''
-  Interest_duration_vmin$suggestion_title="Réviser ou supprimer la section"
-  Interest_duration_vmin$suggestion_content="la section doit apporter plus d'informations nouvelles / intéressantes : 
-  Si cet élément est réellement nécessaire : peut-il être reformulé, voire intégré dans un autre chapitre ou une autre partie du cours ?
-  Sinon, le supprimer et revoir le plan du chapitre et du cours."
-  
-  #RminDuration
-  Interest_duration_min = structure[which(structure$mean.duration>quantile(structure$mean.duration,0.10,na.rm = TRUE) &
-                                            structure$mean.duration<quantile(structure$mean.duration,0.25,na.rm = TRUE)),c('part_index','mean.duration')]
-  Interest_duration_min$classe="Readings"
-  Interest_duration_min$issueCode="RminDuration"
-  Interest_duration_min$content="Temps de lecture trop court"
-  val = round(median(structure$mean.duration,na.rm = TRUE) / Interest_duration_min$mean.duration,0)
-  Interest_duration_min$description=paste("cette section est plutôt survolés : son temps de lecture est",val,"fois inférieur au temps médian")
-  Interest_duration_min$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
-  dif = abs(Interest_duration_min$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
-  Interest_duration_min$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
-  Interest_duration_min$suggestion_title="Réviser ou supprimer la section"
-  Interest_duration_min$suggestion_content="la section doit apporter plus d'informations nouvelles / intéressantes : 
+  byParts = structure[which(DurationData$mean.duration<quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
+  byParts$classe="Readings"
+  byParts$issueCode="RminDuration"
+  byParts$content="Temps de lecture trop court"
+  val = round(median(DurationData$mean.duration,na.rm = TRUE) / byParts$mean.duration,0)
+  byParts$description=paste("cette section est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
+  byParts$suggestion_title="Réviser ou supprimer la section"
+  byParts$suggestion_content="la section doit apporter plus d'informations nouvelles / intéressantes : 
   Si cette section est réellement nécessaire : peut-elle être reformulée, voire intégrée dans un autre chapitre ou une autre section du cours ?
   Sinon, la supprimer et revoir le plan du chapitre et du cours."
   
+  DurationData = structure[which(structure$type=='title-2'),c('part_id','mean.duration')]
   
-  #RmaxDuration
-  Interest_duration_max = structure[which(structure$mean.duration>quantile(structure$mean.duration,0.9,na.rm = TRUE)),c('part_index','mean.duration')]
-  Interest_duration_max$classe="Readings"
-  Interest_duration_max$issueCode="RmaxDuration"
-  Interest_duration_max$content="Temps de lecture trop long"
-  Interest_duration_max$description=paste("La durée de visite sur cette section est relativement très élevée:",Interest_duration_max$mean.duration,
-                                          "secondes. La durée  médiane de lecture d'une partie est de: ",round(median(structure$mean.duration,na.rm = TRUE) ,1) ,"secondes.")
-  Interest_duration_max$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
-  dif = abs(Interest_duration_max$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
-  Interest_duration_max$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
-  Interest_duration_max$suggestion_title="Réccrire la section"
-  Interest_duration_max$suggestion_content="la section doit être plus simple ?  lire/comprendre : 
+  byChaps = structure[which(DurationData$mean.duration<quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
+  byChaps$classe="Readings"
+  byChaps$issueCode="RminDuration"
+  byChaps$content="Temps de lecture trop court"
+  val = round(median(DurationData$mean.duration,na.rm = TRUE) / byChaps$mean.duration,0)
+  byChaps$description=paste("ce chapitre est plutôt survolé : son temps de lecture est",val,"fois inférieur au temps médian")
+  byChaps$suggestion_title="Réviser ou supprimer le chapitre"
+  byChaps$suggestion_content="le chapitre doit apporter plus d'informations nouvelles / intéressantes : 
+  Si  le chapitre est réellement nécessaire : peut-il être reformulé, voire intégré dans un autre chapitre ou  partie du cours ?
+  Sinon, le supprimer et revoir le plan de la partie chapitre et du cours."
+  
+  DurationData = structure[which(structure$type=='title-1'),c('part_id','mean.duration')]
+  
+  byTomes = structure[which(DurationData$mean.duration<quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
+  byTomes$classe="Readings"
+  byTomes$issueCode="RminDuration"
+  byTomes$content="Temps de lecture trop court"
+  val = round(median(DurationData$mean.duration,na.rm = TRUE) / byTomes$mean.duration,0)
+  byTomes$description=paste("cette partie est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
+  byTomes$suggestion_title="Réviser ou supprimer la partie"
+  byTomes$suggestion_content="la partie doit apporter plus d'informations nouvelles / intéressantes : 
+  Si la partie est réellement nécessaire : peut-elle être reformulée, voire intégrée dans une partie du cours ?
+  Sinon, la supprimer et revoir le plan du cours."
+  
+  
+  minDuration =  rbind(byParts,byChaps,byTomes)
+  
+  ####### DUREE MAX
+  DurationData = structure[which(structure$type=='title-3'),c('part_id','mean.duration')]
+  
+  byParts = DurationData[which(DurationData$mean.duration>quantile(DurationData$mean.duration,0.9,na.rm = TRUE)),]
+  byParts$classe="Readings"
+  byParts$issueCode="RmaxDuration"
+  byParts$content="Temps de lecture trop long"
+  byParts$description=paste("La durée de visite sur cette section est relativement très élevée:",byParts$mean.duration,
+                            "secondes. La durée  médiane de lecture d'une section est de: ",round(median(structure$mean.duration,na.rm = TRUE) ,1) ,"secondes.")
+  byParts$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
+  dif = abs(byParts$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
+  byParts$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
+  byParts$suggestion_title="Réccrire la section"
+  byParts$suggestion_content="la section doit être plus simple ?  lire/comprendre : 
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
   - vérifier l'enchaînement logique des propos
   - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller ?  l’essentiel"
+  - éviter les dispersions : aller à l'essentiel"
   
+  DurationData = structure[which(structure$type=='title-2'),c('part_id','mean.duration')]
   
-}
-
-# 2. Relecture
-course_facts_reread<- function(selectedCourse){
-  structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
-  Reads = eval(parse(text = paste(selectedCourse,"Reads",sep=".")))
-  Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
-  RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
-  CourseStats =  eval(parse(text = paste(selectedCourse,"CourseStats",sep=".")))
+  byChaps = DurationData[which(DurationData$mean.duration>quantile(DurationData$mean.duration,0.9,na.rm = TRUE)),]
+  byChaps$classe="Readings"
+  byChaps$issueCode="RmaxDuration"
+  byChaps$content="Temps de lecture trop long"
+  byChaps$description=paste("La durée de visite sur ce chapitre est relativement très élevée:",byChaps$mean.duration,
+                            "secondes. La durée  médiane de lecture d'un chapitre est de: ",round(median(structure$mean.duration,na.rm = TRUE) ,1) ,"secondes.")
+  byChaps$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
+  dif = abs(byChaps$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
+  byChaps$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
+  byChaps$suggestion_title="Réccrire ce chapitre"
+  byChaps$suggestion_content="ce chapitre doit être plus simple à  lire/comprendre : 
+  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+  - vérifier l'enchaînement logique des propos
+  - ajouter des exemples/analogies pour améliorer la compréhension
+  - éviter les dispersions : aller à l'essentiel"
   
-  Reads$Rereadings = as.numeric(Reads$Rereadings) 
-  # rereadings
-  # parts data and course stats
+  DurationData = structure[which(structure$type=='title-1'),c('part_id','mean.duration')]
   
+  byTomes = DurationData[which(DurationData$mean.duration>quantile(DurationData$mean.duration,0.9,na.rm = TRUE)),]
+  byTomes$classe="Readings"
+  byTomes$issueCode="RmaxDuration"
+  byTomes$content="Temps de lecture trop long"
+  byTomes$description=paste("La durée de visite sur cette partie est relativement très élevée:",byTomes$mean.duration,
+                            "secondes. La durée  médiane de lecture d'une partie est de: ",round(median(structure$mean.duration,na.rm = TRUE) ,1) ,"secondes.")
+  byTomes$norm_value=round(median(structure$mean.duration,na.rm = TRUE) ,1)
+  dif = abs(byTomes$mean.duration  - median(structure$mean.duration,na.rm = TRUE))
+  byTomes$gravity=round(5 * dif / median(structure$mean.duration,na.rm = TRUE),0)
+  byTomes$suggestion_title="Réccrire cette partie"
+  byTomes$suggestion_content="cette partie doit être plus simple à  lire/comprendre : 
+  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+  - vérifier l'enchaînement logique des propos
+  - ajouter des exemples/analogies pour améliorer la compréhension
+  - éviter les dispersions : aller à l'essentiel"
+  
+  maxDuration =  rbind(byParts,byChaps,byTomes)
  
   
-  ################################################
-  Rereads_rereadings_vmax = Reads[which(Reads$Rereadings>quantile(Reads$Rereadings,0.9,na.rm = TRUE) ),c('part_index','Rereadings')] 
-  Rereads_rereadings_vmax$classe="Rereading"
-  Rereads_rereadings_vmax$issueCode="RRmax"
-  Rereads_rereadings_vmax$content="Beaucoup trop de relectures"
-  Rereads_rereadings_vmax$description=paste("cette section est relue",Rereads_rereadings_vmax$Rereadings,"fois. Les autres parties sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0)," fois")
-  Rereads_rereadings_vmax$norm_value=round(median(Reads$Rereadings,na.rm = TRUE) ,1)
-  dif = abs(Rereads_rereadings_vmax$Rereadings  - median(Reads$Rereadings,na.rm = TRUE))
-  Rereads_rereadings_vmax$gravity=round(5 * dif / median(Reads$Rereadings,na.rm = TRUE),0)
-  Rereads_rereadings_vmax$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
-  Rereads_rereadings_vmax$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
-  L'élément doit être plus simple ?  lire/comprendre : 
+  ############################################# I. RELECTURE ################################################
+  Reads = merge(Reads, structure[,c('part_id','type')])
+  ####### MAX REREADINGS
+  Reads$Rereadings = as.numeric(Reads$Rereadings) 
+  
+  ReadsData = Reads[which(Reads$type=='title-3'),c('part_id','Rereadings')]
+  byParts = ReadsData[which(ReadsData$Rereadings>quantile(ReadsData$Rereadings,0.9,na.rm = TRUE)),]
+  byParts$classe="Rereading"
+  byParts$issueCode="RRmax"
+  byParts$content="Trop de relectures"
+  byParts$description=paste("cette section est relue",byParts$Rereadings,"fois. Les autres sections sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
+  byParts$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
+  byParts$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
+  La section doit être plus simple à  lire et comprendre : 
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
   - vérifier l'enchaînement logique des propos
   - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller ?  l’essentiel.
+  - éviter les dispersions : aller à l'essentiel.
   
   Sinon, regarder l’indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
   
-  Rereads_rereadings_max = Reads[which(Reads$Rereadings>quantile(Reads$Rereadings,0.75,na.rm = TRUE)& 
-                                         Reads$Rereadings<quantile(Reads$Rereadings,0.9,na.rm = TRUE)),c('part_index','Rereadings')]
-  Rereads_rereadings_max$classe="Rereading"
-  Rereads_rereadings_max$issueCode="RRmax"
-  Rereads_rereadings_max$content="Trop de relectures"
-  Rereads_rereadings_max$description=paste("cette section est relue",Rereads_rereadings_max$Rereadings,"fois. Les autres parties sont en moyenne relue",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
-  Rereads_rereadings_max$norm_value=round(median(Reads$Rereadings,na.rm = TRUE) ,1)
-  dif = abs(Rereads_rereadings_max$Rereadings  - median(Reads$Rereadings,na.rm = TRUE))
-  Rereads_rereadings_max$gravity=round(5 * dif / median(Reads$Rereadings,na.rm = TRUE),0)
-  Rereads_rereadings_max$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
-  Rereads_rereadings_max$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
-  L'élément doit être plus simple ?  lire/comprendre : 
+  ReadsData = Reads[which(Reads$type=='title-2'),c('part_id','Rereadings')]
+  byChaps = ReadsData[which(ReadsData$Rereadings>quantile(ReadsData$Rereadings,0.9,na.rm = TRUE)),]
+  byChaps$classe="Rereading"
+  byChaps$issueCode="RRmax"
+  byChaps$content="Trop de relectures"
+  byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues",byChaps$Rereadings,"fois alors que les sections des autres chapitres sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
+  byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
+  byChaps$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
+  Le chapitre et ses sections doivent être plus simples à  lire et comprendre : 
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
   - vérifier l'enchaînement logique des propos
   - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller ?  l’essentiel.
-  
+  - éviter les dispersions : aller à  l’essentiel.
   Sinon, regarder l’indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
   
-  
-  
-  # mêmes séances 
-  Reads$Sequential_rereadings = as.numeric(Reads$Sequential_rereadings) 
-  
-  Rereads_Sequential_rereadings_vmax = Reads[which(Reads$Sequential_rereadings>quantile(Reads$Sequential_rereadings,0.9,na.rm = TRUE)),c('part_index','Sequential_rereadings')]
-  Rereads_Sequential_rereadings_vmax$classe="Rereading"
-  Rereads_Sequential_rereadings_vmax$issueCode="RRVmaxS"
-  Rereads_Sequential_rereadings_vmax$content="Beaucoup trop de relectures conjointes (i.e. dans une même séance de lecture)"
-  Rereads_Sequential_rereadings_vmax$description=paste("cette section est successivement relue",Rereads_Sequential_rereadings_vmax$Sequential_rereadings,"fois. Les autres parties sont en moyenne relues",round(median(Reads$Sequential_rereadings,na.rm = TRUE) ,1),"fois")
-  Rereads_Sequential_rereadings_vmax$norm_value=round(median(Reads$Sequential_rereadings,na.rm = TRUE) ,1)
-  dif = abs(Rereads_Sequential_rereadings_vmax$Sequential_rereadings  - median(Reads$Sequential_rereadings,na.rm = TRUE))
-  Rereads_Sequential_rereadings_vmax$gravity=round(5 * dif / median(Reads$Sequential_rereadings,na.rm = TRUE),0)
-  Rereads_Sequential_rereadings_vmax$suggestion_title="Simplifier la section"
-  Rereads_Sequential_rereadings_vmax$suggestion_content="cette section doit être plus simple ?  lire/comprendre : 
+  ReadsData = Reads[which(Reads$type=='title-1'),c('part_id','Rereadings')]
+  byTomes = ReadsData[which(ReadsData$Rereadings>quantile(ReadsData$Rereadings,0.9,na.rm = TRUE)),]
+  byTomes$classe="Rereading"
+  byTomes$issueCode="RRmax"
+  byTomes$content="Trop de relectures"
+  byTomes$description=paste("Les sections de cette partie sont en moyenne relues",byTomes$Rereadings,"fois alors que les sections des autres parties sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
+  byTomes$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement de ses chapitres"
+  byTomes$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
+  La partie  et ses chapitres et sections doivent être plus simples à  lire et comprendre : 
   - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
   - vérifier l'enchaînement logique des propos
   - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller à  l’essentiel"
+  - éviter les dispersions : aller à  l’essentiel.
+  Sinon, regarder l’indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
   
-  Rereads_Sequential_rereadings_max = Reads[which(Reads$Sequential_rereadings>quantile(Reads$Sequential_rereadings,0.75,na.rm = TRUE)& 
-                                                    Reads$Sequential_rereadings<quantile(Reads$Sequential_rereadings,0.9,na.rm = TRUE))
-                                                  ,c('part_index','Sequential_rereadings')]
-  Rereads_Sequential_rereadings_max$classe="Rereading"
-  Rereads_Sequential_rereadings_max$issueCode="RRmaxS"
-  Rereads_Sequential_rereadings_max$content="Beaucoup trop de relectures conjointes (i.e. dans une même séance de lecture)"
-  Rereads_Sequential_rereadings_max$description=paste("cette section est successivement relue",Rereads_Sequential_rereadings_max$Sequential_rereadings,"fois. Les autres parties sont en moyenne relues",round(median(Reads$Sequential_rereadings,na.rm = TRUE) ,0),"fois")
-  Rereads_Sequential_rereadings_max$norm_value=round(median(Reads$Sequential_rereadings,na.rm = TRUE) ,0)
-  dif = abs(Rereads_Sequential_rereadings_max$Sequential_rereadings  - median(Reads$Sequential_rereadings,na.rm = TRUE))
-  Rereads_Sequential_rereadings_max$gravity=round(5 * dif / median(Reads$Sequential_rereadings,na.rm = TRUE),0)
-  Rereads_Sequential_rereadings_max$suggestion_title="Simplifier la section"
-  Rereads_Sequential_rereadings_max$suggestion_content="cette section doit être plus simple ?  lire/comprendre : 
-  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-  - vérifier l'enchaînement logique des propos
-  - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller à  l’essentiel"
+  maxRereadings =  rbind(byParts,byChaps,byTomes)
   
   
+  ####### MAX REREADERS
+  Reads$Rereaders = as.numeric(Reads$Rereaders) 
+  ReadsData = Reads[which(Reads$type=='title-3'),c('part_id','Readers','Rereaders')]
   
-  # séances distinctes
-  Reads$Decaled_rereadings = as.numeric(Reads$Decaled_rereadings) 
+  ReadsData$rereads_tx =  100 * round(ReadsData$Rereaders / ReadsData$Readers,2)
   
-  Rereads_Decaled_rereadings_vmax = Reads[which(Reads$Decaled_rereadings>quantile(Reads$Decaled_rereadings,0.9,na.rm = TRUE)),c('part_index','Decaled_rereadings')]
-  Rereads_Decaled_rereadings_vmax$classe="Rereading"
-  Rereads_Decaled_rereadings_vmax$issueCode="RRVmaxD"
-  Rereads_Decaled_rereadings_vmax$content="Beaucoup trop de relectures disjointes (i.e. dans des séances de lecture distinctes)"
-  Rereads_Decaled_rereadings_vmax$description=paste("cette section est relue pour rappel",Rereads_Decaled_rereadings_vmax$Decaled_rereadings,"fois. Les autres parties sont en moyenne relues",round(median(Reads$Decaled_rereadings,na.rm = TRUE) ,0),"fois")
-  Rereads_Decaled_rereadings_vmax$norm_value=round(median(Reads$Decaled_rereadings,na.rm = TRUE) ,0)
-  dif = abs(Rereads_Decaled_rereadings_vmax$Decaled_rereadings  - median(Reads$Decaled_rereadings,na.rm = TRUE))
-  Rereads_Decaled_rereadings_vmax$gravity=round(5 * dif / median(Reads$Decaled_rereadings,na.rm = TRUE),0)
-  Rereads_Decaled_rereadings_vmax$suggestion_title="Restructurer le cours et/ou ajouter des mémos/rappels"
-  Rereads_Decaled_rereadings_vmax$suggestion_content="cette section doit probablement être un pré-requis important pour d'autres éléments du cours.
-  N’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène (déplacer cette section ou l’englober dans une autre partie ou chapitre) ?"
-  
-  Rereads_Decaled_rereadings_max = Reads[which(Reads$Decaled_rereadings>quantile(Reads$Decaled_rereadings,0.75,na.rm = TRUE)& 
-                                                 Reads$Decaled_rereadings<quantile(Reads$Decaled_rereadings,0.9,na.rm = TRUE)),
-                                         c('part_index','Decaled_rereadings')]
-  Rereads_Decaled_rereadings_max$classe="Rereading"
-  Rereads_Decaled_rereadings_max$issueCode="RRmaxD"
-  Rereads_Decaled_rereadings_max$content="Trop de relectures disjointes (i.e. dans des séances de lecture distinctes)"
-  Rereads_Decaled_rereadings_max$description=paste("cette section est relue pour rappel",Rereads_Decaled_rereadings_max$Decaled_rereadings,"fois. Les autres parties sont en moyenne relues",round(median(Reads$Decaled_rereadings,na.rm = TRUE) ,0),"fois")
-  Rereads_Decaled_rereadings_max$norm_value=round(median(Reads$Decaled_rereadings,na.rm = TRUE) ,1)
-  dif = abs(Rereads_Decaled_rereadings_max$Decaled_rereadings  - median(Reads$Decaled_rereadings,na.rm = TRUE))
-  Rereads_Decaled_rereadings_max$gravity=round(5 * dif / median(Reads$Decaled_rereadings,na.rm = TRUE),0)
-  Rereads_Decaled_rereadings_max$suggestion_title="Restructurer le cours et/ou ajouter des mémos/rappels"
-  Rereads_Decaled_rereadings_max$suggestion_content="cette section doit probablement être un pré-requis important pour d'autres éléments du cours.
-  N’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène (déplacer cette section ou l’englober dans une autre partie ou chapitre) ?"
-  
-  
-  
-  
-}
+  byParts = ReadsData[which(ReadsData$rereads_tx>40),c('part_id','rereads_tx')]
+  byParts$classe="Rereading"
+  byParts$issueCode="RRermax"
+  byParts$content="Trop de lecteurs qui sont relecteurs"
+  byParts$description=paste(byParts$rereads_tx,"% des lecteurs de cette section la relisent au moins une fois.")
+  byParts$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
+  byParts$suggestion_content="La section doit être plus simple à  lire et comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l'essentiel."
 
-
-
-
-course_facts_transition<- function(selectedCourse){
-  structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
-  Interest = eval(parse(text = paste(selectedCourse,"Interest",sep=".")))
-  Reads = eval(parse(text = paste(selectedCourse,"Reads",sep=".")))
-  Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
-  RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
-  partFollow = eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
   
+  ReadsData = Reads[which(Reads$type=='title-2'),c('part_id','Readers','Rereaders')]
+  ReadsData$rereads_tx =  100 * round(ReadsData$Rereaders / ReadsData$Readers,2)
+  
+  byChaps = ReadsData[which(ReadsData$rereads_tx>35),c('part_id','rereads_tx')]
+  byChaps$classe="Rereading"
+  byChaps$issueCode="RRermax"
+  byChaps$content="Trop de lecteurs qui sont relecteurs"
+  byChaps$description=paste(byChaps$rereads_tx,"% des lecteurs des sections de ce chapitre relisent des sections déja lues")
+  byChaps$suggestion_title="Simplifier l'écriture du chapitre et de ses  section et vérifier l'enchainement"
+  byChaps$suggestion_content="Le chapitre et ses sections doivent être plus simples à  lire et comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l'essentiel."
+
+  ReadsData = Reads[which(Reads$type=='title-1'),c('part_id','Readers','Rereaders')]
+  ReadsData$rereads_tx =  100 * round(ReadsData$Rereaders / ReadsData$Readers,2)
+  
+  byTomes = ReadsData[which(ReadsData$rereads_tx>35),c('part_id','rereads_tx')]
+  byTomes$classe="Rereading"
+  byTomes$issueCode="RRermax"
+  byTomes$content="Trop de lecteurs qui sont relecteurs"
+  byTomes$description=paste(byTomes$rereads_tx,"% des lecteurs des sections de cette partie  relisent des sections déja lues")
+  byTomes$suggestion_title="Simplifier l'écriture de la partie, ses chapitres et ses  section et vérifier l'enchainement"
+  byTomes$suggestion_content="La partie, ses chapitres et ses sections doivent être plus simples à  lire et comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l'essentiel."
+  
+  maxRereaders =  rbind(byParts,byChaps,byTomes)
+  
+  
+  
+  ############################################# III. NAVIGATION ################################################
+  # Sections :
   part_indexes=1:(max(structure$part_index))
   
-  Destinations_stats = data.frame(part_index=part_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_back=0)
+  Parts_destinations_stats = data.frame(part_index=part_indexes,precedent=0,shifted_past=0,next_p=0,shifted_next=0,total_back=0)
+  
   for(aPart in 1:max(structure$part_index))
   {
     aPartDest = data.frame(part=1:(nrow(partFollow)), frequence=partFollow[aPart,])
+    aPartDest = aPartDest[which(aPartDest$part!=aPart)]
     
-    nodes_dest=aPartDest[which(aPartDest$frequence>median(aPartDest$frequence)),]
+    nodes_dest=aPartDest
     nodes_dest$ratio = round(nodes_dest$frequence*100/sum(nodes_dest$frequence),0)
     
-    if((aPart) %in% nodes_dest$part)
-      Destinations_stats[which(Destinations_stats$part_index==aPart),]$identity =
-      nodes_dest[nodes_dest$part==aPart,]$ratio
-    
+   
     if((aPart-1) %in% nodes_dest$part) 
-      Destinations_stats[Destinations_stats$part_index==aPart,]$precedent = 
+      Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$precedent = 
       nodes_dest[nodes_dest$part==aPart-1,]$ratio
     if((aPart+1) %in% nodes_dest$part) 
-      Destinations_stats[Destinations_stats$part_index==aPart,]$next_p = nodes_dest[nodes_dest$part==aPart+1,]$ratio
+      Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$next_p = nodes_dest[nodes_dest$part==aPart+1,]$ratio
     
-    Destinations_stats[Destinations_stats$part_index==aPart,]$shifted_past = sum(nodes_dest[nodes_dest$part<aPart-1,]$ratio)
-    Destinations_stats[Destinations_stats$part_index==aPart,]$shifted_next = sum(nodes_dest[nodes_dest$part>aPart+1,]$ratio)
+    Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$shifted_past = sum(nodes_dest[nodes_dest$part<aPart-1,]$ratio)
+    Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$shifted_next = sum(nodes_dest[nodes_dest$part>aPart+1,]$ratio)
     
-    Destinations_stats[Destinations_stats$part_index==aPart,]$total_back = Destinations_stats[Destinations_stats$part_index==aPart,]$precedent + 
-      Destinations_stats[Destinations_stats$part_index==aPart,]$shifted_past 
+    Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$total_back = Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$precedent + 
+      Parts_destinations_stats[Parts_destinations_stats$part_index==aPart,]$shifted_past 
     
   }
   
   partPrecedent <- t(partFollow)
-  Provenances_stats = data.frame(part_index=part_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_next=0)
+  Parts_provenances_stats = data.frame(part_index=part_indexes,precedent=0,shifted_past=0,next_p=0,shifted_next=0,total_next=0)
   for(aPart in 1:max(structure$part_index))
   {
     aPartProv = data.frame(part=1:nrow(partPrecedent), frequence=partPrecedent[aPart,])
     
-    nodes_prov=aPartProv[which(aPartProv$frequence>median(aPartProv$frequence)),]
+    nodes_prov=aPartProv
     nodes_prov$ratio = round(nodes_prov$frequence*100/sum(nodes_prov$frequence),0)
     
-    if((aPart) %in% nodes_prov$part)
-      Provenances_stats[which(Provenances_stats$part_index==aPart),]$identity = nodes_prov[nodes_prov$part==aPart,]$ratio
-    
+   
     if((aPart-1) %in% nodes_prov$part) 
-      Provenances_stats[Provenances_stats$part_index==aPart,]$precedent = nodes_prov[nodes_prov$part==aPart-1,]$ratio
+      Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$precedent = nodes_prov[nodes_prov$part==aPart-1,]$ratio
     if((aPart+1) %in% nodes_prov$part) 
-      Provenances_stats[Provenances_stats$part_index==aPart,]$next_p = nodes_prov[nodes_prov$part==aPart+1,]$ratio
+      Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$next_p = nodes_prov[nodes_prov$part==aPart+1,]$ratio
     
-    Provenances_stats[Provenances_stats$part_index==aPart,]$shifted_past = sum(nodes_prov[nodes_prov$part<aPart-1,]$ratio)
-    Provenances_stats[Provenances_stats$part_index==aPart,]$shifted_next = sum(nodes_prov[nodes_prov$part>aPart+1,]$ratio)
+    Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$shifted_past = sum(nodes_prov[nodes_prov$part<aPart-1,]$ratio)
+    Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$shifted_next = sum(nodes_prov[nodes_prov$part>aPart+1,]$ratio)
     
-    Provenances_stats[Provenances_stats$part_index==aPart,]$total_next = Provenances_stats[Provenances_stats$part_index==aPart,]$next_p + 
-      Provenances_stats[Provenances_stats$part_index==aPart,]$shifted_next 
+    Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$total_next = Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$next_p + 
+      Parts_provenances_stats[Parts_provenances_stats$part_index==aPart,]$shifted_next 
+    
+  }
+  
+  PartsProvenancesData =merge(Parts_provenances_stats[,-c(7)], structure[,c('part_index','part_id')])
+  for(i in 1:nrow(PartsProvenancesData)){
+    somme=sum(PartsProvenancesData[i,-c(1)])
+    if(somme> 0)PartsProvenancesData[i,-c(1)] = round(PartsProvenancesData[i,-c(1)]*100/somme,0)
+  }
+  
+  #chapters
+  chap_indexes=1:(max(structure$chap_index,na.rm=TRUE))
+  
+  Chaps_destinations_stats = data.frame(chap_index=chap_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_back=0)
+  for(aChap in 1:max(chap_indexes))
+  {
+    aChapDest = data.frame(chap=1:(nrow(chapFollow)), frequence=chapFollow[aChap,])
+    aChapDest = aChapDest[which(aChapDest$chap!=aChap),]
+    
+    nodes_dest=aChapDest
+    nodes_dest$ratio = round(nodes_dest$frequence*100/sum(nodes_dest$frequence),0)
+    
+    
+    
+    if((aChap-1) %in% nodes_dest$chap) 
+      Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$precedent = 
+      nodes_dest[nodes_dest$chap==aChap-1,]$ratio
+    if((aChap+1) %in% nodes_dest$chap) 
+      Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$next_p = nodes_dest[nodes_dest$chap==aChap+1,]$ratio
+    
+    Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$shifted_past = sum(nodes_dest[nodes_dest$chap<aChap-1,]$ratio)
+    Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$shifted_next = sum(nodes_dest[nodes_dest$chap>aChap+1,]$ratio)
+    
+    Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$total_back = Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$precedent + 
+      Chaps_destinations_stats[Chaps_destinations_stats$chap_index==aChap,]$shifted_past 
+    
+  }
+  
+  chapPrecedent <- t(chapFollow)
+  Chaps_provenances_stats = data.frame(chap_index=chap_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_next=0)
+  for(aChap in 1:max(chap_indexes))
+  {
+    aChapProv = data.frame(chap=1:nrow(chapPrecedent), frequence=chapPrecedent[aChap,])
+    aChapProv = aChapProv[which(aChapProv$chap!=aChap),]
+    
+    nodes_prov=aChapProv
+    nodes_prov$ratio = round(nodes_prov$frequence*100/sum(nodes_prov$frequence),0)
+    
+   
+    
+    if((aChap-1) %in% nodes_prov$chap) 
+      Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$precedent = nodes_prov[nodes_prov$chap==aChap-1,]$ratio
+    if((aChap+1) %in% nodes_prov$chap) 
+      Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$next_p = nodes_prov[nodes_prov$chap==aChap+1,]$ratio
+    
+    Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$shifted_past = sum(nodes_prov[nodes_prov$chap<aChap-1,]$ratio)
+    Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$shifted_next = sum(nodes_prov[nodes_prov$chap>aChap+1,]$ratio)
+    
+    Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$total_next = Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$next_p + 
+      Chaps_provenances_stats[Chaps_provenances_stats$chap_index==aChap,]$shifted_next 
     
   }
   
   
-  ProvenancesData = Provenances_stats[,-c(7)]
-  for(i in 1:nrow(ProvenancesData)){
-    somme=sum(ProvenancesData[i,-c(1)])
-    if(somme> 0)ProvenancesData[i,-c(1)] = round(ProvenancesData[i,-c(1)]*100/somme,0)
-  }
   
-  # Partie précédente 
-  # TODO: remove this
-  Transition_provenance_precedent = ProvenancesData[which(ProvenancesData$precedent<70 & ProvenancesData$precedent>=50),c('part_index','precedent')]
-  Transition_provenance_precedent$classe="Transition"
-  Transition_provenance_precedent$issueCode="TransProvPrec"
-  Transition_provenance_precedent$content="Les arrivées vers cette section ne sont pas toujours séquentielles. 
-  Tout en restant majoritaire, beaucoup d'arrivées ne sont pas de la section précédente"
-  Transition_provenance_precedent$norm_value=" "
-  Transition_provenance_precedent$gravity = -1
-  ProvenancesData1 = ProvenancesData[which(ProvenancesData$flag==1),-c(7)]
-  for(i in 1:nrow(ProvenancesData1)){
-    value = ProvenancesData1[i,'precedent']
-    colN = names(ProvenancesData1[i,-c(1)])[(max.col(ProvenancesData1[i,-c(1)]))]
+  
+  chaps=data.frame(part_id= unique(structure[which(structure$type=='title-2'),]$part_id))
+  chaps$chap_index=1:nrow(chaps)
+  ChapsProvenancesData =merge(Chaps_provenances_stats[,-c(7)], chaps)
+  
+  
+  
+  tome_indexes=1:(max(structure$tome_index,na.rm=TRUE))
+  
+  Tomes_destinations_stats = data.frame(tome_index=tome_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_back=0)
+  for(aTome in 1:max(tome_indexes))
+  {
+    aTomeDest = data.frame(tome=1:(nrow(tomeFollow)), frequence=tomeFollow[aTome,])
+    aTomeDest = aTomeDest[which(aTomeDest$tome!=aTome),]
     
-    valN = paste(ProvenancesData1[i,colN],"%")
-    Transition_provenance_precedent[i,'description']=paste("Plus de",ProvenancesData1[i,colN],"% des sections lues avant cette section se situent beaucoup plus an arrière dans la structure du cours. L'arrivée depuis la section qui précède celle-ci ne représente que",value,"% des arrivées")
-  }
-  Transition_provenance_precedent$suggestion_title="Essayez de revoir la structure du cours et peut être d'inclure un rappel de cette section ailleurs"
-  Transition_provenance_precedent$suggestion_content=""
-  
-  # TODO: remove this
-  Transition_provenance_precedent_v = ProvenancesData[which(ProvenancesData$precedent<50),c('part_index','precedent')]
-  Transition_provenance_precedent_v$classe="Transition"
-  Transition_provenance_precedent_v$issueCode="TransProvPrecV"
-  Transition_provenance_precedent_v$content="Les arrivées vers cette section ne sont pas toujours séquentielles. AU moins une arrivée sur deux provient d'autres parties."
-  Transition_provenance_precedent_v$norm_value=" "
-  Transition_provenance_precedent_v$gravity = -1
-  ProvenancesData1 = ProvenancesData[which(ProvenancesData$flag==1),-c(7)]
-  for(i in 1:nrow(ProvenancesData1)){
-    value = ProvenancesData1[i,'precedent']
-    colN = names(ProvenancesData1[i,-c(1)])[(max.col(ProvenancesData1[i,-c(1)]))]
+    nodes_dest=aTomeDest
+    nodes_dest$ratio = round(nodes_dest$frequence*100/sum(nodes_dest$frequence),0)
     
-    valN = paste(ProvenancesData1[i,colN],"%")
-    Transition_provenance_precedent_v[i,'description']=paste("Plus de",ProvenancesData1[i,colN],"% des sections lues avant cette section se situent beaucoup plus an arrière dans la structure du cours. L'arrivée depuis la section qui précède celle-ci ne représente que",value,"% des arrivées")
+    
+    
+    if((aTome-1) %in% nodes_dest$tome) 
+      Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$precedent = 
+      nodes_dest[nodes_dest$tome==aTome-1,]$ratio
+    if((aTome+1) %in% nodes_dest$tome) 
+      Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$next_p = nodes_dest[nodes_dest$tome==aTome+1,]$ratio
+    
+    Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$shifted_past = sum(nodes_dest[nodes_dest$tome<aTome-1,]$ratio)
+    Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$shifted_next = sum(nodes_dest[nodes_dest$tome>aTome+1,]$ratio)
+    
+    Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$total_back = Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$precedent + 
+      Tomes_destinations_stats[Tomes_destinations_stats$tome_index==aTome,]$shifted_past 
+    
   }
-  Transition_provenance_precedent_v$suggestion_title="Essayez de revoir la structure du cours et peut être d'inclure un rappel de cette section ailleurs"
-  Transition_provenance_precedent_v$suggestion_content=""
   
-  # TODO: remove this
-  #Partie qui suit
-  Transition_provenance_next = ProvenancesData[which(ProvenancesData$next_p>20 & ProvenancesData$next_p<50),c('part_index','next_p')]
-  Transition_provenance_next$classe="Transition"
-  Transition_provenance_next$issueCode="TransProvNext"
-  Transition_provenance_next$content="Beaucoup d\'arrivées depuis de la section qui suit"
-  Transition_provenance_next$description=paste('Dans',Transition_provenance_next$next_p,"% des cas, la section lue avant celle-ci est celle quii
-                                                  la suit dans la structure du cours. Ce sont souvent des retours en arrière")
-  Transition_provenance_next$norm_value=''
-  Transition_provenance_next$gravity = -1
-  Transition_provenance_next$suggestion_title="Revoir la structure du cours"
-  Transition_provenance_next$suggestion_content=""
+  tomePrecedent <- t(tomeFollow)
+  Tomes_provenances_stats = data.frame(tome_index=tome_indexes,precedent=0,shifted_past=0,identity=0,next_p=0,shifted_next=0,total_next=0)
+  for(aTome in 1:max(tome_indexes))
+  {
+    aTomeProv = data.frame(tome=1:nrow(tomePrecedent), frequence=tomePrecedent[aTome,])
+    aTomeProv = aTomeProv[which(aTomeProv$tome!=aTome),]
+    
+    nodes_prov=aTomeProv
+    nodes_prov$ratio = round(nodes_prov$frequence*100/sum(nodes_prov$frequence),0)
+    
+    if((aTome) %in% nodes_prov$tome)
+      Tomes_provenances_stats[which(Tomes_provenances_stats$tome_index==aTome),]$identity = nodes_prov[nodes_prov$tome==aTome,]$ratio
+    
+    if((aTome-1) %in% nodes_prov$tome) 
+      Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$precedent = nodes_prov[nodes_prov$tome==aTome-1,]$ratio
+    if((aTome+1) %in% nodes_prov$tome) 
+      Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$next_p = nodes_prov[nodes_prov$tome==aTome+1,]$ratio
+    
+    Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$shifted_past = sum(nodes_prov[nodes_prov$tome<aTome-1,]$ratio)
+    Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$shifted_next = sum(nodes_prov[nodes_prov$tome>aTome+1,]$ratio)
+    
+    Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$total_next = Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$next_p + 
+      Tomes_provenances_stats[Tomes_provenances_stats$tome_index==aTome,]$shifted_next 
+    
+  }
   
+  tomes=data.frame(part_id= unique(structure[which(structure$type=='title-1'),]$part_id))
+  tomes$tome_index=1:nrow(tomes)
+  TomesProvenancesData =merge(Tomes_provenances_stats[,-c(7)], tomes)
   
-  # TODO: remove this
-  Transition_provenance_next_v = ProvenancesData[which(ProvenancesData$next_p>=50),c('part_index','next_p')]
-  Transition_provenance_next_v$classe="Transition"
-  Transition_provenance_next_v$issueCode="TransProvNextV"
-  Transition_provenance_next_v$content="Enormément d\'arrivées depuis de la section qui suit"
-  Transition_provenance_next_v$description=paste('Dans',Transition_provenance_next_v$next_p,"% des cas, la section lue avant celle-ci est celle quii
-                                                  la suit dans la structure du cours. Ce sont souvent des retours en arrière")
-  Transition_provenance_next_v$norm_value=''
-  Transition_provenance_next_v$gravity = -1
-  Transition_provenance_next_v$suggestion_title="Revoir la structure du cours"
-  Transition_provenance_next_v$suggestion_content=""
+  ####### PROVENANCE : MAX SHIFTED NEXT
+  byParts =  PartsProvenancesData[which(PartsProvenancesData$shifted_next>25 & PartsProvenancesData$part_index>1),c('part_id','shifted_next')]
+  byParts$classe="Transition"
+  byParts$issueCode="TransProvShiftNext"
+  byParts$content="Trop d\'arrivées depuis des sections suivantes"
+  byParts$description=paste('Dans',byParts$shifted_next,"% des cas, la section lue avant n’est pas celle qui précède mais est une partie située après cette section")
+  byParts$suggestion_title="Déplacer cette section ou l’englober dans une autre section ou chapitre"
+  byParts$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou section(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
   
-  # Parties suivantes
+  byChaps =  ChapsProvenancesData[which(ChapsProvenancesData$shifted_next>25 & ChapsProvenancesData$chap_index>1),c('part_id','shifted_next')]
+  byChaps$classe="Transition"
+  byChaps$issueCode="TransProvShiftNext"
+  byChaps$content="Trop d\'arrivées depuis des chapitres suivants"
+  byChaps$description=paste('Dans',byChaps$shifted_next,"% des cas, le chapitre lu avant n’est pas celui qui précède mais est un chapitre situé après ce chapitre")
+  byChaps$suggestion_title="Déplacer ce chapitre ou l’englober dans un autre chapitre ou partie"
+  byChaps$suggestion_content="Ce chapitre doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou partie(s), n’y a t-il pas une 
+restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
   
-  Transition_provenance_shiftednext = ProvenancesData[which(ProvenancesData$shifted_next>20 & ProvenancesData$shifted_next<50),c('part_index','shifted_next')]
-  Transition_provenance_shiftednext$classe="Transition"
-  Transition_provenance_shiftednext$issueCode="TransProvShiftNext"
-  Transition_provenance_shiftednext$content="Trop d\'arrivées depuis des sections suivantes"
-  Transition_provenance_shiftednext$description=paste('Dans',Transition_provenance_shiftednext$shifted_next,"% des cas, la section lue avant n’est pas celle qui précède mais est une partie située après cette section")
-  Transition_provenance_shiftednext$norm_value=''
-  Transition_provenance_shiftednext$gravity = -1
-  Transition_provenance_shiftednext$suggestion_title="Déplacer cette section ou l’englober dans une autre section ou chapitre"
-  Transition_provenance_shiftednext$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou section(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
+  byTomes =  TomesProvenancesData[which(TomesProvenancesData$shifted_next>25 & TomesProvenancesData$tome_index>1),c('part_id','shifted_next')]
+  byTomes$classe="Transition"
+  byTomes$issueCode="TransProvShiftNext"
+  byTomes$content="Trop d\'arrivées depuis des chapitres suivants"
+  byTomes$description=paste('Dans',byTomes$shifted_next,"% des cas, le chapitre lu avant n’est pas celui qui précède mais est un chapitre situé après ce chapitre")
+  byTomes$suggestion_title="Déplacer ce chapitre ou l’englober dans un autre chapitre ou partie"
+  byTomes$suggestion_content="Ce chapitre doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou partie(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
   
+  maxProvSHiftedNext =  rbind(byParts,byChaps,byTomes)
   
-  Transition_provenance_shiftednext_v = ProvenancesData[which(ProvenancesData$shifted_next>=50),c('part_index','shifted_next')]
-  Transition_provenance_shiftednext_v$classe="Transition"
-  Transition_provenance_shiftednext_v$issueCode="TransProvShiftNextV"
-  Transition_provenance_shiftednext_v$content="Beaucoup trop d\'arrivées depuis des sections suivantes"
-  Transition_provenance_shiftednext_v$description=paste('Dans',Transition_provenance_shiftednext_v$shifted_next,"% des cas, la section lue avant n’est pas celle qui précède mais est une partie située après cette section")
-  Transition_provenance_shiftednext_v$norm_value=''
-  Transition_provenance_shiftednext_v$gravity = -1
-  Transition_provenance_shiftednext_v$suggestion_title="Déplacer cette section ou l’englober dans une autre section ou chapitre"
-  Transition_provenance_shiftednext_v$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou section(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
+  ####### PROVENANCE : MAX SHIFTED PAST
+  byParts = PartsProvenancesData[which(PartsProvenancesData$shifted_past>20),c('part_id','shifted_past')]
+  byParts$classe="Transition"
+  byParts$issueCode="TransProvShiftPast"
+  byParts$content="Trop d\'arrivées depuis des sections précédentes éloignées"
+  byParts$description=paste('Dans',byParts$shifted_past," la section lue avant n’est pas directement celle qui précède mais est une partie précédente éloignée.")
+  byParts$suggestion_title="Revoir la section"
+  byParts$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours ?"
   
-  # Parties précédentes
+  byChaps = ChapsProvenancesData[which(ChapsProvenancesData$shifted_past>20),c('part_id','shifted_past')]
+  byChaps$classe="Transition"
+  byChaps$issueCode="TransProvShiftPast"
+  byChaps$content="Trop d\'arrivées depuis des chapitre précédents éloignés"
+  byChaps$description=paste('Dans',byChaps$shifted_past," le chapitre  lu avant n’est pas directement celui qui précède mais est un chapitre précédent éloigné.")
+  byChaps$suggestion_title="Revoir le chapitre"
+  byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?"
   
-  Transition_provenance_shiftedpast = ProvenancesData[which(ProvenancesData$shifted_past>20 & ProvenancesData$shifted_past<50),c('part_index','shifted_past')]
-  Transition_provenance_shiftedpast$classe="Transition"
-  Transition_provenance_shiftedpast$issueCode="TransProvShiftPast"
-  Transition_provenance_shiftedpast$content="Trop d\'arrivées depuis des sections précédentes éloignées"
-  Transition_provenance_shiftedpast$description=paste('Dans',Transition_provenance_shiftedpast$shifted_past," la section lue avant n’est pas directement celle qui précède mais est une partie précédente éloignée.")
-  Transition_provenance_shiftedpast$norm_value=''
-  Transition_provenance_shiftedpast$gravity = -1
-  Transition_provenance_shiftedpast$suggestion_title="Revoir la section"
-  Transition_provenance_shiftedpast$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours ?"
+  byTomes = ChapsProvenancesData[which(ChapsProvenancesData$shifted_past>20),c('part_id','shifted_past')]
+  byTomes$classe="Transition"
+  byTomes$issueCode="TransProvShiftPast"
+  byTomes$content="Trop d\'arrivées depuis des parties précédentes éloignées"
+  byTomes$description=paste('Dans',byTomes$shifted_past," la partie  lu avant n’est pas directement celle qui précède mais est une partie précédente éloignée.")
+  byTomes$suggestion_title="Revoir la partie"
+  byTomes$suggestion_content="Est-ce que la partie est bien positionnée dans le plan du cours ?"
   
-  
-  Transition_provenance_shiftedpast_v = ProvenancesData[which(ProvenancesData$shifted_past>=50),c('part_index','shifted_past')]
-  Transition_provenance_shiftedpast_v$classe="Transition"
-  Transition_provenance_shiftedpast_v$issueCode="TransProvShiftPastV"
-  Transition_provenance_shiftedpast_v$content="Beaucoup trop d\'arrivées depuis des sections précédentes éloignées"
-  Transition_provenance_shiftedpast_v$description=paste('Dans',Transition_provenance_shiftedpast_v$shifted_past,"% des cas, la section lue avant celle-ci se situe plus en avant dans la structure du cours. Ce sont souvent des retours en arrière")
-  Transition_provenance_shiftedpast_v$norm_value=''
-  Transition_provenance_shiftedpast_v$gravity = -1
-  Transition_provenance_shiftedpast_v$suggestion_title="Revoir la section"
-  Transition_provenance_shiftedpast_v$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours ?"
-  
+  maxProvSHiftedPast =  rbind(byParts,byChaps,byTomes)
   
   ################## DESTINATION
-  DestinationsData = Destinations_stats[,-c(7)]
-  # Partie qui suit 
-  # TODO: remove this
-  Transition_Destination_next = DestinationsData[which(DestinationsData$next_p>=50 & DestinationsData$next_p<70),c('part_index','next_p')]
-  Transition_Destination_next$classe="Transition"
-  Transition_Destination_next$issueCode="TransDestNext"
-  Transition_Destination_next$content="Importante navigation vers des sections autres que celle qui suit"
-  Transition_Destination_next$norm_value=" "
-  Transition_Destination_next$gravity = -1
-  DestinationsData1 = DestinationsData[which(DestinationsData$flag==1),-c(7)]
-  for(i in 1:nrow(DestinationsData1)){
-    value = DestinationsData1[i,'next_p']
-    colN = names(DestinationsData1[i,-c(1)])[(max.col(DestinationsData1[i,-c(1)]))]
-    valN = paste(DestinationsData1[i,colN],"%")
-    Transition_Destination_next[i,'description']=paste("Dans",(100-value),"% des cas, la section lue après celle-ci n'est pas celle qui la suit dans la structure du cours. Cette dernière ne représente que",value,"% des cas")
-  }
-  Transition_Destination_next$suggestion_title="Revoir la structure du cours"
-  Transition_Destination_next$suggestion_content=""
-  
-  
-  #parties plus en avant
-  # TODO: remove this
-  Transition_Destination_next_v = DestinationsData[which(DestinationsData$next_p<50),c('part_index','next_p')]
-  Transition_Destination_next_v$classe="Transition"
-  Transition_Destination_next_v$issueCode="TransDestNextV"
-  Transition_Destination_next_v$content="Trop importante navigation vers des sections autres que celle qui suit"
-  Transition_Destination_next_v$norm_value=" "
-  Transition_Destination_next_v$gravity = -1
-  DestinationsData1 = DestinationsData[which(DestinationsData$flag==1),-c(7)]
-  for(i in 1:nrow(DestinationsData1)){
-    value = DestinationsData1[i,'next_p']
-    colN = names(DestinationsData1[i,-c(1)])[(max.col(DestinationsData1[i,-c(1)]))]
-    valN = paste(DestinationsData1[i,colN],"%")
-    Transition_Destination_next_v[i,'description']=paste("Dans",(100-value),"% des cas, la section lue après celle-ci n'est pas celle qui la suit dans la structure du cours. Cette dernière ne représente que",value,"% des cas")
-  }
-  Transition_Destination_next_v$suggestion_title="Revoir la structure du cours"
-  Transition_Destination_next_v$suggestion_content=""
+  PartsDestinationsData = Parts_destinations_stats[,-c(7)]
+ 
   
    # Retour en arrière
 
-  Transition_Destination_shiftedback = DestinationsData[which(DestinationsData$shifted_past>20 & DestinationsData$shifted_past<=50),c('part_index','shifted_past')]
+  Transition_Destination_shiftedback = PartsDestinationsData[which(PartsDestinationsData$shifted_past>20 & PartsDestinationsData$shifted_past<=50),c('part_index','shifted_past')]
   Transition_Destination_shiftedback$classe="Transition"
   Transition_Destination_shiftedback$issueCode="TransDestPast"
   Transition_Destination_shiftedback$content="Trop de départs vers des sections précédentes"
@@ -496,7 +532,7 @@ course_facts_transition<- function(selectedCourse){
   Transition_Destination_shiftedback$suggestion_title="Revoir cette section du cours"
   Transition_Destination_shiftedback$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours?"
   
-  Transition_Destination_shiftedback_v = DestinationsData[which(DestinationsData$shifted_past>50),c('part_index','shifted_past')]
+  Transition_Destination_shiftedback_v = PartsDestinationsData[which(PartsDestinationsData$shifted_past>50),c('part_index','shifted_past')]
   Transition_Destination_shiftedback_v$classe="Transition"
   Transition_Destination_shiftedback_v$issueCode="TransDestPastV"
   Transition_Destination_shiftedback_v$content="Beaucoup trop de départs vers des sections précédentes"
@@ -507,7 +543,7 @@ course_facts_transition<- function(selectedCourse){
   Transition_Destination_shiftedback_v$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours?"
   
   #Parties plus en avant
-  Transition_Destination_shiftednext = DestinationsData[which(DestinationsData$shifted_next>20 & DestinationsData$shifted_next<=50),c('part_index','shifted_next')]
+  Transition_Destination_shiftednext = PartsDestinationsData[which(PartsDestinationsData$shifted_next>20 & PartsDestinationsData$shifted_next<=50),c('part_index','shifted_next')]
   Transition_Destination_shiftednext$classe="Transition"
   Transition_Destination_shiftednext$issueCode="TransDestShiftNext"
   Transition_Destination_shiftednext$content="Trop de départs vers des sections suivantes éloignées"
@@ -517,7 +553,7 @@ course_facts_transition<- function(selectedCourse){
   Transition_Destination_shiftednext$suggestion_title="Revoir cette section du cours"
   Transition_Destination_shiftednext$suggestion_content="Est-ce que cette section est bien positionné dans le plan du cours ?"
   
-  Transition_Destination_shiftednext_v = DestinationsData[which(DestinationsData$shifted_next>50),c('part_index','shifted_next')]
+  Transition_Destination_shiftednext_v = PartsDestinationsData[which(PartsDestinationsData$shifted_next>50),c('part_index','shifted_next')]
   Transition_Destination_shiftednext_v$classe="Transition"
   Transition_Destination_shiftednext_v$issueCode="TransDestShiftNextV"
   Transition_Destination_shiftednext_v$content="Beaucoup trop de départs vers des sections suivantes éloignées"
@@ -721,10 +757,10 @@ names(PartData)[5]='part_type'
 PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
 PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
 
-names(Provenances_stats)=c("part_index","provenance_precedent","provenance_shifted_past", "provenance_identity","provenance_next_p","provenance_shifted_next","provenance_total_next")
-names(Destinations_stats)=c("part_index","destination_precedent","destination_shifted_past", "destination_identity","destination_next_p","destination_shifted_next","destination_total_next") 
-PartData = merge(PartData, Provenances_stats,  by = 'part_index',all.x = TRUE)
-PartData = merge(PartData, Destinations_stats,  by = 'part_index',all.x = TRUE)
+names(Parts_provenances_stats)=c("part_index","provenance_precedent","provenance_shifted_past", "provenance_identity","provenance_next_p","provenance_shifted_next","provenance_total_next")
+names(Parts_destinations_stats)=c("part_index","destination_precedent","destination_shifted_past", "destination_identity","destination_next_p","destination_shifted_next","destination_total_next") 
+PartData = merge(PartData, Parts_provenances_stats,  by = 'part_index',all.x = TRUE)
+PartData = merge(PartData, Parts_destinations_stats,  by = 'part_index',all.x = TRUE)
 # Compute provenance/destination for chapters
 chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
 for(i in 1:length(chaptersIds)){
