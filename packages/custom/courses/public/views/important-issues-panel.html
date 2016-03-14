@@ -3,18 +3,18 @@
  
 <div class="errors-display"  >  
 
-<div class="inspector-important-item" ng-repeat="fact in context.importantFacts" data-fact={{fact.fact._id}} multiple   data-path={{fact.fact.route}}@{{fact.fact.classof}}>
+<div class="inspector-important-item" ng-repeat="fact in context.Facts" data-fact={{fact._id}} multiple   data-path={{fact.route}}@{{fact.classof}}>
 
   <uib-accordion close-others="oneAtATime" >
    <uib-accordion-group is-open="status.open" class='inspector-issue'>
       <uib-accordion-heading>
-      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.fact.name}} </b>  pour la section <b>{{fact.fact.section}} </b> 
+      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  pour la section <b>{{fact.section}} </b> 
       </uib-accordion-heading>
       
-      <span class='factDescription'>{{fact.fact.description}} </span>
+      <span class='factDescription'>{{fact.description}} </span>
       <hr/>
 
-      <strong>{{fact.fact.d3.title}}</strong>
+      <strong>{{fact.d3.title}}</strong>
       <d3-chart data='fact.d3' d3opts='{type:"fact",issueCode:fact.issueCode, issueClass:fact.classof}'></d3-chart>
     
     </uib-accordion-group>
@@ -26,12 +26,12 @@
       <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
       
       </i> 
-      <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)"  data-path={{fact.fact.route}}><span class="glyphicon glyphicon-plus-sign" ></span>Définir comme tâche</button> 
-      <em>Suggestion: </em> <span>{{fact.fact.suggestion_title}} </span> 
+      <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus-sign" ></span>Définir comme tâche</button> 
+      <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> 
       </uib-accordion-heading>
       <table style="table-layout: fixed;width:100%; padding:10px">
       <td style="width: 100%">
-      <span class='suggestDescription'>{{fact.fact.suggestion_content}}</span>
+      <span class='suggestDescription'>{{fact.suggestion_content}}</span>
     </td>
   </table>
     </uib-accordion-group>

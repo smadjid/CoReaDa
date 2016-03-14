@@ -69,6 +69,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
         $scope.course = course;
         $scope.chartType = 'Actions_tx';
         $scope.chartedElement = course;
+        $scope.selectedElement = course;
   
         completeCourseParts($scope.course, $scope.courseParts, $scope.courseChapters);
             $scope.context = {
@@ -846,6 +847,21 @@ var filterTasks = function(studiedPart) {
       };
 
 
+var findCourseIssues = function(){  
+  var allFacts=[];
+
+  $scope.courseChapters.forEach(function(chapter) {
+    
+      chapter.facts.forEach(function(f){
+        allFacts.push(f)
+        })   
+    
+  });
+
+ $scope.context.Facts=allFacts;
+
+}
+
 var findImportantCourseIssues = function(issueCode){  
   var allFacts=[];
 
@@ -917,6 +933,7 @@ switch(granularity){
     var maxRereading = findImportantCourseIssues( 'RerRmax');
     var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
     var maxStop = findImportantCourseIssues( 'StopRSExit');
+    findCourseIssues();
   break;
   case 'tome':
     var maxReadings = findImportantTomeIssues('RmaxDuration',id);

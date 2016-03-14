@@ -416,7 +416,7 @@ module.exports = function(Courses) {
                 'type':part.type,
                 'elementType':'partie',
                 'properties': part.properties,
-                'facts':[],
+                'facts':part.facts,
                 'chapters':[]
             };
             courseTomes.push(tome); 
@@ -432,11 +432,9 @@ module.exports = function(Courses) {
                 'type':part.type,
                 'elementType':'chapitre',
                 'properties': part.properties,
-                'facts':[],
+                'facts':part.facts,
                 'parts':[]
             }
-           console.log(part);
-            
             
             
             courseChapters.push(chapter);            
@@ -452,7 +450,19 @@ module.exports = function(Courses) {
        for (var i = 0; i <=partsCount ; i++){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
-            var partFacts = subsetByField(jsonFacts, 'id', i);
+
+var partId = 0;
+            for(var key in partProps) {
+                    if(partProps[key].variable=='part_id') partId = partProps[key].value
+                }
+            
+            var partFacts = [];
+            for(var key in jsonFacts) {
+                    if(jsonFacts[key].part_id==partId) partFacts.push(jsonFacts[key])
+                }
+
+            console.log(partFacts)
+            
  
             computePart(i, partProps, partFacts);
             
@@ -463,7 +473,19 @@ module.exports = function(Courses) {
         for (var i = -1; i >=tomesCount ; i--){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
-            computePart(i, partProps, []);
+
+            var partId = 0;
+            for(var key in partProps) {
+                    if(partProps[key].variable=='part_id') partId = partProps[key].value
+                }
+            
+            var partFacts = [];
+            for(var key in jsonFacts) {
+                    if(jsonFacts[key].part_id==partId) partFacts.push(jsonFacts[key])
+                }
+
+            console.log(partFacts)
+            computePart(i, partProps, partFacts);
             
       
         };
