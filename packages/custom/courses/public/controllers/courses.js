@@ -61,6 +61,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.sectionPstatSelector = 'Actions_tx';
       $scope.studiedPart = '';
       $scope.context.importantFacts=[];
+      $scope.context.otherFacts=[];
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -859,6 +860,9 @@ var findCourseIssues = function(){
   });
 
  $scope.context.Facts=allFacts;
+ 
+ $scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+ $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
 
 }
 
@@ -882,6 +886,24 @@ var findImportantCourseIssues = function(issueCode){
 
 }
 
+
+var findTomeIssues = function(tomeId){  
+  var allFacts=[];
+var tomeChaps = $.grep($scope.course.tomes, function(e){ return e._id === tomeId; })[0].chapters;
+
+  tomeChaps.forEach(function(chapter) {
+    
+      chapter.facts.forEach(function(f){
+        allFacts.push(f)
+        })   
+    
+  });
+
+ $scope.context.Facts=allFacts;
+ $scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+ $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
+
+}
 var findImportantTomeIssues = function(issueCode, tomeId){  
   var allFacts=[];
  
@@ -904,6 +926,23 @@ var findImportantTomeIssues = function(issueCode, tomeId){
 
 }
 
+var findChapterIssues = function(chapterId){  
+  var allFacts=[];
+var chapter = $.grep($scope.courseChapters, function(e){ return e._id === chapterId; })[0]; 
+
+  
+    
+      chapter.facts.forEach(function(f){
+        allFacts.push(f)
+  
+    
+  });
+
+ $scope.context.Facts=allFacts;
+$scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+ $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
+
+}
 var findImportantChapterIssues = function(issueCode, chapterId){  
   var allFacts=[];
   var chapter = $.grep($scope.courseChapters, function(e){ return e._id === chapterId; })[0]; 
@@ -925,37 +964,33 @@ var findImportantChapterIssues = function(issueCode, chapterId){
 
 }
 
+var findPartIssues = function(partId){  
+  var allFacts=[];
+var part = $.grep($scope.courseParts, function(e){ return e._id === partId; })[0]; 
+
+ $scope.context.Facts=part.facts;
+ $scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+ $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
+
+}
+
 var computeImportantFacts = function(granularity, id){
 var results=[];
 switch(granularity){
   case 'course':
-    var maxReadings = findImportantCourseIssues('RmaxDuration');
-    var maxRereading = findImportantCourseIssues( 'RerRmax');
-    var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
-    var maxStop = findImportantCourseIssues( 'StopRSExit');
     findCourseIssues();
   break;
   case 'tome':
-    var maxReadings = findImportantTomeIssues('RmaxDuration',id);
-    var maxRereading = findImportantTomeIssues( 'RerRmax',id);
-    var maxTransition = findImportantTomeIssues( 'TransDestShiftPast',id);
-    var maxStop = findImportantTomeIssues( 'StopRSExit',id);
+    findTomeIssues(id);
     break;
   case 'chapter':
-    var maxReadings = findImportantChapterIssues('RmaxDuration',id);
-    var maxRereading = findImportantChapterIssues( 'RerRmax',id);
-    var maxTransition = findImportantChapterIssues( 'TransDestShiftPast',id);
-    var maxStop = findImportantChapterIssues( 'StopRSExit',id);
+    findChapterIssues(id);
+    break
+  case 'part':
+    findPartIssues(id);
     break
 
   }
-
-(maxReadings!=-1)? results.push(maxReadings):results=results;
-(maxRereading!=-1)? results.push(maxRereading):results=results;
-(maxTransition!=-1)? results.push(maxTransition):results=results;
-(maxStop!=-1)? results.push(maxStop):results=results;
-  
-$scope.context.importantFacts=results;
 
 }
 
@@ -1581,6 +1616,9 @@ var element = resolveRoute(url);
 
      $scope.context.Tasks =element.todos;
      $scope.context.Facts =computeSubFacts(element, indicator);
+     $scope.context.importantFacts = $.grep($scope.context.Facts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+ $scope.context.otherFacts = $.grep($scope.context.Facts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
+
      
      
 var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text() ;
