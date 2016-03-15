@@ -67,7 +67,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
         {'code':'Actions_tx', 'name':'actions', 'display':'Visites'},
         {'code':'mean.duration', 'name':'duration', 'display':'Vitesse'},
         {'code':'rereadings_tx', 'name':'reread', 'display':'Relecture'},
-        {'code':'norecovery', 'name':'stop', 'display':'Arrêts'}
+        {'code':'norecovery_tx', 'name':'stop', 'display':'Arrêts'}
 
       ]
   

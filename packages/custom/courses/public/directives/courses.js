@@ -5,6 +5,7 @@ angular.module('mean.courses')
         restrict: 'A',
         scope:{
           data:'=',
+          indicatorCode:'=',
           granularity:'='
         },
 
@@ -24,7 +25,8 @@ var computeTextColor =function(val){
   if(val>=4) return 'white';
 }
 
-
+var lineGenerator = function(data, indicator){
+}
 var issuesTableDisplay=function(){
   
   d3.select(element[0]).selectAll('td').remove();
@@ -39,23 +41,24 @@ var heatMapColorforValue=function (value){
 
 var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
 
-if(scope.granularity.tome===-1){
+
   scope.chapters.forEach(function(chapter, i) {
     
-    var allFacts = chapter.facts.filter(function(e){ return ((e.classof === attrs.classof))} );
-    var importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
-    var otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
-
+    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode === scope.indicatorCode))} );
+    
+    var chapData = chapter.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value;
+    console.log(chapData);
     var td=$("<td></td>");
      $(td)
-     .attr('class','td_issue')
+      .attr('class','td_issue')
              .attr('data-part',chapter.id)
              .attr('colspan',chapter.parts.length)
-             .attr('data-indicator',attrs.classof)
+             .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'@'+attrs.classof)
-             .append('<span></span>');
+             .append('<span>'+chapData+'</span>')
+             .css('background-color',heatMapColorforValue(0));
 
-    importantFacts.forEach(function(fact){  
+    allFacts.forEach(function(fact){  
       var span = $("<span role='button'  style='padding:5px'></span>");
       span.addClass("glyphicon glyphicon-warning-sign")
       .css('color','red')
@@ -64,78 +67,13 @@ if(scope.granularity.tome===-1){
       .show(500, "linear");
       $(td).append(span) });
 
-    otherFacts.forEach(function(fact){  
-      var span = $("<span role='button'  style='padding:5px'></span>");
-      span.addClass("glyphicon  glyphicon-exclamation-sign")
-      .css('color','orange')
-      .attr('data-fact-id','fact_'+fact._id )
-      //.text(fact.classof)
-      .show(500, "linear"); 
-    $(td).append(span)})
     
-             //.html(span);
  
      html.push(td)  ;
 
 
 
   })
-
-}
-else{ return;
-  var tome =  $.grep(scope.data.tomes, function(e){ return e._id === scope.granularity.tome; })[0]; 
-  if(scope.granularity.chapter==-1){
-    tome.chapters.forEach(function(chapter, i) {
-    
-    var allFacts = chapter.facts.filter(function(e){ return ((e.classof === attrs.classof))} );
-    var importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
-    var otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
-
-    var td=$("<td></td>");
-     $(td)
-     .attr('class','td_issue')
-             .attr('data-part',chapter.id)
-             .attr('colspan',chapter.parts.length)
-             .attr('data-indicator',attrs.classof)
-             .attr('data-path',chapter.route+'@'+attrs.classof)
-             .append('<span></span>');
-
-    importantFacts.forEach(function(fact){  
-      var span = $("<span role='button'  style='padding:5px'></span>");
-      span.addClass("glyphicon glyphicon-warning-sign")
-      .css('color','red')
-      .attr('data-fact-id','fact_'+fact._id )
-      //.text(fact.classof)
-      .show(500, "linear");
-      $(td).append(span) });
-
-    otherFacts.forEach(function(fact){  
-      var span = $("<span role='button'  style='padding:5px'></span>");
-      span.addClass("glyphicon  glyphicon-exclamation-sign")
-      .css('color','orange')
-      .attr('data-fact-id','fact_'+fact._id )
-      //.text(fact.classof)
-      .show(500, "linear"); 
-    $(td).append(span)})
-    
-             //.html(span);
- 
-     html.push(td)  ;
-
-
-
-  })
-
-
-
-
-
-
-
-
-  }
-}
-
 
 
   
@@ -148,7 +86,7 @@ else{ return;
 
   scope.$watch('data', function(){
    
-    if(typeof scope.data==='undefined'  | typeof scope.granularity==='undefined') return;
+  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.granularity==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -159,8 +97,22 @@ else{ return;
         }, true);
      
 
-    scope.$watch('granularity', function(){
-  if(typeof scope.data==='undefined'  | typeof scope.granularity==='undefined') return;
+scope.$watch('granularity', function(){
+  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.granularity==='undefined') return;
+    scope.chapters = [];
+    angular.forEach(scope.data.tomes, function(tome) {
+    angular.forEach(tome.chapters, function(chapter) {     
+      scope.chapters.push( chapter ); 
+    });
+  });   
+    
+         issuesTableDisplay()
+        
+    
+          }, true); 
+
+scope.$watch('indicatorCode', function(){
+  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.granularity==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     

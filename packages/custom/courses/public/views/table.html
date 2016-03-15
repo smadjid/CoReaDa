@@ -23,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td granularity="context.tableGranularity" ng-repeat='indicator in indicatorsHeader'  classof={{indicator.name}} data="course" >
+        <tr table-td granularity="context.tableGranularity" ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" data="course" >
             <th  role='button' class="indicators-header" data-indicator={{indicator.name}} ng-click='triggerClick($event)' data-path='@'+{{indicator.name}}>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >{{indicator.display}}</span>
