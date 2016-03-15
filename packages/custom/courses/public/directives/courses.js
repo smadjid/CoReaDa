@@ -99,213 +99,107 @@ var heatMapColorforValue=function (value){
   return "hsl(" + h + ", 80%, 50%)";
 }
 
-if(scope.granularity.tome===-1)
-{
-  var maxReadings = findImportantCourseIssues('RmaxDuration');
-  var maxRereading = findImportantCourseIssues( 'RerRmax');
-  var maxTransition = findImportantCourseIssues( 'TransDestShiftPast');
-  var maxStop = findImportantCourseIssues( 'StopRSExit');
-}
-else
-  if(scope.granularity.chapter===-1)
-  {
-    var maxReadings = findImportantTomeIssues('RmaxDuration',scope.granularity.tome);
-    var maxRereading = findImportantTomeIssues( 'RerRmax',scope.granularity.tome);
-    var maxTransition = findImportantTomeIssues( 'TransDestShiftPast',scope.granularity.tome);
-    var maxStop = findImportantTomeIssues( 'StopRSExit',scope.granularity.tome);
-  }
-  else{
-    var maxReadings = findImportantChapterIssues('RmaxDuration',scope.granularity.chapter);
-    var maxRereading = findImportantChapterIssues( 'RerRmax',scope.granularity.chapter);
-    var maxTransition = findImportantChapterIssues( 'TransDestShiftPast',scope.granularity.chapter);
-    var maxStop = findImportantChapterIssues( 'StopRSExit',scope.granularity.chapter);
 
-  }
+var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
 
+if(scope.granularity.tome===-1){
+  scope.chapters.forEach(function(chapter, i) {
+    
+    var allFacts = chapter.facts.filter(function(e){ return ((e.classof === attrs.classof))} );
+    var importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+    var otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
 
-
-scope.chapters.forEach(function(chapter, i) {
-      var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
- if(chapter._id!==scope.granularity.chapter)
- {   
- var span = $("<span role='button'  style='color:red; padding:5px'></span>");
-
-    switch(attrs.classof) {
-    case "Readings":
-      (chapter._id===maxReadings.chapterId)? 
-      span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxReadings.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxReadings.fact.route+"@"+attrs.classof})
-      :span.text("");
-
-      break;
-    case "Rereading":
-      (chapter._id===maxRereading.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxRereading.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxRereading.fact.route+"@"+attrs.classof}):span.text("");
-      break;
-    case "Transition":
-      (chapter._id===maxTransition.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxTransition.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxTransition.fact.route+"@"+attrs.classof}):span.text("");
-      break;
-    case "Stop":
-      (chapter._id===maxStop.chapterId)? span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxStop.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
-      break;
-  }
-
-     var td=$("<td></td>");
+    var td=$("<td></td>");
      $(td)
      .attr('class','td_issue')
              .attr('data-part',chapter.id)
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',attrs.classof)
              .attr('data-path',chapter.route+'@'+attrs.classof)
-             //.css('background-color',computeBgColor(relatedFacts.length))
-            /* .on("click", function() {  
-               
-               if("#"+chapter.route!==window.location.hash)
-                window.location.hash = "#"+chapter.route+"@"+attrs.classof
-             })*/
-             .html(span);
- /*
- var color = 0;
-     switch(attrs.classof) {
-     case "Readings":
-       color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-       break;
-     case "Rereading":
-       color = colorScale(0.3 * chapter.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
-       break;
-     case "Transition":
-       color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-       break;
-     case "Stop":
-       color = colorScale(20 * chapter.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
-       break;  }
-         
-     td.css('background-color',color );*/
+             .append('<span></span>');
+
+    importantFacts.forEach(function(fact){  
+      var span = $("<span role='button'  style='padding:5px'></span>");
+      span.addClass("glyphicon glyphicon-warning-sign")
+      .css('color','red')
+      .attr('data-fact-id','fact_'+fact._id )
+      //.text(fact.classof)
+      .show(500, "linear");
+      $(td).append(span) });
+
+    otherFacts.forEach(function(fact){  
+      var span = $("<span role='button'  style='padding:5px'></span>");
+      span.addClass("glyphicon  glyphicon-exclamation-sign")
+      .css('color','orange')
+      .attr('data-fact-id','fact_'+fact._id )
+      //.text(fact.classof)
+      .show(500, "linear"); 
+    $(td).append(span)})
+    
+             //.html(span);
+ 
      html.push(td)  ;
- }
 
-else{
- chapter.parts.forEach(function(part, i) {
-  var color = 0;
 
-  
-  if(part._id===scope.granularity.part){
-    var nfacts = part.facts.filter(function(e){ return ((e.classof === attrs.classof))} ).length;
-    var nfactsTxt = nfacts>0?nfacts:''
 
-    var span = $("<span role='button' class='display-part-issues' style='color:red; padding:5px;color:"+computeTextColor(nfacts)+"'>"+nfactsTxt+"</span>");
-    span.show(500, "linear");
-//    $(span).text(nfacts).css('color',computeTextColor(nfacts));
+  })
 
-/*
-<td ng-show="sectionDisplay"style='background-color:{{computeBgColor((part.facts | filter:{"classof":"Readings"}).length)}}; text-align:center' data-part={{part.id}} data-indicator='Readings' ng-click='triggerClick($event)' data-path={{part.route}}@Readings>
-                    <span style='color:{{computeTextColor((part.facts | filter:{"classof":"Readings"}).length)}}; ' class='display-part-issues'> 
-                        {{(part.facts | filter:{'classof':'Readings'}).length >0 ?(part.facts | filter:{'classof':'Readings'}).length:""}}
-                    </span>
-           
-            </td>
-            */
+}
+else{ return;
+  var tome =  $.grep(scope.data.tomes, function(e){ return e._id === scope.granularity.tome; })[0]; 
+  if(scope.granularity.chapter==-1){
+    tome.chapters.forEach(function(chapter, i) {
+    
+    var allFacts = chapter.facts.filter(function(e){ return ((e.classof === attrs.classof))} );
+    var importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
+    var otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
 
-    console.log(part.title);
     var td=$("<td></td>");
-            $(td).attr('class','td_issue')
-                    .attr('data-part',part.id)
-                    .attr('data-indicator',attrs.classof)
-                    .attr('data-path',part.route+'@'+attrs.classof)
-                    .text('text')
-                   .css('background-color',computeBgColor(nfacts))
-                   .on("click", function() {  
-                      console.log(part.route);//scope.loadURL()(d.route)  
-                      //if("#"+part.route!==window.location.hash)
-                       window.location.hash = "#"+part.route+"@"+attrs.classof
-                    })
-                    .html(span);
-            html.push(td)
+     $(td)
+     .attr('class','td_issue')
+             .attr('data-part',chapter.id)
+             .attr('colspan',chapter.parts.length)
+             .attr('data-indicator',attrs.classof)
+             .attr('data-path',chapter.route+'@'+attrs.classof)
+             .append('<span></span>');
+
+    importantFacts.forEach(function(fact){  
+      var span = $("<span role='button'  style='padding:5px'></span>");
+      span.addClass("glyphicon glyphicon-warning-sign")
+      .css('color','red')
+      .attr('data-fact-id','fact_'+fact._id )
+      //.text(fact.classof)
+      .show(500, "linear");
+      $(td).append(span) });
+
+    otherFacts.forEach(function(fact){  
+      var span = $("<span role='button'  style='padding:5px'></span>");
+      span.addClass("glyphicon  glyphicon-exclamation-sign")
+      .css('color','orange')
+      .attr('data-fact-id','fact_'+fact._id )
+      //.text(fact.classof)
+      .show(500, "linear"); 
+    $(td).append(span)})
+    
+             //.html(span);
+ 
+     html.push(td)  ;
+
+
+
+  })
+
+
+
+
+
+
+
 
   }
-  else{
-
-  var relatedFacts = part.facts.filter(function(e){ return e.classof === attrs.classof });
-  
-  var span = $("<span role='button'  style='color:red; padding:5px'></span>");
-    switch(attrs.classof) {
-    case "Readings":
-      (part._id===maxReadings.partId)? 
-      span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxReadings.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxReadings.fact.route+"@"+attrs.classof})
-      :span.text("");
-      break;
-    case "Rereading":
-      (part._id===maxRereading.partId)? span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxRereading.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxRereading.fact.route+"@"+attrs.classof}):span.text("");
-      break;
-    case "Transition":
-      (part._id===maxTransition.partId)? span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxTransition.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxTransition.fact.route+"@"+attrs.classof}):span.text("");
-      break;
-    case "Stop":
-      (part._id===maxStop.partId)? span.addClass("glyphicon glyphicon-warning-sign")
-      .attr('data-fact-id','fact_'+maxStop.fact._id )
-      .show(500, "linear")
-      .on('click',function(){window.location.hash = "#fact_"+maxStop.fact.route+"@"+attrs.classof}):span.text("");
-      break;  }
-        
-           
-              /*
-        
-        var color = 0;
-           switch(attrs.classof) {
-           case "Readings":
-             color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-             break;
-           case "Rereading":
-             color = colorScale(0.3 * part.properties.filter(function(value){ return value.property === 'rereads_tx'})[0].value)
-             break;
-           case "Transition":
-             color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value)
-             break;
-           case "Stop":
-             color = colorScale(20 * part.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value)
-             break;  }*/
-      
-            var td=$("<td></td>");
-            $(td).attr('class','td_issue')
-                    .attr('data-part',part.id)
-                    .attr('data-indicator',attrs.classof)
-                    .attr('data-path',part.route+'@'+attrs.classof)
-        //            .css('background-color',color)
-                   /* .on("click", function() {  
-                      //console.log(d.route);scope.loadURL()(d.route)  
-                      if("#"+part.route!==window.location.hash)
-                       window.location.hash = "#"+part.route+"@"+attrs.classof
-                    })*/
-                    .html(span);
-            html.push(td)
-          }
-  
-    })}
+}
 
 
-
-
-  
-});
 
   
   $(element).append(html);
