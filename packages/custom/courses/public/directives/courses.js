@@ -24,69 +24,6 @@ var computeTextColor =function(val){
   if(val>=4) return 'white';
 }
 
-var findImportantCourseIssues = function(issueCode){  
-  var allFacts=[];
-
-  scope.chapters.forEach(function(chapter) {
-    chapter.parts.forEach(function(part) {
-      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
-      if(typeof f != 'undefined')
-        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
-
-    })   
-  });
-
-  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
-  if(typeof maxValue != 'undefined')
-    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
-  else 
-    return {}
-
-}
-
-var findImportantTomeIssues = function(issueCode, tomeId){  
-  var allFacts=[];
- 
-  var tomeChaps = $.grep(scope.data.tomes, function(e){ return e._id === tomeId; })[0].chapters;
-
-  tomeChaps.forEach(function(chapter) {
-    chapter.parts.forEach(function(part) {
-      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
-      if(typeof f != 'undefined')
-        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
-
-    })   
-  });
-
-  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
-  if(typeof maxValue != 'undefined')
-    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
-  else 
-    return {}
-
-}
-
-var findImportantChapterIssues = function(issueCode, chapterId){  
-  var allFacts=[];
-  var chapter = $.grep(scope.chapters, function(e){ return e._id === chapterId; })[0]; 
-
-  
-    chapter.parts.forEach(function(part) {
-      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
-      if(typeof f != 'undefined')
-        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
-
-  
-  });
-
-  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
-  if(typeof maxValue != 'undefined')
-    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
-  else 
-    return {}
-
-}
-
 
 var issuesTableDisplay=function(){
   

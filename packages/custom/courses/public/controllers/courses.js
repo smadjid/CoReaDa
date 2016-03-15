@@ -62,6 +62,14 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.studiedPart = '';
       $scope.context.importantFacts=[];
       $scope.context.otherFacts=[];
+
+      $scope.indicatorsHeader=[
+        {'code':'Actions_tx', 'name':'actions', 'display':'Visites'},
+        {'code':'mean.duration', 'name':'duration', 'display':'Vitesse'},
+        {'code':'rereadings_tx', 'name':'reread', 'display':'Relecture'},
+        {'code':'norecovery', 'name':'stop', 'display':'Arrêts'}
+
+      ]
   
       Courses.get({
         courseId: $stateParams.courseId
