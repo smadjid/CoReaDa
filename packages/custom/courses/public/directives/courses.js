@@ -81,7 +81,8 @@ if(html.length>0){
 
   $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0]).children('.fact')
       .addClass("glyphicon glyphicon-warning-sign")
-      .css('color','blue');
+      .css('color','red')
+      .css('font-size','14px');
 
 
   
@@ -143,9 +144,11 @@ var maxChap = 0;
   })
 if(html.length>0){  
 
+
   $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0]).children('.fact')
       .addClass("glyphicon glyphicon-warning-sign")
-      .css('color','blue');
+      .css('color','red')
+      .css('font-size','14px');
 
 
   
@@ -1004,8 +1007,8 @@ if(scope.d3opts.elementType!=='part')
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
               .attr('stroke', 'white')
-               .attr("fill", function(d) {console.log(d.part); return (d.part==scope.d3opts.elementId)? '#45348A':'#008cba'; });
-console.log('id:' +scope.d3opts.elementId);
+               .attr("fill", function(d) {return (d.part==scope.d3opts.elementId)? '#45348A':'#008cba'; });
+
 
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0); 

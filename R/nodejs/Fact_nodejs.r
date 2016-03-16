@@ -13,57 +13,218 @@ load(paste(selectedCourse,"chapFollow.rdata",sep="."))
 load(paste(selectedCourse,"tomeFollow.rdata",sep="."))
 load(paste(selectedCourse,"achievement.rdata",sep="."))
 
+structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
+Interest = eval(parse(text = paste(selectedCourse,"Interest",sep=".")))
+Reads = eval(parse(text = paste(selectedCourse,"Reads",sep=".")))
+Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
+RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
+partFollow=eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
+chapFollow=eval(parse(text = paste(selectedCourse,"chapFollow",sep=".")))
+tomeFollow=eval(parse(text = paste(selectedCourse,"tomeFollow",sep=".")))
+data = eval(parse(text = paste(selectedCourse,sep=".")))
+achievement = eval(parse(text = paste(selectedCourse,"achievement",sep=".")))
 
-############################################# I. LECTURE ################################################
-  structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
-  Interest = eval(parse(text = paste(selectedCourse,"Interest",sep=".")))
-  Reads = eval(parse(text = paste(selectedCourse,"Reads",sep=".")))
-  Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
-  RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
-  partFollow=eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
-  chapFollow=eval(parse(text = paste(selectedCourse,"chapFollow",sep=".")))
-  tomeFollow=eval(parse(text = paste(selectedCourse,"tomeFollow",sep=".")))
-  data = eval(parse(text = paste(selectedCourse,sep=".")))
-  achievement = eval(parse(text = paste(selectedCourse,"achievement",sep=".")))
+################################# PARTDATA ########################################################
+PartData = structure
+names(PartData)[1]=c('part_index')
+nParties = nrow(PartData[which(PartData$part_index==0),])
+PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))
+
+
+
+PartData[which(PartData$type=='title-1'),]$type='partie'
+PartData[which(PartData$type=='title-2'),]$type='chapitre'
+PartData[which(PartData$type=='title-3'),]$type='section'
+
+PartData = merge(PartData, Interest[,c(1,2,3,4,5)],all.x = TRUE)
+
+names(PartData)[2]='part_index'
+names(PartData)[3]='parent_id' 
+names(PartData)[4]='part_title'
+names(PartData)[5]='part_type'
+PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
+PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
+
+names(Parts_provenances_stats)=c("part_index","provenance_precedent","provenance_shifted_past", "provenance_identity","provenance_next_p","provenance_shifted_next","provenance_total_next")
+names(Parts_destinations_stats)=c("part_index","destination_precedent","destination_shifted_past", "destination_identity","destination_next_p","destination_shifted_next","destination_total_next") 
+PartData = merge(PartData, Parts_provenances_stats,  by = 'part_index',all.x = TRUE)
+PartData = merge(PartData, Parts_destinations_stats,  by = 'part_index',all.x = TRUE)
+# Compute provenance/destination for chapters
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_total_next)
+  
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_total_next)
+}
+
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_total_next)
+  
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_precedent)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_past)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_identity)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_next_p)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_next)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_total_next)
+}
+
+
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(tomesIds)){
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_precedent)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_shifted_past)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_identity)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_next_p)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_shifted_next)
+  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_total_next)
+  
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_precedent)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_shifted_past)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_identity)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_next_p)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_shifted_next)
+  PartData[which(PartData$part_id==tomesIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_total_next)
+}
+
+# Compute duration for chapters and tomes
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$max.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$max.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$q1.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$q1.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$q3.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$q3.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$mean.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$mean.duration)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$median.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$median.duration)
+}
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(tomesIds)){
+  PartData[which(PartData$part_id==tomesIds[i]),]$max.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$max.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$q1.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$q1.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$q3.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$q3.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$mean.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$mean.duration)
+  PartData[which(PartData$part_id==tomesIds[i]),]$median.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$median.duration)
+}
+
+PartData$Readers_tx = round(PartData$Readers / nusers, 4)
+PartData$RS_tx = round(PartData$RS_nb / nrow(nodejs.RS), 4)
+
+
+PartData$Actions_tx = round(PartData$Actions_nb / nrow(nodejs), 4)
+PartData$Readers_tx = round(PartData$Readers / nusers, 4)
+allRup = max(PartData$rupture)
+finalRupt = max(PartData$norecovery)
+PartData$RS_tx = round(PartData$RS_nb /nrow(RS),4)
+PartData$rupture_tx = round(PartData$rupture/allRup,4)
+PartData$norecovery_tx = round(PartData$norecovery/finalRupt,4)
+PartData$direct_recovery_tx= round(PartData$direct_recovery /PartData$recovery,4)
+PartData$distant_next_recovery_tx= round(PartData$distant_next_recovery /PartData$recovery,4)
+PartData$next_recovery_tx= round(PartData$next_recovery /PartData$recovery,4)
+PartData$prev_recovery_tx= round(PartData$prev_recovery /PartData$recovery,4)
+PartData$distant_prev_recovery_tx= round(PartData$distant_prev_recovery /PartData$recovery,4)
+
+PartData$rereads_tx = 0
+s = s = sum(PartData[which(PartData$part_type=='section'),]$Rereadings)
+PartData[which(PartData$part_type=='section'),]$rereads_tx =  100 * round(PartData[which(PartData$part_type=='section'),]$Rereadings / sum(PartData[which(PartData$part_type=='section'),]$Rereadings),2)
+# for chapters
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$rereads_tx =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$rereads_tx)
+}
+
+
+PartData$nfacts = 0
+PartData$nfacts_readings = 0
+PartData$nfacts_rereading = 0
+PartData$nfacts_transition = 0
+PartData$nfacts_stop = 0
+sections =  PartData[which(PartData$part_type=='section'),]$part_index
+for(i in 1:length(sections)){
+  part =sections[i]
+  PartData[which(PartData$part_index==part),]$nfacts_readings=nrow(facts[which(facts$part_index==part & facts$classe=='Readings'),])
+  PartData[which(PartData$part_index==part),]$nfacts_rereading=nrow(facts[which(facts$part_index==part & facts$classe=='Rereading'),])
+  PartData[which(PartData$part_index==part),]$nfacts_transition=nrow(facts[which(facts$part_index==part & facts$classe=='Transition'),])
+  PartData[which(PartData$part_index==part),]$nfacts_stop=nrow(facts[which(facts$part_index==part & facts$classe=='Stop'),])
+}
+# Compute nfacts for chapters and tomes
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_readings =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_readings)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_rereading =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_rereading)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_transition =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_transition)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_stop =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_stop)
+}
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(tomesIds)){
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_readings =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_readings)
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_rereading =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_rereading)
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_transition =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_transition)
+  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_stop =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_stop)
+}
+PartData$nfacts = PartData$nfacts_readings + PartData$nfacts_rereading + PartData$nfacts_transition + PartData$nfacts_stop 
+
+save(PartData, file='PartData.rdata')
+colnames(PartData)[1]="id"
+colnames(PartData)[3]="parent_id"
+
+meltParts=melt(PartData, id.vars = 'id')
+PartsData.json = toJSON(unname(split(meltParts,1:nrow(meltParts))))
+cat(PartsData.json, file="structure.json")
+
+
   
  
   
   ####### NOMBRE DE VISITES TROP PEU
   
-  InterestData = Interest[which(Interest$type=='title-3'),]
+  InterestData = PartData[which(PartData$part_type=='section'),]
   
-  byParts = subset(InterestData, InterestData$Actions_nb<quantile(InterestData$Actions_nb,0.10,na.rm = TRUE), select=c(part_id,Actions_nb))  
-  byParts$classe="Readings"
+  byParts = subset(InterestData, InterestData$Actions_tx<quantile(InterestData$Actions_tx,0.10,na.rm = TRUE), select=c(part_id,Actions_tx))  
+  byParts$classe="Actions_tx"
   byParts$issueCode="RminVisit"
   byParts$content="Trop peu de visites"
-  val = round(round(median(InterestData$Actions_nb,na.rm = TRUE),0)/ byParts$Actions_nb,1)
-  byParts$description=paste("cette section est visitée", val,"fois moins que le nombre médian de visites des autres sections")
+  val = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byParts$Actions_tx,1)
+  byParts$description=paste("Cette section est visitée", val,"fois moins que le nombre moyen de visites des autres sections")
   byParts$suggestion_title="Revoir le titre et le contenu"
   byParts$suggestion_content="Est-ce que le titre de la section résume bien son contenu ? 
 Si oui :  Est-ce que cette section est  réellement intéressante par rapport au cours ? Si c'est le cas, peut-elle
 être reformulée, voire intégrée ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan du chapitre et du cours. 
   Le cas échéant, il faudrait penser à le reformuler"
   
-  InterestData = Interest[which(Interest$type=='title-2'),]
-  byChaps = subset(InterestData, InterestData$Actions_nb<quantile(InterestData$Actions_nb,0.10,na.rm = TRUE), select=c(part_id,Actions_nb))  
-  byChaps$classe="Readings"
+InterestData = PartData[which(PartData$part_type=='chapitre'),]
+  byChaps = subset(InterestData, InterestData$Actions_tx<quantile(InterestData$Actions_tx,0.10,na.rm = TRUE), select=c(part_id,Actions_tx))  
+  byChaps$classe="Actions_tx"
   byChaps$issueCode="RminVisit"
   byChaps$content="Trop peu de visites"
-  val = round(round(median(InterestData$Actions_nb,na.rm = TRUE),0)/ byChaps$Actions_nb,1)
-  byChaps$description=paste("cette section est visitée", val,"fois moins que le nombre médian de visites des autres chapitres")
+  val = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byChaps$Actions_tx,1)
+  byChaps$description=paste("Ce chapitre section est visité", val,"fois moins que le nombre médian de visites des autres chapitres")
   byChaps$suggestion_title="Revoir le titre et le contenu"
   byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
 Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
 être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. 
   Le cas échéant, il faudrait penser à le reformuler"
   
-  InterestData = Interest[which(Interest$type=='title-1'),]
-  byTomes = subset(InterestData, InterestData$Actions_nb<quantile(InterestData$Actions_nb,0.10,na.rm = TRUE), select=c(part_id,Actions_nb))  
-  byTomes$classe="Readings"
+InterestData = PartData[which(PartData$part_type=='partie'),]
+  byTomes = subset(InterestData, InterestData$Actions_tx<quantile(InterestData$Actions_tx,0.10,na.rm = TRUE), select=c(part_id,Actions_tx))  
+  byTomes$classe="Actions_tx"
   byTomes$issueCode="RminVisit"
   byTomes$content="Trop peu de visites"
-  val = round(round(median(InterestData$Actions_nb,na.rm = TRUE),0)/ byTomes$Actions_nb,1)
-  byTomes$description=paste("cette partie est visitée", val,"fois moins que le nombre médian de visites des autres parties.")
+  val = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byTomes$Actions_tx,1)
+  byTomes$description=paste("Cette partie est visitée", val,"fois moins que le nombre médian de visites des autres parties.")
   byTomes$suggestion_title="Revoir le titre et le contenu"
   byTomes$suggestion_content="Est-ce que le titre de la partie résume bien son contenu ? 
 Si oui :  Est-ce que cette partie est  réellement intéressante par rapport au cours ? Si c'est le cas, peut-elle
@@ -75,49 +236,182 @@ Si oui :  Est-ce que cette partie est  réellement intéressante par rapport au 
   
   ####### DUREE MIN
  
-  DurationData = structure[which(structure$type=='title-3'),c('part_id','mean.duration')]
+  DurationData = PartData[which(PartData$part_type=='section'),c('part_id','mean.duration')]
   
   byParts = DurationData[which(DurationData$mean.duration<quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
-  byParts$classe="Readings"
+  byParts$classe="mean.duration"
   byParts$issueCode="RminDuration"
   byParts$content="Temps de lecture trop court"
   val = round(median(DurationData$mean.duration,na.rm = TRUE) / byParts$mean.duration,0)
-  byParts$description=paste("cette section est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
+  byParts$description=paste("Cette section est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
   byParts$suggestion_title="Réviser ou supprimer la section"
-  byParts$suggestion_content="la section doit apporter plus d'informations nouvelles / intéressantes : 
+  byParts$suggestion_content="La section doit apporter plus d'informations nouvelles / intéressantes : 
   Si cette section est réellement nécessaire : peut-elle être reformulée, voire intégrée dans un autre chapitre ou une autre section du cours ?
   Sinon, la supprimer et revoir le plan du chapitre et du cours."
   
-  DurationData = structure[which(structure$type=='title-2'),c('part_id','mean.duration')]
-  
+  DurationData = PartData[which(PartData$part_type=='chapitre'),c('part_id','mean.duration')]
+
   byChaps = DurationData[which(DurationData$mean.duration<quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
-  byChaps$classe="Readings"
+  byChaps$classe="mean.duration"
   byChaps$issueCode="RminDuration"
   byChaps$content="Temps de lecture trop court"
   val = round(median(DurationData$mean.duration,na.rm = TRUE) / byChaps$mean.duration,0)
-  byChaps$description=paste("ce chapitre est plutôt survolé : son temps de lecture est",val,"fois inférieur au temps médian")
+  byChaps$description=paste("Ce chapitre est plutôt survolé : son temps de lecture est",val,"fois inférieur au temps médian")
   byChaps$suggestion_title="Réviser ou supprimer le chapitre"
-  byChaps$suggestion_content="le chapitre doit apporter plus d'informations nouvelles / intéressantes : 
+  byChaps$suggestion_content="Le chapitre doit apporter plus d'informations nouvelles / intéressantes : 
   Si  le chapitre est réellement nécessaire : peut-il être reformulé, voire intégré dans un autre chapitre ou  partie du cours ?
   Sinon, le supprimer et revoir le plan de la partie chapitre et du cours."
   
-  DurationData = structure[which(structure$type=='title-1'),c('part_id','mean.duration')]
+DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.duration')]
   
   byTomes = DurationData[which(DurationData$mean.duration<quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
-  byTomes$classe="Readings"
+  byTomes$classe="mean.duration"
   byTomes$issueCode="RminDuration"
   byTomes$content="Temps de lecture trop court"
   val = round(median(DurationData$mean.duration,na.rm = TRUE) / byTomes$mean.duration,0)
-  byTomes$description=paste("cette partie est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
+  byTomes$description=paste("Cette partie est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
   byTomes$suggestion_title="Réviser ou supprimer la partie"
-  byTomes$suggestion_content="la partie doit apporter plus d'informations nouvelles / intéressantes : 
+  byTomes$suggestion_content="La partie doit apporter plus d'informations nouvelles / intéressantes : 
   Si la partie est réellement nécessaire : peut-elle être reformulée, voire intégrée dans une partie du cours ?
   Sinon, la supprimer et revoir le plan du cours."
   
   
   minDuration =  rbind(byParts,byChaps,byTomes)
   
-  ####### DUREE MAX
+  
+
+####### MAX REREADINGS
+
+ReadsData  = PartData[which(PartData$part_type=='section'),c('part_id','rereadings_tx')]
+byParts = ReadsData[which(ReadsData$rereadings_tx>quantile(ReadsData$rereadings_tx,0.9,na.rm = TRUE)),]
+byParts$classe="rereadings_tx"
+byParts$issueCode="RRmax"
+byParts$content="Trop de relectures"
+byParts$description=paste("Cette section est  en moyenne relue",round(byParts$rereadings_tx/median(ReadsData$rereadings_tx),2),"fois plus que le nombre moyen de relecture des autres sections")
+byParts$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
+byParts$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
+La section doit être plus simple à  lire et comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l'essentiel.
+Sinon, regarder l'indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
+
+ReadsData  = PartData[which(PartData$part_type=='chapitre'),c('part_id','rereadings_tx')]
+byChaps = ReadsData[which(ReadsData$rereadings_tx>quantile(ReadsData$rereadings_tx,0.9,na.rm = TRUE)),]
+byChaps$classe="rereadings_tx"
+byChaps$issueCode="RRmax"
+byChaps$content="Trop de relectures"
+byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues",round(byChaps$rereadings_tx/median(ReadsData$rereadings_tx),2),"fois plus que le nombre moyen de relectures des sections des autres chapitres")
+byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
+byChaps$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
+Le chapitre et ses sections doivent être plus simples à  lire et comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à  l'essentiel.
+Sinon, regarder l'indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
+
+ReadsData = PartData[which(PartData$part_type=='partie'),c('part_id','rereadings_tx')]
+byTomes = ReadsData[which(ReadsData$rereadings_tx>quantile(ReadsData$rereadings_tx,0.9,na.rm = TRUE)),]
+byTomes$classe="rereadings_tx"
+byTomes$issueCode="RRmax"
+byTomes$content="Trop de relectures"
+byTomes$description=paste("Les sections de cette partie sont en moyenne relues",round(byTomes$rereadings_tx/median(ReadsData$rereadings_tx),2),"fois plus que le nombre moyen de relectures des sections des autres parties")
+byTomes$suggestion_title="Simplifier l'écriture de la partie et vérifier l'enchainement de ses chapitres"
+byTomes$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
+La partie  et ses chapitres et sections doivent être plus simples à  lire et comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à  l'essentiel.
+Sinon, regarder l'indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
+
+maxRereadings =  rbind(byParts,byChaps,byTomes)
+
+# arrets définitif de la lecture
+StopData = PartData[which(PartData$part_type=='section'),c('part_id','norecovery_tx')]
+byParts = StopData[which(StopData$norecovery_tx>quantile(StopData$norecovery_tx,0.9,na.rm = TRUE)),]
+byParts$classe="norecovery_tx"
+byParts$issueCode="StopRSExit"
+byParts$content=paste("Trop d'arrêts définitifs de la lecture sur cette section")
+byParts$description=paste(round(100*byParts$norecovery_tx,2), "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur cette section. ")
+byParts$suggestion_title="Réécrire et simplifier cette section"
+byParts$suggestion_content="Cette section a besoin d\'être plus simple à lire et à comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l\'essentiel"
+
+
+StopData = PartData[which(PartData$part_type=='chapitre'),c('part_id','norecovery_tx')]
+byChaps = StopData[which(StopData$norecovery_tx>quantile(StopData$norecovery_tx,0.9,na.rm = TRUE)),]
+byChaps$classe="norecovery_tx"
+byChaps$issueCode="StopRSExit"
+byChaps$content=paste("Trop d'arrêts définitifs de la lecture sur ce chapitre")
+byChaps$description=paste(round(100*byChaps$norecovery_tx,2), "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur ce chapitre.")
+byChaps$suggestion_title="Réécrire et simplifier ce chapitre"
+byChaps$suggestion_content="Ce chapitre a besoin d\'être plus simple à lire et à comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l\'essentiel"
+
+StopData = PartData[which(PartData$part_type=='partie'),c('part_id','norecovery_tx')]
+byTomes = StopData[which(StopData$norecovery_tx>quantile(StopData$norecovery_tx,0.9,na.rm = TRUE)),]
+byTomes$classe="norecovery_tx"
+byTomes$issueCode="StopRSExit"
+byTomes$content=paste("Trop d'arrêts définitifs de la lecture sur cette partie")
+byTomes$description=paste(round(100*byTomes$norecovery_tx), "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur cette partie.")
+byTomes$suggestion_title="Réécrire et simplifier cette partie"
+byTomes$suggestion_content="Cette partie a besoin d\'être plus simple à lire et à comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l\'essentiel"
+
+
+maxFinalStops =  rbind(byParts,byChaps,byTomes)  
+
+
+
+names(minVisits)[c(1,2)]=
+  names(minDuration)[c(1,2)]=
+  names(maxRereadings)[c(1,2)]=
+  names(maxFinalStops)[c(1,2)]=c("part_id","value")
+
+facts = 
+  rbind(
+    minVisits,
+    minDuration,
+    maxRereadings,
+    maxFinalStops)
+
+save(facts, file="nodejs.facts.rdata")
+
+
+library('jsonlite')
+library('reshape')
+
+
+facts.json = toJSON(unname(split(facts, 1:nrow(facts))))
+cat(facts.json, file="facts.json")
+
+
+
+############################################################################################""
+
+
+
+
+
+
+
+
+
+
+
+####### DUREE MAX
   DurationData = structure[which(structure$type=='title-3'),c('part_id','mean.duration')]
   
   byParts = DurationData[which(DurationData$mean.duration>quantile(DurationData$mean.duration,0.9,na.rm = TRUE)),]
@@ -167,57 +461,6 @@ Si oui :  Est-ce que cette partie est  réellement intéressante par rapport au 
  
   
   ############################################# II. RELECTURE ################################################
-  Reads = merge(Reads, structure[,c('part_id','type')])
-  ####### MAX REREADINGS
-  Reads$Rereadings = as.numeric(Reads$Rereadings) 
-  
-  ReadsData = Reads[which(Reads$type=='title-3'),c('part_id','Rereadings')]
-  byParts = ReadsData[which(ReadsData$Rereadings>quantile(ReadsData$Rereadings,0.9,na.rm = TRUE)),]
-  byParts$classe="Rereading"
-  byParts$issueCode="RRmax"
-  byParts$content="Trop de relectures"
-  byParts$description=paste("cette section est relue",byParts$Rereadings,"fois. Les autres sections sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
-  byParts$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
-  byParts$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
-  La section doit être plus simple à  lire et comprendre : 
-  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-  - vérifier l'enchaînement logique des propos
-  - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller à l'essentiel.
-    Sinon, regarder l’indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
-  
-  ReadsData = Reads[which(Reads$type=='title-2'),c('part_id','Rereadings')]
-  byChaps = ReadsData[which(ReadsData$Rereadings>quantile(ReadsData$Rereadings,0.9,na.rm = TRUE)),]
-  byChaps$classe="Rereading"
-  byChaps$issueCode="RRmax"
-  byChaps$content="Trop de relectures"
-  byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues",byChaps$Rereadings,"fois alors que les sections des autres chapitres sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
-  byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
-  byChaps$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
-  Le chapitre et ses sections doivent être plus simples à  lire et comprendre : 
-  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-  - vérifier l'enchaînement logique des propos
-  - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller à  l’essentiel.
-  Sinon, regarder l’indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
-  
-  ReadsData = Reads[which(Reads$type=='title-1'),c('part_id','Rereadings')]
-  byTomes = ReadsData[which(ReadsData$Rereadings>quantile(ReadsData$Rereadings,0.9,na.rm = TRUE)),]
-  byTomes$classe="Rereading"
-  byTomes$issueCode="RRmax"
-  byTomes$content="Trop de relectures"
-  byTomes$description=paste("Les sections de cette partie sont en moyenne relues",byTomes$Rereadings,"fois alors que les sections des autres parties sont en moyenne relues",round(median(Reads$Rereadings,na.rm = TRUE) ,0),"fois")
-  byTomes$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement de ses chapitres"
-  byTomes$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
-  La partie  et ses chapitres et sections doivent être plus simples à  lire et comprendre : 
-  - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-  - vérifier l'enchaînement logique des propos
-  - ajouter des exemples/analogies pour améliorer la compréhension
-  - éviter les dispersions : aller à  l’essentiel.
-  Sinon, regarder l’indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
-  
-  maxRereadings =  rbind(byParts,byChaps,byTomes)
-  
   
   ####### MAX REREADERS
   Reads$Rereaders = as.numeric(Reads$Rereaders) 
@@ -452,26 +695,26 @@ Si oui :  Est-ce que cette partie est  réellement intéressante par rapport au 
   byParts$classe="Transition"
   byParts$issueCode="TransProvShiftNext"
   byParts$content="Trop d\'arrivées depuis des sections suivantes"
-  byParts$description=paste('Dans',byParts$shifted_next,"% des cas, la section lue avant n’est pas celle qui précède mais est une partie située après cette section")
-  byParts$suggestion_title="Déplacer cette section ou l’englober dans une autre section ou chapitre"
-  byParts$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou section(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
+  byParts$description=paste('Dans',byParts$shifted_next,"% des cas, la section lue avant n'est pas celle qui précède mais est une partie située après cette section")
+  byParts$suggestion_title="Déplacer cette section ou l'englober dans une autre section ou chapitre"
+  byParts$suggestion_content="Cette section doit probablement être un pré-requis à la lecture d'autre(s) chapitre(s) ou section(s), n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
   
   byChaps =  ChapsProvenancesData[which(ChapsProvenancesData$shifted_next>25 & ChapsProvenancesData$chap_index>1),c('part_id','shifted_next')]
   byChaps$classe="Transition"
   byChaps$issueCode="TransProvShiftNext"
   byChaps$content="Trop d\'arrivées depuis des chapitres suivants"
-  byChaps$description=paste('Dans',byChaps$shifted_next,"% des cas, le chapitre lu avant n’est pas celui qui précède mais est un chapitre situé après ce chapitre")
-  byChaps$suggestion_title="Déplacer ce chapitre ou l’englober dans un autre chapitre ou partie"
-  byChaps$suggestion_content="Ce chapitre doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou partie(s), n’y a t-il pas une 
+  byChaps$description=paste('Dans',byChaps$shifted_next,"% des cas, le chapitre lu avant n'est pas celui qui précède mais est un chapitre situé après ce chapitre")
+  byChaps$suggestion_title="Déplacer ce chapitre ou l'englober dans un autre chapitre ou partie"
+  byChaps$suggestion_content="Ce chapitre doit probablement être un pré-requis à la lecture d'autre(s) chapitre(s) ou partie(s), n'y a t-il pas une 
 restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
   
   byTomes =  TomesProvenancesData[which(TomesProvenancesData$shifted_next>25 & TomesProvenancesData$tome_index>1),c('part_id','shifted_next')]
   byTomes$classe="Transition"
   byTomes$issueCode="TransProvShiftNext"
   byTomes$content="Trop d\'arrivées depuis des chapitres suivants"
-  byTomes$description=paste('Dans',byTomes$shifted_next,"% des cas, le chapitre lu avant n’est pas celui qui précède mais est un chapitre situé après ce chapitre")
-  byTomes$suggestion_title="Déplacer ce chapitre ou l’englober dans un autre chapitre ou partie"
-  byTomes$suggestion_content="Ce chapitre doit probablement être un pré-requis à la lecture d’autre(s) chapitre(s) ou partie(s), n’y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
+  byTomes$description=paste('Dans',byTomes$shifted_next,"% des cas, le chapitre lu avant n'est pas celui qui précède mais est un chapitre situé après ce chapitre")
+  byTomes$suggestion_title="Déplacer ce chapitre ou l'englober dans un autre chapitre ou partie"
+  byTomes$suggestion_content="Ce chapitre doit probablement être un pré-requis à la lecture d'autre(s) chapitre(s) ou partie(s), n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
   
   maxProvSHiftedNext =  rbind(byParts,byChaps,byTomes)
   
@@ -480,7 +723,7 @@ restructuration du cours/chapitre/partie plus intéressante pour éviter ce phé
   byParts$classe="Transition"
   byParts$issueCode="TransProvShiftPast"
   byParts$content="Trop d\'arrivées depuis des sections précédentes éloignées"
-  byParts$description=paste('Dans',byParts$shifted_past," la section lue avant n’est pas directement celle qui précède mais est une partie précédente éloignée.")
+  byParts$description=paste('Dans',byParts$shifted_past," la section lue avant n'est pas directement celle qui précède mais est une partie précédente éloignée.")
   byParts$suggestion_title="Revoir la section"
   byParts$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours ?"
   
@@ -488,7 +731,7 @@ restructuration du cours/chapitre/partie plus intéressante pour éviter ce phé
   byChaps$classe="Transition"
   byChaps$issueCode="TransProvShiftPast"
   byChaps$content="Trop d\'arrivées depuis des chapitre précédents éloignés"
-  byChaps$description=paste('Dans',byChaps$shifted_past," le chapitre  lu avant n’est pas directement celui qui précède mais est un chapitre précédent éloigné.")
+  byChaps$description=paste('Dans',byChaps$shifted_past," le chapitre  lu avant n'est pas directement celui qui précède mais est un chapitre précédent éloigné.")
   byChaps$suggestion_title="Revoir le chapitre"
   byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?"
   
@@ -496,7 +739,7 @@ restructuration du cours/chapitre/partie plus intéressante pour éviter ce phé
   byTomes$classe="Transition"
   byTomes$issueCode="TransProvShiftPast"
   byTomes$content="Trop d\'arrivées depuis des parties précédentes éloignées"
-  byTomes$description=paste('Dans',byTomes$shifted_past," la partie  lu avant n’est pas directement celle qui précède mais est une partie précédente éloignée.")
+  byTomes$description=paste('Dans',byTomes$shifted_past," la partie  lu avant n'est pas directement celle qui précède mais est une partie précédente éloignée.")
   byTomes$suggestion_title="Revoir la partie"
   byTomes$suggestion_content="Est-ce que la partie est bien positionnée dans le plan du cours ?"
   
@@ -512,7 +755,7 @@ PartsDestinationsData =merge(Parts_destinations_stats[,-c(7)], structure[,c('par
   byParts$classe="Transition"
   byParts$issueCode="TransDestPast"
   byParts$content="Trop de départs vers des sections précédentes"
-  byParts$description=paste("Dans",byParts$shifted_past,"% des cas, la section lue après n’est pas celle qui suit mais est une partie située avant cette section")
+  byParts$description=paste("Dans",byParts$shifted_past,"% des cas, la section lue après n'est pas celle qui suit mais est une partie située avant cette section")
   byParts$suggestion_title="Revoir cette section du cours"
   byParts$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours?"
 
@@ -525,7 +768,7 @@ ChapsDestinationsData =merge(Chaps_destinations_stats[,-c(7)], chaps)
   byChaps$classe="Transition"
   byChaps$issueCode="TransDestPast"
   byChaps$content="Trop de départ vers des chapitres précédents"
-  byChaps$description=paste("Dans",byChaps$shifted_past,"% des cas, le chapitre lu après n’est pas celui qui suit 
+  byChaps$description=paste("Dans",byChaps$shifted_past,"% des cas, le chapitre lu après n'est pas celui qui suit 
                             mais est un chapitre situé avant ce chapitre")
   byChaps$suggestion_title="Revoir ce chapitre du cours"
   byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours?"
@@ -539,7 +782,7 @@ byTomes = TomesDestinationsData[which(TomesDestinationsData$shifted_past>25),
   byTomes$classe="Transition"
   byTomes$issueCode="TransDestPast"
   byTomes$content="Trop de départ vers des parties précédentes"
-  byTomes$description=paste("Dans",byTomes$shifted_past,"% des cas, la partie lue après n’est pas celle qui suit 
+  byTomes$description=paste("Dans",byTomes$shifted_past,"% des cas, la partie lue après n'est pas celle qui suit 
                             mais est une partie située avant cette partie")
   byTomes$suggestion_title="Revoir cette partie du cours"
   byTomes$suggestion_content="Est-ce que cette partie est bien positionnée dans le plan du cours?"
@@ -553,7 +796,7 @@ maxDestSHiftedPast =  rbind(byParts,byChaps,byTomes)
   byParts$classe="Transition"
   byParts$issueCode="TransDestShiftNext"
   byParts$content="Trop de départs vers des sections suivantes éloignées"
-  byParts$description=paste("Dans",byParts$shifted_next,"% des cas, la section lue après n’est pas directement celle qui suit mais est une section suivante éloignée.")
+  byParts$description=paste("Dans",byParts$shifted_next,"% des cas, la section lue après n'est pas directement celle qui suit mais est une section suivante éloignée.")
   byParts$suggestion_title="Revoir cette section du cours"
   byParts$suggestion_content="Est-ce que cette section est bien positionnée dans le plan du cours ?"
 
@@ -561,7 +804,7 @@ maxDestSHiftedPast =  rbind(byParts,byChaps,byTomes)
   byChaps$classe="Transition"
   byChaps$issueCode="TransDestShiftNext"
   byChaps$content="Trop de déChaps vers des chapitres suivants éloignés"
-  byChaps$description=paste("Dans",byChaps$shifted_next,"% des cas, le chapitre lu après n’est pas directement celui qui suit mais est un chapitre suivant éloigné.")
+  byChaps$description=paste("Dans",byChaps$shifted_next,"% des cas, le chapitre lu après n'est pas directement celui qui suit mais est un chapitre suivant éloigné.")
   byChaps$suggestion_title="Revoir ce chapitre du cours"
   byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?"
 
@@ -569,7 +812,7 @@ maxDestSHiftedPast =  rbind(byParts,byChaps,byTomes)
   byTomes$classe="Transition"
   byTomes$issueCode="TransDestShiftNext"
   byTomes$content="Trop de déTomes vers des chapitres suivants éloignés"
-  byTomes$description=paste("Dans",byTomes$shifted_next,"% des cas, la partie lue après n’est pas directement celle qui suit mais est une partie suivante éloignée.")
+  byTomes$description=paste("Dans",byTomes$shifted_next,"% des cas, la partie lue après n'est pas directement celle qui suit mais est une partie suivante éloignée.")
   byTomes$suggestion_title="Revoir cette partie du cours"
   byTomes$suggestion_content="Est-ce que cette partie est bien positionnée dans le plan du cours ?"
 
@@ -628,59 +871,6 @@ byTomes$suggestion_content="Cette partie a besoin d\'être plus simple à lire e
   
 maxRStops =  rbind(byParts,byChaps,byTomes)  
 
-  # arrets définitif de la lecture
-parts=unique(structure[which(structure$type=='title-3'),]$part_id)
-StopData = Ruptures[which(Ruptures$part_id %in%parts),c('part_id','norecovery')]
-medianR = round(100* median(StopData$norecovery)/sum(StopData$norecovery),2)
-byParts = StopData[which(StopData$norecovery>quantile(StopData$norecovery,0.9,na.rm = TRUE)),]
-byParts$norecovery=round(byParts$norecovery * 100 / sum(StopData$norecovery),1)
-byParts$classe="Stop"
-byParts$issueCode="StopRSExit"
-byParts$content=paste("Trop d’arrêts définitifs de la lecture sur cette section")
-byParts$description=paste(byParts$norecovery, "des fins définitives de la lecture  (sans reprises ultérieures) se passent sur cette section. La valeur moyenne des arrêts définitifs sur les autres parties est de",medianR,"%")
-byParts$suggestion_title="Réécrire et simplifier cette section"
-byParts$suggestion_content="Ce chapitre a besoin d\'être plus simple à lire et à comprendre : 
-- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-- vérifier l'enchaînement logique des propos
-- ajouter des exemples/analogies pour améliorer la compréhension
-- éviter les dispersions : aller à l\'essentiel"
-
-chaps=unique(structure[which(structure$type=='title-2'),]$part_id)
-StopData = Ruptures[which(Ruptures$part_id %in%chaps),c('part_id','norecovery')]
-medianR = round(100* median(StopData$norecovery)/sum(StopData$norecovery),2)
-byChaps = StopData[which(StopData$norecovery>quantile(StopData$norecovery,0.9,na.rm = TRUE)),]
-byChaps$norecovery=round(byChaps$norecovery * 100 / sum(StopData$norecovery),1)
-byChaps$classe="Stop"
-byChaps$issueCode="StopRSExit"
-byChaps$content=paste("Trop d’arrêts définitifs de la lecture sur ce chapitre")
-byChaps$description=paste(byChaps$norecovery, "des fins définitives de la lecture  (sans reprises ultérieures) se passent sur ce chapitre. 
-                          La valeur moyenne des arrêts définitifs sur les autres chapitres est de",medianR,"%")
-byChaps$suggestion_title="Réécrire et simplifier cet chapitre"
-byChaps$suggestion_content="Ce chapitre a besoin d\'être plus simple à lire et à comprendre : 
-- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-- vérifier l'enchaînement logique des propos
-- ajouter des exemples/analogies pour améliorer la compréhension
-- éviter les dispersions : aller à l\'essentiel"
-
-tomes=unique(structure[which(structure$type=='title-1'),]$part_id)
-StopData = Ruptures[which(Ruptures$part_id %in%tomes),c('part_id','norecovery')]
-medianR = round(100* median(StopData$norecovery)/sum(StopData$norecovery),2)
-byTomes = StopData[which(StopData$norecovery>quantile(StopData$norecovery,0.9,na.rm = TRUE)),]
-byTomes$norecovery=round(byTomes$norecovery * 100 / sum(StopData$norecovery),1)
-byTomes$classe="Stop"
-byTomes$issueCode="StopRSExit"
-byTomes$content=paste("Trop d’arrêts définitifs de la lecture sur cette partie")
-byTomes$description=paste(byTomes$norecovery, "des fins définitives de la lecture  (sans reprises ultérieures) se passent sur cette partie. 
-                          La valeur moyenne des arrêts définitifs sur les autres partie est de",medianR,"%")
-byTomes$suggestion_title="Réécrire et simplifier cette partie"
-byTomes$suggestion_content="Cette partie a besoin d\'être plus simple à lire et à comprendre : 
-- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-- vérifier l'enchaînement logique des propos
-- ajouter des exemples/analogies pour améliorer la compréhension
-- éviter les dispersions : aller à l\'essentiel"
-
-  
-maxFinalStops =  rbind(byParts,byChaps,byTomes)  
 
 ####### Ruptures sur les sections
 parts=unique(structure[which(structure$type=='title-3'),]$part_id)
@@ -728,165 +918,6 @@ cat(facts.json, file="nodejs.facts.json")
 
 
 
-PartData = structure
-names(PartData)[1]=c('part_index')
-nParties = nrow(PartData[which(PartData$part_index==0),])
-PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))
-
-
-
-PartData[which(PartData$type=='title-1'),]$type='partie'
-PartData[which(PartData$type=='title-2'),]$type='chapitre'
-PartData[which(PartData$type=='title-3'),]$type='section'
-
-PartData = merge(PartData, Interest[,c(1,2,3,4,5)],all.x = TRUE)
-
-names(PartData)[2]='part_index'
-names(PartData)[3]='parent_id' 
-names(PartData)[4]='part_title'
-names(PartData)[5]='part_type'
-PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
-PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
-
-names(Parts_provenances_stats)=c("part_index","provenance_precedent","provenance_shifted_past", "provenance_identity","provenance_next_p","provenance_shifted_next","provenance_total_next")
-names(Parts_destinations_stats)=c("part_index","destination_precedent","destination_shifted_past", "destination_identity","destination_next_p","destination_shifted_next","destination_total_next") 
-PartData = merge(PartData, Parts_provenances_stats,  by = 'part_index',all.x = TRUE)
-PartData = merge(PartData, Parts_destinations_stats,  by = 'part_index',all.x = TRUE)
-# Compute provenance/destination for chapters
-chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
-for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_precedent)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_past)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_identity)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_next_p)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_next)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_total_next)
- 
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_precedent)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_past)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_identity)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_next_p)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_next)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_total_next)
-}
-
-tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
-for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_precedent)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_past)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_identity)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_next_p)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_shifted_next)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$provenance_total_next)
-  
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_precedent)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_past)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_identity)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_next_p)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_shifted_next)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==chaptersIds[i]),]$destination_total_next)
-}
-
-
-tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
-for(i in 1:length(tomesIds)){
-  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_precedent =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_precedent)
-  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_shifted_past =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_shifted_past)
-  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_identity =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_identity)
-  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_next_p =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_next_p)
-  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_shifted_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_shifted_next)
-  PartData[which(PartData$part_id==tomesIds[i]),]$provenance_total_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$provenance_total_next)
-  
-  PartData[which(PartData$part_id==tomesIds[i]),]$destination_precedent =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_precedent)
-  PartData[which(PartData$part_id==tomesIds[i]),]$destination_shifted_past =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_shifted_past)
-  PartData[which(PartData$part_id==tomesIds[i]),]$destination_identity =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_identity)
-  PartData[which(PartData$part_id==tomesIds[i]),]$destination_next_p =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_next_p)
-  PartData[which(PartData$part_id==tomesIds[i]),]$destination_shifted_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_shifted_next)
-  PartData[which(PartData$part_id==tomesIds[i]),]$destination_total_next =  mean(PartData[which(PartData$parent_id==tomesIds[i]),]$destination_total_next)
-}
-
-# Compute duration for chapters and tomes
-chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
-for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$max.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$max.duration)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$q1.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$q1.duration)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$q3.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$q3.duration)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$mean.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$mean.duration)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$median.duration =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$median.duration)
-}
-tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
-for(i in 1:length(tomesIds)){
-  PartData[which(PartData$part_id==tomesIds[i]),]$max.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$max.duration)
-  PartData[which(PartData$part_id==tomesIds[i]),]$q1.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$q1.duration)
-  PartData[which(PartData$part_id==tomesIds[i]),]$q3.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$q3.duration)
-  PartData[which(PartData$part_id==tomesIds[i]),]$mean.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$mean.duration)
-  PartData[which(PartData$part_id==tomesIds[i]),]$median.duration =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$median.duration)
-}
-
-PartData$Readers_tx = round(PartData$Readers / nusers, 4)
-PartData$RS_tx = round(PartData$RS_nb / nrow(nodejs.RS), 4)
-
-
-PartData$Actions_tx = round(PartData$Actions_nb / nrow(nodejs), 4)
-PartData$Readers_tx = round(PartData$Readers / nusers, 4)
-allRup = max(PartData$rupture)
-finalRupt = max(PartData$norecovery)
-PartData$RS_tx = round(PartData$RS_nb /nrow(RS),4)
-PartData$rupture_tx = round(PartData$rupture/allRup,4)
-PartData$norecovery_tx = round(PartData$norecovery/finalRupt,4)
-PartData$direct_recovery_tx= round(PartData$direct_recovery /PartData$recovery,4)
-PartData$distant_next_recovery_tx= round(PartData$distant_next_recovery /PartData$recovery,4)
-PartData$next_recovery_tx= round(PartData$next_recovery /PartData$recovery,4)
-PartData$prev_recovery_tx= round(PartData$prev_recovery /PartData$recovery,4)
-PartData$distant_prev_recovery_tx= round(PartData$distant_prev_recovery /PartData$recovery,4)
-
-PartData$rereads_tx = 0
-s = s = sum(PartData[which(PartData$part_type=='section'),]$Rereadings)
-PartData[which(PartData$part_type=='section'),]$rereads_tx =  100 * round(PartData[which(PartData$part_type=='section'),]$Rereadings / sum(PartData[which(PartData$part_type=='section'),]$Rereadings),2)
-# for chapters
-chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
-for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$rereads_tx =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$rereads_tx)
-}
-
-
-PartData$nfacts = 0
-PartData$nfacts_readings = 0
-PartData$nfacts_rereading = 0
-PartData$nfacts_transition = 0
-PartData$nfacts_stop = 0
-sections =  PartData[which(PartData$part_type=='section'),]$part_index
-for(i in 1:length(sections)){
-  part =sections[i]
-  PartData[which(PartData$part_index==part),]$nfacts_readings=nrow(facts[which(facts$part_index==part & facts$classe=='Readings'),])
-  PartData[which(PartData$part_index==part),]$nfacts_rereading=nrow(facts[which(facts$part_index==part & facts$classe=='Rereading'),])
-  PartData[which(PartData$part_index==part),]$nfacts_transition=nrow(facts[which(facts$part_index==part & facts$classe=='Transition'),])
-  PartData[which(PartData$part_index==part),]$nfacts_stop=nrow(facts[which(facts$part_index==part & facts$classe=='Stop'),])
-}
-# Compute nfacts for chapters and tomes
-chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
-for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_readings =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_readings)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_rereading =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_rereading)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_transition =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_transition)
-  PartData[which(PartData$part_id==chaptersIds[i]),]$nfacts_stop =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$nfacts_stop)
-}
-tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
-for(i in 1:length(tomesIds)){
-  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_readings =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_readings)
-  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_rereading =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_rereading)
-  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_transition =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_transition)
-  PartData[which(PartData$part_id==tomesIds[i]),]$nfacts_stop =  sum(PartData[which(PartData$parent_id==tomesIds[i]),]$nfacts_stop)
-}
-PartData$nfacts = PartData$nfacts_readings + PartData$nfacts_rereading + PartData$nfacts_transition + PartData$nfacts_stop 
-
-save(PartData, file='PartData.rdata')
-colnames(PartData)[1]="id"
-colnames(PartData)[3]="parent_id"
-
-meltParts=melt(PartData, id.vars = 'id')
-PartsData.json = toJSON(unname(split(meltParts,1:nrow(meltParts))))
-cat(PartsData.json, file="structure.json")
 
 
 ########## RS stats

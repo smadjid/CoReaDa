@@ -37,7 +37,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
      
       $scope.courseParts =[];
       $scope.courseChapters =[];
-      $scope.courseGranularity =[];
+      
       $scope.context = {};
       $scope.course ={}
       $scope.formData ='';
@@ -45,9 +45,6 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.chartType = 'Actions_tx';
       $scope.globalChartSelector = 'Actions_tx';
       $scope.elementTypeSelector = 'part';
-      $scope.chartedElement = {};
-      $scope.factChart ={};
-      $scope.componentChart ={};        
       $scope.sectionDisplay = false;
       $scope.context.statChart = false;
       
@@ -61,7 +58,6 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.sectionPstatSelector = 'Actions_tx';
       $scope.coursePstatSelector = 'time';
       $scope.studiedPart = '';
-      $scope.context.importantFacts=[];
       $scope.context.otherFacts=[];
 
       $scope.indicatorsHeader=[
@@ -78,7 +74,6 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
      
         $scope.course = course;
         $scope.chartType = 'Actions_tx';
-        $scope.chartedElement = course;
         $scope.selectedElement = course;
   
         completeCourseParts($scope.course, $scope.courseParts, $scope.courseChapters);
@@ -116,7 +111,7 @@ $scope.toggleSectionDisplay = function(){
  
   //$(window).trigger('resize')
 }
-$scope.toggleSectionDisplay();
+
 $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
             if(newValue ==='Readings')
               $scope.globalChartSelector = 'Actions_tx'
@@ -305,7 +300,6 @@ var resetPath =function(){
   $('#divOverlay').css('visibility','hidden');
   $('#divHoverOverlay').css('visibility','hidden');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
-  $('.inspector-important-item-selected').removeClass('inspector-important-item-selected');
     for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 'notRelevantTask' }
 
@@ -694,7 +688,6 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
  
   var facts  = $.grep(element.facts, function(e){return ($.inArray(e.issueCode, issuesCode)>-1)}); 
   angular.forEach(facts, function(ind){ind.partId=element.id, ind.partType=type});
-console.log('type: '+element.elementType);
   return facts
 
 }
@@ -882,30 +875,9 @@ var findCourseIssues = function(){
 
  $scope.context.Facts=allFacts;
  
- $scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
- $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
-
+ 
 }
 
-var findImportantCourseIssues = function(issueCode){  
-  var allFacts=[];
-
-  $scope.courseChapters.forEach(function(chapter) {
-    chapter.parts.forEach(function(part) {
-      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
-      if(typeof f != 'undefined')
-        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
-
-    })   
-  });
-
-  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
-  if(typeof maxValue != 'undefined')
-    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
-  else 
-    return -1
-
-}
 
 
 var findTomeIssues = function(tomeId){  
@@ -921,30 +893,7 @@ var tomeChaps = $.grep($scope.course.tomes, function(e){ return e._id === tomeId
   });
 
  $scope.context.Facts=allFacts;
- $scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
- $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
-
-}
-var findImportantTomeIssues = function(issueCode, tomeId){  
-  var allFacts=[];
  
-  var tomeChaps = $.grep($scope.course.tomes, function(e){ return e._id === tomeId; })[0].chapters;
-
-  tomeChaps.forEach(function(chapter) {
-    chapter.parts.forEach(function(part) {
-      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
-      if(typeof f != 'undefined')
-        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
-
-    })   
-  });
-
-  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
-  if(typeof maxValue != 'undefined')
-    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
-  else 
-    return -1
-
 }
 
 var findChapterIssues = function(chapterId){  
@@ -960,28 +909,6 @@ var chapter = $.grep($scope.courseChapters, function(e){ return e._id === chapte
   });
 
  $scope.context.Facts=allFacts;
-$scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
- $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
-
-}
-var findImportantChapterIssues = function(issueCode, chapterId){  
-  var allFacts=[];
-  var chapter = $.grep($scope.courseChapters, function(e){ return e._id === chapterId; })[0]; 
-
-  
-    chapter.parts.forEach(function(part) {
-      var f = part.facts.filter(function(e){ return ((e.issueCode === issueCode))} )[0];
-      if(typeof f != 'undefined')
-        allFacts.push({'chapterId':chapter._id, 'partId':part._id, 'fact':f})
-
-  
-  });
-
-  var maxValue = d3.max(allFacts, function(item){return item.fact.value});
-  if(typeof maxValue != 'undefined')
-    return allFacts.filter(function(e){return e.fact.value === maxValue})[0]
-  else 
-    return -1
 
 }
 
@@ -990,12 +917,10 @@ var findPartIssues = function(partId){
 var part = $.grep($scope.courseParts, function(e){ return e._id === partId; })[0]; 
 
  $scope.context.Facts=part.facts;
- $scope.context.importantFacts = $.grep(allFacts, function(e){ return  e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''} }); 
- $scope.context.otherFacts = $.grep(allFacts, function(e){ return  !(e.issueCode in {'RVminVisit':'','RminDuration':'','RRermax':'','TransProvShiftNext':'','TransDestPast':'','StopRSExit':''}) }); 
 
 }
 
-var computeImportantFacts = function(granularity, id){
+var computeGranuleFacts = function(granularity, id){
 var results=[];
 switch(granularity){
   case 'course':
@@ -1019,67 +944,6 @@ switch(granularity){
 var loadContext = function(){
   
    var url = location.hash.slice(1);
-
-   var searchPattern = new RegExp('^' + 'fact_', 'i');
-      if (searchPattern.test(url)) 
-        {
-          $scope.inspectorDisplaySrc='important-issue';
-          loadImportantFact(url)
-        }
-      else
-        loadElements(url)
-  
-}
-
-
-
-var loadImportantFact = function(url){
-  url = url.split('_')[1];
-  
-  var element = resolveRoute(url);
-
-   $scope.context.route = url;
-   
-   $scope.context.Tasks =element.todos; 
-   
-   var route = url;
-   resetPath();
-  var regExp = RegXpURL(route);
-  
-  var task =  regExp.task; 
-  var indicator = regExp.indicator;
-
-  var path = regExp.arr; 
-  var arr = path.split(',');  
-  var course  = $scope.course;
-  var tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
-  var chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-  var part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0];   
-  var fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0]; 
-  var partElt = $('.part_index[data-part ='+part.id+']'); 
-
-   $scope.studiedPart = part.id
-
-   $scope.context.importantFact = fact;
-
-
-     
-     $scope.context.taskText ='(nouvelle tâche pour cette section)';
-     $scope.context.inspector_title = "Chapitre : "+ chap.title;
-     $scope.context.importantFact.section=part.title
-     $scope.context.url = chap.url
-
-     window.setTimeout(function() {
- displayImportantIssue(route, task, part, indicator);
- $('span[data-fact-id ="fact_'+fact._id+'"]').parent().addClass('chosenPart');
-        }, 10);
-
-
-}
-
-        
- var loadElements = function(url){ 
- 
  
   var element = resolveRoute(url);
 
@@ -1116,7 +980,7 @@ var loadImportantFact = function(url){
          
           
           displayCourseInfos(indicator, task);
-          computeImportantFacts('course');
+          computeGranuleFacts('course');
 
                //$(':focus').blur();
           
@@ -1130,7 +994,7 @@ var loadImportantFact = function(url){
   
 
    tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
-   computeImportantFacts('tome', tome._id);
+   computeGranuleFacts('tome', tome._id);
    partElt = $('.tome_index[data-part ='+tome.id+']')[0];
    $scope.context.taskText ='(nouvelle tâche pour cette partie)';
    
@@ -1138,7 +1002,6 @@ var loadImportantFact = function(url){
    
 
    window.setTimeout(function() {
-    $scope.sectionDisplay = false;
  displayTomeInfos(partElt, task);
  
         }, 10);
@@ -1151,7 +1014,7 @@ var loadImportantFact = function(url){
   
   tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
    chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-   computeImportantFacts('chapter', chap._id);
+   computeGranuleFacts('chapter', chap._id);
 
    partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
    
@@ -1174,7 +1037,7 @@ var loadImportantFact = function(url){
   
   tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
    chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-   computeImportantFacts('chapter', chap._id);
+   computeGranuleFacts('chapter', chap._id);
 
    partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
    
@@ -1284,21 +1147,6 @@ if(arr.length ==5) {
 
 
 }
-
-var scale = chroma.scale('OrRd');
-$scope.computeBgColor =function(val){
-
-  return   scale(val/5).hex();
-}
-
-$scope.computeTextColor =function(val){
-  if(val ==0) return 'rgb(34, 34, 34)';
-  if(val ==1) return '#354831';
-  if(val ==2) return '#716F6F';
-  if(val ==3) return '#F5F5F5';
-  if(val>=4) return 'white';
-}
-
 var RegXpURL =function(url){
   
   //URL : #course,chapter,part,fact;task@indicator
@@ -1587,38 +1435,6 @@ $('.selectedTask').focus().blur().focus();
    
 
 }
-var displayImportantIssue =function(url, task, part, indicator){   
-  resetPath();
-
-  
-  
-  var regExp = RegXpURL(url); 
-  url =regExp.arr;
-     $scope.context.route = url;     
-  var element = resolveRoute(url);
-
-  
-
-  var parentUrl = url.substr(0, url.lastIndexOf(','))+'@'+indicator; 
-  
-  $scope.context.Facts =computeSubFacts(resolveRoute(parentUrl), indicator);
-  $('.inspector-important-item[data-fact ="'+element._id+'"]').addClass('inspector-important-item-selected');
-
-  showTasksAndFacts(element, indicator, task);  
-  
-    $scope.barchartData = [element.d3];
-  
- 
-$("#inspectorScroller").scrollTop(0);
-$("#inspectorScroller").perfectScrollbar('update');
-
-
-
-  //$(':focus').blur(); 
-
-
-  }
-
 var displayIssue =function(url, task, part, indicator){   
   //$(':focus').blur(); 
   resetPath();
@@ -1671,11 +1487,6 @@ var element = resolveRoute(url);
      $scope.context.Tasks =element.todos; 
      $scope.context.Facts =computeSubFacts(element, indicator);
 
-     //console.log(computeSubFacts(element, indicator));
-
-    
-     
-     
 var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text() ;
      if(nb ==0) nb ="aucune (0) remarque  relative ";
      if(nb ==1) nb ="une (1) remarque relative ";

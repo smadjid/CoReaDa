@@ -446,12 +446,12 @@ module.exports = function(Courses) {
        }
        
 
-         
+console.log(jsonFacts)         
        for (var i = 0; i <=partsCount ; i++){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
+            var partId = 0;
 
-var partId = 0;
             for(var key in partProps) {
                     if(partProps[key].variable=='part_id') partId = partProps[key].value
                 }
@@ -461,7 +461,7 @@ var partId = 0;
                     if(jsonFacts[key].part_id==partId) partFacts.push(jsonFacts[key])
                 }
 
-            console.log(partFacts)
+        //    console.log(partFacts)
             
  
             computePart(i, partProps, partFacts);
@@ -484,7 +484,7 @@ var partId = 0;
                     if(jsonFacts[key].part_id==partId) partFacts.push(jsonFacts[key])
                 }
 
-            console.log(partFacts)
+          //  console.log(partFacts)
             computePart(i, partProps, partFacts);
             
       
