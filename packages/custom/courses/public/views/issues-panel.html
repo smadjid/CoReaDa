@@ -4,7 +4,7 @@
 <div class="errors-display" >  
 <!--<div class="errors-display" >  -->    
 
-<div class="inspector-item"  ng-repeat="fact in context.Facts" data-fact={{fact._id}} multiple  ng-click='triggerFactClick($event)' data-path={{fact.route}}@{{fact.classof}}>
+<div class="inspector-item"  ng-repeat="fact in context.Facts" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 <!--<div class="inspector-item" ng-repeat="fact in focusStudy.studiedElt.facts" multiple>-->
 
   <uib-accordion close-others="oneAtATime" >
@@ -19,7 +19,10 @@
     </td>
     <td>
       <h4>{{fact.d3.title}}</h4>
-      <d3-chart data='fact.d3' d3opts='{type:"fact",issueCode:fact.issueCode, issueClass:fact.classof}'></d3-chart>
+      <d3-chart data='context.d3' d3opts='{type:"fact",issueCode:fact.classof, issueClass:fact.classof, elementType:fact.partType, elementId:fact.partId}'></d3-chart>
+
+   <!--   <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:fact.partType,elementId:fact.partId,issueCode:fact.issueCode}'></d3-chart>-->
+
     </td>
     </table>
     </uib-accordion-group>

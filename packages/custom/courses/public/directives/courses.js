@@ -6,65 +6,132 @@ angular.module('mean.courses')
         scope:{
           data:'=',
           indicatorCode:'=',
-          granularity:'='
+          issueCode:'=',
+          byParts:'='
         },
 
         link: function (scope, element, attrs) {
 scope.chapters =[]
 var scale = chroma.scale('OrRd');
-var computeBgColor =function(val){
+var computeBgColor =function(val, indicator){
 
-  return   scale(val/5).hex();
+  if(indicator==='mean.duration') val = val /100;
+
+  return   scale(val).hex();
 }
 
-var computeTextColor =function(val){
-  if(val ==0) return '#464242';
-  if(val ==1) return '#354831';
-  if(val ==2) return '#716F6F';
-  if(val ==3) return '#F5F5F5';
-  if(val>=4) return 'white';
-}
-
-var lineGenerator = function(data, indicator){
-}
-var issuesTableDisplay=function(){
-  
+var tableIssuesDisplay=function(){
   d3.select(element[0]).selectAll('td').remove();
-
-var html=[];
-var heatMapColorforValue=function (value){
-  value = value;
-  var h = (1.0 - value) * 60;
-  return "hsl(" + h + ", 80%, 50%)";
+  if(scope.byParts)
+    partsIssuesDisplay()
+  else
+    chaptersIssuesDisplay()    
 }
 
+var partsIssuesDisplay=function(){
+var html=[];
 
-var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
+var maxValue = 0;
+var maxPart = 0;
 
+  scope.chapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+    
+      var allFacts = part.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
+      
+      
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value);
+      
+      var td=$("<td></td>");
+       $(td)
+        .attr('class','td_issue')
+               .attr('data-part',part.id)
+               .attr('colspan',1)
+               .attr('data-indicator',scope.indicatorCode)
+               .attr('data-path',part.route+'@'+scope.indicatorCode)
+               .append('<span></span>')
+               .css('background-color',computeBgColor(partData, scope.indicatorCode));
+
+      allFacts.forEach(function(fact){  
+        var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
+        span
+        .css('color','red')
+        .attr('data-fact-id',+fact._id )
+        .on("click", function(d) {    
+                
+               // if("#"+d.route!==window.location.hash)
+                 window.location.hash = '#'+part.route+'@'+scope.indicatorCode;
+              })
+
+        if(parseFloat(fact.value) > maxValue)
+        {maxValue = parseFloat(fact.value); maxPart=part.id}
+
+
+
+        $(td).append(span) });
+
+      
+   
+       html.push(td)  ;
+
+
+     })
+  })
+if(html.length>0){  
+
+  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0]).children('.fact')
+      .addClass("glyphicon glyphicon-warning-sign")
+      .css('color','blue');
+
+
+  
+}
+  
+  $(element).append(html);
+
+  
+
+}
+
+var chaptersIssuesDisplay=function(){
+var html=[];
+
+var maxValue = 0;
+var maxChap = 0;
 
   scope.chapters.forEach(function(chapter, i) {
     
-    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode === scope.indicatorCode))} );
+    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
     
-    var chapData = chapter.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value;
-    console.log(chapData);
+    
+    var chapData = parseFloat(chapter.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value);
+    
     var td=$("<td></td>");
      $(td)
       .attr('class','td_issue')
              .attr('data-part',chapter.id)
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',scope.indicatorCode)
-             .attr('data-path',chapter.route+'@'+attrs.classof)
-             .append('<span>'+chapData+'</span>')
-             .css('background-color',heatMapColorforValue(0));
+             .attr('data-path',chapter.route+'@'+scope.indicatorCode)
+             .append('<span></span>')
+             .css('background-color',computeBgColor(chapData, scope.indicatorCode));
 
     allFacts.forEach(function(fact){  
-      var span = $("<span role='button'  style='padding:5px'></span>");
-      span.addClass("glyphicon glyphicon-warning-sign")
+      var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
+      span
       .css('color','red')
-      .attr('data-fact-id','fact_'+fact._id )
-      //.text(fact.classof)
-      .show(500, "linear");
+      .attr('data-fact-id',+fact._id )
+      .on("click", function(d) {    
+              
+             // if("#"+d.route!==window.location.hash)
+               window.location.hash = '#'+chapter.route+'@'+scope.indicatorCode;
+            })
+
+      if(parseFloat(fact.value) > maxValue)
+      {maxValue = parseFloat(fact.value); maxChap=chapter.id}
+
+
+
       $(td).append(span) });
 
     
@@ -74,8 +141,15 @@ var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
 
 
   })
+if(html.length>0){  
+
+  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0]).children('.fact')
+      .addClass("glyphicon glyphicon-warning-sign")
+      .css('color','blue');
 
 
+  
+}
   
   $(element).append(html);
 
@@ -86,19 +160,19 @@ var colorScale = d3.scale.linear().domain([0, 10]).range(['#ddd', 'orange']);
 
   scope.$watch('data', function(){
    
-  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.granularity==='undefined') return;
+  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.byParts==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
       scope.chapters.push( chapter ); 
     });
   });   
-         issuesTableDisplay()
+         tableIssuesDisplay()
         }, true);
      
 
-scope.$watch('granularity', function(){
-  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.granularity==='undefined') return;
+scope.$watch('byParts', function(){
+  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.byParts==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -106,13 +180,14 @@ scope.$watch('granularity', function(){
     });
   });   
     
-         issuesTableDisplay()
+         tableIssuesDisplay()
         
     
           }, true); 
 
 scope.$watch('indicatorCode', function(){
-  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.granularity==='undefined') return;
+
+  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.byParts==='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -120,7 +195,7 @@ scope.$watch('indicatorCode', function(){
     });
   });   
     
-         issuesTableDisplay()
+         tableIssuesDisplay()
         
     
           }, true); 
@@ -128,15 +203,6 @@ scope.$watch('indicatorCode', function(){
         }
     }
 }])
-
-
-
-
-
-
-
-
-
 
 
 
@@ -938,8 +1004,8 @@ if(scope.d3opts.elementType!=='part')
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
               .attr('stroke', 'white')
-               .attr("fill", function(d) { return ("#"+d.route===window.location.hash)? '#45348A':'#008cba'; });
-
+               .attr("fill", function(d) {console.log(d.part); return (d.part==scope.d3opts.elementId)? '#45348A':'#008cba'; });
+console.log('id:' +scope.d3opts.elementId);
 
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0); 
@@ -1819,6 +1885,18 @@ if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
 
   if(scope.d3opts.issueCode in {'provenance':'','destination':''})
       nodeChart(scope, element);
+
+}
+else
+if(scope.d3opts.type === 'fact'){
+  
+
+if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+                        'rereadings_tx':'','norecovery_tx':''
+                      })  inspectorCharts(scope, element,'titre')
+
+  /*if(scope.d3opts.issueCode in {'provenance':'','destination':''})
+      nodeChart(scope, element);*/
 
 }
 else

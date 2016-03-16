@@ -7,7 +7,11 @@
         </tr>
 
         <tr class='chapters-header'>
-        <th><b>Chapitres</b></th>         
+        <th><b>Chapitres</b><br/><br/>
+
+        <span role='button' ng-attr-title="{{sectionDisplay && 'Masquer les sections' || 'Afficher les sections' }}" style='color:red' ng-class="{'glyphicon glyphicon-menu-down': !sectionDisplay, 'glyphicon glyphicon-menu-up': sectionDisplay}" ng-click='toggleSectionDisplay()'></span>
+
+        </th>         
             <th role='button' ng-click='triggerClick($event)'  class="chapter_index" ng-repeat="chapter in courseChapters"  colspan={{chapter.parts_count}}  data-part={{chapter.id}} data-path={{chapter.route}}>
               <span class="display-chapter-info"  > {{chapter.title}}</span>
             </th>  
@@ -23,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td granularity="context.tableGranularity" ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" data="course" >
+        <tr table-td by-parts='sectionDisplay' ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="course" >
             <th  role='button' class="indicators-header" data-indicator={{indicator.name}} ng-click='triggerClick($event)' data-path='@'+{{indicator.name}}>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >{{indicator.display}}</span>
