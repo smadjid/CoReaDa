@@ -1,5 +1,11 @@
 PartData = structure
+
 names(PartData)[1]=c('part_index')
+
+#################### Récupération de la taille ####################
+oldstructure
+PartData = merge(PartData, oldstructure[,c('part_id','part_size')], all.x = TRUE)
+####################FIN####################
 nParties = nrow(PartData[which(PartData$part_index==0),])
 PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))
 

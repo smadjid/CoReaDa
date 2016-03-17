@@ -16,6 +16,7 @@ var scale = chroma.scale('OrRd');
 var computeBgColor =function(val, indicator){
 
   if(indicator==='mean.duration') val = val /100;
+  if(indicator==='speed') val = val /300;
 
   return   scale(val).hex();
 }
@@ -82,6 +83,9 @@ if(html.length>0){
   $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0]).children('.fact')
       .addClass("glyphicon glyphicon-warning-sign")
       .css('color','red')
+      .css('background-color','rgba(255,255,255,0.57)')
+      .css('border','1px solid rgba(0, 220, 0, 0.14902)')
+      .css('padding','3px')
       .css('font-size','14px');
 
 
@@ -130,24 +134,28 @@ var maxChap = 0;
 
       if(parseFloat(fact.value) > maxValue)
       {maxValue = parseFloat(fact.value); maxChap=chapter.id}
-
-
+ 
+ 
 
       $(td).append(span) });
 
-    
+   
  
      html.push(td)  ;
 
 
 
   })
+  
 if(html.length>0){  
 
 
   $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0]).children('.fact')
       .addClass("glyphicon glyphicon-warning-sign")
       .css('color','red')
+      .css('background-color','rgba(255,255,255,0.57)')
+      .css('border','1px solid rgba(0, 220, 0, 0.14902)')
+      .css('padding','3px')
       .css('font-size','14px');
 
 
@@ -763,7 +771,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
     function resize(){
       if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                    'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })              scope.globalRenderBars(scope.data, scope.d3opts.issueCode)
@@ -778,7 +786,7 @@ svg.append("g").selectAll("g.linklabelholder")
 scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
-                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'','speed':'',
                       'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })              scope.globalRenderBars(scope.data, scope.d3opts.issueCode)
             else if(scope.d3opts.issueCode in {'recoveries':''})
@@ -1177,7 +1185,6 @@ legend.append("rect")
         };
 
 scope.inspectorRenderTransitionNodes = function(data, classe) {
-  console.log(classe);
 var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
   var gap = parseInt(width /6) ;
   var radius = gap / 4;
@@ -1375,7 +1382,7 @@ scope.$watch(function(){
 
     function resize(){
       if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
@@ -1386,7 +1393,7 @@ scope.$watch(function(){
 
 scope.$watch('data', function(){
   if(typeof scope.data ==='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
@@ -1396,7 +1403,7 @@ scope.$watch('data', function(){
 
 scope.$watch('d3opts', function(){
   if(typeof scope.data ==='undefined') return;
-  if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+  if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
                       })              scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
@@ -1609,7 +1616,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
 if(scope.d3opts.type === 'global') 
 {  
-if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  globalCharts(scope, element)
@@ -1624,7 +1631,7 @@ else
 if(scope.d3opts.type === 'inspector'){
   
 
-if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  inspectorCharts(scope, element,'titre')
@@ -1637,7 +1644,7 @@ else
 if(scope.d3opts.type === 'fact'){
   
 
-if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
+if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','norecovery_tx':''
                       })  inspectorCharts(scope, element,'titre')
 

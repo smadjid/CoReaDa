@@ -1755,3 +1755,30 @@ td,tr,th,  div{
     transition: all 0.3s linear;
 }
 
+@keyframes myChange {
+    from {
+        height: 100px;
+    } to {
+        height: 0;
+    }
+}
+
+.tr {
+  -webkit-transition: 1s;
+}
+
+.tr.ng-enter {
+  opacity: 0;
+}
+
+.tr.ng-leave {
+  opacity: 1;
+}
+
+.tr.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.tr.ng-leave.ng-leave-active {
+  opacity: 0;
+}

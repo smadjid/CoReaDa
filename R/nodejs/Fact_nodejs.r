@@ -36,7 +36,28 @@ PartData[which(PartData$type=='title-1'),]$type='partie'
 PartData[which(PartData$type=='title-2'),]$type='chapitre'
 PartData[which(PartData$type=='title-3'),]$type='section'
 
-PartData = merge(PartData, Interest[,c(1,2,3,4,5)],all.x = TRUE)
+
+
+#################### Récupération de la taille ####################
+oldstructure
+PartData = merge(PartData, oldstructure[,c('part_id','part_size')], all.x = TRUE)
+
+chaptersIds = PartData[which(PartData$part_type=='chapitre'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$size = PartData[which(PartData$part_id==chaptersIds[i]),]$size +
+    sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$size)
+  
+}
+
+tomesIds = PartData[which(PartData$part_type=='partie'),]$part_id
+for(i in 1:length(chaptersIds)){
+  PartData[which(PartData$part_id==chaptersIds[i]),]$size =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$size)
+  
+}
+
+PartData$speed=round(PartData$size/(PartData$mean.duration/60),2)
+save(PartData, file='PartData.rdata')
+####################FIN####################
 
 names(PartData)[2]='part_index'
 names(PartData)[3]='parent_id' 
@@ -278,6 +299,40 @@ DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.du
   
   minDuration =  rbind(byParts,byChaps,byTomes)
   
+################## Vitesse MIN
+  
+  SpeedData = PartData[which(PartData$part_type=='section'),c('part_id','speed')]
+  
+  byParts = SpeedData[which(SpeedData$speed>quantile(SpeedData$speed,0.90,na.rm = TRUE) ),]
+  byParts$classe="speed"
+  byParts$issueCode="RmaxSpeed"
+  byParts$content="Lecture trop rapide"
+  val = round(byParts$speed / median(SpeedData$speed,na.rm = TRUE) ,2)
+  byParts$description=paste("Cette section comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant",val,"fois supéreire à la vitesse moyenne de lecture des autres section")
+  byParts$suggestion_title="Réviser ou supprimer la section"
+  byParts$suggestion_content="La section doit être plus simple à lire/comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l'essentiel"
+  
+  SpeedData = PartData[which(PartData$part_type=='chapitre'),c('part_id','speed')]
+  byChaps = SpeedData[which(SpeedData$speed>quantile(SpeedData$speed,0.90,na.rm = TRUE) ),]
+  byChaps$classe="speed"
+  byChaps$issueCode="RmaxSpeed"
+  byChaps$content="Lecture trop rapide"
+  val = round(median(SpeedData$speed,na.rm = TRUE) / byChaps$speed,2)
+  byChaps$description=paste("Ce chapitre  comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant",val,"fois supéreire à la vitesse moyenne de lecture des autres chapitres")
+  byChaps$suggestion_title="Réviser ou supprimer le chapitre"
+  byChaps$suggestion_content="Le chapitre doit être plus simple à lire/comprendre : 
+- utiliser un vocabulaire plus commun ou directement défini dans le texte, 
+- vérifier l'enchaînement logique des propos
+- ajouter des exemples/analogies pour améliorer la compréhension
+- éviter les dispersions : aller à l'essentiel."
+  
+  
+  
+  maxSpeed =  rbind(byParts,byChaps)
   
 
 ####### MAX REREADINGS
@@ -378,12 +433,14 @@ maxFinalStops =  rbind(byParts,byChaps,byTomes)
 names(minVisits)[c(1,2)]=
   names(minDuration)[c(1,2)]=
   names(maxRereadings)[c(1,2)]=
+  names(maxSpeed)[c(1,2)]=
   names(maxFinalStops)[c(1,2)]=c("part_id","value")
 
 facts = 
   rbind(
     minVisits,
     minDuration,
+    maxSpeed,
     maxRereadings,
     maxFinalStops)
 

@@ -62,7 +62,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
       $scope.indicatorsHeader=[
         {'code':'Actions_tx', 'name':'actions', 'display':'Visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit'},
-        {'code':'mean.duration', 'name':'duration', 'display':'Durée','inspectorText':'à la durée de lecture', 'issueCode':'RminDuration'},
+        {'code':'speed', 'name':'speed', 'display':'Vitesse','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed'},
         {'code':'rereadings_tx', 'name':'reread', 'display':'Relecture','inspectorText':'à la relecture', 'issueCode':'RRmax'},
         {'code':'norecovery_tx', 'name':'stop', 'display':'Arrêts', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit'}
 
@@ -2055,6 +2055,7 @@ var ComputeGlobalVisuData =function(){
    visuData.push({type:'RS_nb',data:factChart(-1,'RS_nb')});  
    visuData.push({type:'Readers',data:factChart(-1,'Readers')});  
    visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
+   visuData.push({type:'speed',data:factChart(-1,'speed')});  
    visuData.push({type:'Readers_tx',data:factChart(-1,'Readers_tx')});  
    visuData.push({type:'RS_tx',data:factChart(-1,'RS_tx')});  
   visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
@@ -2254,4 +2255,25 @@ app.run(function(editableOptions, editableThemes) {
 
   editableThemes.bs3.inputClass = 'input-xs';
   editableThemes.bs3.buttonsClass = 'btn-xs';
+});
+app.animation('.parts-header', function() {
+  return {
+    enter: function(element, done) { console.log('enter');
+      element.css('display', 'none');
+      $(element).fadeIn(1000, function() {
+        done();
+      });
+    },
+    leave: function(element, done) {console.log('enter');
+      $(element).fadeOut(1000, function() {
+        done();
+      });
+    },
+    move: function(element, done) {console.log('enter');
+      element.css('display', 'none');
+      $(element).slideDown(500, function() {
+        done();
+      });
+    }
+  }
 });
