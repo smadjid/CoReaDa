@@ -10,15 +10,15 @@
   <uib-accordion close-others="oneAtATime" >
    <uib-accordion-group is-open="status.open" class='inspector-issue'>
       <uib-accordion-heading>
-      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b>  
+      <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i> <b>{{fact.name}} </b> <button class="btn btn-success btn-xs pull-right" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-ok" ></span>Marquer traité</button>  
       <!--<button class="btn btn-primary btn-xs pull-right " ng-click="createTask($event);" onclick="  document.getElementById('form-controlA').click()" href={{fact.route}}><span class="glyphicon glyphicon-plus"></span>Ajouter une tâche</button>-->
       </uib-accordion-heading>
       <table style="table-layout: fixed;">
       <td style="width: 50%">
-      <span class='factDescription'>{{fact.description}} </span>
+      <span class='factDescription'>{{fact.description}} </span> 
     </td>
     <td>
-      <h4>{{fact.d3.title}}</h4>
+      <h4>{{fact.d3.title}}</h4> 
       <d3-chart data='context.d3' d3opts='{type:"fact",issueCode:fact.classof, issueClass:fact.classof, elementType:fact.partType, elementId:fact.partId}'></d3-chart>
 
    <!--   <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:fact.partType,elementId:fact.partId,issueCode:fact.issueCode}'></d3-chart>-->
@@ -33,7 +33,8 @@
       <uib-accordion-heading >
       <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
       
-      </i> <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)" onclick="  document.getElementById('form-controlA').click()" data-path={{fact.route}}><span class="glyphicon glyphicon-ok" ></span>Définir comme tâche</button> 
+      </i> <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> 
+      <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)" onclick="  document.getElementById('form-controlA').click()" data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button> 
       </uib-accordion-heading>
       <table style="table-layout: fixed;width:100%; padding:10px">
       <td style="width: 100%">

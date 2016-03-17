@@ -128,9 +128,7 @@ $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
        
     });
 
-var appendChart = function(){
-  $('.componentInfo.active').append('#statChart')
-}
+
 $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
   $scope.context.statChart = false;
   var statChart = $('#statChart').detach();
@@ -157,9 +155,7 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
         $scope.graphTitle ='Sections de destination (lues juste après celle-ci)'
         break;
 };
-window.setTimeout(function() {
-  statChart.appendTo($('.componentInfo.active'));
-  }, 10);
+
 });
 
     if($('.course_title_top').length<1)
@@ -209,8 +205,6 @@ return [
  
 }
 
-
-
   
 var completeCourseParts =function(course, courseParts, courseChapters){
   var base_url = "https://openclassrooms.com/courses";
@@ -236,7 +230,7 @@ var completeCourseParts =function(course, courseParts, courseChapters){
           fact.route =part.route+','+fact._id;
           fact.d3 =[];
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
-         appendD3Facts(fact,part.id,chapter.route);
+       //  appendD3Facts(fact,part.id,chapter.route);
 
         });
         courseParts.push( part );
@@ -294,7 +288,7 @@ var tome = $.grep($scope.course.tomes, function(e){ return  e._id == arr[1] })[0
 
      return result;
 }
-var resetPath =function(){    
+var resetPath =function(){     
   $('.chosenPart').removeClass('chosenPart'); 
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
@@ -392,7 +386,7 @@ var parseRequest =function(path){
   return result
 }
 
-var parseTaskRequest =function(path){
+var parseTaskRequest =function(path){ 
 var regExp = RegXpURL(path);
 var taskId =  regExp.task; 
 var taskIndicator =regExp.indicator;
@@ -629,7 +623,7 @@ var computeAllTasks =function(){
  var tasks =angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
       {
-        tasks[i].selected = 'relevantTask' 
+        tasks[i].selected = 'relevantTask'  
         tasks[i].route =$scope.course._id+',0,0,0,0;'+tasks[i]._id+'@'+tasks[i].classof
         tasks[i].minipath ='Cours'
       } 
@@ -680,7 +674,7 @@ angular.forEach($scope.course.tomes, function(tome) {
 }
 
 
-var computeSubFacts =function(element, indicator){  
+var computeSubFacts =function(element, indicator){   
 var issuesCode =[] ;
 var type = (element.elementType=='chapitre')?'chapter':'part'
 var f = $.grep($scope.indicatorsHeader, function(e){ return  e.code ==indicator});
@@ -694,116 +688,7 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
 
 
 
-var computeAllFacts =function(element, indicator){
-  var type = element.elementType;
-  var facts =[];
 
-  /*******Course******/
- if(type =='course'){     
-  for (var i = 0; i < facts.length; i++)   
-      {facts[i].source = element.route; facts[i].sourceTitle = 'Course'; }
-    angular.forEach(element.chapters, function(chapter) {  
- var chFacts = angular.copy(chapter.facts);
-      for (var i = 0; i < chFacts.length; i++){
-        chFacts[i].source = chapter.route;
-        chFacts[i].sourceTitle = 'Chapter :'+chapter.title;
-        facts.push(chFacts[i]);
-      } 
-            angular.forEach(chapter.parts, function(part) {
-           var partFacts = angular.copy(part.facts);
-                for (var i = 0; i < partFacts.length; i++){
-                  partFacts[i].source = part.route;
-                  partFacts[i].sourceTitle = 'Part  : '+part.title;
-                  facts.push(partFacts[i]);
-                 }                
-            });
-        
-        });
-    
-  }
-
-  /******Grande Partie*******/
-  if(type =='partie'){    
-    for (var i = 0; i < facts.length; i++)   {facts[i].source = element._id; facts[i].sourceTitle = 'This Part';}
-    angular.forEach(element.chapters, function(chapter) {
-      angular.forEach(chapter.parts, function(part) {
-   var partFacts = angular.copy(part.facts);
-                  for (var i = 0; i < partFacts.length; i++){
-                    partFacts[i].source = part.route;
-                    partFacts[i].sourceTitle = 'Part : '+part.title;
-                    facts.push(partFacts[i]);
-                   }                
-            });
-    });
-  $scope.context.inspector_title = "Partie : "+element.title +" - " +facts.length +" problèmes potentiels";
-  $scope.context.url = element.url
-  }
-
-  /******Chapter*******/
-  if(type =='chapitre'){    
-    for (var i = 0; i < facts.length; i++)   {facts[i].source = element._id; facts[i].sourceTitle = 'This chapter';}
-    angular.forEach(element.parts, function(part) {
- var partFacts = angular.copy(part.facts);
-                for (var i = 0; i < partFacts.length; i++){
-                  partFacts[i].source = part.route;
-                  partFacts[i].sourceTitle = 'Part : '+part.title;
-                  facts.push(partFacts[i]);
-                 }                
-    });
-  $scope.context.inspector_title = "Chapitre : "+element.title +" - " +facts.length +" problèmes potentiels";
-  $scope.context.url = element.url
-  }
-  /******Part*******/
-  if(type =='section'){
-    facts =angular.copy(element.facts);
-    $scope.context.inspector_title = "Section : "+element.title +" - " +facts.length +" problèmes potentiels";
-    for (var i = 0; i < facts.length; i++)   {facts[i].source = element.route; facts[i].sourceTitle = 'This part';}
-      
-  }
-
-  return facts
-
-}
-
-var CountSubFacts =function(element){
-  var type = element.elementType;
-  var count = element.todos.length;
-  var type = 'Section '
-
-  /*******Course******/
- if(type =='course'){       
-  angular.forEach(element.tomes, function(tome) { 
-      count = count +  tome.facts.length;
-      angular.forEach(tome.chapters, function(chapter) { 
-        count = count +  chapter.facts.length;
-        angular.forEach(chapter.parts, function(part) {
-          count = count + part.facts.length
-        });
-      });
-    });
-    type = "Cours ";
-  }
-
-  /******Tome*******/
-  angular.forEach(element.chapters, function(chapter) { 
-        count = count +  chapter.facts.length;
-        angular.forEach(chapter.parts, function(part) {
-          count = count + part.facts.length
-        });
-        type = "Partie ";
-      });
-  /******Chapter*******/
-   if(type =='chapitre'){       
-    angular.forEach(element.parts, function(part) { 
-      count = count +  part.facts.length;
-    });
-    type = "Chapitre ";
-  }
-  
-
-  return {'type':type, 'count':count}
-
-}
 
 var goHome =function(){ 
 
@@ -2163,7 +2048,7 @@ swal({
 
 
   /**********************D3 CHARTS****************************/
-var ComputeGlobalVisuData =function(){
+var ComputeGlobalVisuData =function(){ 
   var visuData = []
   
    visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
@@ -2199,132 +2084,9 @@ var ComputeGlobalVisuData =function(){
 
   return visuData;
 }
-var appendD3Facts =function(fact, factedPartID, contextElement){ 
- 
-    if(fact.issueCode in {'RVminVisit':'','RminVisit':'','RVmaxVisit':'','RmaxVisit':''}){
-        fact.d3 = factChart(factedPartID,'Actions_tx');
-        fact.d3.title="Taux de visites par partie";
-      }
-    
-    if(fact.issueCode in {'RVminDuration':'','RminDuration':'','RmaxDuration':''}) {
-      fact.d3 = factChart(factedPartID,'mean.duration' );
-      fact.d3.title="Durée moyenne de lecture des sections";
-      }
-
-    if(fact.issueCode in {'RRmax':''}) {
-      fact.d3 = factChart(factedPartID,'rereadings_tx' );
-      fact.d3.title="Taux de lectures qui sont des relectures par section";
-      }
-    if(fact.issueCode in {'RerRmax':''}) {
-      fact.d3 = factChart(factedPartID,'part_readers_rereaders' );
-      fact.d3.title="Taux des lectures des parties qui sont des relecteurs";
-      }
-
-    if(fact.issueCode in {'RRmaxD':''}) 
-      fact.d3 = rereadChart(factedPartID,'rereads_dec_tx');
-
-   if(fact.issueCode in {'RRVmaxSeq':''}) 
-      fact.d3 = rereadChart(factedPartID,'rereads_seq_tx');
 
 
-    if(fact.issueCode ==='StopRSEnd'){
-      fact.d3 = factChart(factedPartID,'rupture_tx' );
-    fact.d3.title="Taux de fins de séances";
-      }
-    if(fact.issueCode === 'StopRSExit'){
-      fact.d3 = factChart(factedPartID,'norecovery_tx');
-    fact.d3.title="Taux de fins défintives de la lecture";
-      }
-    if(fact.issueCode === 'StopRecNext'){
-      fact.d3 = factChart(factedPartID,'next_recovery' );
-    fact.d3.title="Taux de reprises de la lecture sur la section suivante";
-      }
-    if(fact.issueCode === 'StopRecback'){
-      fact.d3 = factChart(factedPartID,'distant_prev_recovery_tx' );
-    fact.d3.title="Taux de reprises de la lecture sur des sections précédentes";
-      }
-    if(fact.issueCode === 'StopRecNext'){
-      fact.d3 = factChart(factedPartID,'distant_next_recovery_tx' );
-    fact.d3.title="Taux de reprises de la lecture sur la section précédente";
-      }
 
-
-    if(fact.issueCode in{'TransProvPrec':'', 'TransProvPrecV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_precedent','provenance' );
-  fact.d3.title="Sections de provenance";}
-
-    if(fact.issueCode in{'TransProvNext':'', 'TransProvNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_next_p','provenance' );
-  fact.d3.title="Sections de provenance";}
-
-    if(fact.issueCode in{'TransProvShiftNext':'', 'TransProvShiftNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_next','provenance' );
-  fact.d3.title="Sections de provenance";}
-
-    if(fact.issueCode in{'TransProvShiftPast':'', 'TransProvShiftPastV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'provenance_shifted_past','provenance' );
-  fact.d3.title="Sections de provenance";}
-
-
-    if(fact.issueCode in{'TransDestNext':'', 'TransDestNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_next_p','destination' );
-  fact.d3.title="Sections de destination";}
-    if(fact.issueCode in{'TransDestPrev':'', 'TransDestPrevV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_precedent','destination' );
-  fact.d3.title="Sections de destination";}
-    if(fact.issueCode in{'TransDestPast':'', 'TransDestShiftPast':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_past' ,'destination');
-  fact.d3.title="Sections de destination";}
-    if(fact.issueCode in{'TransDestShiftNext':'', 'TransDestShiftNextV':''})       
-      {fact.d3 = transitionFactChart(factedPartID,'destination_shifted_next' ,'destination');
-  fact.d3.title="Sections de destination";}
- 
-
-}
-
-var rereadChart = function(factedPartID, issueCode, classe){
-  if(typeof $scope.course =='undefined') return;
-  var seq = 0, dec = 0;
-  var chartData =[];
-   angular.forEach($scope.course.tomes, function(tome){
-      angular.forEach(tome.chapters, function(chapter){
-        angular.forEach(chapter.parts, function(part){
-          if(parseInt(factedPartID) ===parseInt(part.id)){
-            seq = part.properties.filter(function(value){ return value.property === 'rereads_seq_tx'})[0].value;
-            dec = part.properties.filter(function(value){ return value.property === 'rereads_dec_tx'})[0].value;
-
-        }
-      })
-    })
-  });
-   return {'partIndex':factedPartID,'issueCode':issueCode ,'seq_rereads':seq,'dec_rereads':dec};
-}
-var transitionFactChart = function(factedPartID, issueCode, classe){
-  
-  if(typeof $scope.course =='undefined') return;
-    
-    var chartData =[];
-    var meanData =[];
-    var dataEntries =[];
-    var colorsEntries =[];
-   
-   var cpt = 0;
-   var transitions =[]
-
-  angular.forEach($scope.course.tomes, function(tome){
-      angular.forEach(tome.chapters, function(chapter){
-        angular.forEach(chapter.parts, function(part){
-          if(parseInt(factedPartID) ===parseInt(part.id)){
-            chartData.push(part.properties.filter(function(value){ 
-              return value.property.split('_')[0] ===classe    
-          }))
-        }
-      })
-    })
-  });
-   return {'partIndex':factedPartID,'issueCode':issueCode ,'transition':chartData[0]};
- 
-}
 
 var mean =function(numbers) {
     // mean of [3, 5, 4, 4, 1, 1, 2, 3] is 2.875
