@@ -1542,9 +1542,8 @@ marker#arrow {
 
 /************ Chart Widget ********************************/
 .widget {
-    margin: 5px;
-    margin-left: 0.5%;
-    margin-right: 0.5%;
+    margin: 0;
+    width:100%;
     background-color: white;
     border-radius: 3px;
     box-shadow: 0px 0px 1px 0px #06060d;
@@ -1552,7 +1551,8 @@ marker#arrow {
 
 }
 
-.widget .header{
+.widget-header{
+  margin-top:5px;
     background-color: #29384D;    
     color:#D1DDF3;
     text-align: left;
