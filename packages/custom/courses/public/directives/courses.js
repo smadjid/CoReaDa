@@ -1026,6 +1026,7 @@ var inspectorCharts = function(scope, element){
 scope.inspectorRenderBars = function(globalData, classe) {   
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
+  if(width <=0 ) return;
           svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)

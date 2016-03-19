@@ -34,12 +34,13 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
      
      $scope.inspectorDisplaySrc='course';
      $scope.indicatorInspectorShow = 'course';
+     $scope.course ={}
      
       $scope.courseParts =[];
       $scope.courseChapters =[];
       
       $scope.context = {};
-      $scope.course ={}
+
       $scope.formData ='';
       $scope.textBtnForm ='';
       $scope.chartType = 'Actions_tx';
@@ -103,13 +104,16 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 $(window).bind('hashchange',function(){ 
 
   loadContext();
+  $scope.$emit('content.changed');
+  $scope.$broadcast('content.reload');
+  
 });
 
 
 $scope.toggleSectionDisplay = function(){
   $scope.sectionDisplay =! $scope.sectionDisplay;
  
-  //$(window).trigger('resize')
+ $(window).trigger('resize')
 }
 
 $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
@@ -230,7 +234,6 @@ var completeCourseParts =function(course, courseParts, courseChapters){
           fact.route =part.route+','+fact._id;
           fact.d3 =[];
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
-       //  appendD3Facts(fact,part.id,chapter.route);
 
         });
         courseParts.push( part );
@@ -827,7 +830,7 @@ switch(granularity){
 
 /********************************************/
 var loadContext = function(){
-  
+  $scope.dataLoading = true;
    var url = location.hash.slice(1);
  
   var element = resolveRoute(url);
@@ -886,10 +889,10 @@ var loadContext = function(){
    
    
 
-   window.setTimeout(function() {
+   //window.setTimeout(function() {
  displayTomeInfos(partElt, task);
  
-        }, 10);
+        //}, 10);
    
  }
 
@@ -909,11 +912,11 @@ var loadContext = function(){
    $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
 
   
-   window.setTimeout(function() {
+   //window.setTimeout(function() {
     
- displayChapterInfos(partElt, task);
+ displayChapterInfos(partElt, task); 
  
-        }, 10);
+     //   }, 10);
    
  }
 
@@ -933,16 +936,14 @@ var loadContext = function(){
 
   $scope.sectionDisplay = false; 
   
-   window.setTimeout(function() {
+   //window.setTimeout(function() {
   
  $scope.inspectorDisplaySrc='issues'
   
  displayChapterIssues(route, task, chap, indicator);
-
- 
   
  
-        }, 50);
+        //}, 50);
    
  }
 
@@ -957,9 +958,9 @@ var loadContext = function(){
   $scope.context.taskText ='(nouvelle tâche pour cette section)';
   
 
-    window.setTimeout(function() {
+    //window.setTimeout(function() {
  displayPartInfos(partElt, task);
-        }, 10);
+      //  }, 10);
   
 }
 if(arr.length ==4 && indicator!="ALL") { 
@@ -975,11 +976,11 @@ if(arr.length ==4 && indicator!="ALL") {
 $scope.inspectorDisplaySrc='issues';
  $scope.sectionDisplay = true; 
 
-  window.setTimeout(function() {
+  //window.setTimeout(function() {
  displayPartIssues(route, task, part, indicator);
 
            
-        }, 10);
+    //    }, 10);
 }
 
 
@@ -999,9 +1000,9 @@ if(arr.length ==5) {
      $scope.context.taskText ='(nouvelle tâche pour cette section)';
      $scope.inspectorDisplaySrc='issues'
 
-     window.setTimeout(function() {
+     //window.setTimeout(function() {
  displayIssue(route, task, part, indicator);
-        }, 10);
+       // }, 10);
 }
 
 /*************************************************/
@@ -1029,7 +1030,7 @@ if(arr.length ==5) {
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
   
   $('.tableScroller').scroll();
-
+$scope.dataLoading = false;
 
 }
 var RegXpURL =function(url){
@@ -1101,10 +1102,11 @@ window.onresize = function(){reloadURL();}
 var reloadURL =function(){
   var url = window.location.hash
 
-window.setTimeout(function() {
-loadURL(url) 
-  
-        }, 10);
+  var url = window.location.hash
+  window.setTimeout(function() {
+    window.location.hash = url
+   }, 10);
+
 
 }
 var loadURL =function(url){
@@ -1112,17 +1114,18 @@ var loadURL =function(url){
   if(url == window.location.hash)
    // $(window).trigger('hashchange')
  {
-window.setTimeout(function() {
+//window.setTimeout(function() {
   goHome();
-        }, 10);}
+  //      }, 10);
+}
   else 
     {
       window.location.hash = url;
- window.setTimeout(function() {
-  //$scope.$emit('content.changed');
-  //$scope.$broadcast('content.reload');
+ //window.setTimeout(function() {
+  $scope.$emit('content.changed');
+  $scope.$broadcast('content.reload');
   
-        }, 10)
+   //     }, 10)
 }
   ////$(':focus').blur();
 
@@ -1312,10 +1315,10 @@ var showTasksAndFacts = function(element, indicator, task_id){
  var selection = $.grep($scope.context.subtasks, function(e){ return  e._id == task_id})[0];
 selection.selected ='selectedTask';
 $('.selectedTask').focus().blur().focus();
-        window.setTimeout(function() {
+        //window.setTimeout(function() {
           selection.selected ='selectedTask';
           $('.selectedTask').focus().blur().focus();
-        }, 10);        
+        //}, 10);        
     }
    
 
@@ -1592,13 +1595,13 @@ $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
 
 $scope.inspectorDisplaySrc='section'
-  window.setTimeout(function() {
+  //window.setTimeout(function() {
     resetPath();
     //$(':focus').blur();
     selectPart($(partElt).index() + 1);
     
     
-  }, 10);
+  //}, 10);
 }
 
 var displayCourseInfos =function(indicator, task){ 
@@ -1736,12 +1739,12 @@ $scope.context.inspector_title = "Partie : "+element.title
 
 $scope.context.url = element.url
 $scope.inspectorDisplaySrc='component'
-window.setTimeout(function() {
+//window.setTimeout(function() {
     resetPath();
     //$(':focus').blur();
     selectTome($(partElt).index() + 1);
     
-  }, 10);
+  //}, 10);
 
     
 }
@@ -1840,12 +1843,12 @@ $scope.observedElt ={'type':'chapter',
       'provLinearity':provData.filter(function(value){ return value.property === 'precedent'})[0].value+'%',
       'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%'
     }; 
-window.setTimeout(function() {
+//window.setTimeout(function() {
     resetPath();
     //$(':focus').blur();
     selectChapter($(partElt).index() + 1);
     $scope.inspectorDisplaySrc='component'
-  }, 10);
+  //}, 10);
 }
 
 var tabsFn = (function() {  
@@ -1932,10 +1935,10 @@ var insertLocalTask =function(route, task){
 $scope.editSuggestion =function($event, suggestion){
   $scope.formData = suggestion;   
 
-  window.setTimeout(function() {
+  //window.setTimeout(function() {
            $("#taskEditor").trigger( "click" );
            $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
-        }, 500);
+    //    }, 500);
 
 
 
