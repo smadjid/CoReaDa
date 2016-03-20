@@ -114,6 +114,17 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
      
     /********  Update on @ change ****************/
+    /* URL#
+    csid : course ID
+    ptId: tome IS
+    chapid : chapId
+    secid : section id
+    factid : fact id
+    indic : indicator title
+
+
+
+    */
 $(window).bind('hashchange',function(){ 
   $scope.dataLoading = true;
   loadContext();
@@ -238,25 +249,34 @@ return [
 var completeCourseParts =function(course, courseParts, courseChapters){
   var base_url = "https://openclassrooms.com/courses";
   course.url = base_url+'/'+course.properties.filter(function(value){ return value.property === 'slug'})[0].value
-  var course_route = course._id;
+  var course_route = $.param({'csid':course._id})
+
+  
   angular.forEach(course.tomes, function(tome) {
     tome.parts_count = 0;
-    tome.route =course_route+','+tome._id;
+    tome.route = $.param({'csid':course._id, 'tomeid':tome._id});
     tome.url = course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
     angular.forEach(tome.chapters, function(chapter) { 
       chapter.parts_count = 0;
-      chapter.route =tome.route+','+chapter._id;
+      chapter.route =$.param({'csid':course._id, 'tomeid':tome._id, 'chapid':chapter._id});
+
       chapter.url = course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
+      angular.forEach(chapter.facts,function(fact){
+          fact.route = $.param({'csid':course._id, 'tomeid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
+          fact.d3 =[];
+          fact.d3 ={ 'chapter':chapter.route,'tome':tome.route};
+
+        });
       
       angular.forEach(chapter.parts, function(part) {
         part.parent = chapter._id;
         tome.parts_count = tome.parts_count + 1;
         if(tome.parts_count===1) tome.url = chapter.url;
         chapter.parts_count = chapter.parts_count + 1;
-        part.route =chapter.route+','+part._id;
+        part.route =$.param({'csid':course._id, 'tomeid':tome._id, 'chapid':chapter._id,'sectionid':part._id});
         part.url = chapter.url+'/'+'#/id/r-'+part.properties.filter(function(value){ return value.property === 'part_id'})[0].value
         angular.forEach(part.facts,function(fact){
-          fact.route =part.route+','+fact._id;
+          fact.route = $.param({'csid':course._id, 'tomeid':tome._id, 'chapid':chapter._id,'sectionid':part._id, 'factid':fact._id});
           fact.d3 =[];
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
 
@@ -271,31 +291,69 @@ var completeCourseParts =function(course, courseParts, courseChapters){
 }
 
 
+var parseURL =  function(query){
 
+  if (query == '') return null;
+  var hash = {};
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    var k = decodeURIComponent(pair[0]);
+    var isArray = false;
+    if (k.substr(k.length-2) == '[]') {
+      isArray = true;
+      k = k.substring(0, k.length - 2);
+    }
+    var v = decodeURIComponent(pair[1]);
+    // If it is the first entry with this name
+    if (typeof hash[k] === "undefined") {
+      if (isArray)  // not end with []. cannot use negative index as IE doesn't understand it
+        hash[k] = [v];
+      else
+        hash[k] = v;
+    // If subsequent entry with this name and not array
+    } else if (typeof hash[k] === "string") {
+      hash[k] = v;  // replace it
+    // If subsequent entry with this name and is array
+    } else {
+      hash[k].push(v);
+    }
+  }
+  return hash;
+}; 
 var resolveRoute = function(path){
    var regExp = RegXpURL(path); 
-  
-   var arr = regExp.arr.split(',');  
+   
+   var components = parseURL(regExp.arr)
+   
+   console.log(components)
+   
+   
 
    if(typeof $scope.course == 'undefined')
       console.log('Error')
   var result = $scope.course;  
-   if(arr.length>=2) {
-var tome = $.grep($scope.course.tomes, function(e){ return  e._id == arr[1] })[0];
+   if(components.hasOwnProperty('tomeid')) {
+    var tome = $.grep($scope.course.tomes, function(e){ return  e._id == components.tomeid })[0];
      result = tome
-     if(arr.length>=3){
-   var chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0];
+     if(components.hasOwnProperty('chapid')){
+   var chap = $.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0];
         result = chap
      
-     if(arr.length>=4){
-  var part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0];
-       result = part
-      
-       if(arr.length>=5){        
-    var fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0];          
+     if(components.hasOwnProperty('sectionid')){
+  var part = $.grep(chap.parts, function(e){ return  e._id == components.sectionid })[0];
+       result = part;
+       if(components.hasOwnProperty('factid')){        
+    var fact = $.grep(part.facts, function(e){ return  e._id == components.factid })[0];          
          result = fact
        }
       }
+      else
+        if(components.hasOwnProperty('factid')){
+          var fact = $.grep(chap.facts, function(e){ return  e._id == components.factid })[0];          
+          result = fact
+
+        }
     }  
   }   
      
@@ -321,6 +379,8 @@ var resetPath =function(){
   $('#divOverlay').css('visibility','hidden');
   $('#divHoverOverlay').css('visibility','hidden');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
+    
+
     for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 'notRelevantTask' }
 
@@ -647,6 +707,7 @@ return{'Sections':partsData, 'Chapters':chapsData, 'Tomes':tomesData}
 
 
 var computeAllTasks =function(){ 
+  
  var tasks =angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
       {
@@ -706,7 +767,7 @@ var f = $.grep($scope.selectedIndicators, function(e){ return  e.code ==indicato
 angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
  
   var facts  = $.grep(element.facts, function(e){return ($.inArray(e.issueCode, issuesCode)>-1)}); 
-  angular.forEach(facts, function(ind){console.log(ind); ind.partId=element.id, ind.partType=type, ind.factRoute=element.route+','+ind._id});
+  angular.forEach(facts, function(ind){ind.partId=element.id, ind.partType=type, ind.factRoute=element.route+','+ind._id});
   return facts
 
 }
@@ -855,7 +916,8 @@ var loadContext = function(){
   
    var url = location.hash.slice(1);
  
-  var element = resolveRoute(url);
+   var element = resolveRoute(url);
+
 
    $scope.context.route = url;
    
@@ -869,161 +931,82 @@ var loadContext = function(){
   var indicator = regExp.indicator;
 
   var path = regExp.arr; 
+     var components = parseURL(path)
   var arr = path.split(',');  
   var course  = $scope.course;
-  var tome = -1;
-  var chap = -1;
-  var part  = -1;
+  var tome = components.hasOwnProperty('tomeid')?$.grep(course.tomes, function(e){ return  e._id == components.tomeid })[0]:-1;
+  var chap = components.hasOwnProperty('chapid')?$.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0]:-1;
+  var part  = components.hasOwnProperty('sectionid')?$.grep(chap.parts, function(e){ return  e._id == components.sectionid })[0]:-1;
   var partElt = -1;
-  var fact  = -1;
+  var fact  = components.hasOwnProperty('factid')?
+              (
+                (part==-1)?($.grep(chap.facts, function(e){ return  e._id == components.factid })[0]):
+                           ($.grep(part.facts, function(e){ return  e._id == components.factid })[0])
+                ): -1;
 
-
-  if(arr.length<2) 
-    
-      {
-        
+  if(tome==-1) {        
         $scope.context.taskText ='(nouvelle tâche globale)';
+        displayCourseInfos(indicator, task);
+        computeGranuleFacts('course');
+    }
+    else
+     if(chap ==-1) {
+      computeGranuleFacts('tome', tome._id);
+      partElt = $('.tome_index[data-part ='+tome.id+']')[0];
+      $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
+      displayTomeInfos(partElt, task);
+    }
+    else
+      if(part==-1){
+        if(fact!=-1){
+          partElt = $('.part_index[data-part ='+part.id+']'); 
+          $scope.studiedPart = part.id;
+          $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+          $scope.inspectorDisplaySrc='issues'; 
+          displayIssue(route, task, part, indicator);
 
-       // window.setTimeout(function() {
-         
-          
-          displayCourseInfos(indicator, task);
-          computeGranuleFacts('course');
+        }
+        else
+        if(indicator =="ALL"){
+          computeGranuleFacts('chapter', chap._id);
+          partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
+          $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+          displayChapterInfos(partElt, task);
+        }
+        else{
+          computeGranuleFacts('chapter', chap._id);
+          partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
+          $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+          $scope.sectionDisplay = false;   
+          $scope.inspectorDisplaySrc='issues' ;
+          displayChapterIssues(route, task, chap, indicator);
+        }
+      }
+      else{
+        if(fact!=-1){
+          partElt = $('.part_index[data-part ='+part.id+']'); 
+          $scope.studiedPart = part.id;
+          $scope.context.taskText ='(nouvelle tâche pour cette section)';
+          $scope.inspectorDisplaySrc='issues'; 
+          displayIssue(route, task, part, indicator);
+        }
+        else
+        if(indicator =="ALL"){
+          $scope.sectionDisplay = true;
+          partElt = $('.part_index[data-part ='+part.id+']');   
+          $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
+          displayPartInfos(partElt, task);
+        }
+        else{
+          partElt = $('.part_index[data-part ='+part.id+']');  
+          $scope.context.taskText ='(nouvelle tâche pour cette section)';
+          $scope.inspectorDisplaySrc='issues';
+          $scope.sectionDisplay = true; 
+          displayPartIssues(route, task, part, indicator);
 
-               //$(':focus').blur();
-          
-      //  }, 10);
-    };
+        }
+      }
 
-  /********************************hhhhhhhhhhhhhhhh***********/
-
- if(arr.length ==2) {  
-  
-  
-
-   tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
-   computeGranuleFacts('tome', tome._id);
-   partElt = $('.tome_index[data-part ='+tome.id+']')[0];
-   $scope.context.taskText ='(nouvelle tâche pour cette partie)';
-   
-   
-   
-
-   //window.setTimeout(function() {
- displayTomeInfos(partElt, task);
- 
-        //}, 10);
-   
- }
-
-
-
- if(arr.length ==3  && indicator =="ALL") {  
-  
-  tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
-   chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-   computeGranuleFacts('chapter', chap._id);
-
-   partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
-   
-   
-   
-
-   $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
-
-  
-   //window.setTimeout(function() {
-    
- displayChapterInfos(partElt, task); 
- 
-     //   }, 10);
-   
- }
-
- if(arr.length ==3  && indicator !="ALL") {  
-  $scope.sectionDisplay = false;
-  
-  tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0];   
-   chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-   computeGranuleFacts('chapter', chap._id);
-
-   partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
-   
-   
-   
-
-   $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
-
-  $scope.sectionDisplay = false; 
-  
-   //window.setTimeout(function() {
-  
- $scope.inspectorDisplaySrc='issues'
-  
- displayChapterIssues(route, task, chap, indicator);
-  
- 
-        //}, 50);
-   
- }
-
-
- if(arr.length ==4 && indicator =="ALL") { 
-  $scope.sectionDisplay = true;
-  tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
-  chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-  part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
-  partElt = $('.part_index[data-part ='+part.id+']'); 
-  
-  $scope.context.taskText ='(nouvelle tâche pour cette section)';
-  
-
-    //window.setTimeout(function() {
- displayPartInfos(partElt, task);
-      //  }, 10);
-  
-}
-if(arr.length ==4 && indicator!="ALL") { 
-  tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
-  chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-   
-  part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0]; 
-  partElt = $('.part_index[data-part ='+part.id+']'); 
-
-  
-  
-  $scope.context.taskText ='(nouvelle tâche pour cette section)';
-$scope.inspectorDisplaySrc='issues';
- $scope.sectionDisplay = true; 
-
-  //window.setTimeout(function() {
- displayPartIssues(route, task, part, indicator);
-
-           
-    //    }, 10);
-}
-
-
-if(arr.length ==5) {  
-  tome = $.grep(course.tomes, function(e){ return  e._id == arr[1] })[0]; 
-  chap = $.grep(tome.chapters, function(e){ return  e._id == arr[2] })[0]; 
-  
-  part = $.grep(chap.parts, function(e){ return  e._id == arr[3] })[0];   
-
-  fact = $.grep(part.facts, function(e){ return  e._id == arr[4] })[0]; 
-  partElt = $('.part_index[data-part ='+part.id+']'); 
-
-  
-   
-   $scope.studiedPart = part.id
-     
-     $scope.context.taskText ='(nouvelle tâche pour cette section)';
-     $scope.inspectorDisplaySrc='issues'
-
-     //window.setTimeout(function() {
- displayIssue(route, task, part, indicator);
-       // }, 10);
-}
 
 /*************************************************/
   var totalWidth = $('.col-lg-9').width();
@@ -1998,7 +1981,6 @@ $scope.addTask = function (data) {
 
    var addedTask = data;          
    var route = $scope.context.route;
-   console.log(route);//return;
    var query = parseTask(route, addedTask); 
    
         
