@@ -34,7 +34,7 @@
       <i class="pull-left glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">
       
       </i> <em>Suggestion: </em> <span>{{fact.suggestion_title}} </span> 
-      <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact.suggestion_title)" onclick="  document.getElementById('form-controlA').click()" data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button> 
+      <button class="btn btn-primary btn-xs pull-right" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button> 
       </uib-accordion-heading>
       <table style="table-layout: fixed;width:100%; padding:10px">
       <td style="width: 100%">

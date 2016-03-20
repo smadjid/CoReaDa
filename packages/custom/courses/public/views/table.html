@@ -27,10 +27,10 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td by-parts='sectionDisplay' ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="course" >
+        <tr table-td by-parts='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="course" >
             <th  role='button' class="indicators-header" data-indicator={{indicator.name}} ng-click='triggerClick($event)' data-path='@'+{{indicator.name}}>
                 <i class="fa fa-play-circle fa-2x"></i>
-                <span class="fat" >{{indicator.display}}</span>
+                <span class="fat" >{{indicator.label}}</span>
                 
             </th>
         </tr>

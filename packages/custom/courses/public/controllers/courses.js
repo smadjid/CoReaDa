@@ -25,6 +25,8 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   $scope.d3opts = [];
   $scope.dataLoading = true;
   $scope.pageLoaded = false;
+  $scope.myBrowsers = [ "GC", "AS" ];
+
   $(window).unbind('hashchange');
 
 
@@ -61,13 +63,24 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.studiedPart = '';
       $scope.context.otherFacts=[];
 
+
+
       $scope.indicatorsHeader=[
-        {'code':'Actions_tx', 'name':'actions', 'display':'Visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit'},
-        {'code':'speed', 'name':'speed', 'display':'Vitesse','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed'},
-        {'code':'rereadings_tx', 'name':'reread', 'display':'Relecture','inspectorText':'à la relecture', 'issueCode':'RRmax'},
-        {'code':'norecovery_tx', 'name':'stop', 'display':'Arrêts', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit'}
+        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture'},
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture'},
+        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture'},
+        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'arrêts et reprise'}
 
       ]
+
+      $scope.selectedIndicators=[
+  {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture'},
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture'},
+        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture'},
+        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'arrêts et reprise'}
+      ]
+
+      $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -102,20 +115,32 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
      
     /********  Update on @ change ****************/
 $(window).bind('hashchange',function(){ 
-
+  $scope.dataLoading = true;
   loadContext();
-  $scope.$emit('content.changed');
-  $scope.$broadcast('content.reload');
+
+  $scope.dataLoading = false;
   
 });
 
 
 $scope.toggleSectionDisplay = function(){
-  $scope.sectionDisplay =! $scope.sectionDisplay;
- 
- $(window).trigger('resize')
-}
+  $scope.sectionDisplay =! $scope.sectionDisplay; 
+  setTimeout(function() {
+    loadContext();
+  }, 10);
 
+  
+
+}
+$scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
+  
+ $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
+ setTimeout(function() {
+    loadContext();
+  }, 10);
+ 
+
+});
 $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
             if(newValue ==='Readings')
               $scope.globalChartSelector = 'Actions_tx'
@@ -248,7 +273,6 @@ var completeCourseParts =function(course, courseParts, courseChapters){
 
 
 var resolveRoute = function(path){
-   
    var regExp = RegXpURL(path); 
   
    var arr = regExp.arr.split(',');  
@@ -656,9 +680,7 @@ angular.forEach($scope.course.tomes, function(tome) {
                   angular.forEach(part.facts, function(fact){
                var factTasks = angular.copy(fact.todos);
                     for(var i = 0; i<factTasks.length; i++){ 
-                  var txt = (fact.classof ==='Readings')?'Lecture':
-                            (fact.classof ==='Rereading')?'Relecture':
-                               (fact.classof ==='Transition')?'Transition' :'Arrêts';
+                  var txt =  $scope.indicatorsHeader.filter(function(value){ return value.value === fact.classof})[0].label;
                       
                       factTasks[i].route =fact.route+';'+factTasks[i]._id+'@'+factTasks[i].classof
                        factTasks[i].minipath ='Section: '+part.title+' - ' +txt; 
@@ -680,11 +702,11 @@ angular.forEach($scope.course.tomes, function(tome) {
 var computeSubFacts =function(element, indicator){   
 var issuesCode =[] ;
 var type = (element.elementType=='chapitre')?'chapter':'part'
-var f = $.grep($scope.indicatorsHeader, function(e){ return  e.code ==indicator});
+var f = $.grep($scope.selectedIndicators, function(e){ return  e.code ==indicator});
 angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
  
   var facts  = $.grep(element.facts, function(e){return ($.inArray(e.issueCode, issuesCode)>-1)}); 
-  angular.forEach(facts, function(ind){ind.partId=element.id, ind.partType=type});
+  angular.forEach(facts, function(ind){console.log(ind); ind.partId=element.id, ind.partType=type, ind.factRoute=element.route+','+ind._id});
   return facts
 
 }
@@ -830,7 +852,7 @@ switch(granularity){
 
 /********************************************/
 var loadContext = function(){
-  $scope.dataLoading = true;
+  
    var url = location.hash.slice(1);
  
   var element = resolveRoute(url);
@@ -859,8 +881,6 @@ var loadContext = function(){
   if(arr.length<2) 
     
       {
-        
-        
         
         $scope.context.taskText ='(nouvelle tâche globale)';
 
@@ -1030,7 +1050,7 @@ if(arr.length ==5) {
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
   
   $('.tableScroller').scroll();
-$scope.dataLoading = false;
+
 
 }
 var RegXpURL =function(url){
@@ -1097,7 +1117,9 @@ if((taskIndex!=-1) && (indicatorIndex!=-1)){
   
 }
 
-window.onresize = function(){reloadURL();}
+window.onresize = function(){
+   $scope.$broadcast('content.reload');;
+}
 
 var reloadURL =function(){
   var url = window.location.hash
@@ -1381,7 +1403,7 @@ var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text(
       if(nb>1) nb =nb+" problèmes potentiels relatifs ";
 
       
- var txt = $.grep($scope.indicatorsHeader, function(e){ return  e.code ==indicator})[0].inspectorText;
+ var txt = $.grep($scope.selectedIndicators, function(e){ return  e.code ==indicator})[0].inspectorText;
      $scope.context.inspector_title = chapter.title+' - Remarque relative '+ txt ;
      $scope.context.url = chapter.url
   showTasksAndFacts(element, indicator, task);
@@ -1433,6 +1455,7 @@ var nb = $('.td_issue[data-path ="'+url+'"]').find('.display-part-issues').text(
     }
 
 var selectIndictor =function(indicator){
+
   if(indicator ==='ALL') 
     $('#data-table').addClass('highlight-table');
   else{
@@ -1457,8 +1480,11 @@ var selectIndictor =function(indicator){
 }
 
 
-var selectTome =function(index){  
-  var rowTop = $('.tomes-header> th:nth-child('+index+')').offset();
+var highlightTome =function(index){  
+  resetPath();
+  
+  setTimeout(function() {
+    var rowTop = $('.tomes-header> th:nth-child('+index+')').offset();
   var topTop = rowTop.top;
   var left = rowTop.left;
 
@@ -1472,14 +1498,18 @@ var selectTome =function(index){
   $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
   $('#divOverlay').height(height);
   $('#divOverlay').width(oneWidth);
-  $('#divOverlay').css('visibility','visible');
+   $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(500).slideDown('fast');
+  }, 10);
+ 
 
 }
 
 
-var selectChapter =function(index){  
-  var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
+var highlightChapter =function(index){  
+  resetPath();
+  setTimeout(function() {
+    var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
   var topTop = rowTop.top;
   var left = rowTop.left;
 
@@ -1496,23 +1526,29 @@ var selectChapter =function(index){
   $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(500).slideDown('fast');
 
+  }, 10);
+  
+
 }
 
-var selectPart =function(index){
-var rowTop = $('.parts-header > th:nth-child('+index+')').offset();
-var topTop = rowTop.top;
-var left = rowTop.left;
+var highlightPart =function(index){
+  resetPath();
+  setTimeout(function() {
+    var rowTop = $('.parts-header > th:nth-child('+index+')').offset();
+    var topTop = rowTop.top;
+    var left = rowTop.left;
 
-var oneWidth = $('.parts-header > th:nth-child('+index+')').innerWidth();
-var height = $('.data-table').innerHeight() - $('.chapters-header th:first').innerHeight() - $('.tomes-header th:first').innerHeight();
+    var oneWidth = $('.parts-header > th:nth-child('+index+')').innerWidth();
+    var height = $('.data-table').innerHeight() - $('.chapters-header th:first').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
 
- $('#divOverlay').offset({top:topTop -2 ,left:left - 2});
-  $('#divOverlay').height(height);
-  $('#divOverlay').width(oneWidth);
-  $('#divOverlay').css('visibility','visible');
-$('#divOverlay').delay(500).slideDown('fast');
+     $('#divOverlay').offset({top:topTop -2 ,left:left - 2});
+      $('#divOverlay').height(height);
+      $('#divOverlay').width(oneWidth);
+      $('#divOverlay').css('visibility','visible');
+    $('#divOverlay').delay(500).slideDown('fast');
+  }, 10);
 }
 
 
@@ -1595,13 +1631,7 @@ $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
 
 $scope.inspectorDisplaySrc='section'
-  //window.setTimeout(function() {
-    resetPath();
-    //$(':focus').blur();
-    selectPart($(partElt).index() + 1);
-    
-    
-  //}, 10);
+highlightPart($(partElt).index() + 1);
 }
 
 var displayCourseInfos =function(indicator, task){ 
@@ -1740,9 +1770,9 @@ $scope.context.inspector_title = "Partie : "+element.title
 $scope.context.url = element.url
 $scope.inspectorDisplaySrc='component'
 //window.setTimeout(function() {
-    resetPath();
+    
     //$(':focus').blur();
-    selectTome($(partElt).index() + 1);
+    highlightTome($(partElt).index() + 1);
     
   //}, 10);
 
@@ -1844,9 +1874,9 @@ $scope.observedElt ={'type':'chapter',
       'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%'
     }; 
 //window.setTimeout(function() {
-    resetPath();
+    
     //$(':focus').blur();
-    selectChapter($(partElt).index() + 1);
+    highlightChapter($(partElt).index() + 1);
     $scope.inspectorDisplaySrc='component'
   //}, 10);
 }
@@ -1932,13 +1962,18 @@ var insertLocalTask =function(route, task){
  
 }
 
-$scope.editSuggestion =function($event, suggestion){
+$scope.editSuggestion =function($event, fact, suggestion){
   $scope.formData = suggestion;   
+  
+var element = resolveRoute(fact.factRoute);
 
-  //window.setTimeout(function() {
+
+  $scope.context.route = element.route;
+
+  window.setTimeout(function() {
            $("#taskEditor").trigger( "click" );
            $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
-    //    }, 500);
+       }, 10);
 
 
 
@@ -1963,7 +1998,9 @@ $scope.addTask = function (data) {
 
    var addedTask = data;          
    var route = $scope.context.route;
+   console.log(route);//return;
    var query = parseTask(route, addedTask); 
+   
         
         addTask(query.route,query.todo)
         .success(function(data) {
