@@ -1,0 +1,52 @@
+<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
+
+
+
+    
+<table class='col-lg-6 coreada-box' class="btn-group">
+	<tr ng-model="sectionPstatSelector">
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'">
+		
+		<span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} 
+	
+
+		</td></tr>	
+			<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'">
+		
+		<span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité {{observedElt.typeTxt}} </td></tr>
+		<tr><td class='componentInfo ' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'mean.duration'">
+		
+		<span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture de {{observedElt.typeTxt}}. </td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rereadings_tx'">
+		
+		<span class="blue">{{observedElt.meanRereads}}</span> des lectures de {{observedElt.typeTxt}} sont des <b>relectures</b>.</td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rupture_tx'">
+		
+		<span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur {{observedElt.typeTxt}}</td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'provenance'">
+		
+		Au sein de {{observedElt.typeTxt}}, le taux des arrivées linéaires vers ses sections (depuis les section précédentes) est de  <span class="blue">{{observedElt.provLinearity}}</span>.	</td></tr>
+		<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'destination'">
+		
+		Au sein de {{observedElt.typeTxt}}, le taux des départs linéaires depuis ses sections (vers les section suivantes) est de  <span class="blue">{{observedElt.destLinearity}}</span>.	</td></tr>
+	</tr>
+</table>
+
+<div class='col-lg-6 coreada-box'>
+		<div class='chart-title'><u>{{graphTitle}}</u></div>
+	
+
+    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+	</div>
+
+
+    
+
+	</div>
+
+
+
+
+
+
+

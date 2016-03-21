@@ -89,6 +89,24 @@ if(html.length>0){
       .css('font-size','14px');
 
 
+  $(html.filter(function(s){ return $(s[0]).attr('data-part') !=maxPart}).forEach(function(elt){
+    $(elt).children('.fact')
+        .css('padding','3px')
+        .css('color','yellow')
+      .css('font-size','14px')
+          .hover(
+          function () {
+            $(this).addClass('glyphicon glyphicon-warning-sign');
+          }, 
+          function () {
+            $(this).removeClass('glyphicon glyphicon-warning-sign');
+          }
+        );
+
+   }))
+  
+
+
   
 }
   

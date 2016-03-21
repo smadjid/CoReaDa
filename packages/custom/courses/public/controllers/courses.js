@@ -62,6 +62,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.coursePstatSelector = 'time';
       $scope.studiedPart = '';
       $scope.context.otherFacts=[];
+      $scope.inspectorChart = false;
 
 
 
@@ -132,6 +133,22 @@ $(window).bind('hashchange',function(){
   $scope.dataLoading = false;
   
 });
+
+$scope.showInspectorChart=function(param){
+  $scope.inspectorChart = false;
+  if(param==-1){
+    $scope.inspectorChart = false; 
+    $(".overlay ").fadeOut(100);
+    console.log('out');
+    return;
+  }
+  $scope.sectionPstatSelector = param;
+  $scope.inspectorChart = true;
+  
+    $(".overlay ").fadeIn(100).focus().select();
+    console.log('in')
+  
+}
 
 
 $scope.toggleSectionDisplay = function(){

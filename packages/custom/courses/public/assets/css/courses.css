@@ -354,15 +354,13 @@ td {
 }
 .overlay
  {
-     position: absolute;
-     top: 100px;
-     left: 20px;
-     right: 0;
-     bottom: 0;
-     background-color: rgba(0, 0, 0, 0.85);
+
+     
+     background-color: rgba(192,192,192,.95);
      z-index: 9999;
      color: white;
      display: inline-block;
+     
  }
 
  .modal, .modal.fade.in, .modal-dialog {
