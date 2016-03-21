@@ -49,7 +49,7 @@ var maxPart = 0;
                .attr('data-part',part.id)
                .attr('colspan',1)
                .attr('data-indicator',scope.indicatorCode)
-               .attr('data-path',part.route+'@'+scope.indicatorCode)
+               .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
                .css('background-color',computeBgColor(partData, scope.indicatorCode));
 
@@ -61,7 +61,7 @@ var maxPart = 0;
         .on("click", function(d) {    
                 
                // if("#"+d.route!==window.location.hash)
-                 window.location.hash = '#'+part.route+'@'+scope.indicatorCode;
+                 window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode;
               })
 
         if(parseFloat(fact.value) > maxValue)
@@ -117,7 +117,7 @@ var maxChap = 0;
              .attr('data-part',chapter.id)
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',scope.indicatorCode)
-             .attr('data-path',chapter.route+'@'+scope.indicatorCode)
+             .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
              .append('<span></span>')
              .css('background-color',computeBgColor(chapData, scope.indicatorCode));
 
@@ -129,7 +129,7 @@ var maxChap = 0;
       .on("click", function(d) {    
               
              // if("#"+d.route!==window.location.hash)
-               window.location.hash = '#'+chapter.route+'@'+scope.indicatorCode;
+               window.location.hash = '#'+chapter.route+'&indicator='+scope.indicatorCode;
             })
 
       if(parseFloat(fact.value) > maxValue)

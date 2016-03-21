@@ -75,6 +75,7 @@ module.exports = function(Courses) {
                 _course.todos.unshift(req.body);                
                 _course.save();
                 _result = _course.todos[0];
+                console.log('course todo added');
             }
             else{
                 var tome = _course.tomes.id(req.params.tomeId);
@@ -83,16 +84,35 @@ module.exports = function(Courses) {
                     tome.save();                    
                     _course.save();
                     _result = tome.todos[0];
+                    console.log('tome todo added');
                 }
                 else{
                     var chapter = tome.chapters.id(req.params.chapterId);
                     if(req.params.partId==0){
-                        chapter.todos.unshift(req.body);
-                        chapter.save();                    
-                        tome.save();      
-                        _course.save();
-                        _result = chapter.todos[0];
+                        if(req.params.factId==0){
+                            chapter.todos.unshift(req.body);
+                            chapter.save();                    
+                            tome.save();      
+                            _course.save();
+                            _result = chapter.todos[0];
+                            console.log('chapter todo added');
                         }
+                        else{
+                            var fact = chapter.facts.id(req.params.factId);
+                            var todo = req.body;
+                            todo.classof = fact.classof;
+                            todo.issueCode = fact.issueCode
+                            fact.todos.unshift(todo);
+                            fact.save();   
+                            chapter.save();                    
+                            tome.save();      
+                            _course.save();
+                            _result = fact.todos[0];
+                            console.log('chapter FACT todo added');
+
+                        }
+
+                    }
                         else{
 
                             var part = chapter.parts.id(req.params.partId);
@@ -103,6 +123,7 @@ module.exports = function(Courses) {
                                 tome.save();      
                                 _course.save();
                                 _result = part.todos[0];
+                                console.log('part todo added');
                             }
                             else{
                                 var fact = part.facts.id(req.params.factId);
@@ -116,6 +137,7 @@ module.exports = function(Courses) {
                                 tome.save();      
                                 _course.save();
                                 _result = fact.todos[0];
+                                console.log('part FACT todo added');
 
                             }
 

@@ -346,13 +346,11 @@ td {
     border-bottom: 1px solid #eee;
 }
 
+.tome_index:hover{
 
-.chapter_index{
-  border-bottom:none;
-  text-decoration: none!important;
 }
-.chapter_index, .chapter_index:hover{
-  color:white!important;
+.tome_index:hover, .chapter_index:hover, .home_icon:hover{
+  background-color: #153A58;
 }
 .overlay
  {
@@ -1739,7 +1737,7 @@ hr {
 }
 
 .factDescription, .suggestDescription{
-  font-size: 14px!important;
+  font-size: 15px!important;
 }
 
 .rereadChart{
@@ -1786,12 +1784,12 @@ td,tr,th,  div{
 /********* ANgular select *************/
 
 .selector-container.multiple .selector-values>li {
-    border-color: #2C3D48;
-    color: #fff;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);    
-    font-weight: bold;
-    -webkit-border-radius: 3px;
-    background-color: #4682B4;
+    border-color: #2C3D48!important;
+    color: #fff!important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2)!important;
+    font-weight: bold!important;
+    -webkit-border-radius: 3px!important;
+    background-color: #4682B4!important;
 }
 
 .selector-container.multiple.remove-button .selector-helper {
@@ -1816,11 +1814,11 @@ td,tr,th,  div{
 
 .checkbox-inline { font-weight: bold; margin-bottom: 10px; }
 .selector-dropdown>.selector-optgroup {
-    background: grey;
-    font-style: italic;
-    color:black;
-    text-align: left;
-    padding-left: 5%;
-    border-top: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
+    background: grey!important;
+    font-style: italic!important;
+    color:black!important;
+    text-align: left!important;
+    padding-left: 5%!important;
+    border-top: 1px solid #f0f0f0!important;
+    border-bottom: 1px solid #f0f0f0!important;
 }
