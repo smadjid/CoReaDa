@@ -349,8 +349,8 @@ td {
 .tome_index:hover{
 
 }
-.tome_index:hover, .chapter_index:hover, .home_icon:hover{
-  background-color: #153A58;
+.tome_index:hover, .chapter_index:hover, .home_icon:hover, .td_issue:hover{
+  background-color: #153A58!important;
 }
 .overlay
  {
