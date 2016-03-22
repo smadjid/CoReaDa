@@ -1,9 +1,9 @@
 
 <div class="panel-heading tasks-panel-heading">
 			<i class="panel-title-icon fa fa-tasks"></i>
-			<span class="panel-title">Tâches</span>
+			<span class="panel-title">{{taskPanelTitle}}</span>
 			
-<div id="taskEditor" editable-text="formData" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
+<div id="taskEditor" editable-text="formData" onshow="openEditableArea(task.minipath)" onhide="openEditableArea(false)" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
 <span id='newTaskSpan'	class="glyphicon glyphicon-plus"></span> 
 				{{formData ||  context.taskText  }}
 
@@ -23,9 +23,9 @@
 
 	<tr role='button' ng-repeat="task in context.subtasks"  ng-class="task.selected" >
 		<td style="width: 85%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
-		<div  editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
+		<div  editable-textarea="task.todo" onshow="openEditableArea(task.minipath)" onhide="openEditableArea(false)" e-name="name" e-form="rowform" e-required  >
 		
-			<span ng-class="{'underlined':task.done,'nothing':!task.done}">{{ task.todo || 'empty' }} </span>
+			<span ng-class="{'underlined':task.done,'nothing':!task.done}" >{{ task.todo || 'empty' }} </span>
 			<br/>
 			<div class='taskMiniPath'>(<em>{{ task.minipath}}</em>)</div>
 		</div>

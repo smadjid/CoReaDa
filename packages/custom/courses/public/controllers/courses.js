@@ -50,6 +50,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.elementTypeSelector = 'part';
       $scope.sectionDisplay = false;
       $scope.context.statChart = false;
+      $scope.taskPanelTitle = "Tâches";
       
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
@@ -1913,7 +1914,10 @@ var editTaskLocally = function(index, task){
   $scope.context.subtasks[index] = task;
 }
 
-
+$scope.openEditableArea = function(x){
+if(x==false) $scope.taskPanelTitle = "Tâches"
+  else $scope.taskPanelTitle = x;
+}
 $scope.markTaskDone = function (route, index) {
   $scope.context.subtasks[index].done=true
 }
