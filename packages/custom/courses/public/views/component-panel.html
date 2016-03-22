@@ -1,6 +1,6 @@
 <div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
 
-<uib-tabset active="activeJustified" justified="true"  class='col-lg-6 coreada-box' >
+<uib-tabset active="activeJustified" justified="true"  class='col-lg-7 coreada-box' >
     <uib-tab index="0" heading="Statistiques" class="tabs-header-info" >
     <table class="btn-group">
 	<tr ng-model="sectionPstatSelector">
@@ -43,7 +43,7 @@
 <td class="componentIssue">
 <div class="bs-callout bs-callout-danger">
   <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
-	{{fact.name}} <button class="btn btn-success btn-xs" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-ok" ></span>N'est pas/plus un problème</button>  </h4>
+	{{fact.name}} <button class="btn btn-success btn-xs" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>N'est pas/plus un problème</button>  </h4>
   <p>{{fact.description}}</p>
 </div>
 
@@ -87,7 +87,7 @@
 
 
   
-<div id='componentChartOverlay' class='col-lg-6 overlay'  >
+<div id='componentChartOverlay' class='col-lg-5 overlay'  >
 		<div class='chart-title'><b>{{graphTitle}}</b></div>
 	
 
