@@ -43,7 +43,7 @@ var maxPart = 0;
       
       var partData = parseFloat(part.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value);
       
-      var td=$("<td></td>");
+      var td=$("<td role='button'></td>");
        $(td)
         .attr('class','td_issue')
                .attr('data-part',part.id)
@@ -51,18 +51,16 @@ var maxPart = 0;
                .attr('data-indicator',scope.indicatorCode)
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
-               .css('background-color',computeBgColor(partData, scope.indicatorCode));
+               .css('background-color',computeBgColor(partData, scope.indicatorCode))
+               .on("click", function(d) {    
+                 window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode;
+              });
 
       allFacts.forEach(function(fact){  
         var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
         span
         .css('color','red')
-        .attr('data-fact-id',+fact._id )
-        .on("click", function(d) {    
-                
-               // if("#"+d.route!==window.location.hash)
-                 window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode;
-              })
+        .attr('data-fact-id',+fact._id );
 
         if(parseFloat(fact.value) > maxValue)
         {maxValue = parseFloat(fact.value); maxPart=part.id}
@@ -129,7 +127,7 @@ var maxChap = 0;
     
     var chapData = parseFloat(chapter.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value);
     
-    var td=$("<td></td>");
+    var td=$("<td role='button'></td>");
      $(td)
       .attr('class','td_issue')
              .attr('data-part',chapter.id)
@@ -143,12 +141,7 @@ var maxChap = 0;
       var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
       span
       .css('color','red')
-      .attr('data-fact-id',+fact._id )
-      .on("click", function(d) {    
-              
-             // if("#"+d.route!==window.location.hash)
-               window.location.hash = '#'+chapter.route+'&indicator='+scope.indicatorCode;
-            })
+      .attr('data-fact-id',+fact._id );
 
       if(parseFloat(fact.value) > maxValue)
       {maxValue = parseFloat(fact.value); maxChap=chapter.id}

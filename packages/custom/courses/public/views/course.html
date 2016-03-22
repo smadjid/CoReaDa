@@ -1,0 +1,23 @@
+<table class="btn-group">
+<tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.coursePstatSelector" uib-btn-radio="'time'">Pour la période allant du <b>15 octobre 2015</b> au <b>22 décembre 2015</b>, le cours a été visité par <b>{{context.stats.reading.nusers}} lecteurs.</b> 
+    </td></tr>
+    <tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.coursePstatSelector" uib-btn-radio="'nombre'">En moyenne, le nombre de sections lues représente <b>{{context.stats.achievement.mean}}%</b> du cours. 
+            <!--Le taux médian est de {{context.stats.achievement.median}}%.-->
+           <!-- <li class='statElement'>Le temps moyen de la lecture d'une section du cours est de <b>4.5 minutes.</b>-->
+    </td></tr>
+    <tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.coursePstatSelector" uib-btn-radio="'totalit'">En moyenne, le temps nécessaire pour lire la totalité du cours est de  <b>130 minutes.</b>            
+        
+        
+    </td></tr>
+    <tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.coursePstatSelector" uib-btn-radio="'rs'">En moyenne, un lecteur consacre <b>2 séances</b> de lecture pour ce cours. 
+     
+     </td></tr>
+    <tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.coursePstatSelector" uib-btn-radio="'rs2'">Une séance de lecture est en moyenne composée de <b>{{context.stats.rs.mean_nparts}} sections.</b>
+     
+     </td></tr>
+    <tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.coursePstatSelector" uib-btn-radio="'rs3'">Une séance de lecture dure en moyenne <b>{{context.stats.rs.mean_duration}} minutes</b>.
+        
+        
+    </td></tr>
+    
+</table>

@@ -1037,7 +1037,7 @@ var loadContext = function(){
           partElt = $('.part_index[data-part ='+chap.id+']'); 
           $scope.studiedPart = chap.id;
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
-          $scope.inspectorDisplaySrc='issues'; 
+          $scope.inspectorDisplaySrc='stat'; 
           displayChapterIssues(chap.route, task, chap, indicator);
 
         }
@@ -1053,7 +1053,7 @@ var loadContext = function(){
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.sectionDisplay = false;   
-          $scope.inspectorDisplaySrc='issues' ;
+          $scope.inspectorDisplaySrc='stat' ;
           displayChapterIssues(chap.route, task, chap, indicator);
         }
       }
@@ -1063,7 +1063,7 @@ var loadContext = function(){
           partElt = $('.part_index[data-part ='+part.id+']'); 
           $scope.studiedPart = part.id;
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
-          $scope.inspectorDisplaySrc='issues'; 
+          $scope.inspectorDisplaySrc='stat'; 
           displayPartIssues(part.route, task, part, indicator);
         }
         else
@@ -1076,7 +1076,7 @@ var loadContext = function(){
         else{
           partElt = $('.part_index[data-part ='+part.id+']');  
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
-          $scope.inspectorDisplaySrc='issues';
+          $scope.inspectorDisplaySrc='stat';
           $scope.sectionDisplay = true; 
           displayPartIssues(part.route, task, part, indicator);
 
