@@ -23,8 +23,9 @@
 
 	<tr role='button' ng-repeat="task in context.subtasks"  ng-class="task.selected" >
 		<td style="width: 85%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
-		<div editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
-			<span>{{ task.todo || 'empty' }} </span>
+		<div  editable-textarea="task.todo" e-name="name" e-form="rowform" e-required  >
+		
+			<span ng-class="{'underlined':task.done,'nothing':!task.done}">{{ task.todo || 'empty' }} </span>
 			<br/>
 			<div class='taskMiniPath'>(<em>{{ task.minipath}}</em>)</div>
 		</div>
@@ -36,6 +37,7 @@
 		</form>
 			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
+				<a role="button" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="markTaskDone(task.route, $index)"></a>
 				<a role="button" class="glyphicon glyphicon-minus" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>
 			</div>
 		</td>

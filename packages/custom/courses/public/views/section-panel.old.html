@@ -1,4 +1,6 @@
 <div class='row' style="margin:10px;color: #1C383F; " >
+
+
 <table class='col-lg-6 coreada-box' class="btn-group">
 <tr ng-model="sectionPstatSelector">
 <tr><td class='componentInfo' tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'"><span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} </td></tr>	
@@ -20,10 +22,10 @@
 	
     
 	</table>
-
-	<div class='col-lg-6 coreada-box'>
+<div class='col-lg-6 coreada-box' ng-include src="'courses/views/issues-subpanel.html'" ></div>  
+<!--	<div class='col-lg-6 coreada-box'>
 	<div class='chart-title'><u>{{graphTitle}}</u></div>
 
-    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:"part",elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:"part",elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart> -->
 	</div>
 </div>

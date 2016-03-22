@@ -353,13 +353,16 @@ td {
   background-color: #153A58!important;
 }
 .overlay
- {
-
-     
-     background-color: rgba(192,192,192,.95);
+ {     
+     background-color: rgba(255, 255, 255, 0.8);
+     box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 2px 2px;
      z-index: 9999;
      color: white;
      display: inline-block;
+     border-radius: 3px;
+     padding:0;
+     border:1px solid rgb(81, 120, 208);
+     border-radius: 2px;
      
  }
 
@@ -1725,13 +1728,15 @@ hr {
   shape-rendering: crispEdges;
 }
 .chart-title{
-    margin-top: 0;
-    margin-bottom: 0;
+  padding: 5px;
+    margin: 0;
+    margin-bottom: 5px;
+    width:100%;
     font-size: 15px;
     text-align: center;
-    color: #404F70;
+    color: white;
     font-weight: bold;
-    font-style: oblique
+    background-color: rgb(81, 120, 208);
 }
 
 .factDescription, .suggestDescription{
@@ -1819,4 +1824,18 @@ td,tr,th,  div{
     padding-left: 5%!important;
     border-top: 1px solid #f0f0f0!important;
     border-bottom: 1px solid #f0f0f0!important;
+}
+
+.issueTable{ 
+    border: none;
+    width:100%;  
+    padding: 0;
+}
+.issueTable td, .issueTable tr{ 
+    border: none;
+    padding: 0;
+    width:auto;
+  }
+.underlined{
+  text-decoration: line-through;
 }

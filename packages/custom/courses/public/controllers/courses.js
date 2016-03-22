@@ -134,19 +134,42 @@ $(window).bind('hashchange',function(){
   
 });
 
-$scope.showInspectorChart=function(param){
-  $scope.inspectorChart = false;
+$('.editable-text').on('shown', function (e, editable) {console.log('ok')
+        if (arguments.length != 2) return
+        if (!editable.input.$input.closest('.control-group').find('.editable-input >textarea').length > 0 || !editable.options.clear || editable.input.$input.closest('.control-group:has(".btn-clear")').length > 0) return
+        
+        editable.input.$input.closest('.control-group').find('.editable-buttons').append('<br><button class="btn btn-clear"><i class="icon-trash"></i></button>');
+    });
+
+$scope.showComponentChart=function(param){
+  
   if(param==-1){
     $scope.inspectorChart = false; 
-    $(".overlay ").fadeOut(100);
-    console.log('out');
+    $("#componentChartOverlay").fadeOut(100);
+    
     return;
   }
   $scope.sectionPstatSelector = param;
   $scope.inspectorChart = true;
   
-    $(".overlay ").fadeIn(100).focus().select();
-    console.log('in')
+    $("#componentChartOverlay").fadeIn(100).focus().select();
+    
+  
+}
+
+$scope.showSectionChart=function(param){
+  
+  if(param==-1){
+    $scope.inspectorChart = false; 
+    $("#componentChartOverlay").fadeOut(100);
+    
+    return;
+  }
+  $scope.sectionPstatSelector = param;
+  $scope.inspectorChart = true;
+  
+    $("#componentChartOverlay").fadeIn(100).focus().select();
+    
   
 }
 
@@ -794,7 +817,8 @@ angular.forEach($scope.course.tomes, function(tome) {
 });
 
   for (var i = 0; i < tasks.length; i++)   
-    tasks[i].selected = 'relevantTask';
+    {tasks[i].selected = 'relevantTask';
+        tasks[i].done =false;}
 
   return tasks
 
@@ -1890,6 +1914,9 @@ var editTaskLocally = function(index, task){
 }
 
 
+$scope.markTaskDone = function (route, index) {
+  $scope.context.subtasks[index].done=true
+}
 $scope.deleteTask = function (route, index) {
 swal({
       title: "Supprimer la tâche?", 
