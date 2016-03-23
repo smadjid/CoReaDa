@@ -786,7 +786,7 @@ return{'Sections':partsData, 'Chapters':chapsData, 'Tomes':tomesData}
 
 
 var computeAllTasks =function(){ 
-  
+ 
  var tasks =angular.copy($scope.course.todos);
  for (var i = 0; i < tasks.length; i++)   
       {
@@ -1027,7 +1027,16 @@ switch(granularity){
 
 /********************************************/
 var loadContext = function(){
-  
+
+var width = $('.data-table').innerWidth() ;
+    var top = $('.data-table').offset().top + $('.data-table').innerHeight();
+    var left = $('.data-table').offset().left;
+
+
+    $('#indicatorSelector').offset({top:top + 7 ,left:left });
+    $('#indicatorSelector').width=$('.indicators-header').css('width')
+    $('#indicatorSelector').css('visibility','visible');
+      
    var url = location.hash.slice(1);
  
    var element = resolveRoute(url);
@@ -1164,9 +1173,18 @@ var loadContext = function(){
         
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
-  
-  $('.tableScroller').scroll();
 
+
+$('.tableScroller').scroll();
+
+
+
+
+
+
+
+
+  
 
 }
 

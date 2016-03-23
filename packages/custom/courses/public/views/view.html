@@ -24,18 +24,15 @@
   <div id="divOverlay"> </div> 
    <div id="divHoverOverlay"> </div> 
    </perfect-scrollbar>  
-  <div class='indicatorSelector row'>
-<div class='col-lg-2 btn btn-primary btn-xs' style='top:10px' role='button'>      <span class="glyphicon glyphicon glyphicon-cog" aria-hidden="true"></span> Indicateurs</div>
-
-  <select class='col-lg-9' selector
-  multi="true"
-  model="indicatorsSelectionModel"
-  options="indicatorsHeader"
-  group-attr ="category"
-  value-attr="value"></select>
-
-
-  </div>
+  <div class='indicatorSelector row' id='indicatorSelector'>
+        <div  class='col-lg-1 btn btn-primary btn-xs' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow">      <span class="glyphicon glyphicon glyphicon-cog"  style='font-size : 15px!important' aria-hidden="true"></span></div>
+    <select ng-show="indicatorSelectorShow" style='padding-left: 1px!important; top:-10px' class='col-lg-9' selector
+      multi="true"
+      model="indicatorsSelectionModel"
+      options="indicatorsHeader"
+      group-attr ="category"
+      value-attr="value"></select>
+   </div>
     <div class="inspector-container inspectoEnclosing">
         <div class="panel panel-flat" style="margin-bottom:0">
             <div class="panel-heading">
@@ -54,8 +51,8 @@
 
 </div>
 <div class="col-lg-3 coreada-box" >
-                        <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
-    </div>
+  <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
+</div>
 </div>
 
 </section>
