@@ -51,6 +51,8 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.sectionDisplay = false;
       $scope.context.statChart = false;
       $scope.taskPanelTitle = "Tâches";
+      $scope.statShow=true;
+      $scope.graphShow=false;
       
       $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
@@ -64,6 +66,22 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.studiedPart = '';
       $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
+
+
+      $scope.tab = 0;
+  
+  $scope.changeTab = function(newTab){
+    $scope.tab = newTab;
+  };
+  
+  $scope.isActiveTab = function(tab){
+    return $scope.tab === tab;
+  };
+  $scope.selectTab = function(tab) {
+        var eltID="."+tab;
+         $(".active").removeClass('active');
+         $(eltID).addClass('active');
+      }
 
 
 
@@ -1052,6 +1070,8 @@ var loadContext = function(){
         $scope.context.taskText ='(nouvelle tâche globale)';
         displayCourseInfos(indicator, task); 
         computeGranuleFacts('course');
+        $scope.statShow=true;
+        
     }
     else
      if(chap ==-1) {
@@ -1061,6 +1081,7 @@ var loadContext = function(){
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       displayTomeInfos(partElt, task);
+      $scope.statShow=true;
     }
     else
       if(part==-1){
@@ -1071,6 +1092,7 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.inspectorDisplaySrc='stat'; 
           displayChapterIssues(chap.route, task, chap, indicator);
+          $scope.statShow=false;
 
         }
         else
@@ -1079,6 +1101,7 @@ var loadContext = function(){
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           displayChapterInfos(partElt, task);
+          $scope.statShow=true;
         }
         else{
           computeGranuleFacts('chapter', chap._id);
@@ -1087,6 +1110,7 @@ var loadContext = function(){
           $scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='stat' ;
           displayChapterIssues(chap.route, task, chap, indicator);
+          $scope.statShow=false;
         }
       }
       else{

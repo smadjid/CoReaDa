@@ -1,39 +1,39 @@
-<div class='row' style="margin:0;color: #1C383F; background-color:#fff7ec"  >
+ <div tabs="" class='coreada-box tabs' >
+      <ul class="nav nav-tabs">
+        <li class="tabStats tabs-header active" >
+          <a role='button' ng-click='selectTab("tabStats")'>Statistiques de lecture</a>
+        </li>
+        <li class="tabs-header tabIssues" >
+          <a role='button'  ng-click='selectTab("tabIssues")' ng-show='context.Facts.length>0'>Problème(s) potentiels de lecture</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div  class="tab-pane tabStats col-lg-7 btn-group active">
+        <table style='display:table'  ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></table>
+      </div>
+        <div  class="tab-pane tabIssues col-lg-7 " ng-show='context.Facts.length>0' >
+        <perfect-scrollbar id="inspectorScroller" class="inspectorScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
 
-<uib-tabset active="activeJustified" justified="true"  class='col-lg-7 coreada-box' >
-    <uib-tab index="0" heading="Statistiques" class="tabs-header"> 
-    <div ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></div>
+<div class="bs-callout bs-callout-danger" ng-repeat="fact in context.Facts" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 
-    </uib-tab>
-    <uib-tab index="1" heading="Problème de lecture"  class="tabs-header" ng-show='context.Facts.length>0'>
-    <perfect-scrollbar id="inspectorScroller" class="inspectorScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
-<table>
-<tr  ng-repeat="fact in context.Facts" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
-<td class="componentIssue">
-<div class="bs-callout bs-callout-danger">
   <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
     {{fact.name}} <button class="btn btn-success btn-xs" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>N'est pas/plus un problème</button>  </h4>
   <p>{{fact.description}}</p>
-</div>
 
-<div class="bs-callout bs-callout-primary">
-  <h4>Suggestion: {{fact.suggestion_title}} <button class="btn btn-primary btn-xs" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button></h4>
+  <h5>Suggestion: {{fact.suggestion_title}} <button class="btn btn-primary btn-xs" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button></h5>
  {{fact.suggestion_content}}
 </div>
-    </td>
-    </tr>
-    </table>
+
+
     </perfect-scrollbar>
+        </div>
+        <div id='componentChartOverlay' class='col-lg-5 '  >
+          <div class='chart-title'><b>{{graphTitle}}</b></div>
+            <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+        </div>
+    </div>
 
-
-
-
-
-
-
-    </uib-tab>
-  </uib-tabset>
-
+    </div>
 
 
 
@@ -56,13 +56,8 @@
 
 
   
-<div id='componentChartOverlay' class='col-lg-5 overlay'  >
-        <div class='chart-title'><b>{{graphTitle}}</b></div>
-    
 
-    <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
-    </div>
-    </div>
+   
 
 
 

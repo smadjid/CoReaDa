@@ -1719,15 +1719,15 @@ td,tr,th,  div{
 }
 
 .chart-title{
-  padding: 5px;
+  padding: 3px;
     margin: 0;
     margin-bottom: 5px;
     width:100%;
-    font-size: 15px;
+    font-size: 13px;
     text-align: center;
-    color: white;
+    color: rgb(81, 120, 208);
     font-weight: bold;
-    background-color: rgb(81, 120, 208);
+
 }
 
 .tabs-header{
@@ -1754,8 +1754,8 @@ td,tr,th,  div{
 }
 
 .bs-callout {
-    padding: 15px;
-    margin: 10px 0;
+    padding: 10px;
+    margin: 5px 0;
     border: 1px solid #eee;
     border-left-width: 5px;
     border-radius: 3px;
@@ -1797,6 +1797,9 @@ td,tr,th,  div{
 .bs-callout-danger h4 {
     color: #d9534f;
 }
+.bs-callout-danger h5{
+    color: #2F525F;
+}
 .bs-callout-warning {
     border-left-color: #f0ad4e;
 }
@@ -1808,4 +1811,9 @@ td,tr,th,  div{
 }
 .bs-callout-info h4 {
     color: #5bc0de;
+}
+.tab-pane{
+  border: 2px solid rgb(52, 73, 94);
+  height:auto;
+  padding:0;
 }
