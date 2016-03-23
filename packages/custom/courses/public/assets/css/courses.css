@@ -728,7 +728,7 @@ html, body {
 }
 
 .chosenPart{  
-   border: solid #45348A!important;   
+   background-color: #45348A!important;   
 }
 
 /* Table highlighting */

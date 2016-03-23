@@ -87,21 +87,7 @@ if(html.length>0){
       .css('font-size','14px');
 
 
-  $(html.filter(function(s){ return $(s[0]).attr('data-part') !=maxPart}).forEach(function(elt){
-    $(elt).children('.fact')
-        .css('padding','3px')
-        .css('color','yellow')
-      .css('font-size','14px')
-          .hover(
-          function () {
-            $(this).addClass('glyphicon glyphicon-warning-sign');
-          }, 
-          function () {
-            $(this).removeClass('glyphicon glyphicon-warning-sign');
-          }
-        );
-
-   }))
+  
   
 
 
@@ -135,7 +121,10 @@ var maxChap = 0;
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
              .append('<span></span>')
-             .css('background-color',computeBgColor(chapData, scope.indicatorCode));
+             .css('background-color',computeBgColor(chapData, scope.indicatorCode))
+             .on("click", function(d) {    
+                 window.location.hash = '#'+chapter.route+'&indicator='+scope.indicatorCode;
+              });
 
     allFacts.forEach(function(fact){  
       var span = $("<span class='fact' role='button'  style='padding:5px'></span>");

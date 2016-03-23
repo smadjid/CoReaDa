@@ -68,10 +68,10 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
 
       $scope.indicatorsHeader=[
-        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture'},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture'},
-        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture'},
-        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'arrêts et reprise'}
+        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'sectionValue et reprise','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null}
 
       ]
 
@@ -135,7 +135,7 @@ $(window).bind('hashchange',function(){
   
 });
 
-$('.editable-text').on('shown', function (e, editable) {console.log('ok')
+$('.editable-text').on('shown', function (e, editable) {
         if (arguments.length != 2) return
         if (!editable.input.$input.closest('.control-group').find('.editable-input >textarea').length > 0 || !editable.options.clear || editable.input.$input.closest('.control-group:has(".btn-clear")').length > 0) return
         
@@ -304,6 +304,9 @@ var completeCourseParts =function(course, courseParts, courseChapters){
       chapter.url = course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
       angular.forEach(chapter.facts,function(fact){
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
+          fact.tome=tome._id;
+          fact.chapter=chapter._id;
+          fact.section=null;
           fact.d3 =[];
           fact.d3 ={ 'chapter':chapter.route,'tome':tome.route};
 
@@ -317,8 +320,10 @@ var completeCourseParts =function(course, courseParts, courseChapters){
         part.route =$.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id});
         part.url = chapter.url+'/'+'#/id/r-'+part.properties.filter(function(value){ return value.property === 'part_id'})[0].value
         angular.forEach(part.facts,function(fact){
-          fact.route = $.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id, 'factid':fact._id});
-          fact.d3 =[];
+          fact.route = $.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id, 'factid':fact._id});          
+          fact.tome=tome._id;
+          fact.chapter=chapter._id;
+          fact.section=part._id;
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
 
         });
@@ -897,66 +902,93 @@ var filterTasks = function(studiedPart) {
       };
 
 
-var findCourseIssues = function(){  
-  var allFacts=[];
+var findMainChaptersIssues = function(){  
+  var allFacts=[]; 
 
   $scope.courseChapters.forEach(function(chapter) {
+    //var allFacts = part.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
     
       chapter.facts.forEach(function(f){
+        var indicator=f.issueCode
+        var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
+        if(maxV.length>0) {          
+            maxV=maxV[0].chapterValue;
+                if(f.value>maxV) {
+                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.value
+                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
+                }
+              }
+         f.mainFact=false;
         allFacts.push(f)
         })   
     
   });
+  var mainFacts=[];
+  $scope.indicatorsHeader.forEach(function(ind){
 
- $scope.context.Facts=allFacts;
- 
- 
+    if(ind.chapterFactId!=null){
+      mainFacts.push(allFacts.filter(function(e){return (e._id==ind.chapterFactId)})[0])
+    }
+  }) 
+
+ return mainFacts;
 }
 
+var findMainSectionsIssues = function(){  
+  var allFacts=[]; 
 
-
-var findTomeIssues = function(partid){  
-  var allFacts=[];
-var tomeChaps = $.grep($scope.course.tomes, function(e){ return e._id === partid; })[0].chapters;
-
-  tomeChaps.forEach(function(chapter) {
+  $scope.courseParts.forEach(function(part) {
+    //var allFacts = part.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
     
-      chapter.facts.forEach(function(f){
+      part.facts.forEach(function(f){
+        var indicator=f.issueCode
+        var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
+        if(maxV.length>0) {          
+            maxV=maxV[0].sectionValue;
+                if(f.value>maxV) {
+                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionValue = f.value
+                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionFactId = f._id
+                }
+              }
+         f.mainFact=false;
         allFacts.push(f)
         })   
     
   });
+  var mainFacts=[];
+  $scope.indicatorsHeader.forEach(function(ind){
 
- $scope.context.Facts=allFacts;
- 
+    if(ind.sectionFactId!=null){
+      mainFacts.push(allFacts.filter(function(e){return (e._id==ind.sectionFactId)})[0])
+    }
+  }) 
+
+ return mainFacts;
+}
+
+var findCourseIssues = function(){  
+  $scope.context.Facts=findMainChaptersIssues();
+}
+var findTomeIssues = function(tomeId){  
+  var mainIssues = findMainChaptersIssues();
+  $scope.context.Facts = mainIssues.filter(function(e){return (e.tome==tomeId)}) 
 }
 
 var findChapterIssues = function(chapterId){  
-  var allFacts=[];
-var chapter = $.grep($scope.courseChapters, function(e){ return e._id === chapterId; })[0]; 
-
-  
-    
-      chapter.facts.forEach(function(f){
-        allFacts.push(f)
-  
-    
-  });
-
- $scope.context.Facts=allFacts;
+   var mainIssues = findMainChaptersIssues();
+  $scope.context.Facts = mainIssues.filter(function(e){return (e.chapter==chapterId)}) 
 
 }
 
-var findPartIssues = function(partId){  
-  var allFacts=[];
-var part = $.grep($scope.courseParts, function(e){ return e._id === partId; })[0]; 
+var findSectionIssues = function(sectionId){  
+ var mainIssues = findMainSectionsIssues();
+  $scope.context.Facts = mainIssues.filter(function(e){return (e.section==sectionId)}) 
+  console.log($scope.context.Facts);
 
- $scope.context.Facts=part.facts;
 
 }
 
 var computeGranuleFacts = function(granularity, id){
-var results=[];
 switch(granularity){
   case 'course':
     findCourseIssues();
@@ -968,7 +1000,7 @@ switch(granularity){
     findChapterIssues(id);
     break
   case 'part':
-    findPartIssues(id);
+    findSectionIssues(id);
     break
 
   }
@@ -1061,13 +1093,14 @@ var loadContext = function(){
         task = components.hasOwnProperty('taskid')?$.grep(part.todos, function(e){ return  e._id == components.taskid })[0]:null;
         if(fact!=-1){
           partElt = $('.part_index[data-part ='+part.id+']'); 
-          $scope.studiedPart = part.id;
+          $scope.studiedPart = part.id;          
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
           $scope.inspectorDisplaySrc='stat'; 
           displayPartIssues(part.route, task, part, indicator);
         }
         else
-        if(indicator =="ALL"){
+        if(indicator =="ALL"){  
+          computeGranuleFacts('part', part._id); 
           $scope.sectionDisplay = true;
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
@@ -1112,6 +1145,7 @@ var loadContext = function(){
 
 
 }
+
 
 
 window.onresize = function(){
@@ -1181,7 +1215,7 @@ $scope.triggerClick =function($event){
 
 
 var showTasksAndFacts = function(element, indicator, task){ 
-  
+
   if(indicator ==='ALL'){
        angular.forEach(element.todos, function(todo){
    var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0]
@@ -1351,6 +1385,7 @@ var highlightTome =function(index){
     var rowTop = $('.tomes-header> th:nth-child('+index+')').offset();
   var topTop = rowTop.top;
   var left = rowTop.left;
+  $('.tomes-header> th:nth-child('+index+')').addClass('chosenPart')
 
   var oneWidth = $('.tomes-header> th:nth-child('+index+')').innerWidth();
   var height = $('.data-table').innerHeight() ;
@@ -1374,10 +1409,12 @@ var highlightChapter =function(index){
   resetPath();
   setTimeout(function() {
     var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
+
   var topTop = rowTop.top;
   var left = rowTop.left;
 
   var oneWidth = $('.chapters-header> th:nth-child('+index+')').innerWidth();
+  $('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
   var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
@@ -1403,6 +1440,7 @@ var highlightPart =function(index){
     var left = rowTop.left;
 
     var oneWidth = $('.parts-header > th:nth-child('+index+')').innerWidth();
+    $('.parts-header > th:nth-child('+index+')').addClass('chosenPart')
     var height = $('.data-table').innerHeight() - $('.chapters-header th:first').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
