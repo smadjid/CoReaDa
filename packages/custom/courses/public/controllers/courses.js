@@ -123,6 +123,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.studiedPart = '';
       $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
+      $scope.inspectorDisplay="tabStats";
 
 
       $scope.tab = 0;
@@ -134,13 +135,13 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   $scope.isActiveTab = function(tab){
     return $scope.tab === tab;
   };
-  $scope.selectTab = function(tab) {
-        var eltID="."+tab;
-         $(".active").removeClass('active');
-         $(eltID).addClass('active');
-      }
-
-
+ 
+$(".inspectorNavigator").on("click", function(){alert($(this).attr('data-ref'))
+   $(".nav").find(".active").removeClass("active");
+     $(this).parent().addClass("active");
+   $scope.inspectorDisplay = $(this).attr('data-ref');
+ 
+});
 
       $scope.indicatorsHeader=[
         {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},

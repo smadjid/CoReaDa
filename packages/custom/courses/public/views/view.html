@@ -34,13 +34,34 @@
       value-attr="value"></select>
    </div>
     <div class="inspector-container inspectoEnclosing">
-        <div class="panel panel-flat" style="margin-bottom:0">
-            <div class="panel-heading">
-                <div> <span class="fat" ></span><!--<small ng-bind-html="context_path">{{context_path}}</small>-->
-                <em><a style='padding-left:10px ;color:white' title="Voir sur OpenClassrooms dans (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" > {{context.inspector_title}}
-                <span style='padding-left:10px' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
-              </a></em><span class='pull-right'> Statistiques de lecture</span></div>
-            </div>
+
+
+
+
+
+
+
+
+
+        <div class="panel-body  panel-flat" style="margin-bottom:0">
+           
+               <nav class="navbar navbar-coreada navbar-collapse  ">
+         <div class="inspector-title">
+        
+                <em><a style='color:white' title="Voir sur OpenClassrooms dans (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" > {{context.inspector_title}}
+                <span class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
+              </a></em>
+        </div>
+          <ul class="nav navbar-nav navbar-right">
+          <li><a class='inspectorNavigator' data-ref='tabStats'  href="#"  >Statistiques de lecture
+        </a></li>
+            <li><a class='inspectorNavigator' data-ref='tabIssues' href="#" role='button'   ng-show='context.Facts.length>0'>Problème(s) potentiels de lecture  </a>
+          </ul>
+        </div><!--/.nav-collapse -->
+    
+    </nav>
+           
+            
 
             <div class="panel-body inspector-body" ng-include src="'courses/views/inspector.html'" ></div> 
             <!-- ng-include src="'courses/views/inspector.html'" ></div> -->

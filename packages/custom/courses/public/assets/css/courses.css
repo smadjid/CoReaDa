@@ -177,7 +177,7 @@ ul.alert-dropdown {
     border-color: rgb(47, 82, 111);
     color: #fff;
     background-color: rgb(47, 82, 111);
-    padding:5px;
+    padding:0;
 }
 
 .panel-green {
@@ -662,10 +662,7 @@ html, body {
   overflow: hidden;
 }
 
-.navbar {
-  min-height: 40px;
-  margin-bottom: 5px;
-}
+
 /*************FIXED 1st COLUMN **************************/
 
 .course_title{
@@ -826,8 +823,9 @@ table {
 .inspectoEnclosing{
   padding:1px;
   margin:0px;
-  margin-top:30px;
-  box-shadow: inset 0 0 0 1px #fff;
+  margin-top:30px; 
+  box-shadow: inset 0 0 0 2px rgb(52, 73, 94);
+
 }
 .inspectoEnclosingHg{
   border: 3px outset #45348A;
@@ -1736,7 +1734,7 @@ border-radius: 3px;
 }
 
 .tab-pane{
-  border: 2px solid rgb(52, 73, 94);
+  
   height:auto;
   padding:0;
 }
@@ -1746,30 +1744,22 @@ border-radius: 3px;
 }
 
 .tabs-header{
-  padding: 0!important;
-  margin: 0!important;
-  margin-left:-0.75px!important;
-}
-.tabs-header a{
-    padding: 3px!important;
-    background-color: rgba(47, 82, 111, 0.8)!important;
-    color:#B0BEC5!important;
+ 
+  padding:2px;
+  padding-right:7px;
+  margin-right:10px!important;
+
+    background-color: rgba(81, 149, 237, 0.57)!important;
+    box-shadow: inset 0 0 0 2px rgb(52, 73, 94)
+    border-radius: 3px;
+    color:white!important;
+    display:inline-block;
+     overflow:auto ;
 }
 .tabs-header a:hover, .tabs-header a:focus{
     color:white!important;
 } 
-.tabs-header.active { 
-    background-color: #404F70!important;
-    color:white!important;
-    
-    margin-bottom: -5px!important
-    z-index: 50
 
-}
-.tabs-header.active a{
-    background-color: #404F70!important;
-    color:white!important;
-}
 
 
 .pagination-controle li{
@@ -1820,4 +1810,98 @@ border-radius: 3px;
 
 .paginator li.active span{
     background: red!important;
+}
+.right-to-left li { float: right; right:0;}
+
+
+
+
+.navbar-coreada {
+  background-color: #2f526f!important;
+  border-color: #213c52!important;
+  height:40px!important;
+  min-height: 38px!important;
+}
+.navbar-coreada .navbar-brand {
+  color: #ecf0f1!important;
+}
+.navbar-coreada .navbar-brand:hover,
+.navbar-coreada .navbar-brand:focus {
+  color: #f5f2f7!important;
+}
+.navbar-coreada .navbar-text {
+  color: #ecf0f1!important;
+}
+.navbar-coreada .navbar-nav > li > a {
+  color: #ecf0f1!important;
+}
+.navbar-coreada .navbar-nav > li > a:hover,
+.navbar-coreada .navbar-nav > li > a:focus {
+  color: #f5f2f7!important;
+}
+.navbar-coreada .navbar-nav > .active > a,
+.navbar-coreada .navbar-nav > .active > a:hover,
+.navbar-coreada .navbar-nav > .active > a:focus {
+  color: #f5f2f7!important;
+  background-color: #213c52!important;
+}
+.navbar-coreada .navbar-nav > .open > a,
+.navbar-coreada .navbar-nav > .open > a:hover,
+.navbar-coreada .navbar-nav > .open > a:focus {
+  color: #f5f2f7!important;
+  background-color: #213c52!important;
+}
+.navbar-coreada .navbar-toggle {
+  border-color: #213c52!important;
+}
+.navbar-coreada .navbar-toggle:hover,
+.navbar-coreada .navbar-toggle:focus {
+  background-color: #213c52!important;
+}
+.navbar-coreada .navbar-toggle .icon-bar {
+  background-color: #ecf0f1!important;
+}
+.navbar-coreada .navbar-collapse,
+.navbar-coreada .navbar-form {
+  border-color: #ecf0f1!important;
+}
+.navbar-coreada .navbar-link {
+  color: #ecf0f1!important;
+}
+.navbar-coreada .navbar-link:hover {
+  color: #f5f2f7!important;
+}
+
+.navbar-nav > li > a {
+    padding-top: 10px!important;
+    padding-bottom: 10px!important;
+    line-height: initial;
+}
+
+
+
+@media (max-width: 767px) {
+  .navbar-coreada .navbar-nav .open .dropdown-menu > li > a {
+    color: #ecf0f1!important;
+  }
+  .navbar-coreada .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar-coreada .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #f5f2f7!important;
+  }
+  .navbar-coreada .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar-coreada .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar-coreada .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #f5f2f7!important;
+    background-color: #213c52!important;
+  }
+}
+
+.inspector-title{
+      float: left;
+          display: block;
+              font-size: 15px;
+    font-weight: 500;
+    padding: 7px;
+    height: 100%;
+
 }
