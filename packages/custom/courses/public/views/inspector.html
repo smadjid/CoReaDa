@@ -1,4 +1,4 @@
- <div tabs="" class='coreada-box tabs' >
+<div tabs="" class='coreada-box tabs' >
       <ul class="nav nav-tabs">
         <li class="tabStats tabs-header active" >
           <a role='button' ng-click='selectTab("tabStats")'>Statistiques de lecture</a>
@@ -8,13 +8,31 @@
         </li>
       </ul>
       <div class="tab-content">
-        <div  class="tab-pane tabStats col-lg-7 btn-group active">
-        <table style='display:table'  ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></table>
+        
+        <div  class="tab-pane tabStats col-lg-12 btn-group active">
+        <div  class='coreada-box  col-lg-7' ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></div>
+        <div class='col-lg-5'  >
+          <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
+            <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+        </div>
       </div>
-        <div  class="tab-pane tabIssues col-lg-7 " ng-show='context.Facts.length>0' >
-        <perfect-scrollbar id="inspectorScroller" class="inspectorScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+       
+        <div  class="tab-pane tabIssues col-lg-12" ng-show='context.Facts.length>0' >
+         
 
-<div class="bs-callout bs-callout-danger" ng-repeat="fact in context.Facts" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
+        <ol class="paginator col-lg-12">
+        <!--<li ng-class="DisablePrevPage()"><a href ng-click="prevPage()">« Prev</a> </li>-->
+              <li ng-repeat="n in range()" ng-class="{active: n == currentFact}" ng-click="setPage(n)">
+                <span role='button'></span>
+              </li>
+         <!--     <li ng-class="DisableNextPage()"><a href ng-click="nextPage()">Next »</a></li>-->
+         <hr/>
+            </ol>
+        
+
+        
+
+<div class="fact-div col-lg-7"  ng-repeat="fact in context.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 
   <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
     {{fact.name}} <button class="btn btn-success btn-xs" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>N'est pas/plus un problème</button>  </h4>
@@ -24,45 +42,21 @@
  {{fact.suggestion_content}}
 </div>
 
+ <div class='col-lg-5'  >
+          <div class='chart-title'><b>{{graphTitle}}-({{sectionFactChart.classof}})</b></div>
+          
+       
 
-    </perfect-scrollbar>
-        </div>
-        <div id='componentChartOverlay' class='col-lg-5 '  >
-          <div class='chart-title'><b>{{graphTitle}}</b></div>
-            <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
-        </div>
-    </div>
+           <d3-chart data='context.d3' d3opts='{type:"inspector",issueCode:sectionFactChart.classof,  issueClass:sectionFactChart.classof, elementType:sectionFactChart.partType, elementId:sectionFactChart.partId}'></d3-chart>
 
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
+  </div>
 
 
   
+        </div>
+      
+    </div>
 
-   
-
-
-
-
-
-
-
+    </div>
 

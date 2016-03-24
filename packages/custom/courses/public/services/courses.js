@@ -13,3 +13,11 @@ angular.module('mean.courses').factory('Courses', ['$resource',
   }
 ]);
 
+angular.module('mean.courses').filter('pagination', function()
+{
+  return function(input, start) {
+  	if(typeof input=='undefined') return;
+    return input.slice(start);
+  };
+});
+

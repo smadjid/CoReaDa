@@ -15,8 +15,8 @@ scope.chapters =[]
 var scale = chroma.scale('OrRd');
 var computeBgColor =function(val, indicator){
 
-  if(indicator==='mean.duration') val = val /100;
-  if(indicator==='speed') val = val /300;
+  if(indicator=='mean.duration') val = val /100;
+  if(indicator=='speed') val = val /300;
 
   return   scale(val).hex();
 }
@@ -38,10 +38,10 @@ var maxPart = 0;
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
     
-      var allFacts = part.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
+      var allFacts = part.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );
       
       
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value);
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
       
       var td=$("<td role='button'></td>");
        $(td)
@@ -108,10 +108,10 @@ var maxChap = 0;
 
   scope.chapters.forEach(function(chapter, i) {
     
-    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
+    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );
     
     
-    var chapData = parseFloat(chapter.properties.filter(function(value){ return value.property === scope.indicatorCode})[0].value);
+    var chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
     
     var td=$("<td role='button'></td>");
      $(td)
@@ -171,7 +171,7 @@ if(html.length>0){
 
   scope.$watch('data', function(){
    
-  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.byParts==='undefined') return;
+  if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -183,7 +183,7 @@ if(html.length>0){
      
 
 scope.$watch('byParts', function(){
-  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.byParts==='undefined') return;
+  if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -198,7 +198,7 @@ scope.$watch('byParts', function(){
 
 scope.$watch('indicatorCode', function(){
 
-  if(typeof scope.data==='undefined' | typeof scope.indicatorCode ==='undefined' | typeof scope.byParts==='undefined') return;
+  if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -283,9 +283,9 @@ var globalCharts = function(scope, element){
             xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
        
 
-          var data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
+          var data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
 
-          data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
+          data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
           //Set our scale's domains
           x.domain(data.map(function(d) { return d.part; }));
           y.domain([0, d3.max(data, function(d) { return d.value; })]);
@@ -438,12 +438,12 @@ scope.globalRenderResumeNodes=function(data){
     return e.type in
      {'direct_recovery':'', 'next_recovery':'','prev_recovery':'','distant_next_recovery':'',
      'distant_prev_recovery':''} });
-  var total_recoveries =data.filter(function(e){ return e.type ==='recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value; 
-  var next_recovery = data.filter(function(e){ return e.type ==='next_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
-  var direct_recovery = data.filter(function(e){ return e.type ==='direct_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
-  var prev_recovery = data.filter(function(e){ return e.type ==='prev_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
-  var distant_next_recovery = data.filter(function(e){ return e.type ==='distant_next_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
-  var distant_prev_recovery = data.filter(function(e){ return e.type ==='distant_prev_recovery'})[0].data.filter(function(e){ return e.elementType ==='course'})[0].value;
+  var total_recoveries =data.filter(function(e){ return e.type =='recovery'})[0].data.filter(function(e){ return e.elementType =='course'})[0].value; 
+  var next_recovery = data.filter(function(e){ return e.type =='next_recovery'})[0].data.filter(function(e){ return e.elementType =='course'})[0].value;
+  var direct_recovery = data.filter(function(e){ return e.type =='direct_recovery'})[0].data.filter(function(e){ return e.elementType =='course'})[0].value;
+  var prev_recovery = data.filter(function(e){ return e.type =='prev_recovery'})[0].data.filter(function(e){ return e.elementType =='course'})[0].value;
+  var distant_next_recovery = data.filter(function(e){ return e.type =='distant_next_recovery'})[0].data.filter(function(e){ return e.elementType =='course'})[0].value;
+  var distant_prev_recovery = data.filter(function(e){ return e.type =='distant_prev_recovery'})[0].data.filter(function(e){ return e.elementType =='course'})[0].value;
 
 
   var data = {
@@ -534,7 +534,7 @@ svg.append("defs").selectAll('marker')
          sweep = (dx>0) ? 1 : 0; // 1 or 0
 
           // Self edge.
-          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+          if ( d.source.x == d.target.x && d.source.y == d.target.y ) {
              x1 = d.source.x - radius/2,
              x2 = d.target.x + radius/2,
             y1 = d.source.y + radius,
@@ -613,9 +613,9 @@ scope.globalRenderTransitionNodes=function(data){
  
   
 
- var globalData = $.grep(data, function(e){ return e.type === classe; })[0].data;
+ var globalData = $.grep(data, function(e){ return e.type == classe; })[0].data;
 
-  globalData = globalData.filter(function(e){ return e.elementType === 'course' })[0].transitions;
+  globalData = globalData.filter(function(e){ return e.elementType == 'course' })[0].transitions;
 
 
   var data = {
@@ -707,7 +707,7 @@ svg.append("defs").selectAll('marker')
          sweep = (dx>0) ? 1 : 0; // 1 or 0
 
           // Self edge.
-          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+          if ( d.source.x == d.target.x && d.source.y == d.target.y ) {
              x1 = d.source.x - radius/2,
              x2 = d.target.x + radius/2,
             y1 = d.source.y + radius,
@@ -764,13 +764,13 @@ svg.append("g").selectAll("g.linklabelholder")
 }
 
  scope.$watch(function(){
-  if(typeof scope.data ==='undefined') return;
+  if(typeof scope.data =='undefined') return;
             width = $(element[0]).parent().width();     
             return width 
           }, resize);
 
     function resize(){
-      if(typeof scope.data ==='undefined') return;
+      if(typeof scope.data =='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                    'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
@@ -784,7 +784,7 @@ svg.append("g").selectAll("g.linklabelholder")
     }
 
 scope.$watch('data', function(){
-  if(typeof scope.data ==='undefined') return;
+  if(typeof scope.data =='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'','speed':'',
                       'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
@@ -797,7 +797,7 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
-  if(typeof scope.data ==='undefined') return;
+  if(typeof scope.data =='undefined') return;
             if(scope.d3opts.issueCode in {'provenance':'', 'destination':''})
               scope.globalRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
             else 
@@ -831,9 +831,9 @@ scope.renderGlobal=function(data){
  
   
 
- var globalData = $.grep(data, function(e){ return e.type === classe; })[0].data;
+ var globalData = $.grep(data, function(e){ return e.type == classe; })[0].data;
 
-  globalData = globalData.filter(function(e){ return e.elementType === 'course' })[0].transitions;
+  globalData = globalData.filter(function(e){ return e.elementType == 'course' })[0].transitions;
 
 
 
@@ -944,7 +944,7 @@ svg.append("defs").selectAll('marker')
          sweep = (dx>0) ? 1 : 0; // 1 or 0
 
           // Self edge.
-          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+          if ( d.source.x == d.target.x && d.source.y == d.target.y ) {
              x1 = d.source.x - 20,
              x2 = d.target.x + 20,
             y1 = d.source.y + 15,
@@ -1002,7 +1002,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
 
    scope.$watch('data', function(){  
-    if(typeof scope.data ==='undefined') return;
+    if(typeof scope.data =='undefined') return;
     
               scope.renderGlobal(scope.data);
               
@@ -1015,6 +1015,7 @@ svg.append("g").selectAll("g.linklabelholder")
 /***************** INSPECTOR CHARTS***********************************************/
 var inspectorCharts = function(scope, element){  
 
+
         var margin = {top: 20, right: 10, bottom: 100, left: 40},
           width = 530 - margin.left - margin.right,
           height = 350 - margin.top - margin.bottom;
@@ -1023,10 +1024,12 @@ var inspectorCharts = function(scope, element){
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
 
-scope.inspectorRenderBars = function(globalData, classe) {   
+scope.inspectorRenderBars = function(globalData, classe) {  
+
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
-  if(width <=0 ) return;
+  
+  if(width <=0 ) width=100;
           svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -1039,9 +1042,9 @@ scope.inspectorRenderBars = function(globalData, classe) {
         var y = d3.scale.linear().range([height, 0]);
 
 
-var  data = $.grep(globalData, function(e){ return e.type === classe; })[0].data;
+var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
 
-          data = data.filter(function(e){ return e.elementType === scope.d3opts.elementType });
+          data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
 
         var xAxis = d3.svg.axis()
             .scale(x)
@@ -1203,14 +1206,14 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
           .attr('class','nodeChart');
 
   var elementID = parseInt(scope.d3opts.elementId);
-  var elementIDTxt = (scope.d3opts.elementType==='chapter')? 'S':'S';
+  var elementIDTxt = (scope.d3opts.elementType=='chapter')? 'S':'S';
   
 
   
 
- var globalData = $.grep(data, function(e){ return e.type === classe })[0].data;
+ var globalData = $.grep(data, function(e){ return e.type == classe })[0].data;
 
- globalData = globalData.filter(function(e){ return e.elementType === scope.d3opts.elementType });
+ globalData = globalData.filter(function(e){ return e.elementType == scope.d3opts.elementType });
  
 
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
@@ -1226,8 +1229,8 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
    
 
   var datum =[] ;
-  if(scope.d3opts.elementType==='part') 
-    {if(elementID===1)
+  if(scope.d3opts.elementType=='part') 
+    {if(elementID==1)
         datum = [ 
       {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
       {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
@@ -1249,7 +1252,7 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
   
   
   var identity ={};
-   if(elementID===1) identity ={id:'c1', x:gap , y:height/2}
+   if(elementID==1) identity ={id:'c1', x:gap , y:height/2}
     else identity ={id:'c3', x:gap * 3, y:height/2}
   datum.forEach(function(c, i) {
             c.x = gap * (i +1);
@@ -1320,7 +1323,7 @@ svg.append("defs").selectAll('marker')
          sweep = (dx>0) ? 1 : 0; // 1 or 0
 
           // Self edge.
-          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+          if ( d.source.x == d.target.x && d.source.y == d.target.y ) {
              x1 = d.source.x - 20,
              x2 = d.target.x + 20,
             y1 = d.source.y + 15,
@@ -1374,6 +1377,7 @@ svg.append("g").selectAll("g.linklabelholder")
       .attr("stroke", function(d) {return d.target.color})
       .attr("dx",  function(d) {return ((classe=='provenance')?d.source.x:d.target.x)  })
       .attr("dy",  function(d) {return ((classe=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
+
 }
 scope.$watch(function(){
   
@@ -1382,7 +1386,7 @@ scope.$watch(function(){
           }, resize);
 
     function resize(){
-      if(typeof scope.data ==='undefined') return;
+      if(typeof scope.data =='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
@@ -1393,7 +1397,7 @@ scope.$watch(function(){
     
 
 scope.$watch('data', function(){
-  if(typeof scope.data ==='undefined') return;
+  if(typeof scope.data =='undefined') return;
             if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
@@ -1403,7 +1407,7 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
-  if(typeof scope.data ==='undefined') return;
+  if(typeof scope.data =='undefined') return;
   if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
@@ -1482,7 +1486,7 @@ var nodeChart = function(scope, element){
   {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
   {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
   {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}];
-  $.grep(datum, function(e){if(e.name===variable) e.color='red'});
+  $.grep(datum, function(e){if(e.name==variable) e.color='red'});
   var identity = {id:'c3', x:gap * 3, y:height/2}
   datum.forEach(function(c, i) {
             c.x = gap * (i +1);
@@ -1556,7 +1560,7 @@ svg.append("defs").selectAll('marker')
          sweep = (dx>0) ? 1 : 0; // 1 or 0
 
           // Self edge.
-          if ( d.source.x === d.target.x && d.source.y === d.target.y ) {
+          if ( d.source.x == d.target.x && d.source.y == d.target.y ) {
              x1 = d.source.x - 20,
              x2 = d.target.x + 20,
             y1 = d.source.y + 15,
@@ -1615,7 +1619,7 @@ svg.append("g").selectAll("g.linklabelholder")
 
 
 
-if(scope.d3opts.type === 'global') 
+if(scope.d3opts.type == 'global') 
 {  
 if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
@@ -1629,25 +1633,22 @@ else
     //else globalBubbleChart(scope, element,'titre');
 }
 else
-if(scope.d3opts.type === 'inspector'){
-  
-
-if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
+if(scope.d3opts.type == 'inspector'){
+console.log(scope.d3opts.type)  
+inspectorCharts(scope, element,'titre')
+/*if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                       'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  inspectorCharts(scope, element,'titre')
 
   else if(scope.d3opts.issueCode in {'provenance':'','destination':''})
-      nodeChart(scope, element);
+      nodeChart(scope, element);*/
 
 }
 else
-if(scope.d3opts.type === 'fact'){
+if(scope.d3opts.type == 'fact'){
   
-
-if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','norecovery_tx':''
-                      })  inspectorCharts(scope, element,'titre')
+inspectorCharts(scope, element,'titre')
 
   /*if(scope.d3opts.issueCode in {'provenance':'','destination':''})
       nodeChart(scope, element);*/
@@ -1655,13 +1656,13 @@ if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
 }
 else
 
-if(scope.d3opts.type === 'rs'){
+if(scope.d3opts.type == 'rs'){
 
   rsBxChart(scope, element, ' '); 
 
 }
 else{
-if(scope.d3opts.issueClass ==='Transition')
+if(scope.d3opts.issueClass =='Transition')
    nodeChart(scope, element)
  else 
   if(scope.d3opts.issueCode in {'RRmaxD':'','RRVmaxSeq':''}) 

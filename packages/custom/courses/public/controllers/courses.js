@@ -20,6 +20,62 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $scope.global = Global;
 
 
+
+
+
+ $scope.itemsPerPage = 1;
+ $scope.currentFact = 0;
+     
+     $scope.range = function() {
+    var rangeSize = 4;
+    var ps = [];
+    var start;
+
+    start = $scope.currentFact;
+       //  console.log($scope.pageCount(),$scope.currentFact)
+    if ( start > $scope.pageCount()-rangeSize ) {
+      start = $scope.pageCount()-rangeSize+1;
+    }
+
+    for (var i=start; i<start+rangeSize; i++) {
+      if(i>=0) 
+         ps.push(i);
+    }
+    return ps;
+  };
+
+  $scope.prevPage = function() {
+    if ($scope.currentFact > 0) {
+      $scope.currentFact--;
+    }
+  };
+
+  $scope.DisablePrevPage = function() {
+    return $scope.currentFact === 0 ? "disabled" : "";
+  };
+
+  $scope.pageCount = function() {
+
+    return Math.ceil($scope.context.Facts.length/$scope.itemsPerPage)-1;
+  };
+
+  $scope.nextPage = function() {
+    if ($scope.currentFact < $scope.pageCount()) {
+      $scope.currentFact++;
+    }
+  };
+
+  $scope.DisableNextPage = function() {
+    return $scope.currentFact === $scope.pageCount() ? "disabled" : "";
+  };
+
+  $scope.setPage = function(n) {
+    $scope.currentFact = n;
+    $scope.sectionFactChart = $scope.context.Facts[n]
+    //console.log($scope.sectionFactChart);
+  };
+         
+
  $scope.findOne = function() {
 
   $scope.d3opts = [];
@@ -62,6 +118,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';
       $scope.sectionPstatSelector = 'Actions_tx';
+      $scope.sectionFactChart = 'Actions_tx';
       $scope.coursePstatSelector = 'time';
       $scope.studiedPart = '';
       $scope.context.otherFacts=[];
@@ -319,10 +376,13 @@ var completeCourseParts =function(course, courseParts, courseChapters){
       chapter.parts_count = 0;
       chapter.route =$.param({'partid':tome._id, 'chapid':chapter._id});
 
+
       chapter.url = course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
       angular.forEach(chapter.facts,function(fact){
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
           fact.tome=tome._id;
+          fact.partId=chapter.id
+          fact.partType='chapter'
           fact.chapter=chapter._id;
           fact.section=null;
           fact.d3 =[];
@@ -342,6 +402,8 @@ var completeCourseParts =function(course, courseParts, courseChapters){
           fact.tome=tome._id;
           fact.chapter=chapter._id;
           fact.section=part._id;
+          fact.partId=part.id
+          fact.partType='part'
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
 
         });
@@ -849,7 +911,7 @@ angular.forEach($scope.course.tomes, function(tome) {
 }
 
 
-var computeSubFacts =function(element, indicator){   
+var computeSubFacts =function(element, indicator){return[];   
 var issuesCode =[] ;
 var type = (element.elementType=='chapitre')?'chapter':'part'
 var f = $.grep($scope.selectedIndicators, function(e){ return  e.code ==indicator});
@@ -1036,7 +1098,9 @@ var width = $('.data-table').innerWidth() ;
     $('#indicatorSelector').offset({top:top + 7 ,left:left });
     $('#indicatorSelector').width=$('.indicators-header').css('width')
     $('#indicatorSelector').css('visibility','visible');
-      
+  
+  
+
    var url = location.hash.slice(1);
  
    var element = resolveRoute(url);
@@ -1177,14 +1241,7 @@ var width = $('.data-table').innerWidth() ;
 
 $('.tableScroller').scroll();
 
-
-
-
-
-
-
-
-  
+$scope.setPage(0);
 
 }
 
