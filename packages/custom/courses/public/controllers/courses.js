@@ -141,10 +141,17 @@ $(".inspectorNavigator").on("click", function(){
    $(".nav").find(".active").removeClass("active");
      $(this).parent().addClass("active");
    $scope.$broadcast('content.reload');;
+$scope.$apply()
+setTimeout(function() {
+$scope.$apply()
+
+  }, 10);
+$scope.$apply()
 
   
  
 });
+
 
       $scope.indicatorsHeader=[
         {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},

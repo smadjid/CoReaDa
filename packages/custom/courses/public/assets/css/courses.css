@@ -1844,6 +1844,7 @@ border-radius: 3px;
 .navbar-coreada .navbar-nav > .active > a:focus {
   color: #f5f2f7!important;
   background-color: #213c52!important;
+  border-bottom: 3px solid red;
 }
 .navbar-coreada .navbar-nav > .open > a,
 .navbar-coreada .navbar-nav > .open > a:hover,

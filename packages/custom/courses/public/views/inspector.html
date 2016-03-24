@@ -6,7 +6,7 @@
         <div  class='coreada-box  col-lg-7' ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></div>
         <div class='col-lg-5'  >
           <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
-            <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+            <d3-chart class='row' data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
         </div>
       </div>
        
