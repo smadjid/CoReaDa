@@ -123,7 +123,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.studiedPart = '';
       $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
-      $scope.inspectorDisplay="tabStats";
+      $scope.activatetab="tabStats";
 
 
       $scope.tab = 0;
@@ -136,10 +136,13 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     return $scope.tab === tab;
   };
  
-$(".inspectorNavigator").on("click", function(){alert($(this).attr('data-ref'))
+$(".inspectorNavigator").on("click", function(){
+  $scope.activatetab = $(this).attr('data-ref');
    $(".nav").find(".active").removeClass("active");
      $(this).parent().addClass("active");
-   $scope.inspectorDisplay = $(this).attr('data-ref');
+   $scope.$broadcast('content.reload');;
+
+  
  
 });
 

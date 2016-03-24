@@ -2,8 +2,7 @@
       
       <div >
         
-        <div ng-show='inspectorDisplay=="tabIssues"'  class="col-lg-12 btn-group">
-        {{inspectorDisplay}}
+        <div ng-show='activatetab=="tabStats"'  class="col-lg-12 btn-group">
         <div  class='coreada-box  col-lg-7' ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></div>
         <div class='col-lg-5'  >
           <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
@@ -16,40 +15,8 @@
 
 
 
-<div ng-show='inspectorDisplay=="tabStats"'  class="col-lg-12"  >
-         {{inspectorDisplay}}
-
-        <ol class="paginator col-lg-12">
-        <!--<li ng-class="DisablePrevPage()"><a href ng-click="prevPage()">« Prev</a> </li>-->
-              <li ng-repeat="n in range()" ng-class="{active: n == currentFact}" ng-click="setPage(n)">
-                <span role='button'></span>
-              </li>
-         <!--     <li ng-class="DisableNextPage()"><a href ng-click="nextPage()">Next »</a></li>-->
-         <hr/>
-            </ol>
-        
-
-        
-
-<div class="fact-div col-lg-7"  ng-repeat="fact in context.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
-
-  <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
-    {{fact.name}} <button class="btn btn-success btn-xs" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>N'est pas/plus un problème</button>  </h4>
-  <p>{{fact.description}}</p>
-
-  <h5>Suggestion: {{fact.suggestion_title}} <button class="btn btn-primary btn-xs" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button></h5>
- {{fact.suggestion_content}}
-</div>
-
- <div class='col-lg-5'  >
-          <div class='chart-title'><b>{{graphTitle}}-({{sectionFactChart.classof}})</b></div>
-          
+<div ng-show='activatetab=="tabIssues"'  ng-include src="'courses/views/issues.html'" >
        
-
-           <d3-chart data='context.d3' d3opts='{type:"inspector",issueCode:sectionFactChart.classof,  issueClass:sectionFactChart.classof, elementType:sectionFactChart.partType, elementId:sectionFactChart.partId}'></d3-chart>
-
-            
-  </div>
 
 
   
