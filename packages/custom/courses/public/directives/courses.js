@@ -34,6 +34,7 @@ var html=[];
 
 var maxValue = 0;
 var maxPart = 0;
+var maxRoute='#';
 
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
@@ -52,9 +53,10 @@ var maxPart = 0;
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
                .css('background-color',computeBgColor(partData, scope.indicatorCode))
-               .on("click", function(d) {    
+               //.on("click", function(d) {    
                  window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode;
-              });
+              //}              )
+              ;
 
       allFacts.forEach(function(fact){  
         var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
@@ -63,7 +65,7 @@ var maxPart = 0;
         .attr('data-fact-id',+fact._id );
 
         if(parseFloat(fact.value) > maxValue)
-        {maxValue = parseFloat(fact.value); maxPart=part.id}
+        {maxValue = parseFloat(fact.value); maxPart=part.id; maxRoute=fact.route; }
 
 
 
@@ -84,7 +86,10 @@ if(html.length>0){
       .css('background-color','rgba(255,255,255,0.57)')
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
       .css('padding','3px')
-      .css('font-size','14px');
+      .css('font-size','14px')
+      .on("click", function(d) {    
+                 window.location.hash = maxRoute;
+              });;
 
 
   
@@ -105,6 +110,7 @@ var html=[];
 
 var maxValue = 0;
 var maxChap = 0;
+var maxRoute='#';
 
   scope.chapters.forEach(function(chapter, i) {
     
@@ -121,10 +127,8 @@ var maxChap = 0;
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
              .append('<span></span>')
-             .css('background-color',computeBgColor(chapData, scope.indicatorCode))
-             .on("click", function(d) {    
-                 window.location.hash = '#'+chapter.route+'&indicator='+scope.indicatorCode;
-              });
+             .css('background-color',computeBgColor(chapData, scope.indicatorCode));
+             
 
     allFacts.forEach(function(fact){  
       var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
@@ -133,7 +137,7 @@ var maxChap = 0;
       .attr('data-fact-id',+fact._id );
 
       if(parseFloat(fact.value) > maxValue)
-      {maxValue = parseFloat(fact.value); maxChap=chapter.id}
+      {maxValue = parseFloat(fact.value); maxChap=chapter.id;maxRoute=fact.route; }
  
  
 
@@ -150,13 +154,26 @@ var maxChap = 0;
 if(html.length>0){  
 
 
-  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0]).children('.fact')
+  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0])
+  .on("click", function(d) {    
+                 window.location.hash = maxRoute;
+              })
+  .children('.fact')
       .addClass("glyphicon glyphicon-warning-sign")
       .css('color','red')
       .css('background-color','rgba(255,255,255,0.57)')
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
       .css('padding','3px')
       .css('font-size','14px');
+
+
+   $(html.filter(function(s){ return $(s[0]).attr('data-part') !=maxChap})).each(function() {
+    $(this).on("click", function(d) { 
+                 window.location.hash = '#'+$(this).attr('data-path')
+              });
+   })
+   
+       
 
 
   
@@ -1634,7 +1651,7 @@ else
 }
 else
 if(scope.d3opts.type == 'inspector'){
-console.log(scope.d3opts.type)  
+//console.log(scope.d3opts.type)  
 inspectorCharts(scope, element,'titre')
 /*if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',

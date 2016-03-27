@@ -1,28 +1,12 @@
+
 <table style='display:table'>
 	<tr ng-model="sectionPstatSelector">
-		<tr><td  class='componentInfo'   ng-click=" showComponentChart('Actions_tx')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Actions_tx'">
 		
-		<span class="blue">{{observedElt.Actions_tx}}</span> des visites sur le cours ont été observées sur {{observedElt.typeTxt}} 
-	
+			<tr ng-repeat="indicator in inspector.Indicators" >
+			<td  class='componentInfo'  ng-click=" showComponentChart(indicator.name)" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="indicator.name">
+		
+		<span class="blue">{{indicator.value}}</span> {{indicator.comment}}</td></tr>
 
-		</td></tr>	
-			<tr><td  class='componentInfo'   ng-click=" showComponentChart('Readers_tx')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'Readers_tx'">
 		
-		<span class="blue">{{observedElt.nbUsers}}</span> des lecteurs du cours ont visité {{observedElt.typeTxt}} </td></tr>
-		<tr><td class='componentInfo '  ng-click=" showComponentChart('mean.duration')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'mean.duration'">
-		
-		<span class="blue">{{observedElt.meanTime}}</span> est le temps moyen de lecture de {{observedElt.typeTxt}}. </td></tr>
-		<tr><td  class='componentInfo'   ng-click="showComponentChart('rereadings_tx')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector"  uib-btn-radio="'rereadings_tx'">
-		
-		<span class="blue">{{observedElt.meanRereads}}</span> des lectures de {{observedElt.typeTxt}} sont des <b>relectures</b>.</td></tr>
-		<tr><td  class='componentInfo'   ng-click="showComponentChart('rupture_tx')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'rupture_tx'">
-		
-		<span class="blue">{{observedElt.meanStops}}</span> des arrêts définitifs de la lecture se passent sur {{observedElt.typeTxt}}</td></tr>
-		<tr><td  class='componentInfo'   ng-click=" showComponentChart('provenance')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'provenance'">
-		
-		Au sein de {{observedElt.typeTxt}}, le taux des arrivées linéaires vers ses sections (depuis les section précédentes) est de  <span class="blue">{{observedElt.provLinearity}}</span>.	</td></tr>
-		<tr><td  class='componentInfo'   ng-click=" showComponentChart('destination')" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="'destination'">
-		
-		Au sein de {{observedElt.typeTxt}}, le taux des départs linéaires depuis ses sections (vers les section suivantes) est de  <span class="blue">{{observedElt.destLinearity}}</span>.	</td></tr>
 	</tr>
 	</table>

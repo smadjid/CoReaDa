@@ -35,14 +35,6 @@
    </div>
     <div class="inspector-container inspectoEnclosing">
 
-
-
-
-
-
-
-
-
         <div class="panel-body  panel-flat" style="margin-bottom:0">
            
                <nav class="navbar navbar-coreada navbar-collapse  ">
@@ -52,10 +44,11 @@
                 <span class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
               </a></em>
         </div>
+
           <ul class="nav navbar-nav navbar-right">
-          <li><a class='inspectorNavigator' data-ref='tabStats'  role='button' >Statistiques de lecture
+          <li ng-model='activatetab' uib-btn-radio="'tabStats'" ><a data-ref='tabStats'  role='button' >Statistiques de lecture
         </a></li>
-            <li><a class='inspectorNavigator' data-ref='tabIssues'  role='button'   ng-show='context.Facts.length>0'>Problème(s) potentiels de lecture  </a>
+            <li ng-model='activatetab'  uib-btn-radio="'tabFacts'" ><a  data-ref='tabFacts'  role='button'   >Problème(s) potentiels de lecture  </a>
           </ul>
         </div><!--/.nav-collapse -->
     

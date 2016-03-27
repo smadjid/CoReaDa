@@ -1,13 +1,10 @@
 <div   class='coreada-box' >
       
-      <div >
-        
-        <div ng-show='activatetab=="tabStats"'  class="col-lg-12 btn-group">
+<div >
+
+    <div ng-show='activatetab=="tabStats"'  class="col-lg-7 btn-group">
         <div  class='coreada-box  col-lg-7' ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></div>
-        <div class='col-lg-5'  >
-          <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
-            <d3-chart class='row' data='context.d3' d3opts='{type:"inspector",elementType:observedElt.type,elementId:observedElt.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
-        </div>
+        
       </div>
        
 
@@ -15,14 +12,50 @@
 
 
 
-<div ng-show='activatetab=="tabIssues"'  ng-include src="'courses/views/issues.html'" >
+<div ng-show='activatetab=="tabFacts"' >
+  <div class="col-lg-7" >        
+
+        <ol class="paginator col-lg-7">
+              <li ng-repeat="n in range()" ng-class="{active: n == currentFact}" ng-click="setPage(n)">
+                <span role='button'></span>
+              </li>
+              <hr/>
+        </ol>
+        
+
+        
+
+<div class="fact-div"  ng-repeat="fact in inspector.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
+
+  <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
+    {{fact.name}} <button class="btn btn-success btn-xs" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>N'est pas/plus un problème</button>  </h4>
+  <p>{{fact.description}}</p>
+
+  <h5>Suggestion: {{fact.suggestion_title}} <button class="btn btn-primary btn-xs" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button></h5>
+ {{fact.suggestion_content}}
+</div>
+
+ 
+
+  </div>
+</div>
+   <div class='col-lg-5'  >
+          <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
+            <d3-chart class='row' data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+        </div>   
+    </div>
+
+    </div>
+
+
+<!--
+<div class='col-lg-5'  >
+          <div class='chart-title'><b>{{graphTitle}}-({{sectionFactChart.classof}})</b></div>
+          
        
 
+           <d3-chart data='context.d3' d3opts='{type:"inspector",issueCode:sectionFactChart.classof,  issueClass:sectionFactChart.classof, elementType:sectionFactChart.partType, elementId:sectionFactChart.partId}'></d3-chart>
 
-  
-        </div>
-      
-    </div>
-
-    </div>
-
+            
+  </div>
+  -->
