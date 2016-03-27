@@ -2,22 +2,31 @@
       
 <div >
 
-    <div ng-show='activatetab=="tabStats"'  class="col-lg-7 btn-group">
-        <div  class='coreada-box  col-lg-7' ng-include src="'courses/views/'+inspectorDisplaySrc+'.html'" ></div>
+    <div ng-show='activatetab=="tabStats"'  class="col-lg-6 btn-group">
+        
+          <table class='coreada-box  ' style='display:table; width:100%'>
+              <tr ng-model="sectionPstatSelector">
+    
+                  <tr ng-repeat="indicator in inspector.Indicators" >
+                  <td  class='componentInfo'  ng-click=" showComponentChart(indicator.name)" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="indicator.name">
+    
+                    <span class="blue">{{indicator.value}}</span> {{indicator.comment}}</td></tr>
+
+    
+              </tr>
+            </table>
+        
         
       </div>
        
 
+<div ng-show='activatetab=="tabFacts" && pageCount()>=0' >
+  <div class="col-lg-6" >        
 
-
-
-
-<div ng-show='activatetab=="tabFacts"' >
-  <div class="col-lg-7" >        
-
-        <ol class="paginator col-lg-7">
+        <ol class="paginator" ng-show='pageCount()>0' >
+        <i>{{pageCount()+1}} problèmes potentiels</i>
               <li ng-repeat="n in range()" ng-class="{active: n == currentFact}" ng-click="setPage(n)">
-                <span role='button'></span>
+                <span role='button'>{{n}}</span>
               </li>
               <hr/>
         </ol>
@@ -39,7 +48,7 @@
 
   </div>
 </div>
-   <div class='col-lg-5'  >
+   <div class='col-lg-6'  >
           <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
             <d3-chart class='row' data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
         </div>   
@@ -49,7 +58,7 @@
 
 
 <!--
-<div class='col-lg-5'  >
+<div class='col-lg-6'  >
           <div class='chart-title'><b>{{graphTitle}}-({{sectionFactChart.classof}})</b></div>
           
        

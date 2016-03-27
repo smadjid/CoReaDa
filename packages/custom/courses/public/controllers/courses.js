@@ -139,7 +139,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
  
 
 
-
+$scope.resetIndicators = function(){
       $scope.indicatorsHeader=[
         {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
         {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
@@ -154,7 +154,8 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
         {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture'},
         {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'arrêts et reprise'}
       ]
-
+}
+$scope.resetIndicators()
       $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
   
       Courses.get({
@@ -165,7 +166,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
         $scope.chartType = 'Actions_tx';
         $scope.selectedElement = course;
   
-        completeCourseParts($scope.course, $scope.courseParts, $scope.courseChapters);
+        $scope.completeCourseParts();
             $scope.context = {
               'type':'course',      
               'route':$scope.course._id,
@@ -200,9 +201,12 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
 
     */
-$(window).bind('hashchange',function(){ 
+$(window).bind('hashchange',function(e){ 
+   //console.log('old: '+e.originalEvent.oldURL)
+   // console.log('new: '+e.originalEvent.newURL)
   $scope.dataLoading = true;
-  loadContext();
+  
+   loadContext();
 
   $scope.dataLoading = false;
   
@@ -249,9 +253,10 @@ $scope.showSectionChart=function(param){
 
 
 $scope.toggleSectionDisplay = function(){
-  $scope.sectionDisplay =! $scope.sectionDisplay; 
+  
+  $scope.sectionDisplay =! $scope.sectionDisplay;
   setTimeout(function() {
-    loadContext();
+     loadContext();
   }, 10);
 
   
@@ -260,15 +265,13 @@ $scope.toggleSectionDisplay = function(){
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
   
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
- setTimeout(function() {
-    loadContext();
-  }, 10);
+ 
  
 
 });
 $scope.$watch('activatetab', function(newValue, oldValue) {
   
- console.log(newValue);
+ 
 });
 $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
             if(newValue ==='Readings')
@@ -320,7 +323,7 @@ $scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
         $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
 
        window.setTimeout(function() {
-          loadContext(); 
+           loadContext(); 
           $('table').show();
           reloadURL(); 
 
@@ -364,22 +367,23 @@ return [
 }
 
   
-var completeCourseParts =function(course, courseParts, courseChapters){
+$scope.completeCourseParts =function(){ 
+  var courseParts = [], courseChapters = [];
   var base_url = "https://openclassrooms.com/courses";
-  course.url = base_url+'/'+course.properties.filter(function(value){ return value.property === 'slug'})[0].value
+  $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
  // var course_route = $.param({'csid':course._id})
 
   
-  angular.forEach(course.tomes, function(tome) {
+  angular.forEach($scope.course.tomes, function(tome) {
     tome.parts_count = 0;
     tome.route = $.param({'partid':tome._id});
-    tome.url = course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
+    tome.url = $scope.course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
     angular.forEach(tome.chapters, function(chapter) { 
       chapter.parts_count = 0;
       chapter.route =$.param({'partid':tome._id, 'chapid':chapter._id});
 
 
-      chapter.url = course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
+      chapter.url = $scope.course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
       angular.forEach(chapter.facts,function(fact){        
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
           fact.tome=tome._id;
@@ -415,7 +419,8 @@ var completeCourseParts =function(course, courseParts, courseChapters){
     });
   });
 
-  
+  $scope.courseParts = courseParts;
+  $scope.courseChapters = courseChapters;
 }
 
 
@@ -949,6 +954,7 @@ $scope.taskContexter = function(task,$event) {
 
 };
 
+
 var addTask = function(route,params) {
         return $http.post('/api/tasks/add/'+route,params);
       };
@@ -984,27 +990,29 @@ var filterTasks = function(studiedPart) {
       };
 
 
-var findMainChaptersIssues = function(){  
+var findMainChaptersFacts = function(){  
+  $scope.resetIndicators();
   var allFacts=[]; 
+  angular.forEach($scope.course.tomes, function(tome) {
+    angular.forEach(tome.chapters, function(chapter){
 
-  $scope.courseChapters.forEach(function(chapter) {
-    //var allFacts = part.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
-    
-      chapter.facts.forEach(function(f){
-        var indicator=f.issueCode
-        var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
-        if(maxV.length>0) {          
-            maxV=maxV[0].chapterValue;
-                if(f.value>maxV) {
-                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.value
-                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
+      angular.forEach(chapter.facts, function(f){
+         var indicator=f.issueCode
+          var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
+          if(maxV.length>0) {          
+              maxV=maxV[0].chapterValue;
+                  if(f.value>maxV) {
+                    $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.value
+                    $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
+                  }
                 }
-              }
-         f.mainFact=false;
-        allFacts.push(f)
-        })   
-    
-  });
+           f.mainFact=false;
+          allFacts.push(f)
+
+      })
+    })
+  })
+
   var mainFacts=[];
   $scope.indicatorsHeader.forEach(function(ind){
 
@@ -1016,14 +1024,15 @@ var findMainChaptersIssues = function(){
  return mainFacts;
 }
 
-var findMainSectionsIssues = function(){  
+var findMainSectionsFacts = function(){  
+  $scope.resetIndicators()
   var allFacts=[]; 
-
-  $scope.courseParts.forEach(function(part) {
-    //var allFacts = part.facts.filter(function(e){ return ((e.issueCode === scope.issueCode))} );
-    
-      part.facts.forEach(function(f){
-        var indicator=f.issueCode
+angular.forEach($scope.course.tomes, function(tome) {
+    angular.forEach(tome.chapters, function(chapter){
+      
+      angular.forEach(chapter.parts, function(part){
+        angular.forEach(part.facts, function(f){
+          var indicator=f.issueCode
         var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
         if(maxV.length>0) {          
             maxV=maxV[0].sectionValue;
@@ -1034,9 +1043,12 @@ var findMainSectionsIssues = function(){
               }
          f.mainFact=false;
         allFacts.push(f)
-        })   
-    
-  });
+
+      })
+      })
+    })
+  })
+
   var mainFacts=[];
   $scope.indicatorsHeader.forEach(function(ind){
 
@@ -1051,12 +1063,12 @@ var findMainSectionsIssues = function(){
 
 
 var findCourseIssues = function(){  
-  $scope.inspector.Facts=findMainChaptersIssues();
+  $scope.inspector.Facts=findMainChaptersFacts();
 
 }
 var findTomeIssues = function(tome){  
-  var mainIssues = findMainChaptersIssues();
-  
+  var mainIssues = findMainChaptersFacts();
+
   var times =[], users =[], rss =[], rereadings_tx =[], stops =[];
 
 
@@ -1082,7 +1094,7 @@ $scope.inspector= {'type':'tome',
 var findChapterIssues = function(chapter, indicator, fact){ 
 
   
-   var mainIssues = findMainChaptersIssues();
+   var mainIssues = findMainChaptersFacts();
   $scope.inspector= {'type':'chapter',
                    'id':0,
                    'typeTxt': 'ce chapitre',
@@ -1111,7 +1123,7 @@ if(indicator!=null)
 }
 
 var findSectionIssues = function(section){  
- var mainIssues = findMainSectionsIssues();
+ var mainIssues = findMainSectionsFacts();
   
     $scope.inspector= {'type':'part',
                    'id':0,
@@ -1156,7 +1168,7 @@ switch(granularity){
 
 /********************************************/
 var loadContext = function(){
-
+//console.log(Function.caller())
 var width = $('.data-table').innerWidth() ;
     var top = $('.data-table').offset().top + $('.data-table').innerHeight();
     var left = $('.data-table').offset().left;
@@ -1329,35 +1341,28 @@ window.onresize = function(){
    $scope.$broadcast('content.reload');;
 }
 
-var reloadURL =function(){
-  var url = window.location.hash
-
+var reloadURL =function(){ 
   var url = window.location.hash
   window.setTimeout(function() {
+    
     window.location.hash = url
    }, 10);
 
 
 }
-var loadURL =function(url){
 
+
+var loadURL =function(url){
   if(url == window.location.hash)
-   // $(window).trigger('hashchange')
  {
-//window.setTimeout(function() {
   goHome();
-  //      }, 10);
+
 }
   else 
     {
       window.location.hash = url;
- //window.setTimeout(function() {
-  $scope.$emit('content.changed');
-  $scope.$broadcast('content.reload');
-  
-   //     }, 10)
 }
-  ////$(':focus').blur();
+
 
   return false;
 
@@ -1964,6 +1969,9 @@ var element = resolveRoute(fact.route);
 
 
 }
+
+
+
 $scope.createTask =function($event){
   $scope.formData =  "Nouvelle tâche ("+"Sec. "+$scope.studiedPart+")"; 
 $('#taskInput').focus();  
@@ -2022,7 +2030,7 @@ $scope.editTask = function (route, todo, index) {
 var updateLocalTasks =function(route, data){
   var element = resolveRoute(route);
   element.todos = data;
- loadContext();
+  loadContext();
 
 }
 
@@ -2071,6 +2079,69 @@ swal({
 
 
   }
+
+$scope.dropFact = function (route, index) {
+swal({
+      title: "Marquer le problème comme résolu?", 
+      text: "Êtes vous sur de vouloir marquer ce problème comme résolu et le supprimer des problèmes potentiels?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+      
+       //dropFact(parseTaskRequest(route))
+        //.success(function(data) {
+     dropFactLocally(index);
+           swal({   title: "Problème marqué comme résolu!",   
+            text: "Succès", 
+             animation: "slide-from-top",
+             type:"success"  ,
+            timer: 1500,   showConfirmButton: false });
+         
+          /*    })
+      .error(function(data) {
+        swal("Oops", "We couldn't connect to the server!", "error");
+      });*/
+      reloadURL();
+      $scope.$apply()
+    });
+}
+
+var dropFactLocally = function(route){
+  var components = parseURL(route)
+  console.log(components)
+  var result=null;
+  if(components.hasOwnProperty('partid')) {
+    var tome = $.grep($scope.course.tomes, function(e){ return  e._id == components.partid })[0];
+     if(components.hasOwnProperty('chapid')){
+      var chap = $.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0];
+      
+     if(components.hasOwnProperty('sectionid')){
+        var part = $.grep(chap.parts, function(e){ return  e._id == components.sectionid })[0];
+       result = part;
+       if(components.hasOwnProperty('factid')){        
+        var fact = $.grep(part.facts, function(e){ return  e._id == components.factid })[0];          
+         result = part.facts.indexOf(fact)
+       }
+      }
+      else
+        if(components.hasOwnProperty('factid')){
+          var fact = $.grep(chap.facts, function(e){ return  e._id == components.factid })[0];          
+          console.log(chap.facts)
+          chap.facts.splice(chap.facts.indexOf(fact),1);
+          $scope.inspector.Facts.splice($scope.inspector.Facts.indexOf(fact),1)
+          console.log(chap.facts)
+
+        }
+    }  
+  }   
+  
+  //$scope.inspector.Facts.splice(index,1)
+}
+
 
     $scope.find = function() {
       Courses.query(function(courses) {

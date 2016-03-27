@@ -53,10 +53,7 @@ var maxRoute='#';
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
                .css('background-color',computeBgColor(partData, scope.indicatorCode))
-               //.on("click", function(d) {    
-                 window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode;
-              //}              )
-              ;
+               .on("click", function(d) {window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode});
 
       allFacts.forEach(function(fact){  
         var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
@@ -87,16 +84,9 @@ if(html.length>0){
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
       .css('padding','3px')
       .css('font-size','14px')
-      .on("click", function(d) {    
-                 window.location.hash = maxRoute;
-              });;
+      .on("click", function(d) {window.location.hash = maxRoute});;
 
 
-  
-  
-
-
-  
 }
   
   $(element).append(html);
@@ -187,8 +177,9 @@ if(html.length>0){
 
 
   scope.$watch('data', function(){
-   
+
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
+  console.log(scope.data)   ;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -200,7 +191,9 @@ if(html.length>0){
      
 
 scope.$watch('byParts', function(){
+
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
+  console.log('updateByParts: '+scope.byParts)   ;
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -341,9 +334,9 @@ if(scope.d3opts.elementType!=='part')
             .attr("x", function(d) { return x(d.part); })
             .attr("width", x.rangeBand())
             .on("click", function(d) {  
-              
-              if("#"+d.route!==window.location.hash)
-               window.location.hash = "#"+d.route
+              console.log('here 3')
+             // if("#"+d.route!==window.location.hash)
+               //window.location.hash = "#"+d.route
             })
             .on("mouseover", function (d) {
                   d3.select(this).attr("stroke-width", '3')
@@ -1118,10 +1111,10 @@ if(scope.d3opts.elementType!=='part')
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
-            .on("click", function(d) {  
+            .on("click", function(d) {  console.log('here 1')
               
-              if("#"+d.route!==window.location.hash)
-               window.location.hash = "#"+d.route
+            //  if("#"+d.route!==window.location.hash)
+               //window.location.hash = "#"+d.route
             })
             .on("mouseover", function (d) {
                   d3.select(this).attr("stroke-width", '3')

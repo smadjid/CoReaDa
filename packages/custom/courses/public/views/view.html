@@ -48,7 +48,7 @@
           <ul class="nav navbar-nav navbar-right">
           <li ng-model='activatetab' uib-btn-radio="'tabStats'" ><a data-ref='tabStats'  role='button' >Statistiques de lecture
         </a></li>
-            <li ng-model='activatetab'  uib-btn-radio="'tabFacts'" ><a  data-ref='tabFacts'  role='button'   >Problème(s) potentiels de lecture  </a>
+            <li ng-model='activatetab'  uib-btn-radio="'tabFacts'" ng-show='pageCount()>=0' ><a  data-ref='tabFacts'  role='button'>{{pageCount()+1}} problème(s) potentiel(s) de lecture  </a>
           </ul>
         </div><!--/.nav-collapse -->
     

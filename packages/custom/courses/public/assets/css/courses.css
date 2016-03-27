@@ -1775,12 +1775,9 @@ border-radius: 3px;
 
 
 .paginator{
-     clear:both;
-  
+     clear:both;  
     margin:5px;
     padding:5px;
-    
-    
     width:100%;
   }
 .paginator hr{
@@ -1821,6 +1818,7 @@ border-radius: 3px;
   border-color: #213c52!important;
   height:40px!important;
   min-height: 38px!important;
+  margin-bottom: 2px;
 }
 .navbar-coreada .navbar-brand {
   color: #ecf0f1!important;
