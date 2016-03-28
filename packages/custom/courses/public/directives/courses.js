@@ -179,7 +179,7 @@ if(html.length>0){
   scope.$watch('data', function(){
 
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
-  console.log(scope.data)   ;
+  
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -193,7 +193,7 @@ if(html.length>0){
 scope.$watch('byParts', function(){
 
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
-  console.log('updateByParts: '+scope.byParts)   ;
+  
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -334,8 +334,7 @@ if(scope.d3opts.elementType!=='part')
             .attr("x", function(d) { return x(d.part); })
             .attr("width", x.rangeBand())
             .on("click", function(d) {  
-              console.log('here 3')
-             // if("#"+d.route!==window.location.hash)
+              // if("#"+d.route!==window.location.hash)
                //window.location.hash = "#"+d.route
             })
             .on("mouseover", function (d) {
@@ -1024,11 +1023,9 @@ svg.append("g").selectAll("g.linklabelholder")
   }
 /***************** INSPECTOR CHARTS***********************************************/
 var inspectorCharts = function(scope, element){  
-
-
-        var margin = {top: 20, right: 10, bottom: 100, left: 40},
+        var margin = {top: 5, right: 00, bottom: 100, left: 40},
           width = 530 - margin.left - margin.right,
-          height = 350 - margin.top - margin.bottom;
+          height = 300 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -1039,7 +1036,7 @@ scope.inspectorRenderBars = function(globalData, classe) {
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
   
-  if(width <=0 ) width=100;
+  if(width <=0 ) width=500;
           svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -1093,7 +1090,7 @@ if(scope.d3opts.elementType!=='part')
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
-            .attr("transform", "rotate(-60)" );
+            .attr("transform", "rotate(-25)" );
               
           //Y axis
           svg.append("g")
@@ -1111,7 +1108,7 @@ if(scope.d3opts.elementType!=='part')
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
-            .on("click", function(d) {  console.log('here 1')
+            .on("click", function(d) { 
               
             //  if("#"+d.route!==window.location.hash)
                //window.location.hash = "#"+d.route

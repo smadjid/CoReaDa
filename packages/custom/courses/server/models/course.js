@@ -77,6 +77,9 @@ var FactSchema = new Schema({
   description: {
     type: String
   }, 
+  delta: {
+    type: Number
+  }, 
   norm_value: {
     type: String
   },

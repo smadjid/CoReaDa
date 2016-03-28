@@ -1,14 +1,14 @@
-<div   class='coreada-box' >
+<div   class='coreada-box' ng-model="inspectorIndicatorCode">
       
 <div >
 
     <div ng-show='activatetab=="tabStats"'  class="col-lg-6 btn-group">
         
           <table class='coreada-box  ' style='display:table; width:100%'>
-              <tr ng-model="sectionPstatSelector">
+              <tr >
     
                   <tr ng-repeat="indicator in inspector.Indicators" >
-                  <td  class='componentInfo'  ng-click=" showComponentChart(indicator.name)" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.sectionPstatSelector" uib-btn-radio="indicator.name">
+                  <td  class='componentInfo'  ng-click=" showComponentChart(indicator.name)" tabindex="0" role='button' aria-pressed="false" ng-model="$parent.inspectorIndicatorCode" uib-btn-radio="indicator.name">
     
                     <span class="blue">{{indicator.value}}</span> {{indicator.comment}}</td></tr>
 
@@ -20,7 +20,7 @@
       </div>
        
 
-<div ng-show='activatetab=="tabFacts" && pageCount()>=0' >
+<div id='tabfacts' ng-show='activatetab=="tabFacts" && pageCount()>=0' >
   <div class="col-lg-6" >        
 
         <ol class="paginator" ng-show='pageCount()>0' >
@@ -49,8 +49,8 @@
   </div>
 </div>
    <div class='col-lg-6'  >
-          <div class='chart-title'><b>{{graphTitle}} ({{$parent.sectionPstatSelector}})</b></div>
-            <d3-chart class='row' data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:$parent.sectionPstatSelector}'></d3-chart>
+          <div class='chart-title'><b>{{graphTitle}} ({{$parent.inspectorIndicatorCode}})</b></div>
+            <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:$parent.inspectorIndicatorCode}'></d3-chart>
         </div>   
     </div>
 

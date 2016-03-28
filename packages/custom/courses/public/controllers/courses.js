@@ -70,8 +70,10 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   };
 
   $scope.setPage = function(n) {
+    if($scope.inspector.Facts.length<1) return;
     $scope.currentFact = n;
     $scope.sectionFactChart = $scope.inspector.Facts[n]
+    $scope.inspectorIndicatorCode = $scope.inspector.Facts[n].issueCode;
     
   };
          
@@ -118,8 +120,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.topElementSelector ='sections',
       $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';
-      $scope.sectionPstatSelector = 'Actions_tx';
-      $scope.sectionFactChart = 'Actions_tx';
+      $scope.inspectorIndicatorCode = 'Actions_tx';
       $scope.coursePstatSelector = 'time';
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
@@ -227,7 +228,7 @@ $scope.showComponentChart=function(param){
     
     return;
   }
-  $scope.sectionPstatSelector = param;
+  $scope.inspectorIndicatorCode = param;
   $scope.inspectorChart = true;
   
     $("#componentChartOverlay").fadeIn(100).focus().select();
@@ -243,7 +244,7 @@ $scope.showSectionChart=function(param){
     
     return;
   }
-  $scope.sectionPstatSelector = param;
+  $scope.inspectorIndicatorCode = param;
   $scope.inspectorChart = true;
   
     $("#componentChartOverlay").fadeIn(100).focus().select();
@@ -270,6 +271,18 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
 
 });
 $scope.$watch('activatetab', function(newValue, oldValue) {
+  window.setTimeout(function() {
+         switch(newValue) {
+    case "tabStats":
+        $scope.inspectorIndicatorCode = 'Actions_tx';
+        break;
+    case "tabFacts":
+        $scope.inspectorIndicatorCode = $scope.inspector.Facts[0].issueCode;
+        break;
+      }
+
+        }, 10);
+
   
  
 });
@@ -290,10 +303,10 @@ $scope.$watch('indicatorInspectorShow', function(newValue, oldValue) {
     });
 
 
-$scope.$watch('sectionPstatSelector', function(newValue, oldValue) {
+$scope.$watch('inspectorIndicatorCode', function(newValue, oldValue) {
   $scope.context.statChart = false;
   var statChart = $('#statChart').detach();
-  switch($scope.sectionPstatSelector) {
+  switch($scope.inspectorIndicatorCode) {
     case "Actions_tx":
         $scope.graphTitle ='Taux des visites';
         break;
@@ -1220,11 +1233,13 @@ var width = $('.data-table').innerWidth() ;
 
    $scope.activatetab = "tabStats";
 
+
   if(tome==-1) {        
     
         $scope.context.taskText ='(nouvelle tâche globale)';
         displayCourseInfos(indicator, task); 
         computeGranuleFacts('course');
+        $scope.inspectorIndicatorCode = "Actions_tx"
         ;
         
     }
@@ -1236,6 +1251,7 @@ var width = $('.data-table').innerWidth() ;
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       displayTomeInfos(partElt, task);
+      $scope.inspectorIndicatorCode = "Actions_tx"
       ;
     }
     else
@@ -1250,6 +1266,7 @@ var width = $('.data-table').innerWidth() ;
           computeGranuleFacts('chapter', chap, fact.classof, fact.classof);
           displayChapterIssues(chap.route, task, chap, indicator);
           $scope.activatetab = "tabFacts";
+         
 
         }
         else
@@ -1259,6 +1276,7 @@ var width = $('.data-table').innerWidth() ;
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           displayChapterInfos(partElt, task);
+          $scope.inspectorIndicatorCode = "Actions_tx"
         }
         else{
           $scope.inspector.selectedFact =null ;
@@ -1268,6 +1286,7 @@ var width = $('.data-table').innerWidth() ;
           $scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='component' ;
           displayChapterIssues(chap.route, task, chap, indicator);
+          $scope.inspectorIndicatorCode = indicator;
           ;
         }
       }
@@ -1290,6 +1309,7 @@ var width = $('.data-table').innerWidth() ;
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
           displayPartInfos(partElt, task);
+          $scope.inspectorIndicatorCode = "Actions_tx"
         }
         else{
           $scope.inspector.selectedFact =null; 
@@ -1299,6 +1319,7 @@ var width = $('.data-table').innerWidth() ;
           $scope.inspectorDisplaySrc='component';
           $scope.sectionDisplay = true; 
           displayPartIssues(part.route, task, part, indicator);
+          $scope.inspectorIndicatorCode = indicator;
 
         }
       }
@@ -2112,7 +2133,6 @@ swal({
 
 var dropFactLocally = function(route){
   var components = parseURL(route)
-  console.log(components)
   var result=null;
   if(components.hasOwnProperty('partid')) {
     var tome = $.grep($scope.course.tomes, function(e){ return  e._id == components.partid })[0];
@@ -2130,10 +2150,9 @@ var dropFactLocally = function(route){
       else
         if(components.hasOwnProperty('factid')){
           var fact = $.grep(chap.facts, function(e){ return  e._id == components.factid })[0];          
-          console.log(chap.facts)
           chap.facts.splice(chap.facts.indexOf(fact),1);
           $scope.inspector.Facts.splice($scope.inspector.Facts.indexOf(fact),1)
-          console.log(chap.facts)
+          
 
         }
     }  
