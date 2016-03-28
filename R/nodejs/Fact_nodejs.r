@@ -218,8 +218,9 @@ cat(PartsData.json, file="structure.json")
   byParts$classe="Actions_tx"
   byParts$issueCode="RminVisit"
   byParts$content="Trop peu de visites"
-  byParts$delta = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byParts$Actions_tx,2)
-  byParts$description=paste("Cette section est visitée", byParts$delta,"fois moins que le nombre moyen de visites des autres sections")
+  byParts$delta = median(InterestData$Actions_tx,na.rm = TRUE) - byParts$Actions_tx
+    val = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byParts$Actions_tx,2)
+  byParts$description=paste("Cette section est visitée", val,"fois moins que le nombre moyen de visites des autres sections")
   byParts$suggestion_title="Revoir le titre et le contenu"
   byParts$suggestion_content="Est-ce que le titre de la section résume bien son contenu ? 
 Si oui :  Est-ce que cette section est  réellement intéressante par rapport au cours ? Si c'est le cas, peut-elle
@@ -231,8 +232,9 @@ InterestData = PartData[which(PartData$part_type=='chapitre'),]
   byChaps$classe="Actions_tx"
   byChaps$issueCode="RminVisit"
   byChaps$content="Trop peu de visites"
-  byChaps$delta  = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byChaps$Actions_tx,1)
-  byChaps$description=paste("Ce chapitre section est visité", byChaps$delta,"fois moins que le nombre médian de visites des autres chapitres")
+  byChaps$delta  = median(InterestData$Actions_tx,na.rm = TRUE)- byChaps$Actions_tx
+    val = round(median(InterestData$Actions_tx,na.rm = TRUE)/ byChaps$Actions_tx,2)
+  byChaps$description=paste("Ce chapitre section est visité", val,"fois moins que le nombre médian de visites des autres chapitres")
   byChaps$suggestion_title="Revoir le titre et le contenu"
   byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
 Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
@@ -308,8 +310,9 @@ DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.du
   byParts$classe="speed"
   byParts$issueCode="RmaxSpeed"
   byParts$content="Lecture trop rapide"
-  byParts$delta = round(byParts$speed / median(SpeedData$speed,na.rm = TRUE) ,2)
-  byParts$description=paste("Cette section comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant", byParts$delta,"fois supéreire à la vitesse moyenne de lecture des autres section")
+  byParts$delta = byParts$speed - median(SpeedData$speed,na.rm = TRUE)
+    val = round(byParts$speed / median(SpeedData$speed,na.rm = TRUE) ,2)
+  byParts$description=paste("Cette section comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant", val,"fois supéreire à la vitesse moyenne de lecture des autres section")
   byParts$suggestion_title="Réviser ou supprimer la section"
   byParts$suggestion_content="La section doit être plus simple à lire/comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
@@ -322,8 +325,9 @@ DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.du
   byChaps$classe="speed"
   byChaps$issueCode="RmaxSpeed"
   byChaps$content="Lecture trop rapide"
-  byChaps$delta = round(median(SpeedData$speed,na.rm = TRUE) / byChaps$speed,2)
-  byChaps$description=paste("Ce chapitre  comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant",byChaps$delta,"fois supéreire à la vitesse moyenne de lecture des autres chapitres")
+  byChaps$delta = byChaps$speed - median(SpeedData$speed,na.rm = TRUE) 
+    val = round(byChaps$speed / median(SpeedData$speed,na.rm = TRUE) ,2)
+  byChaps$description=paste("Ce chapitre  comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant",val,"fois supéreire à la vitesse moyenne de lecture des autres chapitres")
   byChaps$suggestion_title="Réviser ou supprimer le chapitre"
   byChaps$suggestion_content="Le chapitre doit être plus simple à lire/comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
@@ -341,8 +345,9 @@ DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.du
   byParts$classe="speed"
   byParts$issueCode="RminSpeed"
   byParts$content="Lecture trop lente"
-  byParts$delta = round(median(SpeedData$speed,na.rm = TRUE) /byParts$speed  ,2)
-  byParts$description=paste("Cette section est probablement trop longue ou contient beaucoup de notions complexes ou nouvelles, sa vitesse moyenne de lecture étant", byParts$delta,"fois inférieure à la vitesse moyenne de lecture des autres section")
+  byParts$delta = median(SpeedData$speed,na.rm = TRUE) - byParts$speed 
+    val = round(median(SpeedData$speed,na.rm = TRUE) /byParts$speed  ,2)
+  byParts$description=paste("Cette section est probablement trop longue ou contient beaucoup de notions complexes ou nouvelles, sa vitesse moyenne de lecture étant", val,"fois inférieure à la vitesse moyenne de lecture des autres section")
   byParts$suggestion_title="Réviser la section"
   byParts$suggestion_content="La section doit être plus simple à lire/comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
@@ -355,8 +360,9 @@ DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.du
   byChaps$classe="speed"
   byChaps$issueCode="RminSpeed"
   byChaps$content="Lecture trop rapide"
-  byChaps$delta = round(median(SpeedData$speed,na.rm = TRUE) /byChaps$speed  ,2)
-  byChaps$description=paste("Cette section est probablement trop longue ou contient beaucoup de notions complexes ou nouvelles, sa vitesse moyenne de lecture étant", byChaps$delta,"fois inférieure à la vitesse moyenne de lecture des autres section")
+  byChaps$delta = median(SpeedData$speed,na.rm = TRUE) /byChaps$speed
+    val = round(median(SpeedData$speed,na.rm = TRUE) /byChaps$speed  ,2)
+  byChaps$description=paste("Cette section est probablement trop longue ou contient beaucoup de notions complexes ou nouvelles, sa vitesse moyenne de lecture étant", val,"fois inférieure à la vitesse moyenne de lecture des autres section")
   byChaps$suggestion_title="Réviser le chapitre"
   byChaps$suggestion_content="Le chapitre doit être plus simple à lire/comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
@@ -373,8 +379,9 @@ byParts = ReadsData[which(ReadsData$rereadings_tx>quantile(ReadsData$rereadings_
 byParts$classe="rereadings_tx"
 byParts$issueCode="RRmax"
 byParts$content="Trop de relectures"
-byParts$delta=round(byParts$rereadings_tx/median(ReadsData$rereadings_tx),2)
-byParts$description=paste("Cette section est  en moyenne relue",byParts$delta ,"fois plus que le nombre moyen de relecture des autres sections")
+byParts$delta=byParts$rereadings_tx-median(ReadsData$rereadings_tx)
+  val = round(byParts$rereadings_tx/median(ReadsData$rereadings_tx),2)
+byParts$description=paste("Cette section est  en moyenne relue",val ,"fois plus que le nombre moyen de relecture des autres sections")
 byParts$suggestion_title="Simplifier l'écriture de la section et vérifier l'enchainement"
 byParts$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
 La section doit être plus simple à  lire et comprendre : 
@@ -389,8 +396,9 @@ byChaps = ReadsData[which(ReadsData$rereadings_tx>quantile(ReadsData$rereadings_
 byChaps$classe="rereadings_tx"
 byChaps$issueCode="RRmax"
 byChaps$content="Trop de relectures"
-byChaps$delta=round(byChaps$rereadings_tx/median(ReadsData$rereadings_tx),2)
-byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues",byChaps$delta,"fois plus que le nombre moyen de relectures des sections des autres chapitres")
+byChaps$delta=byChaps$rereadings_tx-median(ReadsData$rereadings_tx)
+  val = round(byChaps$rereadings_tx/median(ReadsData$rereadings_tx),2)
+byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues",val,"fois plus que le nombre moyen de relectures des sections des autres chapitres")
 byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
 byChaps$suggestion_content="Vérifier les relectures conjointes et disjointes, si il y a globalement équilibre alors :
 Le chapitre et ses sections doivent être plus simples à  lire et comprendre : 
@@ -423,9 +431,10 @@ StopData = PartData[which(PartData$part_type=='section'),c('part_id','norecovery
 byParts = StopData[which(StopData$norecovery_tx>quantile(StopData$norecovery_tx,0.9,na.rm = TRUE)),]
 byParts$classe="norecovery_tx"
 byParts$issueCode="StopRSExit"
-byParts$delta=round(100*byParts$norecovery_tx,2)
+byParts$delta=byParts$norecovery_tx - median(StopData$norecovery_tx)
+  val = round(100*byParts$norecovery_tx,2)
 byParts$content=paste("Trop d'arrêts définitifs de la lecture sur cette section")
-byParts$description=paste(byParts$delta, "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur cette section. ")
+byParts$description=paste(val, "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur cette section. ")
 byParts$suggestion_title="Réécrire et simplifier cette section"
 byParts$suggestion_content="Cette section a besoin d\'être plus simple à lire et à comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
@@ -439,8 +448,9 @@ byChaps = StopData[which(StopData$norecovery_tx>quantile(StopData$norecovery_tx,
 byChaps$classe="norecovery_tx"
 byChaps$issueCode="StopRSExit"
 byChaps$content=paste("Trop d'arrêts définitifs de la lecture sur ce chapitre")
-byChaps$delta=round(100*byChaps$norecovery_tx,2)
-byChaps$description=paste(byChaps$delta, "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur ce chapitre.")
+byChaps$delta=byChaps$norecovery_tx - median(StopData$norecovery_tx)
+  val = round(100*byChaps$norecovery_tx,2)
+byChaps$description=paste(val, "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur ce chapitre.")
 byChaps$suggestion_title="Réécrire et simplifier ce chapitre"
 byChaps$suggestion_content="Ce chapitre a besoin d\'être plus simple à lire et à comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 

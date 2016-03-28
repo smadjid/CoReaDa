@@ -12,14 +12,7 @@ angular.module('mean.courses')
 
         link: function (scope, element, attrs) {
 scope.chapters =[]
-var scale = chroma.scale('OrRd');
-var computeBgColor =function(val, indicator){
 
-  if(indicator=='mean.duration') val = val /100;
-  if(indicator=='speed') val = val /300;
-
-  return   scale(val).hex();
-}
 
 var tableIssuesDisplay=function(){
   d3.select(element[0]).selectAll('td').remove();
@@ -29,20 +22,100 @@ var tableIssuesDisplay=function(){
     chaptersIssuesDisplay()    
 }
 
+var computeTwoBounderyValues = function(type){
+  var studiedFactData=[];
+
+if(type=='chapter'){
+  scope.chapters.forEach(function(chapter, i) {
+      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      studiedFactData.push(partData);
+  })
+}
+else{
+  scope.chapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      studiedFactData.push(partData);
+    })
+  })
+}
+
+  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
+  
+  for(var i = 0; i<studiedFactData.length; i++){ 
+    studiedFactData[i] = Math.abs(studiedFactData[i] - median);
+  }
+  var min = d3.min(studiedFactData, function(d) { return parseFloat(d); }); 
+  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
+   
+  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
+}
+var computeMinBounderyValues = function(type){
+  var studiedFactData=[];
+
+if(type=='chapter'){
+  scope.chapters.forEach(function(chapter, i) {
+      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      studiedFactData.push(partData);
+  })
+}
+else{
+  scope.chapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      studiedFactData.push(partData);
+    })
+  })
+}
+
+  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
+  
+  for(var i = 0; i<studiedFactData.length; i++){ 
+    studiedFactData[i] = median - studiedFactData[i];
+    if(studiedFactData[i] < 0 ) studiedFactData[i] = 0;
+  }
+  var min = 0; 
+  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
+   
+  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
+}
+
+var computeBgColor =function(val, indicator, range){
+  var scale = chroma.scale('OrRd').domain([range.MinValue, range.MaxValue]);
+  
+  return   scale(val).hex();
+}
+
 var partsIssuesDisplay=function(){
 var html=[];
+
+var boundaryValues = computeTwoBounderyValues('part');
+var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+switch(scope.indicatorCode) {
+    case "Actions_tx":
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, 0]);
+        break;
+      }
+
+
 
 var maxValue = 0;
 var maxPart = 0;
 var maxRoute='#';
 
+
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
     
-      var allFacts = part.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );
+      var allFacts = part.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );      
       
-      
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
+      switch(scope.indicatorCode) {
+      case "Actions_tx":
+        partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+        break;
+      }
+
       
       var td=$("<td role='button'></td>");
        $(td)
@@ -52,7 +125,7 @@ var maxRoute='#';
                .attr('data-indicator',scope.indicatorCode)
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
-               .css('background-color',computeBgColor(partData, scope.indicatorCode))
+               .css('background-color',scale(partData).hex())
                .on("click", function(d) {window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode});
 
       allFacts.forEach(function(fact){  
@@ -61,9 +134,9 @@ var maxRoute='#';
         .css('color','red')
         .attr('data-fact-id',+fact._id );
 
-        if(parseFloat(fact.value) > maxValue)
-        {maxValue = parseFloat(fact.value); maxPart=part.id; maxRoute=fact.route; }
-
+        if(parseFloat(fact.delta) > maxValue)
+        {maxValue = parseFloat(fact.delta); maxPart=part.id; maxRoute=fact.route; }
+console.log(fact.delta);
 
 
         $(td).append(span) });
@@ -98,16 +171,30 @@ if(html.length>0){
 var chaptersIssuesDisplay=function(){
 var html=[];
 
+var boundaryValues = computeTwoBounderyValues('chapter');
+var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+switch(scope.indicatorCode) {
+    case "Actions_tx":
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, 0]);
+        break;
+      }
+
+
 var maxValue = 0;
 var maxChap = 0;
 var maxRoute='#';
 
-  scope.chapters.forEach(function(chapter, i) {
+  scope.chapters.forEach(function(chapter, i) {    
+    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );    
     
-    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );
     
-    
-    var chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+    var chapData = Math.abs(boundaryValues.MedianValue - 
+      parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
+    switch(scope.indicatorCode) {
+      case "Actions_tx":
+        chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+        break;
+      }
     
     var td=$("<td role='button'></td>");
      $(td)
@@ -116,8 +203,8 @@ var maxRoute='#';
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
-             .append('<span></span>')
-             .css('background-color',computeBgColor(chapData, scope.indicatorCode));
+             .append('<span>'+chapData+'</span>')
+             .css('background-color',scale(chapData).hex());
              
 
     allFacts.forEach(function(fact){  
@@ -126,8 +213,8 @@ var maxRoute='#';
       .css('color','red')
       .attr('data-fact-id',+fact._id );
 
-      if(parseFloat(fact.value) > maxValue)
-      {maxValue = parseFloat(fact.value); maxChap=chapter.id;maxRoute=fact.route; }
+      if(parseFloat(fact.delta) > maxValue)
+      {maxValue = parseFloat(fact.delta); maxChap=chapter.id;maxRoute=fact.route; }
  
  
 
@@ -154,6 +241,7 @@ if(html.length>0){
       .css('background-color','rgba(255,255,255,0.57)')
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
       .css('padding','3px')
+      .text(maxValue)
       .css('font-size','14px');
 
 

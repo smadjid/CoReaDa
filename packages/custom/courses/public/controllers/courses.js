@@ -143,17 +143,17 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 $scope.resetIndicators = function(){
       $scope.indicatorsHeader=[
         {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'sectionValue et reprise','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null}
+       // {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
+        //{'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
+        //{'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'sectionValue et reprise','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null}
 
       ]
 
       $scope.selectedIndicators=[
   {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'RminVisit','category':'Indicateurs de lecture'},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture'},
-        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture'},
-        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'arrêts et reprise'}
+      //  {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'RmaxSpeed','category':'Indicateurs de lecture'},
+        //{'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'RRmax','category':'Indicateurs de relecture'},
+        //{'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'StopRSExit','category':'Indicateurs d\'arrêts et reprise'}
       ]
 }
 $scope.resetIndicators()
@@ -404,6 +404,7 @@ $scope.completeCourseParts =function(){
           fact.partType='chapter'
           fact.chapter=chapter._id;
           fact.section=null;
+          console.log(fact);
           fact.d3 =[];
           fact.d3 ={ 'chapter':chapter.route,'tome':tome.route};
 

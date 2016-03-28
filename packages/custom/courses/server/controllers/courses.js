@@ -418,7 +418,7 @@ module.exports = function(Courses) {
                     'elementType':'fact',
                     'description':part_facts[i].description,
                     'norm_value':part_facts[i].norm_value,
-                    'gravity':part_facts[i].gravity,
+                    'delta':part_facts[i].delta,
                     'suggestion_title': part_facts[i].suggestion_title,
                     'suggestion_content':part_facts[i].suggestion_content
                 }
