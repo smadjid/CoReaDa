@@ -86,6 +86,35 @@ var computeBgColor =function(val, indicator, range){
   return   scale(val).hex();
 }
 
+
+
+
+var computeBounderyValues = function(type){
+  var studiedFactData=[];
+
+if(type=='chapter'){
+  scope.chapters.forEach(function(chapter, i) {
+      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      studiedFactData.push(partData);
+  })
+}
+else{
+  scope.chapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      studiedFactData.push(partData);
+    })
+  })
+}
+
+  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
+  
+  
+  var min = d3.min(studiedFactData, function(d) { return parseFloat(d); }); 
+  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
+   
+  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
+}
 var partsIssuesDisplay=function(){
 var html=[];
 
@@ -93,9 +122,10 @@ var boundaryValues = computeTwoBounderyValues('part');
 var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
 switch(scope.indicatorCode) {
     case "Actions_tx":
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, 0]);
+        boundaryValues = computeBounderyValues('part');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
-      }
+}
 
 
 
@@ -175,9 +205,11 @@ var boundaryValues = computeTwoBounderyValues('chapter');
 var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
 switch(scope.indicatorCode) {
     case "Actions_tx":
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, 0]);
+        boundaryValues = computeBounderyValues('chapter');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
-      }
+}
+
 
 
 var maxValue = 0;
