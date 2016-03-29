@@ -1,0 +1,69 @@
+<section data-ng-controller="CoursesController" data-ng-init="findOne()">
+<div ng-show="dataLoading" id="floatingCirclesG">
+<div class="f_circleG" id="frotateG_01"></div>
+  <div class="f_circleG" id="frotateG_02"></div>
+  <div class="f_circleG" id="frotateG_03"></div>
+  <div class="f_circleG" id="frotateG_04"></div>
+  <div class="f_circleG" id="frotateG_05"></div>
+  <div class="f_circleG" id="frotateG_06"></div>
+  <div class="f_circleG" id="frotateG_07"></div>
+  <div class="f_circleG" id="frotateG_08"></div>
+</div>
+<div class="container-fluid row" ng-show="pageLoaded">  
+<div class="col-lg-9 coreada-box">        
+
+<perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   > 
+
+    <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
+
+
+   
+   
+ 
+
+  <div id="divOverlay"> </div> 
+   <div id="divHoverOverlay"> </div> 
+   </perfect-scrollbar>  
+  
+
+    <div class="inspector-container inspectoEnclosing">
+
+        <div class="panel-body  panel-flat" style="margin-bottom:0; ">
+           
+               <nav class="navbar navbar-coreada navbar-collapse  ">
+      
+
+          <ul class="nav navbar-nav navbar-right" style='position:absolute; left: 0; bottom:0;margin-bottom:0; margin-right:0'>
+          <li ng-model='activatetab' uib-btn-radio="'tabStats'"><a data-ref='tabStats'  role='button' >Statistiques de lecture
+        </a></li>
+            <li ng-model='activatetab'  uib-btn-radio="'tabFacts'" ng-show='pageCount()>=0' >
+            <a  data-ref='tabFacts'  role='button'>{{pageCount()+1}} problème(s) potentiel(s) de lecture  </a>
+            <li class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
+          <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
+            {{context.inspector_title}}
+                <span  style='margin-left:10px;margin-bottom:0; color:blue' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
+              </a></em>
+          </ul>
+        </div><!--/.nav-collapse -->
+    
+    </nav>
+           
+            
+
+            <!--<div class="panel-body inspector-body" ng-include src="'courses/views/inspector.html'" ></div> -->
+            <div class="panel-body inspector-body" ng-include src="'courses/views/inspector.html'" ></div> 
+            <!-- ng-include src="'courses/views/inspector.html'" ></div> -->
+            
+            
+        </div>
+    </div>
+
+
+<div class="col-lg-3 coreada-box" >
+  <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
+</div>
+
+</section>
+
+
+

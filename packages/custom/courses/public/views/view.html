@@ -26,42 +26,59 @@
    </perfect-scrollbar>  
   
 
-    <div class="inspector-container inspectoEnclosing">
+    <div class="inspector-container">
 
-        <div class="panel-body  panel-flat" style="margin-bottom:0; ">
-           
-               <nav class="navbar navbar-coreada navbar-collapse  ">
-      
-
-          <ul class="nav navbar-nav navbar-right" style='position:absolute; left: 0; bottom:0;margin-bottom:0; margin-right:0'>
-          <li ng-model='activatetab' uib-btn-radio="'tabStats'"><a data-ref='tabStats'  role='button' >Statistiques de lecture
-        </a></li>
-            <li ng-model='activatetab'  uib-btn-radio="'tabFacts'" ng-show='pageCount()>=0' >
-            <a  data-ref='tabFacts'  role='button'>{{pageCount()+1}} problème(s) potentiel(s) de lecture  </a>
-            <li class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
+       
+       <!-- tabs -->
+      <div class="coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
+        <input type="radio" name="coreada-tabs" checked  id="tab1" class="tab-stats">
+        <label for="tab1"><i class="icon-bolt"></i>Statistiques de lecture</label>
+        
+        <input type="radio" name="coreada-tabs" id="tab2" class="tab-issues">
+        <label for="tab2" ng-show='pageCount()>0'><i class="icon-picture"></i>{{pageCount()+1}} problème(s) potentiel(s) de lecture</label>
+        <span class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
           <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
             {{context.inspector_title}}
                 <span  style='margin-left:10px;margin-bottom:0; color:blue' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
               </a></em>
-          </ul>
-        </div><!--/.nav-collapse -->
-    
-    </nav>
-           
-            
 
-            <!--<div class="panel-body inspector-body" ng-include src="'courses/views/inspector.html'" ></div> -->
-            <div class="panel-body inspector-body" ng-include src="'courses/views/inspector.html'" ></div> 
-            <!-- ng-include src="'courses/views/inspector.html'" ></div> -->
-            
-            
-        </div>
+            </span>
+
+        
+        <ul>
+          <div class='col-lg-6 pull-right' >
+              <div class='chart-title'><b>{{graphTitle}}</b></div>
+              <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:$parent.inspectorIndicatorCode}' style="width:100%!important;padding:0"></d3-chart>
+          </div>
+
+          <li class="tab-content tab-stats" ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course-stats.html'" >
+          <li class="tab-content tab-stats" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component-stats.html'" >
+
+
+
+
+
+          </li>
+          
+          <li class="tab-content tab-issues col-lg-6" ng-include src="'courses/views/facts.html'">
+            <p>hello</p>   
+          </li>
+         
+          
+          
+        </ul>
+      </div>
+      <!--/ tabs -->
     </div>
 
-
+  </div>
 <div class="col-lg-3 coreada-box" >
   <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
 </div>
+  </div>  
+
 
 </section>
+
+
 
