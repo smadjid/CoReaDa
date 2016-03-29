@@ -25,7 +25,7 @@
    <div id="divHoverOverlay"> </div> 
    </perfect-scrollbar>  
   
-  
+
     <div class="inspector-container inspectoEnclosing">
 
         <div class="panel-body  panel-flat" style="margin-bottom:0; ">
@@ -38,8 +38,10 @@
         </a></li>
             <li ng-model='activatetab'  uib-btn-radio="'tabFacts'" ng-show='pageCount()>=0' >
             <a  data-ref='tabFacts'  role='button'>{{pageCount()+1}} problème(s) potentiel(s) de lecture  </a>
-            <li class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> {{context.inspector_title}}
-                <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
+            <li class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
+          <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
+            {{context.inspector_title}}
+                <span  style='margin-left:10px;margin-bottom:0; color:blue' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
               </a></em>
           </ul>
         </div><!--/.nav-collapse -->
