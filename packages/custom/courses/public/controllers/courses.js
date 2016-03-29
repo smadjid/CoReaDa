@@ -51,7 +51,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   };
 
   $scope.DisablePrevPage = function() {
-    return $scope.currentFact === 0 ? "disabled" : "";
+    return $scope.currentFact === 0 ? "disabled-page" : "enabled-page";
   };
 
   $scope.pageCount = function() {
@@ -66,7 +66,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   };
 
   $scope.DisableNextPage = function() {
-    return $scope.currentFact === $scope.pageCount() ? "disabled" : "";
+    return $scope.currentFact === $scope.pageCount() ? "disabled-page" : "enabled-page";
   };
 
   $scope.setPage = function(n) {

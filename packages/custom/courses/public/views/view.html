@@ -32,17 +32,22 @@
        <!-- tabs -->
       <div class="coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
         <input type="radio" name="coreada-tabs" checked  id="tab1" class="tab-stats">
-        <label for="tab1"><i class="icon-bolt"></i>Statistiques de lecture</label>
+        <label for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
         
         <input type="radio" name="coreada-tabs" id="tab2" class="tab-issues">
-        <label for="tab2" ng-show='pageCount()>0'><i class="icon-picture"></i>{{pageCount()+1}} problème(s) potentiel(s) de lecture</label>
-        <span class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
+        <label for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-warning-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}</label>
+        <label class='pull-right inspector-title'>
+          <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true "></span> 
+            <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
+             <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
+            </label>
+     <!--   <span class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
           <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
             {{context.inspector_title}}
                 <span  style='margin-left:10px;margin-bottom:0; color:blue' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
               </a></em>
 
-            </span>
+            </span>-->
 
         
         <ul>

@@ -1,11 +1,15 @@
-<div class="col-lg-7" >        
+        <ul class="paginator">
+              <li ng-class="DisablePrevPage()">
+                <span  role='button' class='glyphicon glyphicon-backward' ng-click="prevPage()"></span>
 
-        <ol class="paginator col-lg-7">
-              <li ng-repeat="n in range()" ng-class="{active: n == currentFact}" ng-click="setPage(n)">
-                <span role='button'></span>
               </li>
-              <hr/>
-        </ol>
+              <li class="active"><b style='color:rgb(47, 82, 111);'>{{currentFact+1}}/{{pageCount()+1}}</b>
+              
+              <li  ng-class="DisableNextPage()">
+                <span  role='button' class='glyphicon glyphicon-forward' ng-click="nextPage()"></span>
+                 
+              </li>
+            </ul>
         
 
         
@@ -20,6 +24,3 @@
  {{fact.suggestion_content}}
 </div>
 
- 
-
-  </div>
