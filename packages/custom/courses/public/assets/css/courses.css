@@ -1703,10 +1703,11 @@ border-radius: 3px;
 
 }
 .fact-div {
-    padding: 10px;
-    padding-top: 0;
-    margin: 0;
+  margin:5px;  
+    padding: 5px;
+    padding-right:10px;
     border:none;
+    border-right: 2px solid #eee;
     
 }
 .fact-div  h4 {

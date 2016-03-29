@@ -244,7 +244,7 @@ $scope.toggleSectionDisplay = function(){
 
 }
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
-  
+  console.log($scope.indicatorsSelectionModel);
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
  
@@ -1179,9 +1179,6 @@ var width = $('.data-table').innerWidth() ;
     var left = $('.data-table').offset().left;
 
 
-    $('#indicatorSelector').offset({top:top + 7 ,left:left });
-    $('#indicatorSelector').width=$('.indicators-header').css('width')
-    $('#indicatorSelector').css('visibility','visible');
   
   
 

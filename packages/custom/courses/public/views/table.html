@@ -1,9 +1,22 @@
     <thead>
         <tr class='tomes-header'>
-        <th class="home_icon" role="button" ng-click='resetPath();goHome()'><span class="glyphicon glyphicon-home" ></span></th>         
+        <th class="home_icon">
+        <span role="button" ng-click='resetPath();goHome()' class="btn  btn-xs btn-info glyphicon glyphicon-home" style='margin-right:3px'></span>
+ 
+        <span  class='btn btn-info btn-xs glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" >      
+        
+        </span>
+    <select ng-show="indicatorSelectorShow" model="indicatorsSelectionModel" style='position:absolute; margin-left: 80px!important; top:2px; min-width:30px' selector  multi="true" options="indicatorsHeader"   group-attr ="category"
+      value-attr="value"></select>
+
+
+   
+
+        </th>         
             <th role='button' ng-click='triggerClick($event)' class="tome_index" ng-repeat="tome in course.tomes"  colspan={{tome.parts_count}} data-part={{tome.id}} data-path={{tome.route}}>
               <span class="display-tome-info"  > {{tome.title}}</span>
-              
+
+
             </th>  
         </tr>
 
