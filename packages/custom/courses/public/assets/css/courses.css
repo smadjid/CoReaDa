@@ -171,13 +171,10 @@ ul.alert-dropdown {
   padding:0!important;
 }
 .panel-flat{
-    border-color:  rgb(47, 82, 111)
+    
   }
   .panel-flat > .panel-heading {
-    border-color: rgb(47, 82, 111);
-    color: #fff;
-    background-color: rgb(47, 82, 111);
-    padding:0;
+    
 }
 
 .panel-green {
@@ -423,7 +420,7 @@ td {
     position: relative;
     display: block;
     padding: 5px 10px;
-    margin-bottom: -1px;
+    margin-bottom: 0px;
     border: 1px solid #ddd;
          color: #a94442;
     background-color: #ebcccc;
@@ -820,20 +817,8 @@ table {
     border-radius: 10px;
 }
 /***********************************************************************/
-.inspectoEnclosing{
-  padding:1px;
-  margin:0px;
-  margin-top:30px; 
-  box-shadow: inset 0 0 0 2px rgb(52, 73, 94);
 
-}
-.inspectoEnclosingHg{
-  border: 3px outset #45348A;
-}
-.inspector-body{
-  padding:0px;
-  margin:0px;
-}
+
 
 .inspector-item {
   border: 2px solid rgb(47, 82, 111);
@@ -1811,14 +1796,30 @@ border-radius: 3px;
 .right-to-left li { float: right; right:0;}
 
 
+.inspector-body{
+  padding:0px;
+  margin:0px;
+    box-shadow: inset 0 0 0 2px rgb(52, 73, 94);
+}
 
+.inspectoEnclosing{
+  padding:1px;
+  margin:0px;
+  margin-top:30px; 
+ border-color: #213c52!important;
+  border-top:none!important; 
+
+}
+.inspectoEnclosingHg{
+  border: 3px outset #45348A;
+}
 
 .navbar-coreada {
-  background-color: #2f526f!important;
-  border-color: #213c52!important;
+  
+  
   height:40px!important;
   min-height: 38px!important;
-  margin-bottom: 2px;
+  margin-bottom: -1px;
 }
 .navbar-coreada .navbar-brand {
   color: #ecf0f1!important;
@@ -1832,17 +1833,22 @@ border-radius: 3px;
 }
 .navbar-coreada .navbar-nav > li > a {
   color: #ecf0f1!important;
+  background-color: #57748C!important;
+  margin-right: 2px;
+  border-top: solid 2px #57748C!important;;
 }
 .navbar-coreada .navbar-nav > li > a:hover,
 .navbar-coreada .navbar-nav > li > a:focus {
   color: #f5f2f7!important;
+
 }
 .navbar-coreada .navbar-nav > .active > a,
 .navbar-coreada .navbar-nav > .active > a:hover,
 .navbar-coreada .navbar-nav > .active > a:focus {
   color: #f5f2f7!important;
   background-color: #213c52!important;
-  border-bottom: 3px solid red;
+   border-top: solid 2px red!important;;
+  
 }
 .navbar-coreada .navbar-nav > .open > a,
 .navbar-coreada .navbar-nav > .open > a:hover,
@@ -1896,11 +1902,17 @@ border-radius: 3px;
 }
 
 .inspector-title{
-      float: left;
+      float: right;
           display: block;
               font-size: 15px;
     font-weight: 500;
     padding: 7px;
     height: 100%;
+    margin-left:20px;
+   
+  }
+.inspector-title em{
+    
+        font-size: 17px
 
 }
