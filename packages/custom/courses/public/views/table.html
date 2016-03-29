@@ -27,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td by-parts='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="course" >
+        <tr table-td by-parts='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >{{indicator.label}}</span>

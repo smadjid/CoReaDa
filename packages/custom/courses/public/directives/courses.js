@@ -125,6 +125,22 @@ switch(scope.indicatorCode) {
         boundaryValues = computeBounderyValues('part');
         scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
+    case "speed":
+        boundaryValues = computeTwoBounderyValues('part');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+        break;
+    case "rereadings_tx":
+        boundaryValues = computeBounderyValues('part');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "rereadings_tx":
+        boundaryValues = computeBounderyValues('part');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "norecovery_tx":
+        boundaryValues = computeBounderyValues('part');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
 }
 
 
@@ -142,6 +158,16 @@ var maxRoute='#';
       var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
       switch(scope.indicatorCode) {
       case "Actions_tx":
+        partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+        break;
+      case "speed":
+        partData = Math.abs(boundaryValues.MedianValue - 
+          parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
+        break;
+      case "rereadings_tx":
+        partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+        break;
+      case "norecovery_tx":
         partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
         break;
       }
@@ -166,8 +192,6 @@ var maxRoute='#';
 
         if(parseFloat(fact.delta) > maxValue)
         {maxValue = parseFloat(fact.delta); maxPart=part.id; maxRoute=fact.route; }
-console.log(fact.delta);
-
 
         $(td).append(span) });
 
@@ -208,6 +232,22 @@ switch(scope.indicatorCode) {
         boundaryValues = computeBounderyValues('chapter');
         scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
+    case "speed":
+        boundaryValues = computeTwoBounderyValues('chapter');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+        break;
+    case "rereadings_tx":
+        boundaryValues = computeBounderyValues('chapter');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "rereadings_tx":
+        boundaryValues = computeBounderyValues('chapter');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "norecovery_tx":
+        boundaryValues = computeBounderyValues('chapter');
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
 }
 
 
@@ -226,6 +266,16 @@ var maxRoute='#';
       case "Actions_tx":
         chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
         break;
+      case "speed":
+        chapData = Math.abs(boundaryValues.MedianValue - 
+          parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
+        break;
+      case "rereadings_tx":
+        chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+        break;
+      case "norecovery_tx":
+        chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+        break;
       }
     
     var td=$("<td role='button'></td>");
@@ -235,7 +285,7 @@ var maxRoute='#';
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
-             .append('<span>'+chapData+'</span>')
+             .append('<span></span>')
              .css('background-color',scale(chapData).hex());
              
 
@@ -273,7 +323,7 @@ if(html.length>0){
       .css('background-color','rgba(255,255,255,0.57)')
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
       .css('padding','3px')
-      .text(maxValue)
+      //.text(maxValue)
       .css('font-size','14px');
 
 
@@ -299,7 +349,7 @@ if(html.length>0){
   scope.$watch('data', function(){
 
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
-  
+
     scope.chapters = [];
     angular.forEach(scope.data.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter) {     
@@ -326,20 +376,7 @@ scope.$watch('byParts', function(){
     
           }, true); 
 
-scope.$watch('indicatorCode', function(){
 
-  if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
-    scope.chapters = [];
-    angular.forEach(scope.data.tomes, function(tome) {
-    angular.forEach(tome.chapters, function(chapter) {     
-      scope.chapters.push( chapter ); 
-    });
-  });   
-    
-         tableIssuesDisplay()
-        
-    
-          }, true); 
             
         }
     }
@@ -499,15 +536,15 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
-/*svg.append("path")
+svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
-      .attr("d", ymedian);*/
-  svg.append("path")
+      .attr("d", ymedian);
+/*  svg.append("path")
       .datum(data)
       .attr("class", "meanLine")
       .attr("d", ymean);
-
+*/
 var midBox = svg.append("g")
                 .attr('class','midBox')
                 .attr("transform", "translate("+width*4/5+",00)");
@@ -894,12 +931,15 @@ svg.append("g").selectAll("g.linklabelholder")
 
  scope.$watch(function(){
   if(typeof scope.data =='undefined') return;
+  
             width = $(element[0]).parent().width();     
             return width 
           }, resize);
 
     function resize(){
+      
       if(typeof scope.data =='undefined') return;
+     
             if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
                    'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
@@ -1156,7 +1196,6 @@ scope.inspectorRenderBars = function(globalData, classe) {
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
   
-  if(width <=0 ) width=500;
           svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -1281,15 +1320,15 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
- /* svg.append("path")
+  svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
-      .attr("d", ymedian);*/
-  svg.append("path")
+      .attr("d", ymedian);
+/*  svg.append("path")
       .datum(data)
       .attr("class", "meanLine")
       .attr("d", ymean);
-  
+  */
 
  var legend = svg.selectAll(".legend")
       .data([{"text":"Moyenne","color":"#d35400"}/*,{"text":"Médiane","color":"#F39C12"}*/])
@@ -1507,17 +1546,19 @@ svg.append("g").selectAll("g.linklabelholder")
 
 }
 scope.$watch(function(){
-  
+   
             width = $(element[0]).parent().width();     
+            
+ 
             return width 
           }, resize);
 
     function resize(){
+
       if(typeof scope.data =='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
-                      })              scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
+      
+              if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+               scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
     
     }
@@ -1525,20 +1566,17 @@ scope.$watch(function(){
 
 scope.$watch('data', function(){
   if(typeof scope.data =='undefined') return;
-            if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
-                      })              scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
+  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+    scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
    
 
 scope.$watch('d3opts', function(){
+  
   if(typeof scope.data =='undefined') return;
-  if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture':'','norecovery':'','next_recovery':'','prev_recovery':'','distant_prev_recovery':''
-                      })              scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
+    if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+     scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
 };
@@ -1761,7 +1799,6 @@ else
 }
 else
 if(scope.d3opts.type == 'inspector'){
-//console.log(scope.d3opts.type)  
 inspectorCharts(scope, element,'titre')
 /*if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
                         'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',

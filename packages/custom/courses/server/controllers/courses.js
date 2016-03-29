@@ -101,7 +101,7 @@ module.exports = function(Courses) {
                             var fact = chapter.facts.id(req.params.factId);
                             var todo = req.body;
                             todo.classof = fact.classof;
-                            todo.issueCode = fact.issueCode
+                            todo.issueCode = fact.classof;
                             fact.todos.unshift(todo);
                             fact.save();   
                             chapter.save();                    
