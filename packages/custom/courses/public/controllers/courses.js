@@ -255,6 +255,12 @@ $scope.showTab = function(tab){
   
 }
 
+$scope.getShownTab = function(){
+  //alert($("input:checked").attr('value'))
+  return $("input:checked").attr('value');
+  
+}
+
 $scope.showComponentChart=function(param){
   
   if(param==-1){
