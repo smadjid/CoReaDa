@@ -97,9 +97,9 @@ if(scope.d3opts.elementType!=='part')
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
             .on("click", function(d) { 
-              
-            //  if("#"+d.route!==window.location.hash)
-               //window.location.hash = "#"+d.route
+              console.log(d.route);
+              if("#"+d.route!=window.location.hash)
+               window.location.hash = "#"+d.route
             })
             .on("mouseover", function (d) {
                   d3.select(this).attr("stroke-width", '3')
@@ -394,7 +394,7 @@ scope.$watch(function(){
     
 
 scope.$watch('data', function(){
-  console.log(scope.data); 
+
   if(typeof scope.data =='undefined') return;
 
   if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
@@ -404,7 +404,7 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
-  console.log(scope.d3opts);   
+  
   if(typeof scope.data =='undefined') return;
     if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
      scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)

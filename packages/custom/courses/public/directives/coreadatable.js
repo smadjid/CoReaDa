@@ -187,9 +187,9 @@ var maxRoute='#';
       allFacts.forEach(function(fact){  
         var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
         span
-        .css('color','red')
+        .attr('parent-path',part.route)
+        .addClass("gly-issue")
         .attr('data-fact-id',+fact._id );
-
         if(parseFloat(fact.delta) > maxValue)
         {maxValue = parseFloat(fact.delta); maxPart=part.id; maxRoute=fact.route; }
 
@@ -205,12 +205,13 @@ var maxRoute='#';
 if(html.length>0){  
 
   $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0]).children('.fact')
+      .removeClass("gly-issue")
       .addClass("glyphicon glyphicon-warning-sign")
       .css('color','red')
       .css('background-color','rgba(255,255,255,0.57)')
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
       .css('padding','3px')
-      .css('font-size','14px')
+      .css('font-size','14px')      
       .on("click", function(d) {window.location.hash = maxRoute});;
 
 
@@ -291,9 +292,10 @@ var maxRoute='#';
 
     allFacts.forEach(function(fact){  
       var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
-      span
-      .css('color','red')
-      .attr('data-fact-id',+fact._id );
+      span      
+      .attr('data-fact-id',+fact._id )
+      .attr('parent-path',chapter.route)
+      .addClass("gly-issue");
 
       if(parseFloat(fact.delta) > maxValue)
       {maxValue = parseFloat(fact.delta); maxChap=chapter.id;maxRoute=fact.route; }
@@ -318,12 +320,12 @@ if(html.length>0){
                  window.location.hash = maxRoute;
               })
   .children('.fact')
+      .removeClass("gly-issue")
       .addClass("glyphicon glyphicon-warning-sign")
       .css('color','red')
       .css('background-color','rgba(255,255,255,0.57)')
       .css('border','1px solid rgba(0, 220, 0, 0.14902)')
-      .css('padding','3px')
-      //.text(maxValue)
+      .css('padding','3px')      
       .css('font-size','14px');
 
 

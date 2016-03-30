@@ -725,6 +725,11 @@ html, body {
    background-color: #45348A!important;   
 }
 
+.gly-issue{
+  color: rgba(218, 218, 59, 0.97);
+  font-size: 14px;
+}
+
 /* Table highlighting */
 
 
@@ -2678,3 +2683,5 @@ position:relative;
 .coreada-tabs > ul > li {
   height: 370px;
 }
+
+

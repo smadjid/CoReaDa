@@ -90,7 +90,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
 
   $scope.observedElt ={};
-  $scope.inspector={'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
+  $scope.inspector ={'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
 
      $('table').hide();
      
@@ -513,6 +513,7 @@ var resetPath =function(){
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
   $('#divHoverOverlay').css('visibility','hidden');
+  $('.gly-issue').removeClass('glyphicon glyphicon-info-sign');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
     
 
@@ -1093,8 +1094,8 @@ var findTomeIssues = function(tome){
 
 
   
-$scope.inspector= {'type':'tome',
-                   'id':0,
+$scope.inspector = {'type':'tome',
+                   'id':tome.id,
                    'typeTxt': 'cette partie',
                     'indicatorCode':'Actions_tx',
                    'Facts': mainIssues.filter(function(e){return (e.tome==tome._id)}), 
@@ -1118,8 +1119,8 @@ var findChapterIssues = function(chapter, indicator, fact){
 
   
    var mainIssues = findMainChaptersFacts();
-  $scope.inspector= {'type':'chapter',
-                   'id':0,
+  $scope.inspector = {'type':'chapter',
+                   'id':chapter.id,
                    'typeTxt': 'ce chapitre',
                    'indicatorCode':'Actions_tx',
                    'Facts': chapter.facts,//mainIssues.filter(function(e){return (e.chapter==chapter._id)}), 
@@ -1151,8 +1152,8 @@ if(indicator!=null)
 var findSectionIssues = function(section){  
  var mainIssues = findMainSectionsFacts();
   
-    $scope.inspector= {'type':'part',
-                   'id':0,
+    $scope.inspector = {'type':'part',
+                   'id':section.id,
                    'typeTxt': 'cette section',
                    'indicatorCode':'Actions_tx',
                    'Facts': section.facts,//mainIssues.filter(function(e){return (e.section==section._id)}), 
@@ -1371,7 +1372,7 @@ var width = $('.data-table').innerWidth() ;
 
 
 $('.tableScroller').scroll();
-
+ 
 $scope.setPage(0);
 
 }
@@ -1573,7 +1574,7 @@ var highlightTome =function(index){
 }
 
 
-var highlightChapter =function(index){  
+var highlightChapter =function(index, route){  
   resetPath();
   setTimeout(function() {
     var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
@@ -1595,13 +1596,16 @@ var highlightChapter =function(index){
   $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(500).slideDown('fast');
 
+  $(".gly-issue[parent-path='"+route+"']").addClass('glyphicon glyphicon-info-sign');
+
   }, 10);
   
 
 }
 
-var highlightPart =function(index){
+var highlightPart =function(index, route){  
   resetPath();
+  
   setTimeout(function() {
     var rowTop = $('.parts-header > th:nth-child('+index+')').offset();
     var topTop = rowTop.top;
@@ -1618,18 +1622,22 @@ var highlightPart =function(index){
       $('#divOverlay').width(oneWidth);
       $('#divOverlay').css('visibility','visible');
     $('#divOverlay').delay(500).slideDown('fast');
+
+$(".gly-issue[parent-path='"+route+"']").addClass('glyphicon glyphicon-info-sign');
+
+  
   }, 10);
 }
 
 
 
 var displayPartInfos =function(partElt, task){
-    
-    
-    
+
 var part = $(partElt).attr('data-part');
 
     var route = $(partElt).attr('data-path');
+
+
 
     var element =resolveRoute(route);
     showTasksAndFacts(element, 'ALL', task);
@@ -1700,8 +1708,12 @@ $scope.observedElt ={
 $scope.context.inspector_title = "Section : "+element.title;
 $scope.context.url = element.url;
 
-$scope.inspectorDisplaySrc='inspector'
-highlightPart($(partElt).index() + 1);
+$scope.inspectorDisplaySrc='inspector';
+
+
+  //alert('ok')
+
+highlightPart($(partElt).index() + 1, route);
 }
 
 var displayCourseInfos =function(indicator, task){ 
@@ -1786,9 +1798,10 @@ $scope.inspectorDisplaySrc='inspector'
 
 var displayChapterInfos =function(partElt, task){ 
   
-  
-  
+
   var route = $(partElt).attr('data-path');
+
+
   var element =resolveRoute(route);  
   showTasksAndFacts(element, 'ALL', task);
   angular.forEach(element.parts, function(part){
@@ -1881,7 +1894,7 @@ $scope.observedElt ={'type':'chapter',
 //window.setTimeout(function() {
     
     //$(':focus').blur();
-    highlightChapter($(partElt).index() + 1);
+    highlightChapter($(partElt).index() + 1, route);
     $scope.inspectorDisplaySrc='inspector'
   //}, 10);
 }
