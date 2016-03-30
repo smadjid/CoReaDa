@@ -1716,7 +1716,7 @@ border-radius: 3px;
 }
 
 .fact-div  h5{
-    color: #008FCB;
+    color: #0079A1;
 }
 
 .tab-pane{
@@ -1758,9 +1758,12 @@ border-radius: 3px;
 
 .paginator{
      clear:both;  
-    margin:5px;
-    padding:5px;
-    width:100%;
+
+position:relative;
+
+    left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-40%, 0);
   }
 .paginator hr{
   margin-top:15px;
@@ -1772,10 +1775,16 @@ border-radius: 3px;
 .paginator li {
     list-style:none;
     float:left;
-    margin:0 10px;
+    margin:0 3px;
+    padding: 0 5px;
+    border: solid 1px #ccc;
+    border-radius: 4px
 }
 
 
+
+.paginator li span{
+}
 
 .paginator li.active span{
     background: red!important;
@@ -1783,7 +1792,11 @@ border-radius: 3px;
 
 .enabled-page span{
   color:rgba(233, 144, 2, 1);
+}
 
+.enabled-page:hover{
+  background-color: #e6e6e6;
+    border-color: #adadad;
 }
 
 .disabled-page span{
@@ -2011,7 +2024,6 @@ border-radius: 3px;
 }
 .coreada-tabs > ul > li {
   position: absolute;
-  width: 100%;
   overflow: auto;
   padding: 10px ;
   box-sizing: border-box;
@@ -2024,7 +2036,7 @@ border-radius: 3px;
   -webkit-transition: all 0.5s;
 }
 .coreada-tabs > .tab-stats:checked ~ ul .tab-stats,
-.coreada-tabs > .tab-issues:checked ~ ul .tab-issues,
+.coreada-tabs > .tab-facts:checked ~ ul .tab-facts,
 .coreada-tabs > .tab-content-3:checked ~ ul .tab-content-3,
 .coreada-tabs > .tab-content-4:checked ~ ul .tab-content-4,
 .coreada-tabs > .tab-content-5:checked ~ ul .tab-content-5,
@@ -2058,7 +2070,7 @@ border-radius: 3px;
   height: auto !important;
 }
 .coreada-tabs-height-auto > .tab-stats:checked ~ ul .tab-stats,
-.coreada-tabs-height-auto > .tab-issues:checked ~ ul .tab-issues,
+.coreada-tabs-height-auto > .tab-facts:checked ~ ul .tab-facts,
 .coreada-tabs-height-auto > .tab-content-3:checked ~ ul .tab-content-3,
 .coreada-tabs-height-auto > .tab-content-4:checked ~ ul .tab-content-4,
 .coreada-tabs-height-auto > .tab-content-5:checked ~ ul .tab-content-5,

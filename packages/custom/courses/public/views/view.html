@@ -31,33 +31,26 @@
        
        <!-- tabs -->
       <div class="coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
-        <input type="radio" name="coreada-tabs" checked  id="tab1" class="tab-stats">
+        <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats">
         <label for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
         
-        <input type="radio" name="coreada-tabs" id="tab2" class="tab-issues">
+        <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts">
         <label for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-warning-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}</label>
         <label class='pull-right inspector-title'>
           <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true "></span> 
             <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
              <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
             </label>
-     <!--   <span class="inspector-title"><em><a style='color: #213c52; white-space: nowrap;  text-overflow: ellipsis' title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"> 
-          <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true"></span> 
-            {{context.inspector_title}}
-                <span  style='margin-left:10px;margin-bottom:0; color:blue' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
-              </a></em>
-
-            </span>-->
-
         
         <ul>
+
           <div class='col-lg-6 pull-right' >
               <div class='chart-title'><b>{{graphTitle}}</b></div>
-              <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:$parent.inspectorIndicatorCode}' style="width:100%!important;padding:0"></d3-chart>
+              <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:inspector.indicatorCode}' style="width:100%!important;padding:0"></d3-chart>
           </div>
 
-          <li class="tab-content tab-stats" ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course-stats.html'" >
-          <li class="tab-content tab-stats" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component-stats.html'" >
+          <li class="tab-content tab-stats col-lg-6" ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course-stats.html'" >
+          <li class="tab-content tab-stats col-lg-6" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component-stats.html'" >
 
 
 
@@ -65,7 +58,7 @@
 
           </li>
           
-          <li class="tab-content tab-issues col-lg-6" ng-include src="'courses/views/facts.html'">
+          <li class="tab-content tab-facts col-lg-6" ng-include src="'courses/views/facts.html'">
             <p>hello</p>   
           </li>
          

@@ -74,7 +74,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $scope.currentFact = n;
     $scope.sectionFactChart = $scope.inspector.Facts[n]
     $scope.inspectorIndicatorCode = $scope.inspector.Facts[n].issueCode;
-
+    $scope.inspector.indicatorCode = $scope.inspector.Facts[n].issueCode;
     
   };
          
@@ -90,7 +90,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
 
   $scope.observedElt ={};
-  $scope.inspector={'Facts':[],'selectedFact':{},'Data':[]}
+  $scope.inspector={'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
 
      $('table').hide();
      
@@ -121,13 +121,12 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       $scope.flopSelector = 'Actions_tx';
       $scope.topElementSelector ='sections',
       $scope.flopElementSelector ='tomes',
-      $scope.statSelector ='visits';
-      $scope.inspectorIndicatorCode = 'Actions_tx';
+      $scope.statSelector ='visits';      
       $scope.coursePstatSelector = 'time';
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
-      $scope.activatetab="tabStats";
+      
 
 
       $scope.tab = 0;
@@ -244,31 +243,17 @@ $scope.toggleSectionDisplay = function(){
 
 }
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
-  console.log($scope.indicatorsSelectionModel);
+  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
  
  
 
 });
-$scope.$watch('activatetab', function(newValue, oldValue) {
-  window.setTimeout(function() {
-         switch(newValue) {
-    case "tabStats":
-        $scope.inspectorIndicatorCode = 'Actions_tx';
-        console.log("tabStats")
-        break;
-    case "tabFacts":
-        $scope.inspectorIndicatorCode = $scope.inspector.Facts[0].issueCode;
-        console.log("tabFacts")
-        break;
-      }
-
-        }, 10);
-
+$scope.showTab = function(tab){
+  $("input[value='"+tab+"']").prop('checked', true);
   
- 
-});
+}
 
 $scope.showComponentChart=function(param){
   
@@ -279,6 +264,7 @@ $scope.showComponentChart=function(param){
     return;
   }
   $scope.inspectorIndicatorCode = param;
+  $scope.inspector.indicatorCode = param;
   $scope.inspectorChart = true;
   
     $("#componentChartOverlay").fadeIn(100).focus().select();
@@ -287,8 +273,37 @@ $scope.showComponentChart=function(param){
 }
 
 
-$scope.$watch('inspectorIndicatorCode', function(newValue, oldValue) { 
+$scope.$watch('inspector.indicatorCode', function(newValue, oldValue) { 
 
+  switch($scope.inspector.indicatorCode) {
+    case "Actions_tx":
+        $scope.graphTitle ='Taux de visites';
+        break;
+    case "speed":
+        $scope.graphTitle ='Vitesse de lecture (en mots par min)';        
+        break;    
+    case 'mean.duration':
+        $scope.graphTitle ='Durée moyenne de lecture de la section(en minutes)'
+        break;
+    case 'rereadings_tx':
+        $scope.graphTitle ='Taux de lectures qui sont des relectures'
+        break;
+    case 'norecovery_tx':
+        $scope.graphTitle ='Taux des arrêts définitifs de la lecture'
+        break;
+    case 'provenance':
+        $scope.graphTitle ='Sections de provenance (lues juste avant celle-ci)'
+        break;
+    case 'destination':
+        $scope.graphTitle ='Sections de destination (lues juste après celle-ci)'
+        break;
+};
+
+});
+
+$scope.$watch('inspectorIndicatorCode', function(newValue, oldValue) { 
+/////////////////////////  TO DELETE
+return;
   switch($scope.inspectorIndicatorCode) {
     case "Actions_tx":
         $scope.graphTitle ='Taux de visites';
@@ -1075,6 +1090,7 @@ var findTomeIssues = function(tome){
 $scope.inspector= {'type':'tome',
                    'id':0,
                    'typeTxt': 'cette partie',
+                    'indicatorCode':'Actions_tx',
                    'Facts': mainIssues.filter(function(e){return (e.tome==tome._id)}), 
                     'Indicators' :[
                     {'name':'Actions_tx','value':Math.round(100*tome.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
@@ -1099,6 +1115,7 @@ var findChapterIssues = function(chapter, indicator, fact){
   $scope.inspector= {'type':'chapter',
                    'id':0,
                    'typeTxt': 'ce chapitre',
+                   'indicatorCode':'Actions_tx',
                    'Facts': chapter.facts,//mainIssues.filter(function(e){return (e.chapter==chapter._id)}), 
                     'Indicators' :[
                     {'name':'Actions_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
@@ -1131,6 +1148,7 @@ var findSectionIssues = function(section){
     $scope.inspector= {'type':'part',
                    'id':0,
                    'typeTxt': 'cette section',
+                   'indicatorCode':'Actions_tx',
                    'Facts': section.facts,//mainIssues.filter(function(e){return (e.section==section._id)}), 
                     'Indicators' :[
                     /*{'name':'Actions_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
@@ -1220,7 +1238,7 @@ var width = $('.data-table').innerWidth() ;
     
    }
 
-   $scope.activatetab = "tabStats";
+   
 
 
   if(tome==-1) {        
@@ -1228,6 +1246,7 @@ var width = $('.data-table').innerWidth() ;
         $scope.context.taskText ='(nouvelle tâche globale)';
         displayCourseInfos(indicator, task); 
         computeGranuleFacts('course');
+        $scope.showTab("stats");
         
     }
     else
@@ -1238,6 +1257,7 @@ var width = $('.data-table').innerWidth() ;
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       displayTomeInfos(partElt, task);
+      $scope.showTab("stats");
       ;
     }
     else
@@ -1251,7 +1271,7 @@ var width = $('.data-table').innerWidth() ;
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleFacts('chapter', chap, fact.classof, fact.classof);
           displayChapterIssues(chap.route, task, chap, indicator);
-          $scope.activatetab = "tabFacts";
+          $scope.showTab("facts");
 
          
 
@@ -1263,6 +1283,7 @@ var width = $('.data-table').innerWidth() ;
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           displayChapterInfos(partElt, task);
+          $scope.showTab("stats");
           
         }
         else{
@@ -1274,7 +1295,8 @@ var width = $('.data-table').innerWidth() ;
           $scope.inspectorDisplaySrc='inspector' ;
           displayChapterIssues(chap.route, task, chap, indicator);
           $scope.inspectorIndicatorCode = indicator;
-          ;
+          $scope.inspector.indicatorCode = indicator;
+          $scope.showTab("stats");
         }
       }
       else{
@@ -1286,7 +1308,7 @@ var width = $('.data-table').innerWidth() ;
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
           $scope.inspectorDisplaySrc='inspector'; 
           displayPartIssues(part.route, task, part, indicator);
-          $scope.activatetab = "tabFacts";
+          $scope.showTab("facts");
           
         }
         else
@@ -1297,6 +1319,7 @@ var width = $('.data-table').innerWidth() ;
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
           displayPartInfos(partElt, task);
+          $scope.showTab("stats");
           
         }
         else{
@@ -1308,6 +1331,8 @@ var width = $('.data-table').innerWidth() ;
           //$scope.sectionDisplay = true; 
           displayPartIssues(part.route, task, part, indicator);
           $scope.inspectorIndicatorCode = indicator;
+          $scope.inspector.indicatorCode = indicator;
+          $scope.showTab("stats");
           
 
         }
