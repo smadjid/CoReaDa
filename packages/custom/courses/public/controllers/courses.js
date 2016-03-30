@@ -2072,8 +2072,8 @@ var editTaskLocally = function(index, task){
 }
 
 $scope.openEditableArea = function(x){
-if(x==false) $scope.taskPanelTitle = "Tâches"
-  else $scope.taskPanelTitle = x;
+//if(x==false) $scope.taskPanelTitle = "Tâches"
+  //else $scope.taskPanelTitle = x;
 }
 $scope.markTaskDone = function (route, index) {
   $scope.context.subtasks[index].done=true
