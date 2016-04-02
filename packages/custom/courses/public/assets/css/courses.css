@@ -1925,10 +1925,10 @@ padding-left:0;
 }
 
 .inspector-title{
+  position:absolute!important;
+  right:0;
+  botoom:0;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   background: none!important;
 }
 .inspector-title span, .inspector-title a{
@@ -2684,3 +2684,8 @@ padding-left:0;
 }
 
 
+.indicatorSelectorShow{
+  position:absolute; 
+  margin-left: 
+  80px!important; top:2px; min-width:30px
+}

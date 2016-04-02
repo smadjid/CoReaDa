@@ -16,12 +16,39 @@ var stopHover = function(url){
 
 var app =angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope',
   '$stateParams', '$location', '$http','Global', 'Courses', '$http','$uibModal',
-  function($scope, $rootScope, $stateParams, $location, $http, Global, Courses) {
+  function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, $uibModal) {
     $scope.global = Global;
 
 
 
+$scope.items = ['item1', 'item2', 'item3'];
 
+  $scope.animationsEnabled = true;
+
+  $scope.open = function (size) {
+alert('yes')
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      console.log('Modal dismissed at: ' + new Date());
+    });
+  };
+
+  $scope.toggleAnimation = function () {
+    $scope.animationsEnabled = !$scope.animationsEnabled;
+  };
 
  $scope.itemsPerPage = 1;
  $scope.currentFact = 0;
@@ -383,7 +410,13 @@ return [
  
 }
 
-  
+  $scope.header = 'Put here your header';
+    $scope.body = 'Put here your body';
+    $scope.footer = 'Put here your footer';
+    
+    $scope.myRightButton = function (bool) {
+            alert('!!! first function call!');
+    };
 $scope.completeCourseParts =function(){ 
   var courseParts = [], courseChapters = [];
   var base_url = "https://openclassrooms.com/courses";
@@ -2378,6 +2411,27 @@ return chartData;
    
   }
 ]);
+
+// Please note that $modalInstance represents a modal window (instance) dependency.
+// It is not the same as the $uibModal service used above.
+
+angular.module('mean.courses').controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+
+  $scope.items = items;
+  $scope.selected = {
+    item: $scope.items[0]
+  };
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.selected.item);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});
+
+
 app.run(function(editableOptions, editableThemes) {  
   editableOptions.theme = 'bs3';
   editableThemes['bs3'].submitTpl =  '<button type ="submit" class ="btn btn-info"><span></span></button><br/>',

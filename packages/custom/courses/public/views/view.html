@@ -16,7 +16,9 @@
 
     <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
 
+<span  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" ></span>
 
+    <select ng-show="indicatorSelectorShow" model="indicatorsSelectionModel" style='position:absolute; margin-left: 80px!important; top:2px; min-width:30px' selector  multi="true" options="indicatorsHeader"   group-attr ="category"      value-attr="value"></select>
    
    
  
@@ -36,7 +38,9 @@
         
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts">
         <label for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-warning-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}</label>
-        <label class='pull-right inspector-title'>
+        
+        <input>
+        <label class='inspector-title'>
           <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true "></span> 
             <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
              <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
@@ -58,10 +62,8 @@
 
           </li>
           
-          <li class="tab-content tab-facts col-lg-6" ng-include src="'courses/views/facts.html'">
-            <p>hello</p>   
-          </li>
-         
+          
+
           
           
         </ul>
@@ -75,8 +77,27 @@
 </div>
   </div>  
 
-
+<indicator-selector lolo="modal1" modal-body="body" modal-footer="footer" modal-header="header" data-ng-click-right-button="myRightButton()"></indicator-selector>
+      <a href="#{{modal1}}" role="button" class="btn btn-success" data-toggle="modal">Launch Demo Modal</a>
 </section>
 
 
 
+ <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li ng-repeat="item in items">
+                    <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+   
