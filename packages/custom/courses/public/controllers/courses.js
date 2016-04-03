@@ -15,8 +15,8 @@ var stopHover = function(url){
  
 
 var app =angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope',
-  '$stateParams', '$location', '$http','Global', 'Courses', '$http','$uibModal',
-  function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, $uibModal) {
+  '$stateParams', '$location', '$http','Global', 'Courses', '$http','$uibModal','$ocModal',
+  function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, $uibModal, $ocModal) {
     $scope.global = Global;
 
 
@@ -416,6 +416,32 @@ return [
     
     $scope.myRightButton = function (bool) {
             alert('!!! first function call!');
+    };
+    $scope.displayIt = function () {
+
+       
+      $ocModal.open({
+        url: 'courses/views/indicatorselector.html',
+        cls: 'test fade-in',
+        onOpen: function() {
+            console.log('modal1 opened from url');
+        }
+    })
+
+
+    $ocModal.open({
+        id: 'tempModal',
+        template: '<div class="text-center modal-body"><button class="btn btn-danger" oc-modal-close="\'Text from close btn\'">{{ testVar }}</button></div>',
+        controller: 'TestCtrl',
+        cls: 'slide-down',
+        onClose: function(a, b) {
+            console.log('on close callback:', a, b);
+        },
+        init: {
+            testVar: 'Close this or wait 5s'
+        }
+    })
+
     };
 $scope.completeCourseParts =function(){ 
   var courseParts = [], courseChapters = [];

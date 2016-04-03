@@ -363,16 +363,7 @@ td {
      
  }
 
- .modal, .modal.fade.in, .modal-dialog {
-    top: 0; /* was 10% */
-    left: 0; /* was 10% */
-    margin: 0!important;
-}
-
-.modal-backdrop.in {
-    opacity: 0.2;
-}
-
+ 
 .overlayed{
   opacity: .4;
 }

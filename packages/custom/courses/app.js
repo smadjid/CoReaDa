@@ -30,8 +30,14 @@ Courses.register(function(app, auth, database) {
   Courses.aggregateAsset('css',"../lib/perfect-scrollbar/min/perfect-scrollbar.min.css");
   Courses.aggregateAsset('js',"../lib/angular-perfect-scrollbar/src/angular-perfect-scrollbar.js");
 
-     Courses.aggregateAsset('js',"../lib/angular-selector/dist/angular-selector.min.js");
+  Courses.aggregateAsset('js',"../lib/angular-selector/dist/angular-selector.min.js");
   Courses.aggregateAsset('css',"../lib/angular-selector/dist/angular-selector.css");
+
+  Courses.aggregateAsset('js',"../lib/ocModal/dist/ocModal.min.js");
+  Courses.aggregateAsset('css',"../lib/ocModal/dist/css/ocModal.full.css");
+
+
+
 
  
 
@@ -52,7 +58,7 @@ Courses.register(function(app, auth, database) {
 
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
-  Courses.angularDependencies(['xeditable','perfect_scrollbar','selector']);
+  Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','oc.modal']);
 
 
 	

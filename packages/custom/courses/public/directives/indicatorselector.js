@@ -1,5 +1,5 @@
 angular.module('mean.courses')
-.directive('indicatorSelector', [
+.directive('modal', [
   function () {
     return {
         restrict: 'EA',
