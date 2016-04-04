@@ -1,13 +1,14 @@
 
 <div class="panel-heading tasks-panel-heading">
 			<i class="panel-title-icon fa fa-tasks"></i>
-			<span class="panel-title">{{taskPanelTitle}}</span>
+			<span class="panel-title">Tâches</span>
 			
-<div id="taskEditor" editable-text="formData" onshow="openEditableArea(task.minipath)" onhide="openEditableArea(false)" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
+<div id="taskEditor" editable-text="formData" onshow="openEditableArea(true)" onhide="openEditableArea(false)" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
 <span id='newTaskSpan'	class="glyphicon glyphicon-plus"></span> 
 				{{formData ||  context.taskText  }}
 
 		</div>
+		<i style="font-size:13px" ng-show='editableAreaOpen'>{{context.taskPanelMiniTitle}}</i>
 		</div>
 	
 

@@ -18,8 +18,10 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   '$stateParams', '$location', '$http','Global', 'Courses', '$http','$uibModal',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses, $uibModal) {
     $scope.global = Global;
-
-
+ $scope.view_tab ="tab1";
+$scope.changeTab = function(tab) {
+    $scope.view_tab = tab;
+}
 
 $scope.items = ['item1', 'item2', 'item3'];
 
@@ -259,9 +261,10 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.toggleSectionDisplay = function(){
+  resetPath();
   
-  $scope.sectionDisplay =! $scope.sectionDisplay;
   setTimeout(function() {
+    $scope.sectionDisplay =! $scope.sectionDisplay;
     goHome();
    //  loadContext();
   }, 10);
@@ -334,34 +337,7 @@ $scope.$watch('inspector.indicatorCode', function(newValue, oldValue) {
 
 });
 
-$scope.$watch('inspectorIndicatorCode', function(newValue, oldValue) { 
-/////////////////////////  TO DELETE
-return;
-  switch($scope.inspectorIndicatorCode) {
-    case "Actions_tx":
-        $scope.graphTitle ='Taux de visites';
-        break;
-    case "speed":
-        $scope.graphTitle ='Vitesse de lecture (en mots par min)';        
-        break;    
-    case 'mean.duration':
-        $scope.graphTitle ='Durée moyenne de lecture de la section(en minutes)'
-        break;
-    case 'rereadings_tx':
-        $scope.graphTitle ='Taux de lectures qui sont des relectures'
-        break;
-    case 'norecovery_tx':
-        $scope.graphTitle ='Taux des arrêts définitifs de la lecture'
-        break;
-    case 'provenance':
-        $scope.graphTitle ='Sections de provenance (lues juste avant celle-ci)'
-        break;
-    case 'destination':
-        $scope.graphTitle ='Sections de destination (lues juste après celle-ci)'
-        break;
-};
 
-});
 
     if($('.course_title_top').length<1)
         $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
@@ -1278,6 +1254,7 @@ var width = $('.data-table').innerWidth() ;
   if(tome==-1) {        
     
         $scope.context.taskText ='(nouvelle tâche globale)';
+        $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
         computeGranuleFacts('course');
         $scope.showTab("stats");
@@ -1290,6 +1267,7 @@ var width = $('.data-table').innerWidth() ;
        computeGranuleFacts('tome', tome);
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
+      $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
       displayTomeInfos(partElt, task);
       $scope.showTab("stats");
       ;
@@ -1302,6 +1280,7 @@ var width = $('.data-table').innerWidth() ;
           partElt = $('.part_index[data-part ='+chap.id+']'); 
           //$scope.studiedPart = chap.id;
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+          $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleFacts('chapter', chap, fact.classof, fact.classof);
           displayChapterIssues(chap.route, task, chap, indicator);
@@ -1316,6 +1295,7 @@ var width = $('.data-table').innerWidth() ;
           computeGranuleFacts('chapter', chap, null, null);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+          $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           displayChapterInfos(partElt, task);
           $scope.showTab("stats");
           
@@ -1325,6 +1305,7 @@ var width = $('.data-table').innerWidth() ;
           computeGranuleFacts('chapter', chap, indicator, null);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
+          $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           //$scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='inspector' ;
           displayChapterIssues(chap.route, task, chap, indicator);
@@ -1340,6 +1321,7 @@ var width = $('.data-table').innerWidth() ;
           partElt = $('.part_index[data-part ='+part.id+']'); 
           computeGranuleFacts('part', part, fact.classof, fact.classof);          
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
+          $scope.context.taskPanelMiniTitle='Section: '+part.title;
           $scope.inspectorDisplaySrc='inspector'; 
           displayPartIssues(part.route, task, part, indicator);
           $scope.showTab("facts");
@@ -1352,6 +1334,7 @@ var width = $('.data-table').innerWidth() ;
           //$scope.sectionDisplay = true;
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
+          $scope.context.taskPanelMiniTitle='Section: '+part.title;
           displayPartInfos(partElt, task);
           $scope.showTab("stats");
           
@@ -1360,6 +1343,7 @@ var width = $('.data-table').innerWidth() ;
           $scope.inspector.selectedFact =null; 
           partElt = $('.part_index[data-part ='+part.id+']');  
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
+          $scope.context.taskPanelMiniTitle='Section: '+part.title;
           computeGranuleFacts('part', part, indicator, null); 
           $scope.inspectorDisplaySrc='inspector';
           //$scope.sectionDisplay = true; 
@@ -2098,7 +2082,9 @@ var editTaskLocally = function(index, task){
   $scope.context.subtasks[index] = task;
 }
 
-$scope.openEditableArea = function(x){
+$scope.openEditableArea = function(status){
+
+  $scope.editableAreaOpen = status;
 //if(x==false) $scope.taskPanelTitle = "Tâches"
   //else $scope.taskPanelTitle = x;
 }

@@ -1,0 +1,32 @@
+<div class=" indicatorSelectorContainer" ng-show="indicatorSelectorShow1">
+<div  style='background-color:white; overflow: hidden;' >
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style='color:red'>&times;</button>
+<div class="col-lg-3" style='background-color:black; color:white; margin:0;padding:0'>
+    <ul class="nav nav-tabs nav-stacked nav-pills" role="tablist">
+        <li ng-class="{'active_indicator_selector': view_tab == 'tab1'}" role='button' class="btn-lg" ng-click="view_tab='tab1'"  >Lecture</li>
+        <li ng-class="{'active_indicator_selector': view_tab == 'tab2'}"role='button' class="btn-lg" ng-click="view_tab='tab2'" > Relecture</li>
+        <li ng-class="{'active_indicator_selector': view_tab == 'tab3'}"role='button' class="btn-lg" ng-click="view_tab='tab3'" > Navigation</li>
+        <li ng-class="{'active_indicator_selector': view_tab == 'tab4'}"role='button' class="btn-lg" ng-click="view_tab='tab4'" >Arrêts </li>
+    </ul>
+</div>
+<div class="col-lg-6" style='background-color:white; color:black'>
+    
+        <div class="tab-pane" ng-show="view_tab == 'tab1'">
+            This is tab 1 content
+        </div>
+        <div class="tab-pane" ng-show="view_tab == 'tab2'">
+            This is tab 2 content
+        </div>
+        <div class="tab-pane" ng-show="view_tab == 'tab3'">
+            This is tab 3 content
+        </div>
+        <div class="tab-pane" ng-show="view_tab == 'tab4'">
+            This is tab 4 content
+        </div>
+    
+</div>
+
+
+  </div>
+  <div style='width:100% ;background-color:black; color:white'>OK</div>
+  </div>

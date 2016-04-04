@@ -12,14 +12,19 @@
 <div class="container-fluid row" ng-show="pageLoaded">  
 <div class="col-lg-9 coreada-box">        
 
-<perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"  model="indicatorsSelectionModel" > 
+<perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   model="indicatorsSelectionModel"> 
 
-    <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
 
-<div class="indicatorSelectorContainer">
-  <div  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='height:100%; vertical-align:middle; margin:12px;font-size: 17px;' ></div>
-    <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow" model="$parent.indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value"></select>
-</div>
+  <div   ng-include src="'courses/views/indicatorselector.html'"></div>
+ <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
+ <div  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='height:100%; vertical-align:middle; margin:12px;font-size: 17px;' ></div>
+ 
+  
+    <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="$parent.indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value"></select>
+
+
+    
+   
    
  
 
@@ -27,6 +32,7 @@
    <div id="divHoverOverlay"> </div> 
    </perfect-scrollbar>  
   
+
 
     <div class="inspector-container">
 
@@ -38,9 +44,7 @@
         
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts">
         <label for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-warning-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}</label>
-        
-        <input>
-        <label class='inspector-title'>
+        <label class='pull-right inspector-title'>
           <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true "></span> 
             <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
              <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
@@ -62,8 +66,10 @@
 
           </li>
           
-          
-
+          <li class="tab-content tab-facts col-lg-6" ng-include src="'courses/views/facts.html'">
+            <p>hello</p>   
+          </li>
+         
           
           
         </ul>
@@ -77,8 +83,8 @@
 </div>
   </div>  
 
-     
 
-     
 </section>
+
+
 

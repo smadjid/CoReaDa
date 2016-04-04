@@ -2674,11 +2674,22 @@ padding-left:0;
 }
 
 .indicatorSelectorContainer{
- display: flex;
-}
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+  background-color: hsla(0, 0%, 0%, 0.41);
+  padding:10%;
+  }
 .indicatorSelectorShow{
- 
-  
+ z-index: 1000;
+ overflow: visible;
   
   min-width:50px;
+}
+.active_indicator_selector{
+   background-color: white;
+   color:black;
 }
