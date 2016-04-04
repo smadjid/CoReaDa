@@ -1,7 +1,7 @@
 options(stringsAsFactors=FALSE)
 
 courses=c('nodejs','entreprendre','xml','java')
-CoursesData=data.frame(course_id=integer(),user_id=integer(),part_id=integer(),session_id=character(),
+CoursesData=data.frame(course_id=integer(),user_id=integer(),part_id=integer(),session_id=character(),seance=integer(),
                        sequence_number=integer(),duration=integer(), stringsAsFactors=FALSE)
 CoursesStructures=data.frame(course_id=integer(),part_id=integer(),position=integer(),
                              median_time=integer(), title=character(), stringsAsFactors=FALSE)
@@ -17,7 +17,7 @@ for(course_nb in 1:(length(courses)))
   
   
 #  course_id: int; user_id: var_char; sequence_number: int ; part_id: int ; duration: int; session_id: int
-Data = Data[,c('course_id','user_id','part_id','session_id','date','duration')]
+Data = Data[,c('course_id','user_id','part_id','session_id','seance','date','duration')]
 course_id=unique(Data$course_id)
 
 # part_id: int; position: int; title: var_char; type: int; median_time: int
@@ -47,7 +47,7 @@ for(i in 1:nusers)
   
 }
 #course_id: int; user_id: var_char; sequence_number: int ; part_id: int ; duration: int; session_id: int
-Data = Data[,c('course_id','user_id','part_id','session_id','sequence_number','duration')] 
+Data = Data[,c('course_id','user_id','part_id','session_id','seance','sequence_number','duration')] 
 sortnames <- c("user_id", "sequence_number")
 Data = Data[do.call("order", Data[sortnames]), ]
 
@@ -64,6 +64,7 @@ CoursesStructures[CoursesStructures$type=='title-1',]$type='Part'
 CoursesStructures[CoursesStructures$type=='title-2',]$type='Chapter'
 CoursesStructures[CoursesStructures$type=='title-3',]$type='Section'
 CoursesStructures[CoursesStructures$position<0,]$position=0
+names(CoursesData)=c( "course_id"   ,    "user_id"     ,    "part_id"    ,     "web_session"  ,    "session_id"     ,     "sequence_number" , "duration")
 save(CoursesData,file='CoursesData.rdata')
 save(CoursesStructures,file='CoursesStructures.rdata')
 
