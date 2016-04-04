@@ -51,7 +51,8 @@ var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
             .scale(y)
             .orient("left")
             .ticks(10);
-if(classe=="mean.duration")    
+            console.log(classe)
+if(classe=="speed")    
           yAxis.tickFormat(d3.format("d"))
         else
           yAxis.tickFormat(d3.format("%"));
@@ -160,7 +161,7 @@ if(scope.d3opts.elementType!=='part')
   */
 
  var legend = svg.selectAll(".legend")
-      .data([{"text":"Moyenne","color":"#d35400"}/*,{"text":"Médiane","color":"#F39C12"}*/])
+      .data([{"text":"Médiane","color":"#d35400"}/*,{"text":"Médiane","color":"#F39C12"}*/])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
@@ -169,14 +170,14 @@ if(scope.d3opts.elementType!=='part')
 
 legend.append("text")
     .attr("x", width - 10)
-    .attr("y", -15)
+    .attr("y", 0)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function (d) {return d.text;});
 
 legend.append("rect")
     .attr("x", width - 90)
-    .attr("y", -15)
+    .attr("y", 0)
     .attr("width", 30)
     .attr("height", 3)    
     .style("fill", function (d) {return d.color;});
