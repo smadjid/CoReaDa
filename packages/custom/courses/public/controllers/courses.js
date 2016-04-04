@@ -1012,6 +1012,7 @@ var findMainChaptersFacts = function(){
     angular.forEach(tome.chapters, function(chapter){
 
       angular.forEach(chapter.facts, function(f){
+        f.parentTitle='Chapitre \"'+chapter.title+' \" : '
          var indicator=f.issueCode
           var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
           if(maxV.length>0) {          
@@ -1047,6 +1048,7 @@ angular.forEach($scope.course.tomes, function(tome) {
       
       angular.forEach(chapter.parts, function(part){
         angular.forEach(part.facts, function(f){
+          f.parentTitle='Section \"'+part.title+' \": '
           var indicator=f.issueCode
         var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
         if(maxV.length>0) {          
@@ -1083,16 +1085,18 @@ var findCourseIssues = function(){
   else
     $scope.inspector.Facts=findMainChaptersFacts();
 
+$scope.factTitleDisplay=true;
+
 }
 var findTomeIssues = function(tome){  
 
   var mainIssues = [];
-  /*if($scope.sectionDisplay) 
+  if($scope.sectionDisplay) 
        mainIssues = findMainSectionsFacts()
   else
       mainIssues = findMainChaptersFacts();
-  */
-
+  
+$scope.factTitleDisplay=true;
   var times =[], users =[], rss =[], rereadings_tx =[], stops =[];
 
 
@@ -1121,12 +1125,20 @@ $scope.inspector = {'type':'tome',
 var findChapterIssues = function(chapter, indicator, fact){ 
 
   
-   var mainIssues = findMainChaptersFacts();
+  var mainIssues = [];
+  if($scope.sectionDisplay) {
+      mainIssues= findMainSectionsFacts();
+      $scope.factTitleDisplay=true
+    }
+  else{
+    mainIssues= findMainChaptersFacts();
+    $scope.factTitleDisplay=false;
+  }
   $scope.inspector = {'type':'chapter',
                    'id':chapter.id,
                    'typeTxt': 'ce chapitre',
                    'indicatorCode':'Actions_tx',
-                   'Facts': chapter.facts,//mainIssues.filter(function(e){return (e.chapter==chapter._id)}), 
+                   'Facts': mainIssues.filter(function(e){return (e.chapter==chapter._id)}), 
                     'Indicators' :[
                     {'name':'Actions_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur ce chapitre'},
@@ -1153,6 +1165,7 @@ if(indicator!=null)
 }
 
 var findSectionIssues = function(section){  
+  $scope.factTitleDisplay=false;
  var mainIssues = findMainSectionsFacts();
   
     $scope.inspector = {'type':'part',
@@ -2136,7 +2149,7 @@ swal({
       
        //dropFact(parseTaskRequest(route))
         //.success(function(data) {
-     dropFactLocally(index);
+     var result = dropFactLocally(index);
            swal({   title: "Problème marqué comme résolu!",   
             text: "Succès", 
              animation: "slide-from-top",
@@ -2147,12 +2160,20 @@ swal({
       .error(function(data) {
         swal("Oops", "We couldn't connect to the server!", "error");
       });*/
-      reloadURL();
+
+setTimeout(function() {
+    loadURL(result);
+    reloadURL();
+      console.log(result)
+      $scope.tableData = $scope.course;
       $scope.$apply()
+  }, 10);
+      
     });
 }
 
 var dropFactLocally = function(route){
+  var result = ""
   var components = parseURL(route)
   if(components.hasOwnProperty('partid')) {
     var tome = $.grep($scope.course.tomes, function(e){ return  e._id == components.partid })[0];
@@ -2164,23 +2185,24 @@ var dropFactLocally = function(route){
        if(components.hasOwnProperty('factid')){        
         var fact = $.grep(part.facts, function(e){ return  e._id == components.factid })[0];          
          part.facts.splice(part.facts.indexOf(fact),1);
-          $scope.inspector.Facts.splice($scope.inspector.Facts.indexOf(fact),1)
+          $scope.inspector.Facts.splice($scope.inspector.Facts.indexOf(fact),1);
+          result = part.route;
        }
       }
       else
         if(components.hasOwnProperty('factid')){
           var fact = $.grep(chap.facts, function(e){ return  e._id == components.factid })[0];          
           chap.facts.splice(chap.facts.indexOf(fact),1);
-          $scope.inspector.Facts.splice($scope.inspector.Facts.indexOf(fact),1)
+          $scope.inspector.Facts.splice($scope.inspector.Facts.indexOf(fact),1);
+          result = chap.route;
           
 
         }
     }  
   }   
   
-  //$scope.inspector.Facts.splice(index,1)
-reloadURL();
-$scope.tableData = $scope.course;
+  return result;
+
 }
 
 

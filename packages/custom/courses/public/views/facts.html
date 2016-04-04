@@ -17,7 +17,7 @@
 <br/>
 <div class="fact-div"  ng-repeat="fact in inspector.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
-    {{fact.name}} <button class="btn btn-success btn-xs pull-right" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>Ce n'est pas/plus un problème</button>  </h4>
+    <em ng-show='factTitleDisplay'>{{fact.parentTitle}}</em> {{fact.name}} <button class="btn btn-success btn-xs pull-right" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>Ce n'est pas/plus un problème</button>  </h4>
   <p>{{fact.description}}</p>
 <hr/>
   <h5> <em>Suggestion</em>: {{fact.suggestion_title}} <button class="btn btn-primary btn-xs  pull-right" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span>Définir comme tâche</button></h5>
