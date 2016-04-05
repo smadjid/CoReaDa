@@ -1756,10 +1756,22 @@ border-radius: 3px;
      clear:both;  
 
 position:relative;
-padding-left:0;
+padding:0;
+line-height: 15px;
+margin-bottom: -5px!important;
 
   display: inline-block;
   }
+
+ 
+.tab-facts:checked ~ label .paginator{
+  visibility: visible;
+}
+.tab-facts:not(checked) ~ label .paginator{
+  visibility: hidden;
+}
+
+
 .paginator hr{
   margin-top:15px;
   margin-bottom:0;
@@ -1770,9 +1782,11 @@ padding-left:0;
 .paginator li {
     list-style:none;
     float:left;
-    margin:0 3px;
-    padding: 0 5px;
-    border: solid 1px #ccc;
+    margin:0 1px;
+    padding: 0 3px;
+   
+
+    font-size: 13px;
     border-radius: 4px
 }
 
@@ -1786,7 +1800,7 @@ padding-left:0;
 }
 
 .enabled-page span{
-  color:rgba(233, 144, 2, 1);
+  color:rgb(47, 82, 111);
 }
 
 .enabled-page:hover{
@@ -1795,7 +1809,7 @@ padding-left:0;
 }
 
 .disabled-page span{
-  color:rgba(233, 144, 2, 0.5);
+  color:rgba(128, 128, 128, 0.54);
   cursor: not-allowed;
 }
 
@@ -2046,6 +2060,7 @@ padding-left:0;
   -webkit-transform: scale(1,1);
   -webkit-transform: rotate(0deg);
 }
+
 
 
 /*----------------------------------------------------------------------------*/

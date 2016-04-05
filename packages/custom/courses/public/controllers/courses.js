@@ -282,6 +282,7 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
 });
 $scope.showTab = function(tab){
   $("input[value='"+tab+"']").prop('checked', true);
+  $scope.factsPaginator = (tab=="fact")?true:false;
   
 }
 

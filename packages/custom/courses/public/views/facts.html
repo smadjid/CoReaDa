@@ -1,20 +1,3 @@
-<div  style="width:100%; padding:0;margin:0; text-align: center;">
-        <ul class="paginator  ">
-              <li ng-class="DisablePrevPage()">
-                <span  role='button' class='glyphicon glyphicon-backward' ng-click="prevPage()"></span>
-
-              </li>
-              <li class="active"><b style='color:rgb(47, 82, 111);'>{{currentFact+1}}/{{pageCount()+1}}</b>
-              
-              <li  ng-class="DisableNextPage()">
-                <span  role='button' class='glyphicon glyphicon-forward' ng-click="nextPage()"></span>
-                 
-              </li>
-            </ul>
-        
-</div>
-        
-<br/>
 <div class="fact-div"  ng-repeat="fact in inspector.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 <h4><span class="fact glyphicon glyphicon-warning-sign" style="padding: 3px; color: red;"></span>
     <em ng-show='factTitleDisplay'>{{fact.parentTitle}}</em> {{fact.name}} <button class="btn btn-success btn-xs pull-right" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="badge glyphicon glyphicon-ok" ></span>Ce n'est pas/plus un problème</button>  </h4>
