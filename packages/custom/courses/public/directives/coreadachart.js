@@ -40,7 +40,6 @@ scope.inspectorRenderBars = function(globalData, classe) {
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
 
           data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
-
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
@@ -107,7 +106,7 @@ if(scope.d3opts.elementType!=='part')
                   scope.$emit('hover',d.route)
               }) 
               .on("mouseout", function (d) {
-                  d3.select(this).attr("stroke", 'none')
+                  d3.select(this).attr("stroke-width", '1')
                   
                   stopHover();
               })             
@@ -120,10 +119,17 @@ if(scope.d3opts.elementType!=='part')
               .duration(0)
               .attr('height', function(d) { return height - y(d.value); })
               .attr("y", function(d) { return y(d.value); })
-              .attr('stroke', 'white')
-               .attr("fill", function(d) {return (d.part==scope.d3opts.elementId)? '#45348A':'#008cba'; });
+              .attr("stroke-width", '1')
+              .attr('stroke', '#4169E1')
+               .attr("fill", function(d) {
+                var c = '#008cba';
+                var ind = d.indicators.filter(function(e){ return e.code == classe })
+                if(ind.length>0) c = ind[0].color
+                  else               console.log(d.indicators)
+                return (d.part==scope.d3opts.elementId)? '#45348A':c; 
+              });
 
-
+ 
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0); 
     xmedian.domain(data.map(function(d) { return d.part; }));

@@ -118,61 +118,10 @@ else{
 var partsIssuesDisplay=function(){
 var html=[];
 
-var boundaryValues = computeTwoBounderyValues('part');
-var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
-switch(scope.indicatorCode) {
-    case "Actions_tx":
-        boundaryValues = computeBounderyValues('part');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
-        break;
-    case "speed":
-        boundaryValues = computeTwoBounderyValues('part');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
-        break;
-    case "rereadings_tx":
-        boundaryValues = computeBounderyValues('part');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
-        break;
-    case "rereadings_tx":
-        boundaryValues = computeBounderyValues('part');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
-        break;
-    case "norecovery_tx":
-        boundaryValues = computeBounderyValues('part');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
-        break;
-}
-
-
-
-var maxValue = 0;
-var maxPart = 0;
-var maxRoute='#';
-
-
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
     
       var allFacts = part.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );      
-      
-      var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
-      switch(scope.indicatorCode) {
-      case "Actions_tx":
-        partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
-        break;
-      case "speed":
-        partData = Math.abs(boundaryValues.MedianValue - 
-          parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
-        break;
-      case "rereadings_tx":
-        partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
-        break;
-      case "norecovery_tx":
-        partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
-        break;
-      }
-
-      
       var td=$("<td role='button'></td>");
       var tdColor = part.indicators.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
        $(td)
@@ -183,19 +132,34 @@ var maxRoute='#';
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
                .css('background-color',tdColor)
-               .on("click", function(d) {window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode});
+               .on("click", function(d) { window.location.hash = '#'+$(this).attr('data-path')});
 
+     
       allFacts.forEach(function(fact){  
-        var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
-        span
-        .attr('parent-path',part.route)
-        .addClass("gly-issue")
-        .attr('data-fact-id',+fact._id );
-        if(parseFloat(fact.value) > maxValue)
-        {maxValue = parseFloat(fact.value); maxPart=part.id; maxRoute=fact.route; }
+      var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
+      //span.text(fact.mainFact);
 
-        $(td).append(span) });
-
+      if(fact.mainFact){ 
+         $(td).on("click", function(d) {    
+                 window.location.hash = fact.route;
+              });
+         span
+         .addClass("glyphicon glyphicon-warning-sign")
+          .css('color','red')
+          .css('background-color','rgba(255,255,255,0.57)')
+          .css('border','1px solid rgba(0, 220, 0, 0.14902)')
+          .css('padding','3px')      
+          .css('font-size','14px');
+      }
+      else{
+        span      
+          .attr('data-fact-id',+fact._id )
+          .attr('parent-path',part.route)
+          .addClass("gly-issue");
+      }
+      
+      $(td).append(span) 
+    });
       
    
        html.push(td)  ;
@@ -203,21 +167,7 @@ var maxRoute='#';
 
      })
   })
-if(html.length>0){  
 
-  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0]).children('.fact')
-      .removeClass("gly-issue")
-      .addClass("glyphicon glyphicon-warning-sign")
-      .css('color','red')
-      .css('background-color','rgba(255,255,255,0.57)')
-      .css('border','1px solid rgba(0, 220, 0, 0.14902)')
-      .css('padding','3px')
-      .css('font-size','14px')      
-      .on("click", function(d) {window.location.hash = maxRoute});;
-
-
-}
-  
   $(element).append(html);
 
   
@@ -226,59 +176,8 @@ if(html.length>0){
 
 var chaptersIssuesDisplay=function(){
 var html=[];
-
-var boundaryValues = computeTwoBounderyValues('chapter');
-var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
-switch(scope.indicatorCode) {
-    case "Actions_tx":
-        boundaryValues = computeBounderyValues('chapter');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
-        break;
-    case "speed":
-        boundaryValues = computeTwoBounderyValues('chapter');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
-        break;
-    case "rereadings_tx":
-        boundaryValues = computeBounderyValues('chapter');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
-        break;
-    case "rereadings_tx":
-        boundaryValues = computeBounderyValues('chapter');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
-        break;
-    case "norecovery_tx":
-        boundaryValues = computeBounderyValues('chapter');
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
-        break;
-}
-
-
-
-var maxValue = 0;
-var maxChap = 0;
-var maxRoute='#';
-
   scope.chapters.forEach(function(chapter, i) {    
-    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );    
-    
-    
-    var chapData = Math.abs(boundaryValues.MedianValue - 
-      parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
-    switch(scope.indicatorCode) {
-      case "Actions_tx":
-        chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
-        break;
-      case "speed":
-        chapData = Math.abs(boundaryValues.MedianValue - 
-          parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value));
-        break;
-      case "rereadings_tx":
-        chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
-        break;
-      case "norecovery_tx":
-        chapData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
-        break;
-      }
+    var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );       
     
     var td=$("<td role='button'></td>");
     var tdColor = chapter.indicators.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
@@ -289,63 +188,43 @@ var maxRoute='#';
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
              .append('<span></span>')
-             .css('background-color',tdColor);
+             .css('background-color',tdColor)
+             .on("click", function(d) {    
+                 window.location.hash = '#'+$(this).attr('data-path')
+              });
              
 
     allFacts.forEach(function(fact){  
       var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
-      span      
-      .attr('data-fact-id',+fact._id )
-      .attr('parent-path',chapter.route)
-      .addClass("gly-issue");
-
-      if(parseFloat(fact.value) > maxValue)
-      {maxValue = parseFloat(fact.value); maxChap=chapter.id;maxRoute=fact.route; }
- 
- 
-
-      $(td).append(span) });
+      if(fact.mainFact){
+         $(td).on("click", function(d) {    
+                 window.location.hash = fact.route;
+              });
+         span
+         .addClass("glyphicon glyphicon-warning-sign")
+          .css('color','red')
+          .css('background-color','rgba(255,255,255,0.57)')
+          .css('border','1px solid rgba(0, 220, 0, 0.14902)')
+          .css('padding','3px')      
+          .css('font-size','14px');
+      }
+      else{
+        span      
+          .attr('data-fact-id',+fact._id )
+          .attr('parent-path',chapter.route)
+          .addClass("gly-issue");
+      }
+      
+      $(td).append(span) 
+    });
 
    
  
      html.push(td)  ;
 
-
-
   })
   
-if(html.length>0){  
-
-
-  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0])
-  .on("click", function(d) {    
-                 window.location.hash = maxRoute;
-              })
-  .children('.fact')
-      .removeClass("gly-issue")
-      .addClass("glyphicon glyphicon-warning-sign")
-      .css('color','red')
-      .css('background-color','rgba(255,255,255,0.57)')
-      .css('border','1px solid rgba(0, 220, 0, 0.14902)')
-      .css('padding','3px')      
-      .css('font-size','14px');
-
-
-   $(html.filter(function(s){ return $(s[0]).attr('data-part') !=maxChap})).each(function() {
-    $(this).on("click", function(d) { 
-                 window.location.hash = '#'+$(this).attr('data-path')
-              });
-   })
-   
-       
-
-
-  
-}
-  
   $(element).append(html);
-
-  
 
 }
 

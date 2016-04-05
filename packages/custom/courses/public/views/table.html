@@ -37,7 +37,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td by-parts='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
+        <tr table-td by-parts='true' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 <i class="fa fa-play-circle fa-2x"></i>
                 <span class="fat" >{{indicator.label}}</span>
@@ -46,6 +46,15 @@
         </tr>
         
         </tr>
-       <div>hello</div>
+       
+       <tr table-td by-parts='false' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
+            <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
+                <i class="fa fa-play-circle fa-2x"></i>
+                <span class="fat" >{{indicator.label}}</span>
+                
+            </th>
+        </tr>
+        
+        </tr>
     </tbody>
 

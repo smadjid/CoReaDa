@@ -360,7 +360,7 @@ $scope.toggleSectionDisplay = function(){
     $scope.sectionDisplay =! $scope.sectionDisplay;
     goHome();
    //  loadContext();
-  }, 10);
+  }, 0);
 
   
 
@@ -493,6 +493,7 @@ $scope.completeCourseParts =function(){
     tome.route = $.param({'partid':tome._id});
     tome.url = $scope.course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
     angular.forEach(tome.chapters, function(chapter) { 
+      tome.indicators = [];
       chapter.parts_count = 0;
       chapter.route =$.param({'partid':tome._id, 'chapid':chapter._id});
 
@@ -501,8 +502,9 @@ $scope.completeCourseParts =function(){
       angular.forEach(chapter.facts,function(fact){        
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
           fact.tome=tome._id;
-          fact.partId=chapter.id
-          fact.partType='chapter'
+          fact.partId=chapter.id;
+          fact.partType='chapter';
+          fact.partRoute=chapter.route;
           fact.chapter=chapter._id;
           fact.section=null;
           
@@ -523,8 +525,9 @@ $scope.completeCourseParts =function(){
           fact.tome=tome._id;
           fact.chapter=chapter._id;
           fact.section=part._id;
-          fact.partId=part.id
-          fact.partType='part'
+          fact.partId=part.id;
+          fact.partType='part';
+          fact.partRoute=part.route;
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
 
         });
@@ -538,7 +541,10 @@ $scope.completeCourseParts =function(){
 
   $scope.courseParts = courseParts;
   $scope.courseChapters = courseChapters; 
+  
   computeColours();
+
+  updateMainFacts()
 
 
 }
@@ -622,7 +628,7 @@ var computeColours =  function(){
         })
         
       });
-      console.log(tome.chapters);
+      
     })
     
   });
@@ -1200,14 +1206,16 @@ var findMainChaptersFacts = function(){
         f.parentTitle='Chapitre \"'+chapter.title+' \" : '
          var indicator=f.issueCode
           var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
+          f.mainFact=false;
           if(maxV.length>0) {          
               maxV=maxV[0].chapterValue;
                   if(f.delta>maxV) {
+                    f.mainFact=true;
                     $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.value
                     $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
                   }
                 }
-           f.mainFact=false;
+           
           allFacts.push(f)
 
       })
@@ -1218,7 +1226,9 @@ var findMainChaptersFacts = function(){
   $scope.indicatorsHeader.forEach(function(ind){
 
     if(ind.chapterFactId!=null){
-      mainFacts.push(allFacts.filter(function(e){return (e._id==ind.chapterFactId)})[0])
+      var fact = allFacts.filter(function(e){return (e._id==ind.chapterFactId)})[0];
+      mainFacts.push(fact);
+
     }
   }) 
 
@@ -1233,17 +1243,20 @@ angular.forEach($scope.course.tomes, function(tome) {
       
       angular.forEach(chapter.parts, function(part){
         angular.forEach(part.facts, function(f){
+          
           f.parentTitle='Section \"'+part.title+' \": '
           var indicator=f.issueCode
         var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
+        f.mainFact=false;
         if(maxV.length>0) {          
             maxV=maxV[0].sectionValue;
                 if(f.delta>maxV) {
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionValue = f.value
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionFactId = f._id
+                  f.mainFact=true;
                 }
               }
-         f.mainFact=false;
+         
         allFacts.push(f)
 
       })
@@ -1262,13 +1275,16 @@ angular.forEach($scope.course.tomes, function(tome) {
  return mainFacts;
 }
 
-
+var updateMainFacts = function(){
+   $scope.MainSectionsFacts = findMainSectionsFacts()
+  $scope.MainChaptersFacts = findMainChaptersFacts();
+}
 
 var findCourseIssues = function(){    
   if($scope.sectionDisplay) 
-       $scope.inspector.Facts = findMainSectionsFacts()
+       $scope.inspector.Facts = $scope.MainSectionsFacts
   else
-    $scope.inspector.Facts=findMainChaptersFacts();
+    $scope.inspector.Facts= $scope.MainChaptersFacts;
 
 $scope.factTitleDisplay=true;
 
@@ -1276,10 +1292,10 @@ $scope.factTitleDisplay=true;
 var findTomeIssues = function(tome){  
 
   var mainIssues = [];
-  if($scope.sectionDisplay) 
-       mainIssues = findMainSectionsFacts()
+   if($scope.sectionDisplay) 
+       $scope.inspector.Facts = $scope.MainSectionsFacts
   else
-      mainIssues = findMainChaptersFacts();
+    $scope.inspector.Facts= $scope.MainChaptersFacts;
   
 $scope.factTitleDisplay=true;
   var times =[], users =[], rss =[], rereadings_tx =[], stops =[];
@@ -1308,15 +1324,14 @@ $scope.inspector = {'type':'tome',
 }
 
 var findChapterIssues = function(chapter, indicator, fact){ 
-
   
   var mainIssues = [];
   if($scope.sectionDisplay) {
-      mainIssues= findMainSectionsFacts();
+      mainIssues= $scope.MainSectionsFacts;
       $scope.factTitleDisplay=true
     }
   else{
-    mainIssues= findMainChaptersFacts();
+    mainIssues= $scope.MainChaptersFacts;
     $scope.factTitleDisplay=false;
   }
   $scope.inspector = {'type':'chapter',
@@ -1351,7 +1366,7 @@ if(indicator!=null)
 
 var findSectionIssues = function(section){  
   $scope.factTitleDisplay=false;
- var mainIssues = findMainSectionsFacts();
+ var mainIssues = $scope.MainSectionsFacts;
   
     $scope.inspector = {'type':'part',
                    'id':section.id,
@@ -1597,7 +1612,7 @@ var reloadURL =function(){
   window.setTimeout(function() {
     
     window.location.hash = url
-   }, 10);
+   }, 0);
 
 
 }
@@ -1686,7 +1701,7 @@ $('.selectedTask').focus().blur().focus();
         window.setTimeout(function() {
           selection.selected ='selectedTask';
           $('.selectedTask').focus().blur().focus();
-        }, 10);        
+        }, 0);        
     }
    
 
@@ -1776,8 +1791,8 @@ var highlightTome =function(index){
   $('#divOverlay').height(height);
   $('#divOverlay').width(oneWidth);
    $('#divOverlay').css('visibility','visible');
-  $('#divOverlay').delay(500).slideDown('fast');
-  }, 10);
+  $('#divOverlay').delay(200).slideDown('fast');
+  }, 0);
  
 
 }
@@ -1803,11 +1818,11 @@ var highlightChapter =function(index, route){
   $('#divOverlay').height(height);
   $('#divOverlay').width(oneWidth);
   $('#divOverlay').css('visibility','visible');
-  $('#divOverlay').delay(500).slideDown('fast');
+  $('#divOverlay').delay(200).slideDown('fast');
 
   $(".gly-issue[parent-path='"+route+"']").addClass('glyphicon glyphicon-info-sign');
 
-  }, 10);
+  }, 0);
   
 
 }
@@ -1830,12 +1845,12 @@ var highlightPart =function(index, route){
       $('#divOverlay').height(height);
       $('#divOverlay').width(oneWidth);
       $('#divOverlay').css('visibility','visible');
-    $('#divOverlay').delay(500).slideDown('fast');
+    $('#divOverlay').delay(200).slideDown('fast');
 
 $(".gly-issue[parent-path='"+route+"']").addClass('glyphicon glyphicon-info-sign');
 
   
-  }, 10);
+  }, 0);
 }
 
 
@@ -2202,7 +2217,7 @@ var element = resolveRoute(fact.route);
   window.setTimeout(function() {
            $("#taskEditor").trigger( "click" );
            $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
-       }, 10);
+       }, 0);
 
 
 
@@ -2352,7 +2367,7 @@ setTimeout(function() {
       
       $scope.tableData = $scope.course;
       $scope.$apply()
-  }, 10);
+  }, 0);
       
     });
 }
@@ -2575,7 +2590,8 @@ chartData.push({'part':$scope.course._id,
              'elementType':'chapter',
             'route':chapter.route,
             'value': parseFloat(chapter.properties.filter(function(value){ return  value.property === issueCode})[0].value),
-            'color':parseInt(factedPartID) ===parseInt(chapter.id)?'#45348A':'grey'
+            'color':parseInt(factedPartID) ===parseInt(chapter.id)?'#45348A':'grey',
+            'indicators':chapter.indicators
           })
         angular.forEach(chapter.parts, function(part){
           chartData.push({'part':part.id,
@@ -2583,7 +2599,8 @@ chartData.push({'part':$scope.course._id,
              'elementType':'part',
             'route':part.route,
             'value': parseFloat(part.properties.filter(function(value){ return  value.property === issueCode})[0].value),
-            'color':parseInt(factedPartID) ===parseInt(part.id)?'#45348A':'grey'
+            'color':parseInt(factedPartID) ===parseInt(part.id)?'#45348A':'grey',
+            'indicators':part.indicators
           })
         })
       })
@@ -2626,7 +2643,7 @@ app.animation('.parts-header', function() {
     },
     move: function(element, done) {console.log('enter');
       element.css('display', 'none');
-      $(element).slideDown(500, function() {
+      $(element).slideDown(200, function() {
         done();
       });
     }
