@@ -1017,7 +1017,7 @@ var findMainChaptersFacts = function(){
           var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
           if(maxV.length>0) {          
               maxV=maxV[0].chapterValue;
-                  if(f.value>maxV) {
+                  if(f.delta>maxV) {
                     $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.value
                     $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
                   }
@@ -1053,7 +1053,7 @@ angular.forEach($scope.course.tomes, function(tome) {
         var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
         if(maxV.length>0) {          
             maxV=maxV[0].sectionValue;
-                if(f.value>maxV) {
+                if(f.delta>maxV) {
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionValue = f.value
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionFactId = f._id
                 }

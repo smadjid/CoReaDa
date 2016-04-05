@@ -190,8 +190,8 @@ var maxRoute='#';
         .attr('parent-path',part.route)
         .addClass("gly-issue")
         .attr('data-fact-id',+fact._id );
-        if(parseFloat(fact.delta) > maxValue)
-        {maxValue = parseFloat(fact.delta); maxPart=part.id; maxRoute=fact.route; }
+        if(parseFloat(fact.value) > maxValue)
+        {maxValue = parseFloat(fact.value); maxPart=part.id; maxRoute=fact.route; }
 
         $(td).append(span) });
 
@@ -297,8 +297,8 @@ var maxRoute='#';
       .attr('parent-path',chapter.route)
       .addClass("gly-issue");
 
-      if(parseFloat(fact.delta) > maxValue)
-      {maxValue = parseFloat(fact.delta); maxChap=chapter.id;maxRoute=fact.route; }
+      if(parseFloat(fact.value) > maxValue)
+      {maxValue = parseFloat(fact.value); maxChap=chapter.id;maxRoute=fact.route; }
  
  
 
