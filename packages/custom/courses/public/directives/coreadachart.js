@@ -51,7 +51,6 @@ var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
             .scale(y)
             .orient("left")
             .ticks(10);
-            console.log(classe)
 if(classe=="speed")    
           yAxis.tickFormat(d3.format("d"))
         else

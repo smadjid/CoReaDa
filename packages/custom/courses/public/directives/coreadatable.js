@@ -174,6 +174,7 @@ var maxRoute='#';
 
       
       var td=$("<td role='button'></td>");
+      var tdColor = part.indicators.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
        $(td)
         .attr('class','td_issue')
                .attr('data-part',part.id)
@@ -181,7 +182,7 @@ var maxRoute='#';
                .attr('data-indicator',scope.indicatorCode)
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
-               .css('background-color',scale(partData).hex())
+               .css('background-color',tdColor)
                .on("click", function(d) {window.location.hash = '#'+part.route+'&indicator='+scope.indicatorCode});
 
       allFacts.forEach(function(fact){  
@@ -280,6 +281,7 @@ var maxRoute='#';
       }
     
     var td=$("<td role='button'></td>");
+    var tdColor = chapter.indicators.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
      $(td)
       .attr('class','td_issue')
              .attr('data-part',chapter.id)
@@ -287,7 +289,7 @@ var maxRoute='#';
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
              .append('<span></span>')
-             .css('background-color',scale(chapData).hex());
+             .css('background-color',tdColor);
              
 
     allFacts.forEach(function(fact){  

@@ -9,6 +9,7 @@ angular.module('mean.courses')
 
 
 
+
 var stopHover = function(url){ 
   $('#divHoverOverlay').css('visibility','hidden');
  }
@@ -106,7 +107,99 @@ alert('yes')
     $scope.inspector.indicatorCode = $scope.inspector.Facts[n].issueCode;
     
   };
-         
+var computeTwoBounderyValues = function(type, indicatorCode){
+  var studiedFactData=[];
+
+if(type=='chapter'){
+  $scope.courseChapters.forEach(function(chapter, i) {
+      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      studiedFactData.push(partData);
+  })
+}
+else{
+  $scope.courseChapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      studiedFactData.push(partData);
+    })
+  })
+}
+
+  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
+  
+  for(var i = 0; i<studiedFactData.length; i++){ 
+    studiedFactData[i] = Math.abs(studiedFactData[i] - median);
+  }
+  var min = d3.min(studiedFactData, function(d) { return parseFloat(d); }); 
+  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
+   
+  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
+}
+var computeMinBounderyValues = function(type, indicatorCode){
+  var studiedFactData=[];
+
+if(type=='chapter'){
+  $scope.courseChapters.forEach(function(chapter, i) {
+      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      studiedFactData.push(partData);
+  })
+}
+else{
+  $scope.courseChapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      studiedFactData.push(partData);
+    })
+  })
+}
+
+  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
+  
+  for(var i = 0; i<studiedFactData.length; i++){ 
+    studiedFactData[i] = median - studiedFactData[i];
+    if(studiedFactData[i] < 0 ) studiedFactData[i] = 0;
+  }
+  var min = 0; 
+  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
+   
+  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
+}
+
+var computeBgColor =function(val, indicator, range){
+  var scale = chroma.scale('OrRd').domain([range.MinValue, range.MaxValue]);
+  
+  return   scale(val).hex();
+}
+
+
+
+
+var computeBounderyValues = function(type, indicatorCode){
+  var studiedFactData=[];
+
+if(type=='chapter'){
+  $scope.courseChapters.forEach(function(chapter, i) {
+      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      studiedFactData.push(partData);
+  })
+}
+else{
+  $scope.courseChapters.forEach(function(chapter, i) {
+    chapter.parts.forEach(function(part, i) {
+      var partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      studiedFactData.push(partData);
+    })
+  })
+}
+
+  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
+  
+  
+  var min = d3.min(studiedFactData, function(d) { return parseFloat(d); }); 
+  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
+   
+  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
+}
 
  $scope.findOne = function() {
 
@@ -435,17 +528,108 @@ $scope.completeCourseParts =function(){
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
 
         });
+        part.indicators = [];
         courseParts.push( part );
       });
+      chapter.indicators = [];
       courseChapters.push( chapter ); 
     });
   });
 
   $scope.courseParts = courseParts;
   $scope.courseChapters = courseChapters; 
+  computeColours();
+
+
 }
+/*********** Compute colours ********************/
+var decideBoundariesScale = function(partType,indicatorCode){
+  var boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
+var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+switch(indicatorCode) {
+    case "Actions_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
+        break;
+    case "speed":
+        boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+        break;
+    case "rereadings_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "rereadings_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "norecovery_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+}
+return {boundaryValues,scale};
+}
+var computeIndividualIndicatorValue =  function(part,indicatorCode, boundaryValues){
+  
+
+  var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
+      switch(indicatorCode) {
+      case "Actions_tx":
+        partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+        break;
+      case "speed":
+        partData = Math.abs(boundaryValues.MedianValue - 
+          parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
+        break;
+      case "rereadings_tx":
+        partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+        break;
+      case "norecovery_tx":
+        partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+        break;
+      }
+    return partData;
+}
+var computeColours =  function(){
+  angular.forEach($scope.indicatorsHeader, function(indicator){
+    var indicatorClass = indicator.code;
+    var chaptersData = decideBoundariesScale('chapter',indicatorClass);
+    var partsData = decideBoundariesScale('part',indicatorClass);
+
+    var chapterScale = chaptersData.scale;
+    var chapterBoundaryValues = chaptersData.boundaryValues;
+    var partScale = partsData.scale;
+    var partBoundaryValues = partsData.boundaryValues;
+
+    
+    angular.forEach($scope.course.tomes, function(tome) {
+      angular.forEach(tome.chapters, function(chapter) {
+        
+        var indicatorValue = computeIndividualIndicatorValue(chapter, indicatorClass, chapterBoundaryValues);
+        var chapIndicator={'code':indicatorClass, 
+                           'delta':indicatorValue, 
+                           'color':chapterScale(indicatorValue).hex()};
+        chapter.indicators.push(chapIndicator);
+        
+        angular.forEach(chapter.parts, function(part) {
+          var indicatorValue = computeIndividualIndicatorValue(part, indicatorClass, partBoundaryValues);
+         var partIndicator={'code':indicatorClass, 
+                           'delta':indicatorValue, 
+                           'color':partScale(indicatorValue).hex()};
+         part.indicators.push(partIndicator);
+
+        })
+        
+      });
+      console.log(tome.chapters);
+    })
+    
+  });
 
 
+}
+/*************************************************/
 var parseURL =  function(query){
 
   if (query == '') return null;
@@ -2165,7 +2349,7 @@ swal({
 setTimeout(function() {
     loadURL(result);
     reloadURL();
-      console.log(result)
+      
       $scope.tableData = $scope.course;
       $scope.$apply()
   }, 10);
