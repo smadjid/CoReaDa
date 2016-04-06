@@ -117,6 +117,9 @@ else{
 }
 var partsIssuesDisplay=function(){
 var html=[];
+var maxValue = 0;
+var maxPart = 0;
+var maxRoute='#';
 
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
@@ -134,28 +137,18 @@ var html=[];
                .css('background-color',tdColor)
                .on("click", function(d) { window.location.hash = '#'+$(this).attr('data-path')});
 
+
      
       allFacts.forEach(function(fact){  
-      var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
-      //span.text(fact.mainFact);
+ if(parseFloat(fact.delta) > maxValue)
+      {maxValue = parseFloat(fact.delta); maxPart=part.id;maxRoute=fact.route; }
 
-      if(fact.mainFact){ 
-         $(td).on("click", function(d) {    
-                 window.location.hash = fact.route;
-              });
-         span
-         .addClass("fa fa-exclamation-circle")
-          .css('color','red')
-          .css('text-shadow','-1px -1px 0 white,  1px -1px 0 white,    -1px 1px 0 white,     1px 1px 0 white')
-          .css('padding','0px')      
-          .css('font-size','1.7vw');
-      }
-      else{
-        span      
+      var span = $("<span class='fact' role='button'  style='padding:5px'></span>");      
+      span      
           .attr('data-fact-id',+fact._id )
           .attr('parent-path',part.route)
           .addClass("gly-issue");
-      }
+
       
       $(td).append(span) 
     });
@@ -167,6 +160,23 @@ var html=[];
      })
   })
 
+  if(html.length>0){  
+
+
+  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0])
+  .on("click", function(d) {    
+                 window.location.hash = maxRoute;
+              })
+  .children('.fact')
+      .removeClass("gly-issue")
+      .addClass("fa fa-exclamation-circle")
+          .css('color','#FFEB3B')
+          .css('text-shadow','-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red')
+          .css('padding','0px')      
+          .css('font-size','1.7vw');
+
+}
+
   $(element).append(html);
 
   
@@ -175,6 +185,9 @@ var html=[];
 
 var chaptersIssuesDisplay=function(){
 var html=[];
+var maxValue = 0;
+var maxChap = 0;
+var maxRoute='#';
   scope.chapters.forEach(function(chapter, i) {    
     var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );       
     
@@ -192,26 +205,22 @@ var html=[];
                  window.location.hash = '#'+$(this).attr('data-path')
               });
              
-
+    
+  
+     
+    
     allFacts.forEach(function(fact){  
-      var span = $("<span class='fact' role='button'  style='padding:5px'></span>");
-      if(fact.mainFact){
-         $(td).on("click", function(d) {    
-                 window.location.hash = fact.route;
-              });
-         span
-         .addClass("fa fa-exclamation-circle")
-          .css('color','#FFEB3B')
-          .css('text-shadow','-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red')
-          .css('padding','0px')      
-          .css('font-size','1.7vw');
-      }
-      else{
-        span      
+      if(parseFloat(fact.delta) > maxValue)
+      {maxValue = parseFloat(fact.delta); maxChap=chapter.id;maxRoute=fact.route; }
+
+      var span = $("<span class='fact' role='button' data-delta='"+fact.delta+"' style='padding:5px'></span>");
+      span      
           .attr('data-fact-id',+fact._id )
+          .attr('data-delta',fact.delta)
           .attr('parent-path',chapter.route)
           .addClass("gly-issue");
-      }
+
+      
       
       $(td).append(span) 
     });
@@ -222,6 +231,22 @@ var html=[];
 
   })
   
+  if(html.length>0){  
+
+
+  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0])
+  .on("click", function(d) {    
+                 window.location.hash = maxRoute;
+              })
+  .children('.fact')
+      .removeClass("gly-issue")
+      .addClass("fa fa-exclamation-circle")
+          .css('color','#FFEB3B')
+          .css('text-shadow','-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red')
+          .css('padding','0px')      
+          .css('font-size','1.7vw');
+
+}
   $(element).append(html);
 
 }

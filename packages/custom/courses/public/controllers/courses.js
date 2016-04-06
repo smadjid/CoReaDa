@@ -265,10 +265,10 @@ else{
 
 $scope.resetIndicators = function(){
       $scope.indicatorsHeader=[
-        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'Actions_tx','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'speed','category':'Indicateurs de lecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'rereadings_tx','category':'Indicateurs de relecture','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'norecovery_tx','category':'Indicateurs d\'sectionValue et reprise','sectionValue':0,'chapterValue':0,'sectionFactID':null, 'chapterFactId':null}
+        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'Actions_tx','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'speed','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'rereadings_tx','category':'Indicateurs de relecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'norecovery_tx','category':'Indicateurs d\'sectionValue et reprise','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null}
 
       ]
       
@@ -1196,8 +1196,11 @@ var filterTasks = function(studiedPart) {
       };
 
 
-var findMainChaptersFacts = function(){  
+var updateMainFacts = function(){  
   $scope.resetIndicators();
+
+//////////////// CHAPTERS
+
   var allFacts=[]; 
   angular.forEach($scope.course.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter){
@@ -1211,7 +1214,7 @@ var findMainChaptersFacts = function(){
               maxV=maxV[0].chapterValue;
                   if(f.delta>maxV) {
                     f.mainFact=true;
-                    $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.value
+                    $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.delta;
                     $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
                   }
                 }
@@ -1232,12 +1235,11 @@ var findMainChaptersFacts = function(){
     }
   }) 
 
- return mainFacts;
-}
+ $scope.MainChaptersFacts =  mainFacts;
 
-var findMainSectionsFacts = function(){  
-  $scope.resetIndicators();
-  var allFacts=[]; 
+ //////////////// SECTIONS
+
+allFacts=[]; 
 angular.forEach($scope.course.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter){
       
@@ -1251,7 +1253,7 @@ angular.forEach($scope.course.tomes, function(tome) {
         if(maxV.length>0) {          
             maxV=maxV[0].sectionValue;
                 if(f.delta>maxV) {
-                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionValue = f.value
+                  $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionValue = f.delta;
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionFactId = f._id
                   f.mainFact=true;
                 }
@@ -1264,7 +1266,7 @@ angular.forEach($scope.course.tomes, function(tome) {
     })
   })
 
-  var mainFacts=[];
+ mainFacts=[];
   $scope.indicatorsHeader.forEach(function(ind){
 
     if(ind.sectionFactId!=null){
@@ -1272,13 +1274,10 @@ angular.forEach($scope.course.tomes, function(tome) {
     }
   }) 
 
- return mainFacts;
+ $scope.MainSectionsFacts = mainFacts;
 }
 
-var updateMainFacts = function(){
-   $scope.MainSectionsFacts = findMainSectionsFacts()
-  $scope.MainChaptersFacts = findMainChaptersFacts();
-}
+
 
 var findCourseIssues = function(){   
 $scope.inspector={} 
