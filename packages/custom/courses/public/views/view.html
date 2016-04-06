@@ -17,15 +17,13 @@
 
   <div   ng-include src="'courses/views/indicatorselector.html'"></div>
  <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
- <div  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='height:100%; vertical-align:middle; margin:12px;font-size: 17px;' ></div>
- 
-  
+ <!--
+ <div  class='glyphicon glyphicon glyphicon-cog indicators-header' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='height:100%; vertical-align:middle; margin:12px;font-size: 17px;' ></div>
     <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="$parent.indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value"></select>
-
-
+-->
     
    
-   
+   <br/>
  
 
   <div id="divOverlay"> </div> 
@@ -68,7 +66,7 @@
         
         <ul>
 
-          <div class='col-lg-6 pull-right' ng-hide='inspectorDisplaySrc=="course" && getShownTab()=="stats"'>
+          <div class='col-lg-6 pull-right' >
               <div class='chart-title'><b>{{graphTitle}}</b></div>
               <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:inspector.indicatorCode}' style="width:100%!important;padding:0"></d3-chart>
           </div>

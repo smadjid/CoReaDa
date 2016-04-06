@@ -48,6 +48,8 @@ Courses.register(function(app, auth, database) {
 
   
   Courses.aggregateAsset('css', 'courses.css');
+  Courses.aggregateAsset('css', 'font-awesome/css/font-awesome.min.css');
+  
     Courses.settings({
         'theme': 'bs3'
     }, function(err, settings) {

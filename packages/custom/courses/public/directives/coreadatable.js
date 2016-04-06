@@ -144,12 +144,11 @@ var html=[];
                  window.location.hash = fact.route;
               });
          span
-         .addClass("glyphicon glyphicon-warning-sign")
+         .addClass("fa fa-exclamation-circle")
           .css('color','red')
-          .css('background-color','rgba(255,255,255,0.57)')
-          .css('border','1px solid rgba(0, 220, 0, 0.14902)')
-          .css('padding','3px')      
-          .css('font-size','14px');
+          .css('text-shadow','-1px -1px 0 white,  1px -1px 0 white,    -1px 1px 0 white,     1px 1px 0 white')
+          .css('padding','0px')      
+          .css('font-size','1.7vw');
       }
       else{
         span      
@@ -201,12 +200,11 @@ var html=[];
                  window.location.hash = fact.route;
               });
          span
-         .addClass("glyphicon glyphicon-warning-sign")
+         .addClass("fa fa-exclamation-circle")
           .css('color','red')
-          .css('background-color','rgba(255,255,255,0.57)')
-          .css('border','1px solid rgba(0, 220, 0, 0.14902)')
-          .css('padding','3px')      
-          .css('font-size','14px');
+          .css('text-shadow','-1px -1px 0 white,  1px -1px 0 white,    -1px 1px 0 white,     1px 1px 0 white')
+          .css('padding','0px')      
+          .css('font-size','1.7vw');
       }
       else{
         span      

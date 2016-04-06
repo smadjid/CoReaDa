@@ -212,7 +212,7 @@ else{
 
 
   $scope.observedElt ={};
-  $scope.inspector ={'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
+  $scope.inspector ={'type':'chapter', 'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
 
      $('table').hide();
      
@@ -354,12 +354,12 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.toggleSectionDisplay = function(){
-  resetPath();
+  goHome();
+
   
   setTimeout(function() {
     $scope.sectionDisplay =! $scope.sectionDisplay;
-    goHome();
-   //  loadContext();
+    $scope.$apply();
   }, 0);
 
   
@@ -707,7 +707,7 @@ var resetPath =function(){
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
   $('#divHoverOverlay').css('visibility','hidden');
-  $('.gly-issue').removeClass('glyphicon glyphicon-info-sign');
+  $('.gly-issue').removeClass('fa fa-exclamation-circle');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
     
 
@@ -1280,12 +1280,16 @@ var updateMainFacts = function(){
   $scope.MainChaptersFacts = findMainChaptersFacts();
 }
 
-var findCourseIssues = function(){    
-  if($scope.sectionDisplay) 
-       $scope.inspector.Facts = $scope.MainSectionsFacts
-  else
-    $scope.inspector.Facts= $scope.MainChaptersFacts;
-
+var findCourseIssues = function(){   
+$scope.inspector={} 
+  if($scope.sectionDisplay) {
+         $scope.inspector.Facts = $scope.MainSectionsFacts;
+         $scope.inspector.type='part';
+  }
+  else{
+      $scope.inspector.Facts= $scope.MainChaptersFacts;
+      $scope.inspector.type='chapter';
+  }
 $scope.factTitleDisplay=true;
 
 }
@@ -1820,7 +1824,7 @@ var highlightChapter =function(index, route){
   $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(200).slideDown('fast');
 
-  $(".gly-issue[parent-path='"+route+"']").addClass('glyphicon glyphicon-info-sign');
+  $(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
   }, 0);
   
@@ -1847,7 +1851,7 @@ var highlightPart =function(index, route){
       $('#divOverlay').css('visibility','visible');
     $('#divOverlay').delay(200).slideDown('fast');
 
-$(".gly-issue[parent-path='"+route+"']").addClass('glyphicon glyphicon-info-sign');
+$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
   
   }, 0);

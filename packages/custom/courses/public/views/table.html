@@ -2,10 +2,6 @@
         <tr class='tomes-header'>
         <th class="home_icon">
         <span role="button" ng-click='resetPath();goHome()' class="glyphicon glyphicon-home" style='margin-right:3px'></span>
- 
-        
-
-
    
 
         </th>         
@@ -19,7 +15,7 @@
         <tr class='chapters-header'>
         <th><b>Chapitres</b><br/>
 
-        <span role='button' ng-attr-title="{{sectionDisplay && 'Masquer les sections' || 'Afficher les sections' }}" style='font-size: 14px;font-weight: bold; padding-top:8px;padding-bottom:2px; color:#29384D' ng-class="{'glyphicon glyphicon-menu-down': !sectionDisplay, 'glyphicon glyphicon-menu-up': sectionDisplay}" ng-click='toggleSectionDisplay()'></span>
+        <span role='button' ng-attr-title="{{sectionDisplay && 'Masquer les sections' || 'Afficher les sections' }}" style='font-size: 14px;font-weight: bold; padding-top:8px;padding-bottom:2px; width:100%;color:#29384D' ng-class="{'glyphicon glyphicon-menu-down': !sectionDisplay, 'glyphicon glyphicon-menu-up': sectionDisplay}" ng-click='toggleSectionDisplay()'></span>
 
         </th>         
             <th role='button' ng-click='triggerClick($event)'  class="chapter_index" ng-repeat="chapter in courseChapters"  colspan={{chapter.parts_count}}  data-part={{chapter.id}} data-path={{chapter.route}}>
@@ -39,22 +35,26 @@
     <tbody>
         <tr table-td by-parts='true' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
-                <i class="fa fa-play-circle fa-2x"></i>
+                
                 <span class="fat" >{{indicator.label}}</span>
                 
             </th>
         </tr>
         
-        </tr>
+        
        
        <tr table-td by-parts='false' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
-                <i class="fa fa-play-circle fa-2x"></i>
+                
                 <span class="fat" >{{indicator.label}}</span>
                 
-            </th>
-        </tr>
+            </th></tr>
         
-        </tr>
+
+        
+    
     </tbody>
+
+
+                
 

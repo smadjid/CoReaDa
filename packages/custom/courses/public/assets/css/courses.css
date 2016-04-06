@@ -718,7 +718,8 @@ html, body {
 
 .gly-issue{
   color: rgba(218, 218, 59, 0.97);
-  font-size: 14px;
+  font-size: 1.5vw;
+  text-shadow:-1px -1px 0 black,  1px -1px 0 black,    -1px 1px 0 black,     1px 1px 0 black
 }
 
 /* Table highlighting */
@@ -1960,6 +1961,7 @@ margin-bottom: -5px!important;
   left: 0;
   bottom: 0px;
   margin: 0 17px;
+  margin: 0 17px;
   width: 0;
   height: 3px;
   background-color: #90CAF9;
@@ -1973,7 +1975,7 @@ margin-bottom: -5px!important;
   color: white!important;
 }
 .inspector-title:hover:after {
-  width: 100%!important;
+  width: 90%!important;
 }
 
 /**/

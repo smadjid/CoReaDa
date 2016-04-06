@@ -96,7 +96,6 @@ if(scope.d3opts.elementType!=='part')
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
             .on("click", function(d) { 
-              console.log(d.route);
               if("#"+d.route!=window.location.hash)
                window.location.hash = "#"+d.route
             })
@@ -123,9 +122,12 @@ if(scope.d3opts.elementType!=='part')
               .attr('stroke', '#4169E1')
                .attr("fill", function(d) {
                 var c = '#008cba';
-                var ind = d.indicators.filter(function(e){ return e.code == classe })
-                if(ind.length>0) c = ind[0].color
-                  else               console.log(d.indicators)
+                var ind = d.indicators;
+                if(typeof ind !="undefined"){
+                                  ind = ind.filter(function(e){ return e.code == classe })
+                                  if(ind.length>0) c = ind[0].color
+                                    else               console.log(d.indicators)
+                }
                 return (d.part==scope.d3opts.elementId)? '#45348A':c; 
               });
 
