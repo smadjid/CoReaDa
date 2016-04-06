@@ -201,8 +201,8 @@ var html=[];
               });
          span
          .addClass("fa fa-exclamation-circle")
-          .css('color','red')
-          .css('text-shadow','-1px -1px 0 white,  1px -1px 0 white,    -1px 1px 0 white,     1px 1px 0 white')
+          .css('color','#FFEB3B')
+          .css('text-shadow','-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red')
           .css('padding','0px')      
           .css('font-size','1.7vw');
       }
