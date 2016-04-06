@@ -17,10 +17,9 @@
 
   <div   ng-include src="'courses/views/indicatorselector.html'"></div>
  <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
- <!--
- <div  class='glyphicon glyphicon glyphicon-cog indicators-header' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='height:100%; vertical-align:middle; margin:12px;font-size: 17px;' ></div>
-    <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="$parent.indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value"></select>
--->
+
+
+
     
    
    <br/>
@@ -29,8 +28,14 @@
   <div id="divOverlay"> </div> 
    <div id="divHoverOverlay"> </div> 
    </perfect-scrollbar>  
+  <div style='margin-top:-20px;margin-bottom:5px;  padding:0;  display: flex; '>
+ <span  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='background:steelblue;padding:5px;width:70px;text-align:center;  font-size: 22px;color:white;line-height: normal' ></span>
+ 
+    <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">
+      
+    </select>
+  </div>
   
-
 
     <div class="inspector-container">
 
