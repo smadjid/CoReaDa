@@ -1297,9 +1297,9 @@ var findTomeIssues = function(tome){
 
   var mainIssues = [];
    if($scope.sectionDisplay) 
-       $scope.inspector.Facts = $scope.MainSectionsFacts
+       mainIssues = $scope.MainSectionsFacts
   else
-    $scope.inspector.Facts= $scope.MainChaptersFacts;
+    mainIssues = $scope.MainChaptersFacts;
   
 $scope.factTitleDisplay=true;
   var times =[], users =[], rss =[], rereadings_tx =[], stops =[];

@@ -18,9 +18,6 @@
   <div   ng-include src="'courses/views/indicatorselector.html'"></div>
  <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
 
-
-
-    
    
    <br/>
  
@@ -28,8 +25,8 @@
   <div id="divOverlay"> </div> 
    <div id="divHoverOverlay"> </div> 
    </perfect-scrollbar>  
-  <div style='margin-top:-20px;margin-bottom:5px;  padding:0;  display: flex; '>
- <span  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='background:steelblue;padding:5px;width:70px;text-align:center;  font-size: 22px;color:white;line-height: normal' ></span>
+  <div style='margin-top:-18px;margin-bottom:5px;  padding:0;  display: flex; '>
+ <span  class='glyphicon glyphicon glyphicon-cog' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='background:steelblue;padding:5px;width:70px;text-align:center;  font-size: 16px;color:white;line-height: normal;margin-left: 2px' ></span>
  
     <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">
       
@@ -76,7 +73,7 @@
               <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:inspector.indicatorCode}' style="width:100%!important;padding:0"></d3-chart>
           </div>
 
-          <li class="tab-content tab-stats col-lg-12" ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course-stats.html'" >
+          <li class="tab-content tab-stats col-lg-6" ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" >
           <li class="tab-content tab-stats col-lg-6" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component-stats.html'" >
 
 
