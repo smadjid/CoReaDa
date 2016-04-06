@@ -2687,7 +2687,7 @@ margin-bottom: -5px!important;
 /**/
 .coreada-tabs > ul,
 .coreada-tabs > ul > li {
-  height: 370px;
+  /*height: 370px;*/
 }
 
 .indicatorSelectorContainer{
