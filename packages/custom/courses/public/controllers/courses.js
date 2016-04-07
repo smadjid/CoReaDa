@@ -54,7 +54,12 @@ alert('yes')
   };
 
  $scope.itemsPerPage = 1;
- $scope.currentFact = 0;
+ $scope.currentFact = 0; 
+ $scope.$watch('currentFact', function(newValue, oldValue) {  
+ if(typeof $scope.inspector=='undefined') return;
+ $scope.showComponentChart($scope.inspector.Facts[newValue].classof)
+ console.log($scope.inspector.Facts[newValue].classof);
+});
      
      $scope.range = function() {
     var rangeSize = 4;
@@ -248,6 +253,7 @@ else{
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
+      $scope.tabFacts = "stats";
       
 
 
@@ -365,17 +371,18 @@ $scope.toggleSectionDisplay = function(){
   
 
 }
-$scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
-  
+$scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
- 
- 
-
 });
+
+$scope.$watch('tabFacts', function(newValue, oldValue) {  
+ $scope.currentFact = 0; 
+});
+
 $scope.showTab = function(tab){
   $("input[value='"+tab+"']").prop('checked', true);
-  $scope.factsPaginator = (tab=="fact")?true:false;
+  //$scope.factsPaginator = (tab=="fact")?true:false;
   
 }
 
