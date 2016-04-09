@@ -253,7 +253,7 @@ var maxRoute='#';
 
 
   scope.$watch('data', function(){
-
+console.log('update');
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
 
     scope.chapters = [];
@@ -266,7 +266,7 @@ var maxRoute='#';
         }, true);
      
 
-scope.$watch('byParts', function(){
+/*scope.$watch('byParts', function(){
 
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
   
@@ -280,7 +280,7 @@ scope.$watch('byParts', function(){
          tableIssuesDisplay()
         
     
-          }, true); 
+          }, true); */
 
 
             

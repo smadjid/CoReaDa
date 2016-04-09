@@ -206,8 +206,6 @@ else{
   return {'MinValue':min,'MedianValue':median,'MaxValue':max};
 }
 
- $scope.findOne = function() {
-
   $scope.d3opts = [];
   $scope.dataLoading = true;
   $scope.pageLoaded = false;
@@ -291,6 +289,10 @@ $scope.selectedIndicators=[
         'issueCode':'norecovery_tx','category':'Indicateurs d\'arrêts et reprise'}
       ]
       $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
+
+
+ $scope.findOne = function() {
+
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -2360,6 +2362,7 @@ swal({
        //dropFact(parseTaskRequest(route))
         //.success(function(data) {
      var result = dropFactLocally(index);
+     updateMainFacts();
            swal({   title: "Problème marqué comme résolu!",   
             text: "Succès", 
              animation: "slide-from-top",
