@@ -38,7 +38,7 @@ scope.inspectorRenderBars = function(globalData, classe) {
 
 
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
-
+//console.log(scope.d3opts.elementType);
           data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
         var xAxis = d3.svg.axis()
             .scale(x)
