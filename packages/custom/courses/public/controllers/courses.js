@@ -54,7 +54,7 @@ alert('yes')
   };
 
  $scope.itemsPerPage = 1;
- $scope.currentFact = 0; 
+ 
  $scope.$watch('currentFact', function(newValue, oldValue) {  
  if(typeof $scope.inspector=='undefined') return;
  $scope.showComponentChart($scope.inspector.Facts[newValue].classof)
@@ -95,6 +95,7 @@ alert('yes')
   };
 
   $scope.nextPage = function() {
+     console.log($scope.currentFact +' '+ $scope.pageCount());
     if ($scope.currentFact < $scope.pageCount()) {
       $scope.currentFact++;
     }
@@ -105,11 +106,15 @@ alert('yes')
   };
 
   $scope.setPage = function(n) {
+    console.log($scope.inspector.Facts.length);
     if($scope.inspector.Facts.length<1) return;
+    if($scope.tabSelect=='facts'){
     $scope.currentFact = n;
     $scope.sectionFactChart = $scope.inspector.Facts[n]
-    $scope.inspectorIndicatorCode = $scope.inspector.Facts[n].issueCode;
-    $scope.inspector.indicatorCode = $scope.inspector.Facts[n].issueCode;
+    $scope.inspectorIndicatorCode = $scope.inspector.Facts[n].issueCode;    
+    $scope.setInspectorCode($scope.inspector.Facts[n].issueCode)
+    }
+    else console.log('NO')
     
   };
 var computeTwoBounderyValues = function(type, indicatorCode){
@@ -247,12 +252,12 @@ else{
       $scope.topElementSelector ='sections',
       $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';      
-      $scope.coursePstatSelector = 'time';
+      $scope.inspectorIndicatorCode = 'Actions_tx';
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
-      $scope.tabFacts = "stats";
-      
+      $scope.tabSelect = "stats";
+      $scope.currentFact = 0;
 
 
       $scope.tab = 0;
@@ -378,12 +383,31 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
 });
 
-$scope.$watch('tabFacts', function(newValue, oldValue) {  
- $scope.currentFact = 0; 
+$scope.$watch('tabSelect', function(newValue, oldValue) {  
+ console.log('newValue: '+newValue);
+ if(newValue == 'facts'){
+  console.log($scope.inspector.Facts[0].classof);
+  $scope.currentFact = 0; 
+  $scope.setInspectorCode($scope.inspector.Facts[0].classof)
+
+ }
+ else{
+//  console.log($scope.selectedIndicators[0].code);
+  //$scope.inspectorIndicatorCode = $scope.selectedIndicators[0].code
+  $scope.setInspectorCode($scope.selectedIndicators[0].code)
+
+
+ }
+
+ 
 });
 
 $scope.showTab = function(tab){
   $("input[value='"+tab+"']").prop('checked', true);
+  if(tab == 'facts'){
+  $scope.currentFact = 0; 
+
+ }
   //$scope.factsPaginator = (tab=="fact")?true:false;
   
 }
@@ -403,7 +427,7 @@ $scope.showComponentChart=function(param){
     return;
   }
   $scope.inspectorIndicatorCode = param;
-  $scope.inspector.indicatorCode = param;
+  $scope.setInspectorCode(param)
   $scope.inspectorChart = true;
   
     $("#componentChartOverlay").fadeIn(100).focus().select();
@@ -411,8 +435,9 @@ $scope.showComponentChart=function(param){
   
 }
 
+$scope.setInspectorCode = function(code){
+  $scope.inspector.indicatorCode = code;
 
-$scope.$watch('inspector.indicatorCode', function(newValue, oldValue) { 
 
   switch($scope.inspector.indicatorCode) {
     case "Actions_tx":
@@ -438,7 +463,8 @@ $scope.$watch('inspector.indicatorCode', function(newValue, oldValue) {
         break;
 };
 
-});
+}
+
 
 
 
@@ -1427,13 +1453,9 @@ switch(granularity){
 /********************************************/
 var loadContext = function(){
 
-var width = $('.data-table').innerWidth() ;
-    var top = $('.data-table').offset().top + $('.data-table').innerHeight();
-    var left = $('.data-table').offset().left;
-
-
-  
-  
+  var width = $('.data-table').innerWidth() ;
+  var top = $('.data-table').offset().top + $('.data-table').innerHeight();
+  var left = $('.data-table').offset().left;
 
    var url = location.hash.slice(1);
  
@@ -1469,7 +1491,9 @@ var width = $('.data-table').innerWidth() ;
 
     task = components.hasOwnProperty('taskid')?
     $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
-     indicator = components.hasOwnProperty('indicator')? components.indicator:'ALL';
+     indicator = components.hasOwnProperty('indicator')? 
+                            components.indicator: components.hasOwnProperty('factid')?
+                            fact.classof:'ALL';
     
    }
 
@@ -1510,9 +1534,7 @@ var width = $('.data-table').innerWidth() ;
           computeGranuleFacts('chapter', chap, fact.classof, fact.classof);
           displayChapterIssues(chap.route, task, chap, indicator);
           $scope.showTab("facts");
-
-         
-
+          
         }
         else
         if(indicator =="ALL"){
@@ -1535,7 +1557,7 @@ var width = $('.data-table').innerWidth() ;
           $scope.inspectorDisplaySrc='inspector' ;
           displayChapterIssues(chap.route, task, chap, indicator);
           $scope.inspectorIndicatorCode = indicator;
-          $scope.inspector.indicatorCode = indicator;
+          $scope.setInspectorCode(indicator);
           $scope.showTab("stats");
         }
       }
@@ -1574,7 +1596,7 @@ var width = $('.data-table').innerWidth() ;
           //$scope.sectionDisplay = true; 
           displayPartIssues(part.route, task, part, indicator);
           $scope.inspectorIndicatorCode = indicator;
-          $scope.inspector.indicatorCode = indicator;
+          $scope.setInspectorCode(indicator)
           $scope.showTab("stats");
           
 

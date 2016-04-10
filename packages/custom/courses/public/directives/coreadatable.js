@@ -253,7 +253,7 @@ var maxRoute='#';
 
 
   scope.$watch('data', function(){
-console.log('update');
+
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
 
     scope.chapters = [];

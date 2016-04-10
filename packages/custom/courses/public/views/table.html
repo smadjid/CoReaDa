@@ -13,7 +13,7 @@
         </tr>
 
         <tr class='chapters-header'>
-        <th><b>Chapitres</b><br/>
+        <th><em>Chapitres</em><br/>
 
         <span role='button' ng-attr-title="{{sectionDisplay && 'Masquer les sections' || 'Afficher les sections' }}" style='font-size: 14px;font-weight: bold; padding-top:8px;padding-bottom:2px; width:100%;color:#29384D' ng-class="{'glyphicon glyphicon-menu-down': !sectionDisplay, 'glyphicon glyphicon-menu-up': sectionDisplay}" ng-click='toggleSectionDisplay()'></span>
 
@@ -23,7 +23,7 @@
             </th>  
         </tr>
          <tr class='parts-header' ng-show='sectionDisplay'>
-         <th><b>Sections</b></th>         
+         <th><em>Sections</em></th>         
             <th role='button' ng-click='triggerClick($event)' class="part_index" min-width="100" ng-repeat="part in courseParts"  data-part={{part.id}} data-path={{part.route}} >
 
                 <span class="display-part-info" uib-tooltip={{part.title}}>{{part.id}}</span>
@@ -36,7 +36,7 @@
         <tr table-td by-parts='true' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 
-                <span class="fat" >{{indicator.label}}</span>
+                <b>{{indicator.label}}</b>
                 
             </th>
         </tr>
@@ -46,7 +46,7 @@
        <tr table-td by-parts='false' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 
-                <span class="fat" >{{indicator.label}}</span>
+                <b>{{indicator.label}}</b>
                 
             </th></tr>
 
