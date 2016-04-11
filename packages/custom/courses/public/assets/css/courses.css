@@ -1330,6 +1330,7 @@ float: left;
   fill: none;
   stroke: #F39C12;
   stroke-width: 2px;
+  width:100%;
 }
 
 
@@ -1603,25 +1604,6 @@ td,tr,th,  div{
     }
 }
 
-.tr {
-  -webkit-transition: 1s;
-}
-
-.tr.ng-enter {
-  opacity: 0;
-}
-
-.tr.ng-leave {
-  opacity: 1;
-}
-
-.tr.ng-enter.ng-enter-active {
-  opacity: 1;
-}
-
-.tr.ng-leave.ng-leave-active {
-  opacity: 0;
-}
 
 /********* ANgular select *************/
 
@@ -2746,4 +2728,24 @@ margin-left: 2px
   .active_indicator_selector{
    background-color: white;
    color:black;
+}
+
+/********** ANIMATIOn************/
+tr.ng-hide-add, tr.ng-hide-remove {
+  transition: none;
+}
+
+tr.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 0px;
+}
+tr.ng-show-add, tr.ng-show-remove {
+  transition: all linear 0.5s;
+}
+
+tr.ng-show {
+  line-height: 0;
+  opacity: 0;
+  padding: 3 0px;
 }

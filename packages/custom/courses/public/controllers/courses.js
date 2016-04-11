@@ -1345,7 +1345,6 @@ var facts=[];
                     
                   };
 if($scope.inspectorStats.Facts.length>0)
-
   $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
@@ -1393,13 +1392,15 @@ $scope.inspectorStats = {'type':'tome',
                     
                   };
 var facts = mainIssues.filter(function(e){return (e.tome==tome._id)});
-
+if($scope.inspectorStats.Facts.length>0) 
 $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
   'Facts':$scope.inspectorStats.Facts
 
-  };
+  }
+  else
+    $scope.inspectorFacts = {}
 $scope.inspector = $scope.inspectorStats;
 }
 
@@ -1435,11 +1436,11 @@ var findChapterIssues = function(chapter, indicator, fact){
                   };
 if(indicator!=null)
   {
-    $scope.inspectorStats.Indicators = $scope.inspector.Indicators.filter(function(e){return (e.name==indicator)});
-    $scope.inspectorStats.Facts = $scope.inspector.Facts.filter(function(e){return (e.classof==indicator)})
+    $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
+    $scope.inspectorStats.Facts = $scope.inspectorStats.Facts.filter(function(e){return (e.classof==indicator)})
   }
   if(fact!=null)
-    $scope.inspectorStats.Facts = $scope.inspector.Facts.filter(function(e){return (e.classof==fact)})
+    $scope.inspectorStats.Facts = $scope.inspectorStats.Facts.filter(function(e){return (e.classof==fact)})
    if($scope.inspectorStats.Facts.length>0)
    $scope.inspectorFacts = {
     'id':$scope.inspectorStats.Facts[0].partId,
@@ -2722,24 +2723,3 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
 
-app.animation('.parts-header', function() {
-  return {
-    enter: function(element, done) { console.log('enter');
-      element.css('display', 'none');
-      $(element).fadeIn(1000, function() {
-        done();
-      });
-    },
-    leave: function(element, done) {console.log('enter');
-      $(element).fadeOut(1000, function() {
-        done();
-      });
-    },
-    move: function(element, done) {console.log('enter');
-      element.css('display', 'none');
-      $(element).slideDown(200, function() {
-        done();
-      });
-    }
-  }
-});

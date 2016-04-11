@@ -95,6 +95,18 @@ if(scope.d3opts.elementType!=='part')
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
+            .attr("stroke-width", '1')
+            .attr('stroke', '#4169E1')
+            .attr("fill", function(d) {
+                    var c = '#008cba';
+                    var ind = d.indicators;
+                    if(typeof ind !="undefined"){
+                                  ind = ind.filter(function(e){ return e.code == classe })
+                                  if(ind.length>0) c = ind[0].color
+                                    else               console.log(d.indicators)
+                  }
+                  return (d.part==scope.d3opts.elementId)? '#45348A':c; 
+              })
             .on("click", function(d) { 
               if("#"+d.route!=window.location.hash)
                window.location.hash = "#"+d.route
@@ -108,29 +120,15 @@ if(scope.d3opts.elementType!=='part')
                   d3.select(this).attr("stroke-width", '1')
                   
                   stopHover();
-              })             
-           
-            .append("title") .text(function(d) {return d.title;   });;
+              })  .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars
           bars
               .transition()
-              .duration(0)
-              .attr('height', function(d) { return height - y(d.value); })
-              .attr("y", function(d) { return y(d.value); })
-              .attr("stroke-width", '1')
-              .attr('stroke', '#4169E1')
-               .attr("fill", function(d) {
-                var c = '#008cba';
-                var ind = d.indicators;
-                if(typeof ind !="undefined"){
-                                  ind = ind.filter(function(e){ return e.code == classe })
-                                  if(ind.length>0) c = ind[0].color
-                                    else               console.log(d.indicators)
-                }
-                return (d.part==scope.d3opts.elementId)? '#45348A':c; 
-              });
-
+                .duration(0)
+                .delay(0)
+                .attr("y", function(d) { return y(d.value); })
+                .attr("height", function(d) { return height - y(d.value); });
  
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0); 
@@ -157,18 +155,30 @@ if(scope.d3opts.elementType!=='part')
           return xmedian(d.part) + i; })
         .y(function(d, i) { return y(dataMean); }) 
 
-  svg.append("path")
+ 
+console.log(dataMediane);
+
+      svg.append("line")
+                     .attr("x1", 0)
+                     .attr("y1", y(dataMediane))
+                     .attr("x2", width)
+                     .attr("y2", y(dataMediane))
+                     .attr("class", "medianeLine");
+/* svg.append("path")
       .datum(data)
       .attr("class", "medianeLine")
       .attr("d", ymedian);
-/*  svg.append("path")
+  svg.append("path")
       .datum(data)
       .attr("class", "meanLine")
       .attr("d", ymean);
   */
 
+
+
+
  var legend = svg.selectAll(".legend")
-      .data([{"text":"Médiane","color":"#d35400"}/*,{"text":"Médiane","color":"#F39C12"}*/])
+      .data([{"text":"Médiane","color":"#F39C12"}/*,{"text":"Médiane","color":"#F39C12"}*/])
       .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});

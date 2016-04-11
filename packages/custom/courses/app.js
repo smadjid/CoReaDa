@@ -34,6 +34,9 @@ Courses.register(function(app, auth, database) {
   Courses.aggregateAsset('css',"../lib/angular-selector/dist/angular-selector.css");
 
 
+  Courses.aggregateAsset('js',"../lib/angular-animate/angular-animate.min.js");
+
+
 
 
 
@@ -58,6 +61,7 @@ Courses.register(function(app, auth, database) {
 
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
+  //Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','ngAnimate']);
   Courses.angularDependencies(['xeditable','perfect_scrollbar','selector']);
 
 
