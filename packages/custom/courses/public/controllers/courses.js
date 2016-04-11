@@ -29,7 +29,6 @@ $scope.items = ['item1', 'item2', 'item3'];
   $scope.animationsEnabled = true;
 
   $scope.open = function (size) {
-alert('yes')
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'myModalContent.html',
@@ -1345,13 +1344,16 @@ var facts=[];
                    'Facts': facts, 
                     
                   };
+if($scope.inspectorStats.Facts.length>0)
 
   $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
   'Facts':facts
 
-  };
+  }
+  else
+    $scope.inspectorFacts = {}
 $scope.inspector = $scope.inspectorStats;
 
 $scope.factTitleDisplay=true;
@@ -1438,13 +1440,13 @@ if(indicator!=null)
   }
   if(fact!=null)
     $scope.inspectorStats.Facts = $scope.inspector.Facts.filter(function(e){return (e.classof==fact)})
-   
-   $scope.inspectorFacts = $scope.inspectorFacts={
-  'id':$scope.inspectorStats.Facts[0].partId,
-  'type':$scope.inspectorStats.Facts[0].partType,
-  'Facts':$scope.inspectorStats.Facts
+   if($scope.inspectorStats.Facts.length>0)
+   $scope.inspectorFacts = {
+    'id':$scope.inspectorStats.Facts[0].partId,
+    'type':$scope.inspectorStats.Facts[0].partType,
+    'Facts':$scope.inspectorStats.Facts }
+    else $scope.inspectorFacts = {}
 
-  };   
 
   $scope.inspector = $scope.inspectorStats;
 
@@ -1475,13 +1477,14 @@ var findSectionIssues = function(section){
                     
                   };
                   
-
- $scope.inspectorFacts = $scope.inspectorFacts={
+if($scope.inspectorStats.Facts.length>0)
+ $scope.inspectorFacts = {
   'id':$scope.inspectorStats.Facts[0].partId,
   'type':$scope.inspectorStats.Facts[0].partType,
   'Facts':$scope.inspectorStats.Facts
-
-  };   
+  }
+  else
+    $scope.inspectorFacts = {}
 
   $scope.inspector = $scope.inspectorStats;
 
@@ -2718,6 +2721,7 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-xs';
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
+
 app.animation('.parts-header', function() {
   return {
     enter: function(element, done) { console.log('enter');

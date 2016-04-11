@@ -1813,7 +1813,7 @@ margin-bottom: -5px!important;
 }
 
 .inspector-container{
-  padding:1px;
+  padding:0px;
   margin:0px;
  border-color: #213c52!important;
   border-top:none!important; 
@@ -1971,6 +1971,7 @@ margin-bottom: -5px!important;
 /**/
 .coreada-tabs {
   margin: 0;
+  margin-top:10px;
   padding: 0;
   border: 0;
   outline: none;
@@ -2421,11 +2422,11 @@ margin-bottom: -5px!important;
 /* default */
 /**/
 .coreada-tabs > label { 
-  padding: 0 17px;
+  padding: 0 20px;
   background: #e5e5e5;
 
   font-size: 13px;
-  line-height: 40px;
+  line-height: 30px;
 }
 .coreada-tabs > label:hover {
   background: #f2f2f2;
@@ -2446,8 +2447,8 @@ margin-bottom: -5px!important;
 /* theme 1 */
 /**/
 .coreada-tabs-theme-1 > label {
-  margin: 0 5px 5px 0;
-  border-radius: 5px;
+  margin: 0 2px 2px 0;
+  border-radius: 3px;
   background: #fff;
   box-shadow: 0 2px rgba(0,0,0,0.2);
   color: #808080;
@@ -2688,6 +2689,19 @@ margin-bottom: -5px!important;
   background-color: hsla(0, 0%, 0%, 0.41);
   padding:10%;
   }
+
+.indicatorSelectorButton{
+border-color: #3079ed;
+background: #4d90fe;
+color:white;
+text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+box-shadow: inset 0 -.7em .2em rgba(0, 0, 0, .02), 0 .05em .05em rgba(0, 0, 0, .2);
+padding:5px;
+width:55px;
+text-align:center;  
+font-size: 16px;
+margin-left: 2px
+}
 .indicatorSelectorShow{
  z-index: 1000;
  overflow: visible;
@@ -2695,8 +2709,9 @@ margin-bottom: -5px!important;
   min-width:200px;
   margin:0;
   padding:0;
-  margin-top:-3px;
+  margin-top:0px;
   margin-left:5px;
+  padding-right: 20px;
  
 }
 
@@ -2706,6 +2721,13 @@ margin-bottom: -5px!important;
   background: #4d90fe; 
   text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
   box-shadow: inset 0 -.7em .2em rgba(0, 0, 0, .02), 0 .05em .05em rgba(0, 0, 0, .2); 
+  
+}
+.selector-container.multiple.has-value .selector-input{
+  padding: 0!important;
+  padding-top: 2px!important;
+  padding-bottom: 2px!important;
+  margin-right: 15px!important;
 }
 .selector-container.multiple input, .selector-container.multiple .selector-values>li {
      padding: .1em .2em;
