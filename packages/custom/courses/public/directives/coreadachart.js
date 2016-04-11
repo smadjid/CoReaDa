@@ -36,7 +36,7 @@ scope.inspectorRenderBars = function(globalData, classe) {
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
-
+console.log(classe)
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
 //console.log(scope.d3opts.elementType);
           data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
@@ -50,7 +50,7 @@ var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
             .scale(y)
             .orient("left")
             .ticks(10);
-if(classe=="speed")    
+if(classe=="Readers" | classe=="speed")    
           yAxis.tickFormat(d3.format("d"))
         else
           yAxis.tickFormat(d3.format("%"));
@@ -156,8 +156,7 @@ if(scope.d3opts.elementType!=='part')
         .y(function(d, i) { return y(dataMean); }) 
 
  
-console.log(dataMediane);
-
+if(typeof dataMediane !='undefined')
       svg.append("line")
                      .attr("x1", 0)
                      .attr("y1", y(dataMediane))
@@ -404,7 +403,7 @@ scope.$watch(function(){
 
       if(typeof scope.data =='undefined') return;
       
-              if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+              //if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
                scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
     
@@ -415,7 +414,7 @@ scope.$watch('data', function(){
 
   if(typeof scope.data =='undefined') return;
 
-  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+  //if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
     scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
@@ -424,7 +423,7 @@ scope.$watch('data', function(){
 scope.$watch('d3opts', function(){
   
   if(typeof scope.data =='undefined') return;
-    if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+  //  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
      scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
