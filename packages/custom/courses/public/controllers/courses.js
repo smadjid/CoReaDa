@@ -31,7 +31,7 @@ $scope.changeTab = function(tab) {
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
  if(typeof $scope.inspector=='undefined') return;
  $scope.showComponentChart($scope.inspector.Facts[newValue].classof);
- $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart');
+ $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn().focus().select();
  
 });
      
@@ -352,7 +352,7 @@ $scope.toggleSectionDisplay = function(){
   
   setTimeout(function() {
     $scope.sectionDisplay =! $scope.sectionDisplay;
-    findCourseIssues();
+    findCourseIssues('facts');
     $scope.$apply();
   }, 0);
 
@@ -364,13 +364,13 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
 });
 
-$scope.$watch('tabSelect', function(newValue, oldValue) { 
+$scope.$watch('tabSelect', function(newValue, oldValue) { console.log(newValue)
 $('.inspectorChosenPart').removeClass('inspectorChosenPart');  
  if(newValue == 'facts'){
   $scope.currentFact = 0; 
   $scope.inspector = $scope.inspectorFacts;
   $scope.setInspectorCode($scope.inspector.Facts[0].classof);
-  $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart');
+  $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn().focus().select();
 
  }
  else{
@@ -386,11 +386,13 @@ $scope.showTab = function(tab){
   $('.inspectorChosenPart').removeClass('inspectorChosenPart'); 
 
   if(tab == 'facts'){    
-    $scope.currentFact = 0; 
-    $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart');
+    $scope.currentFact = 0;  
+    $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn().focus().select();
+    $scope.tabSelect='facts';
  }
  else{
     $scope.setInspectorCode($scope.selectedIndicators[0].code);
+    $scope.tabSelect='stats';
  }
   //$scope.factsPaginator = (tab=="fact")?true:false;
   
@@ -1180,9 +1182,9 @@ else
  
 
     setTimeout(function() {
-      console.log($scope.allFactsDisplay);
+      
      $scope.goHome();
-  findCourseIssues();
+  findCourseIssues('facts');
     $scope.$apply();
   }, 0);
 
@@ -1230,7 +1232,8 @@ angular.forEach($scope.course.tomes, function(tome) {
 
 
 
-var findCourseIssues = function(){   
+var findCourseIssues = function(tab){   
+
 $scope.inspector={} 
 var facts=[];
   if($scope.sectionDisplay) {
@@ -1257,7 +1260,7 @@ if($scope.inspectorStats.Facts.length>0)
 
 $scope.inspector = $scope.inspectorStats;
 
-if($scope.inspectorStats.Facts.length>0){
+if(($scope.inspectorStats.Facts.length>0) & (tab=='facts')){
  
   $scope.inspector = $scope.inspectorFacts;
 $scope.showTab("facts");
@@ -1272,7 +1275,7 @@ $scope.factTitleDisplay=true;
 
 }
 
-var findTomeIssues = function(tome){  
+var findTomeIssues = function(tome, tab){  
 
   var mainIssues = [];
    if($scope.sectionDisplay) 
@@ -1316,7 +1319,7 @@ $scope.inspectorFacts={
     $scope.inspectorFacts = {}
 $scope.inspector = $scope.inspectorStats;
 
-if($scope.inspectorStats.Facts.length>0){
+if(($scope.inspectorStats.Facts.length>0) & (tab=='facts')){
  
   $scope.inspector = $scope.inspectorFacts;
 $scope.showTab("facts");
@@ -1328,7 +1331,7 @@ $scope.showTab("facts");
   }
 }
 
-var findChapterIssues = function(chapter, indicator, fact){ 
+var findChapterIssues = function(chapter, indicator, fact, tab){ 
   
   var mainIssues = [];
   if($scope.sectionDisplay) {
@@ -1373,7 +1376,7 @@ if(indicator!=null)
     else $scope.inspectorFacts = {}
 
 
- if($scope.inspectorStats.Facts.length>0){
+ if(($scope.inspectorStats.Facts.length>0) & (tab=='facts')){
  
   $scope.inspector = $scope.inspectorFacts;
 $scope.showTab("facts");
@@ -1387,7 +1390,7 @@ $scope.showTab("facts");
 
 }
 
-var findSectionIssues = function(section){  
+var findSectionIssues = function(section, tab){  
   $scope.factTitleDisplay=false;
  var mainIssues = $scope.SectionsFacts;
   
@@ -1411,7 +1414,7 @@ var findSectionIssues = function(section){
                     
                   };
                   
-if($scope.inspectorStats.Facts.length>0){
+if(($scope.inspectorStats.Facts.length>0) & (tab=='facts')){
  $scope.inspectorFacts = {
   'id':$scope.inspectorStats.Facts[0].partId,
   'type':$scope.inspectorStats.Facts[0].partType,
@@ -1429,20 +1432,20 @@ $scope.showTab("facts");
 
 }
 
-var computeGranuleFacts = function(granularity, element, indicator, fact){
-
+var computeGranuleFacts = function(granularity, element, indicator, fact, tab){
+if(typeof tab=='undefined') tab='facts'
 switch(granularity){
   case 'course':
-    findCourseIssues();
+    findCourseIssues(tab);
   break;
   case 'tome':
-    findTomeIssues(element, indicator);
+    findTomeIssues(element, indicator, tab);
     break;
   case 'chapter':
-    findChapterIssues(element, indicator, fact);
+    findChapterIssues(element, indicator, fact, tab);
     break
   case 'part':
-    findSectionIssues(element, indicator, fact);
+    findSectionIssues(element, indicator, fact, tab);
     break
 
   }
@@ -1477,7 +1480,7 @@ var loadContext = function(){
     var tome=-1;
   }
   else{
-    
+    var tab=components.hasOwnProperty('tab')?components.tab:'facts';
     var course  = $scope.course;
     var tome = components.hasOwnProperty('partid')?$.grep(course.tomes, function(e){ return  e._id == components.partid })[0]:-1;
     var chap = components.hasOwnProperty('chapid')?$.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0]:-1;
@@ -1505,7 +1508,7 @@ var loadContext = function(){
         $scope.context.taskText ='(nouvelle tâche globale)';
         $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
-        computeGranuleFacts('course');
+        computeGranuleFacts('course',tab);
         
         
     }
@@ -1513,7 +1516,7 @@ var loadContext = function(){
      if(chap ==-1) {
        task = components.hasOwnProperty('taskid')?$.grep(tome.todos, function(e){ return  e._id == components.taskid })[0]:null;
 
-       computeGranuleFacts('tome', tome);
+       computeGranuleFacts('tome', tome,tab);
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
@@ -1530,7 +1533,7 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
-          computeGranuleFacts('chapter', chap, fact.classof, fact.classof);
+          computeGranuleFacts('chapter', chap, fact.classof, fact.classof,tab);
           displayChapterIssues(chap.route, task, chap, indicator);
           
           
@@ -1538,7 +1541,7 @@ var loadContext = function(){
         else
         if(indicator =="ALL"){
           $scope.inspector.selectedFact =null ;
-          computeGranuleFacts('chapter', chap, null, null);
+          computeGranuleFacts('chapter', chap, null, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
@@ -1548,7 +1551,7 @@ var loadContext = function(){
         }
         else{
           $scope.inspector.selectedFact =null ;
-          computeGranuleFacts('chapter', chap, indicator, null);
+          computeGranuleFacts('chapter', chap, indicator, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
@@ -1565,7 +1568,7 @@ var loadContext = function(){
         if(fact!=-1){
           $scope.inspector.selectedFact = fact.classof;
           partElt = $('.part_index[data-part ='+part.id+']'); 
-          computeGranuleFacts('part', part, fact.classof, fact.classof);          
+          computeGranuleFacts('part', part, fact.classof, fact.classof,tab);          
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           $scope.inspectorDisplaySrc='inspector'; 
@@ -1576,7 +1579,7 @@ var loadContext = function(){
         else
         if(indicator =="ALL"){ 
         $scope.inspector.selectedFact =null ;
-          computeGranuleFacts('part', part, null, null); 
+          computeGranuleFacts('part', part, null, null,tab); 
           //$scope.sectionDisplay = true;
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
@@ -1590,7 +1593,7 @@ var loadContext = function(){
           partElt = $('.part_index[data-part ='+part.id+']');  
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
-          computeGranuleFacts('part', part, indicator, null); 
+          computeGranuleFacts('part', part, indicator, null,tab); 
           $scope.inspectorDisplaySrc='inspector';
           //$scope.sectionDisplay = true; 
           displayPartIssues(part.route, task, part, indicator);
@@ -1745,7 +1748,7 @@ var displayChapterIssues =function(url, task, chapter, indicator){
  
   //resetPath();
   url =url+'&indicator='+indicator; 
-  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart').fadeIn(200).fadeOut(200).fadeIn().focus().select();
+  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   $scope.context.route = url;     
   var element = resolveRoute(url);
   

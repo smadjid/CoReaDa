@@ -116,16 +116,16 @@ if(scope.d3opts.elementType!=='part')
               })
             .on("click", function(d) { 
               if("#"+d.route!=window.location.hash)
-               window.location.hash = "#"+d.route
+               window.location.hash = "#"+d.route+"&tab="+scope.d3opts.tab;
             })
             .on("mouseover", function (d) {
-                  d3.select(this).attr("stroke-width", 3)
+                  d3.select(this).attr("stroke", '#45348A')
                   //d3.select(this).attr("stroke", '#4169E1')
                   //scope.$emit('hover',d.route)
               }) 
               .on("mouseout", function (d) {
-                  d3.select(this).attr("stroke-width", 
-                    function(d){return (d.part==scope.d3opts.elementId)? 4:1})
+                  d3.select(this).attr("stroke", 
+                    function(d){return (d.part==scope.d3opts.elementId)?  '#45348A':'#9E9E9E'})
                   
                  
               })  .append("title") .text(function(d) {return d.title;   });;
@@ -429,7 +429,7 @@ scope.$watch('data', function(){
    
 
 scope.$watch('d3opts', function(){
-  
+  //console.log(scope.d3opts.tab)
   if(typeof scope.data =='undefined') return;
   //  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
      scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)

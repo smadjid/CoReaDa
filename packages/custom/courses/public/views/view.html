@@ -25,11 +25,18 @@
   <div style='margin:0px;margin-bottom:5px;  padding:0;  display: flex; '>
  <span  class='glyphicon glyphicon glyphicon-cog indicatorSelectorButton' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow"  ></span>
  
- <button class='glyphicon glyphicon glyphicon-plus' role='button' ng-click='allFactsDisplay=!allFactsDisplay' style=''>All Facts : {{allFactsDisplay}} </button>
+<div ng-show="indicatorSelectorShow" style='display: inline-flex'>
 
-    <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">
-      
+
+    <select class="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">      
     </select>
+
+     <label class="btn-xs btn-primary active">
+    <input type="checkbox" autocomplete="off" ng-model="allFactsDisplay"> Montrer tous les problème
+  </label>
+
+    </div>
+    
   </div>
   
 
@@ -66,7 +73,7 @@
 
           <div class='col-lg-6 pull-right' >
               <div class='chart-title'><b>{{graphTitle}}</b></div>
-              <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:inspector.indicatorCode}' style="height:0"></d3-chart>
+              <d3-chart data='context.d3' d3opts='{type:"inspector",elementType:inspector.type,elementId:inspector.id,issueCode:inspector.indicatorCode, tab:tabSelect}' style="height:0"></d3-chart>
           </div>
 
           <li class="tab-content tab-stats col-lg-6" ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" >
