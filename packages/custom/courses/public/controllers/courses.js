@@ -229,8 +229,11 @@ else{
       $scope.inspectorChart = false;
       $scope.tabSelect = "stats";
       $scope.currentFact = 0;       
-      $scope.inspectorFacts ={},
-      $scope.inspectorStats ={},
+      $scope.inspectorFacts ={};
+      $scope.inspectorStats ={};
+      $scope.allFactsDisplay=false;
+      $scope.ChaptersFacts = [];
+      $scope.SectionsFacts = [];
 
        $scope.inspector = {'type':'tome', 'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
 
@@ -403,7 +406,6 @@ $scope.showComponentChart=function(param){
     return;
   }
   $scope.inspectorIndicatorCode = param;
-  console.log(param)
   $scope.setInspectorCode(param)
   $scope.inspectorChart = true;
   
@@ -532,7 +534,9 @@ $scope.completeCourseParts =function(){
   
   computeColours();
 
-  updateMainFacts()
+  updateMainFacts();
+  $scope.ChaptersFacts = $scope.MainChaptersFacts;
+  $scope.SectionsFacts = $scope.MainSectionsFacts;
 
 
 }
@@ -695,7 +699,7 @@ var resetPath =function(){
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
   $('#divHoverOverlay').css('visibility','hidden');
-  $('.gly-issue').removeClass('fa fa-exclamation-circle');
+  //$('.gly-issue').removeClass('fa fa-exclamation-circle');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
     
 
@@ -960,7 +964,6 @@ var topChaps={
       'top_sections':topSections
 
   }
-console.log(result)
   return result;
 }
 
@@ -1146,6 +1149,7 @@ var updateMainFacts = function(){
   }) 
 
  $scope.MainChaptersFacts =  mainFacts;
+ $scope.AllChaptersFacts = allFacts;
 
  //////////////// SECTIONS
  $scope.$watch('sectionDisplay', function(newValue, oldValue) {  
@@ -1156,6 +1160,26 @@ else
  
 });
 
+ $scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
+ if(newValue){
+  $scope.ChaptersFacts = $scope.AllChaptersFacts;
+  $scope.SectionsFacts = $scope.AllSectionsFacts;
+
+ }
+ else{
+    $scope.ChaptersFacts = $scope.MainChaptersFacts;
+    $scope.SectionsFacts = $scope.MainSectionsFacts;
+  };
+ 
+
+    setTimeout(function() {
+      console.log($scope.allFactsDisplay);
+     $scope.goHome();
+  findCourseIssues();
+    $scope.$apply();
+  }, 0);
+
+});
 
 allFacts=[]; 
 angular.forEach($scope.course.tomes, function(tome) {
@@ -1193,6 +1217,8 @@ angular.forEach($scope.course.tomes, function(tome) {
   }) 
 
  $scope.MainSectionsFacts = mainFacts;
+ $scope.AllSectionsFacts = allFacts;
+
 }
 
 
@@ -1201,15 +1227,13 @@ var findCourseIssues = function(){
 $scope.inspector={} 
 var facts=[];
   if($scope.sectionDisplay) {
-         facts = $scope.MainSectionsFacts;
-         $scope.sectionDisplay = true;
+         facts = $scope.SectionsFacts;
          $scope.inspectorStats = {'type':'section',
                    'Facts': facts                   
                   };
   }
   else{
-      facts= $scope.MainChaptersFacts;
-      $scope.sectionDisplay = false;
+      facts= $scope.ChaptersFacts;
       $scope.inspectorStats = {'type':'chapter',
                    'Facts': facts                   
                   };
@@ -1223,8 +1247,7 @@ if($scope.inspectorStats.Facts.length>0)
   'Facts':facts
 
   }
-  else
-    $scope.inspectorFacts = {}
+
 $scope.inspector = $scope.inspectorStats;
 
 $scope.factTitleDisplay=true;
@@ -1235,9 +1258,9 @@ var findTomeIssues = function(tome){
 
   var mainIssues = [];
    if($scope.sectionDisplay) 
-       mainIssues = $scope.MainSectionsFacts
+       mainIssues = $scope.SectionsFacts
   else
-    mainIssues = $scope.MainChaptersFacts;
+    mainIssues = $scope.ChaptersFacts;
   
 $scope.factTitleDisplay=true;
   var times =[], users =[], rss =[], rereadings_tx =[], stops =[];
@@ -1280,11 +1303,11 @@ var findChapterIssues = function(chapter, indicator, fact){
   
   var mainIssues = [];
   if($scope.sectionDisplay) {
-      mainIssues= $scope.MainSectionsFacts;
+      mainIssues= $scope.SectionsFacts;
       $scope.factTitleDisplay=true
     }
   else{
-    mainIssues= $scope.MainChaptersFacts;
+    mainIssues= $scope.ChaptersFacts;
     $scope.factTitleDisplay=false;
   }
   $scope.inspectorStats = {'type':'chapter',
@@ -1328,13 +1351,13 @@ if(indicator!=null)
 
 var findSectionIssues = function(section){  
   $scope.factTitleDisplay=false;
- var mainIssues = $scope.MainSectionsFacts;
+ var mainIssues = $scope.SectionsFacts;
   
     $scope.inspectorStats = {'type':'part',
                    'id':section.id,
                    'typeTxt': 'cette section',
                    'indicatorCode':'Actions_tx',
-                   'Facts': section.facts,//mainIssues.filter(function(e){return (e.section==section._id)}), 
+                   'Facts': mainIssues.filter(function(e){return (e.section==section._id)}), 
                     'Indicators' :[
                     /*{'name':'Actions_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur cette section(avec un total de '+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' visites)'},*/
@@ -1785,7 +1808,7 @@ var highlightChapter =function(index, route){
   $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(200).slideDown('fast');
 
-  $(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
+  //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
   }, 0);
   
@@ -1812,7 +1835,7 @@ var highlightPart =function(index, route){
       $('#divOverlay').css('visibility','visible');
     $('#divOverlay').delay(200).slideDown('fast');
 
-$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
+//$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
   
   }, 0);

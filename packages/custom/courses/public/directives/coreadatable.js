@@ -7,7 +7,8 @@ angular.module('mean.courses')
           data:'=',
           indicatorCode:'=',
           issueCode:'=',
-          byParts:'='
+          byParts:'=',
+          allFacts:'='
         },
 
         link: function (scope, element, attrs) {
@@ -120,6 +121,8 @@ var html=[];
 var maxValue = 0;
 var maxPart = 0;
 var maxRoute='#';
+var maxFactId = 0;
+var maxPartRoute="#"
 
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
@@ -138,20 +141,29 @@ var maxRoute='#';
                .on("click", function(d) { window.location.hash = '#'+$(this).attr('data-path')});
 
 
-     
-      allFacts.forEach(function(fact){  
- if(parseFloat(fact.delta) > maxValue)
-      {maxValue = parseFloat(fact.delta); maxPart=part.id;maxRoute=fact.route; }
-
-      var span = $("<span class='fact' role='button'  style='padding:5px'></span>");      
-      span      
-          .attr('data-fact-id',+fact._id )
-          .attr('parent-path',part.route)
-          .addClass("gly-issue");
-
+allFacts.forEach(function(fact){  
+ if(! scope.allFacts){
+      if(parseFloat(fact.delta) > maxValue)
+          {
+            maxValue = parseFloat(fact.delta);
+            maxFactId=fact._id; 
+            maxPart=part.id; 
+            maxPartRoute=part.route; 
+            maxRoute=fact.route; 
+          }
+    }
+  else{
+    $(td)
+      .on("click", function(d) {    
+                   window.location.hash = fact.route;
+                })
+      .append("<span data-fact-id="+fact._id+" parent-path="+part.route+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
       
-      $(td).append(span) 
-    });
+      
+
+  }
+      
+  });
       
    
        html.push(td)  ;
@@ -162,19 +174,14 @@ var maxRoute='#';
 
   if(html.length>0){  
 
-
-  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0])
-  .on("click", function(d) {    
-                 window.location.hash = maxRoute;
-              })
-  .children('.fact')
-      .removeClass("gly-issue")
-      .addClass("fa fa-exclamation-circle")
-          .css('color','#FFEB3B')
-          .css('text-shadow','-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red')
-          .css('padding','0px')      
-          .css('font-size','1.7vw');
-
+if(!scope.allFacts)
+  {
+    $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0])
+    .on("click", function(d) {    
+                   window.location.hash = maxRoute;
+                })
+    .append("<span data-fact-id="+maxFactId+" parent-path="+maxPartRoute+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>")
+  }
 }
 
   $(element).append(html);
@@ -188,6 +195,8 @@ var html=[];
 var maxValue = 0;
 var maxChap = 0;
 var maxRoute='#';
+var maxFactId = 0;
+var maxChapRoute="#";
   scope.chapters.forEach(function(chapter, i) {    
     var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );       
     
@@ -206,23 +215,30 @@ var maxRoute='#';
               });
              
     
-  
-     
-    
     allFacts.forEach(function(fact){  
+
+    if(! scope.allFacts){
       if(parseFloat(fact.delta) > maxValue)
-      {maxValue = parseFloat(fact.delta); maxChap=chapter.id;maxRoute=fact.route; }
+      {
+        maxValue = parseFloat(fact.delta);
+        maxFactId=fact._id; 
+        maxChap=chapter.id; 
+        maxChapRoute=chapter.route; 
+        maxRoute=fact.route; 
 
-      var span = $("<span class='fact' role='button' data-delta='"+fact.delta+"' style='padding:5px'></span>");
-      span      
-          .attr('data-fact-id',+fact._id )
-          .attr('data-delta',fact.delta)
-          .attr('parent-path',chapter.route)
-          .addClass("gly-issue");
+        
+      }
+    }
+    else{
+     
+      $(td)
+      .on("click", function(d) {    
+                   window.location.hash = fact.route;
+                })
+      .append("<span data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
+      
 
-      
-      
-      $(td).append(span) 
+    }
     });
 
    
@@ -232,27 +248,36 @@ var maxRoute='#';
   })
   
   if(html.length>0){  
+if(!scope.allFacts)
 
-
-  $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0])
-  .on("click", function(d) {    
-                 window.location.hash = maxRoute;
-              })
-  .children('.fact')
-      .removeClass("gly-issue")
-      .addClass("fa fa-exclamation-circle")
-          .css('color','#FFEB3B')
-          .css('text-shadow','-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red')
-          .css('padding','0px')      
-          .css('font-size','1.7vw');
+  {
+    $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0])
+    .on("click", function(d) {    
+                   window.location.hash = maxRoute;
+                })
+    .append("<span data-fact-id="+maxFactId+" parent-path="+maxChapRoute+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
+  }
 
 }
   $(element).append(html);
 
 }
 
-
   scope.$watch('data', function(){
+
+  if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
+
+    scope.chapters = [];
+    angular.forEach(scope.data.tomes, function(tome) {
+    angular.forEach(tome.chapters, function(chapter) {     
+      scope.chapters.push( chapter ); 
+    });
+  });   
+         tableIssuesDisplay()
+        }, true);
+
+
+  scope.$watch('allFacts', function(){
 
   if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
 

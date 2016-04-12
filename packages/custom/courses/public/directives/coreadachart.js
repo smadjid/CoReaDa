@@ -21,7 +21,7 @@ var inspectorCharts = function(scope, element){
 
 scope.inspectorRenderBars = function(globalData, classe) { 
 
-
+if(typeof classe =='undefined') return;
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
   
@@ -36,7 +36,7 @@ scope.inspectorRenderBars = function(globalData, classe) {
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
-console.log(classe)
+
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
 //console.log(scope.d3opts.elementType);
           data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
@@ -95,9 +95,8 @@ if(scope.d3opts.elementType!=='part')
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
-            .attr("stroke-width", '1')
-            .attr('stroke', '#4169E1')
-            .attr("fill", function(d) {
+            .attr("stroke-width", '2')
+            .attr('fill', function(d) {
                     var c = '#008cba';
                     var ind = d.indicators;
                     if(typeof ind !="undefined"){
@@ -105,7 +104,11 @@ if(scope.d3opts.elementType!=='part')
                                   if(ind.length>0) c = ind[0].color
                                     else               console.log(d.indicators)
                   }
-                  return (d.part==scope.d3opts.elementId)? '#45348A':c; 
+                  return c; 
+              })
+            .attr('stroke',  function(d) {
+                   
+                  return (d.part==scope.d3opts.elementId)? '#45348A':'#9E9E9E'; 
               })
             .on("click", function(d) { 
               if("#"+d.route!=window.location.hash)
@@ -117,7 +120,7 @@ if(scope.d3opts.elementType!=='part')
                   scope.$emit('hover',d.route)
               }) 
               .on("mouseout", function (d) {
-                  d3.select(this).attr("stroke-width", '1')
+                  d3.select(this).attr("stroke-width", '2')
                   
                   stopHover();
               })  .append("title") .text(function(d) {return d.title;   });;

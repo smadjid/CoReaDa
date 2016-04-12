@@ -715,13 +715,19 @@ html, body {
 }
 
 .chosenPart{  
-   background-color: #45348A!important;   
+     
+   box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+  
+    border: 3px solid #45348A!important;
+   
 }
 
 .gly-issue{
-  color: rgba(218, 218, 59, 0.97);
+ /* color: rgba(218, 218, 59, 0.97);
   font-size: 1.5vw;
-  text-shadow:-1px -1px 0 black,  1px -1px 0 black,    -1px 1px 0 black,     1px 1px 0 black
+  text-shadow:-1px -1px 0 black,  1px -1px 0 black,    -1px 1px 0 black,     1px 1px 0 black*/
 }
 
 /* Table highlighting */
@@ -1663,6 +1669,7 @@ border-radius: 3px;
 .chart-title{
   padding: 0;
     margin: 0;
+    margin-top:10px;
     font-size: 13px;
     text-align: center;
     color: rgb(81, 120, 208);
@@ -1901,7 +1908,7 @@ margin-bottom: -5px!important;
 
 .inspector-title{
   position:absolute!important;
-  right:0;
+  left:0;
   botoom:0;
 
   background: none!important;
@@ -1958,7 +1965,7 @@ margin-bottom: -5px!important;
   border: 0;
   outline: none;
   font-size: 0;
-  text-align: left;
+  text-align: right;
 }
 .coreada-tabs > input {
   position: absolute;

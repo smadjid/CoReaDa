@@ -33,7 +33,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td by-parts='true' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
+        <tr table-td by-parts='true' all-facts='allFactsDisplay' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 
                 <b>{{indicator.label}}</b>
@@ -43,7 +43,7 @@
         
         
        
-       <tr table-td by-parts='false' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
+       <tr table-td by-parts='false' all-facts='allFactsDisplay' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 
                 <b>{{indicator.label}}</b>

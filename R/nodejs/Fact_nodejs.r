@@ -312,7 +312,7 @@ DurationData = PartData[which(PartData$part_type=='partie'),c('part_id','mean.du
   byParts$content="Lecture trop rapide"
   byParts$delta = byParts$speed - median(SpeedData$speed,na.rm = TRUE)
     val = round(byParts$speed / median(SpeedData$speed,na.rm = TRUE) ,2)
-  byParts$description=paste("Cette section comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant", val,"fois supéreire à la vitesse moyenne de lecture des autres section")
+  byParts$description=paste("Cette section comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant", val,"fois supéreiure à la vitesse moyenne de lecture des autres section")
   byParts$suggestion_title="Réviser ou supprimer la section"
   byParts$suggestion_content="La section doit être plus simple à lire/comprendre : 
 - utiliser un vocabulaire plus commun ou directement défini dans le texte, 

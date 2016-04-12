@@ -24,7 +24,7 @@
    </perfect-scrollbar>  
   <div style='margin:0px;margin-bottom:5px;  padding:0;  display: flex; '>
  <span  class='glyphicon glyphicon glyphicon-cog indicatorSelectorButton' role='button' ng-click="indicatorSelectorShow=!indicatorSelectorShow" style='' ></span>
- 
+ <button ng-click='allFactsDisplay=!allFactsDisplay'>All Facts:{{allFactsDisplay}} </button>
     <select class="indicatorSelectorShow" ng-show="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">
       
     </select>
@@ -34,8 +34,7 @@
     <div class="inspector-container">
        <!-- tabs -->
       <div class="coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
-        <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
-        <label for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
+       
         
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
         <label for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-warning-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}  
@@ -53,11 +52,13 @@
           </ul>
 
         </label> 
-        <label class='pull-right inspector-title' ">
+         <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
+        <label for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
+        <label class='inspector-title' ">
           <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-map-marker" aria-hidden="true "></span> 
             <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
              <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span>
-            </label>
+          </label>
         
         <ul>
 
