@@ -20,8 +20,15 @@ var inspectorCharts = function(scope, element){
           .attr('height', height + margin.top + margin.bottom)
 
 scope.inspectorRenderBars = function(globalData, classe) { 
+console.log(scope.d3opts)
+if(typeof classe =='undefined') 
+  {console.log("typeof classes =='undefined'")
+console.log(scope.d3opts)
+        return;}
 
-if(typeof classe =='undefined') return;
+//TODO : this is just a hack part section
+var elementType = scope.d3opts.elementType;
+if(elementType=='section') elementType='part';
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
   
@@ -38,13 +45,13 @@ if(typeof classe =='undefined') return;
 
 
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
-//console.log(scope.d3opts.elementType);
-          data = data.filter(function(e){ return e.elementType == scope.d3opts.elementType });
+//console.log(elementType);
+          data = data.filter(function(e){ return e.elementType == elementType });
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
               
-        if(scope.d3opts.elementType!=='part') 
+        if(elementType!=='part') 
             xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -72,7 +79,7 @@ if(classe=="Readers" | classe=="speed")
               .attr("transform", "translate(0," + height + ")")
               .call(xAxis);
 
-if(scope.d3opts.elementType!=='part') 
+if(elementType!=='part') 
               xax.selectAll("text")   
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
@@ -226,14 +233,14 @@ var width =  $(element[0]).parent().width() - margin.left - margin.right ;
           .attr('class','nodeChart');
 
   var elementID = parseInt(scope.d3opts.elementId);
-  var elementIDTxt = (scope.d3opts.elementType=='chapter')? 'S':'S';
+  var elementIDTxt = (elementType=='chapter')? 'S':'S';
   
 
   
 
  var globalData = $.grep(data, function(e){ return e.type == classe })[0].data;
 
- globalData = globalData.filter(function(e){ return e.elementType == scope.d3opts.elementType });
+ globalData = globalData.filter(function(e){ return e.elementType == elementType });
  
 
  globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
@@ -420,7 +427,9 @@ scope.$watch(function(){
 
 scope.$watch('data', function(){
 
-  if(typeof scope.data =='undefined') return;
+  if(typeof scope.data =='undefined') 
+    {console.log("typeof scope.data =='undefined'")
+        return;}
 
   //if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
     scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
@@ -430,7 +439,9 @@ scope.$watch('data', function(){
 
 scope.$watch('d3opts', function(){
   //console.log(scope.d3opts.tab)
-  if(typeof scope.data =='undefined') return;
+  if(typeof scope.data =='undefined') 
+    {console.log("typeof scope.data =='undefined'")
+        return;}
   //  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
      scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)

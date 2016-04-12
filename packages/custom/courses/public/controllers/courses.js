@@ -31,7 +31,7 @@ $scope.changeTab = function(tab) {
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
  if(typeof $scope.inspector=='undefined') return;
  $scope.showComponentChart($scope.inspector.Facts[newValue].classof);
- $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn().focus().select();
+ $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
  
 });
      
@@ -364,13 +364,13 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
 });
 
-$scope.$watch('tabSelect', function(newValue, oldValue) { console.log(newValue)
+$scope.$watch('tabSelect', function(newValue, oldValue) { 
 $('.inspectorChosenPart').removeClass('inspectorChosenPart');  
  if(newValue == 'facts'){
   $scope.currentFact = 0; 
   $scope.inspector = $scope.inspectorFacts;
   $scope.setInspectorCode($scope.inspector.Facts[0].classof);
-  $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn().focus().select();
+  $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
 
  }
  else{
@@ -387,7 +387,7 @@ $scope.showTab = function(tab){
 
   if(tab == 'facts'){    
     $scope.currentFact = 0;  
-    $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn().focus().select();
+    $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     $scope.tabSelect='facts';
  }
  else{
@@ -1254,6 +1254,7 @@ if($scope.inspectorStats.Facts.length>0)
   $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
+  'indicatorCode':facts[0].issueCode,
   'Facts':facts
 
   }
@@ -1312,6 +1313,7 @@ if($scope.inspectorStats.Facts.length>0)
 $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
+  'indicatorCode':facts[0].issueCode,
   'Facts':$scope.inspectorStats.Facts
 
   }
@@ -1372,6 +1374,7 @@ if(indicator!=null)
    $scope.inspectorFacts = {
     'id':$scope.inspectorStats.Facts[0].partId,
     'type':$scope.inspectorStats.Facts[0].partType,
+    'indicatorCode':$scope.inspectorStats.Facts[0].issueCode,
     'Facts':$scope.inspectorStats.Facts }
     else $scope.inspectorFacts = {}
 
@@ -1418,13 +1421,13 @@ if(($scope.inspectorStats.Facts.length>0) & (tab=='facts')){
  $scope.inspectorFacts = {
   'id':$scope.inspectorStats.Facts[0].partId,
   'type':$scope.inspectorStats.Facts[0].partType,
+  'indicatorCode':$scope.inspectorStats.Facts[0].issueCode,
   'Facts':$scope.inspectorStats.Facts
   }
   $scope.inspector = $scope.inspectorFacts;
 $scope.showTab("facts");
 }
   else{
-      $scope.inspectorFacts = {};
       $scope.inspector = $scope.inspectorStats;
       $scope.showTab("stats");
   }
@@ -2204,7 +2207,7 @@ var element = resolveRoute(fact.route);
 
   window.setTimeout(function() {
            $("#taskEditor").trigger( "click" );
-           $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
+           $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
        }, 0);
 
 
@@ -2221,7 +2224,7 @@ var element = resolveRoute($($event.currentTarget).attr('href'));
   $scope.context.route = $($event.currentTarget).attr('href');
   
 window.setTimeout(function() {
-             $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn().focus().select();
+             $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
         }, 0);
 
 }
