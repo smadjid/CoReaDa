@@ -1163,7 +1163,7 @@ var updateMainFacts = function(){
 else 
   $scope.inspector.type='chapter';
 
-$scope.$apply();
+
  
 });
 
