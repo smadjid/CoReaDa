@@ -1745,7 +1745,7 @@ var displayChapterIssues =function(url, task, chapter, indicator){
  
   //resetPath();
   url =url+'&indicator='+indicator; 
-  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart').fadeIn(200).fadeOut(200).fadeIn().focus().select();
   $scope.context.route = url;     
   var element = resolveRoute(url);
   

@@ -95,7 +95,11 @@ if(scope.d3opts.elementType!=='part')
             .attr("class", "bar")
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
-            .attr("stroke-width", '2')
+            .attr("stroke-width", function(d) {
+               return (d.part==scope.d3opts.elementId)? 4:1;
+            }
+
+              )
             .attr('fill', function(d) {
                     var c = '#008cba';
                     var ind = d.indicators;
@@ -115,14 +119,15 @@ if(scope.d3opts.elementType!=='part')
                window.location.hash = "#"+d.route
             })
             .on("mouseover", function (d) {
-                  d3.select(this).attr("stroke-width", '5')
+                  d3.select(this).attr("stroke-width", 3)
                   //d3.select(this).attr("stroke", '#4169E1')
                   //scope.$emit('hover',d.route)
               }) 
               .on("mouseout", function (d) {
-                  d3.select(this).attr("stroke-width", '2')
+                  d3.select(this).attr("stroke-width", 
+                    function(d){return (d.part==scope.d3opts.elementId)? 4:1})
                   
-                  stopHover();
+                 
               })  .append("title") .text(function(d) {return d.title;   });;
 
           //Animate bars

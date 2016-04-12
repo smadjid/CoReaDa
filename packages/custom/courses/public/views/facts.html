@@ -1,9 +1,20 @@
 <div class="fact-div"  ng-repeat="fact in inspector.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
-<h4><span class="fa fa-exclamation-circle" style="padding: 3px; background-color: red;color:yellow"></span>
-    <em ng-show='factTitleDisplay'>{{fact.parentTitle}}</em> {{fact.name}} <button class="btn btn-success btn-xs pull-right" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-remove" ></span> Ce n'est pas/plus un problème</button>  </h4>
-  <p style='text-align:justify; width:65%; font-size:14px'>{{fact.description}}</p>
-<hr/>
-  <h5> <em>Suggestion</em>: {{fact.suggestion_title}} <button class="btn btn-primary btn-xs  pull-right" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span> Définir comme tâche</button></h5>
+<h4><span class="glyphicon glyphicon-exclamation-sign" style="padding: 3px; "></span>
+ Problème {{currentFact + 1}}/{{inspector.Facts.length}} : {{fact.name}}  <em ng-show='factTitleDisplay'>sur {{fact.parentTitle}}</em>
+       </h4>
+  <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
+
+  <h5> <u>Suggestion</u>: {{fact.suggestion_title}} </h5>
   <p style='text-align:justify'>{{fact.suggestion_content}}</p>
+
+  <hr/>
+  
+   <div class="btn-group btn-actions"  align="center">
+  <button type="button" class="btn btn-xs btn-primary" ng-class="DisablePrevPage()" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left" ></span> Précédent</button>
+  <button type="button" class="btn btn-xs btn-primary" ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-remove" ></span> Ce n'est pas/plus un problème</button>
+  <button type="button" class="btn btn-xs btn-primary" ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span> Définir une tâche</button>
+  <button type="button" class="btn btn-xs btn-primary" ng-class="DisableNextPage()" ng-click="nextPage()"><span>Suivant</span> <span class="glyphicon glyphicon-chevron-right" ></span> </button>
+</div>
+
 </div>
 

@@ -296,9 +296,8 @@ ul.alert-dropdown {
 }
 
 .part_index{
-  min-width:10px!important;
-  max-width:10px!important;
-  max-width:10px!important;
+  min-width:30px!important;
+  
 
 }
 .highlight-table {  
@@ -1699,8 +1698,15 @@ border-radius: 3px;
     margin-bottom: 5px;
 }
 
-.fact-div  h5{
-    color: #0079A1;
+.btn-actions
+{
+  width: 100%
+}
+.btn-actions .btn-primary 
+{
+  
+    margin: 0 2px!important;  
+  
 }
 
 .tab-pane{
