@@ -1060,7 +1060,7 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
 var goHome =function(){ 
 
   window.location.hash = '#';
-  $scope.tabSelect='stats';
+  $scope.tabSelect='facts';
   
 }
 $scope.goHome =function(){
@@ -1162,6 +1162,8 @@ var updateMainFacts = function(){
   $scope.inspector.type='part'
 else 
   $scope.inspector.type='chapter';
+
+$scope.$apply();
  
 });
 

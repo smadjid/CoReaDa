@@ -115,9 +115,9 @@ if(scope.d3opts.elementType!=='part')
                window.location.hash = "#"+d.route
             })
             .on("mouseover", function (d) {
-                  d3.select(this).attr("stroke-width", '3')
-                  d3.select(this).attr("stroke", '#4169E1')
-                  scope.$emit('hover',d.route)
+                 // d3.select(this).attr("stroke-width", '3')
+                  //d3.select(this).attr("stroke", '#4169E1')
+                  //scope.$emit('hover',d.route)
               }) 
               .on("mouseout", function (d) {
                   d3.select(this).attr("stroke-width", '2')
