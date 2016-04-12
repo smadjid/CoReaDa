@@ -28,8 +28,10 @@ $scope.changeTab = function(tab) {
  $scope.itemsPerPage = 1;
  
  $scope.$watch('currentFact', function(newValue, oldValue) {  
+  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
  if(typeof $scope.inspector=='undefined') return;
- $scope.showComponentChart($scope.inspector.Facts[newValue].classof)
+ $scope.showComponentChart($scope.inspector.Facts[newValue].classof);
+ $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart');
  
 });
      
@@ -69,7 +71,9 @@ $scope.changeTab = function(tab) {
   $scope.nextPage = function() {
      
     if ($scope.currentFact < $scope.pageCount()) {
+
       $scope.currentFact++;
+
     }
   };
 
@@ -223,11 +227,11 @@ else{
       $scope.topElementSelector ='sections',
       $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';      
-      $scope.inspectorIndicatorCode = 'Actions_tx';
+      //$scope.inspectorIndicatorCode = 'Actions_tx';
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
-      $scope.tabSelect = "stats";
+      $scope.tabSelect = "facts";
       $scope.currentFact = 0;       
       $scope.inspectorFacts ={};
       $scope.inspectorStats ={};
@@ -360,18 +364,17 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
 });
 
-$scope.$watch('tabSelect', function(newValue, oldValue) {  
+$scope.$watch('tabSelect', function(newValue, oldValue) { 
+$('.inspectorChosenPart').removeClass('inspectorChosenPart');  
  if(newValue == 'facts'){
   $scope.currentFact = 0; 
   $scope.inspector = $scope.inspectorFacts;
   $scope.setInspectorCode($scope.inspector.Facts[0].classof);
-
-
+  $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart');
 
  }
  else{
   $scope.inspector = $scope.inspectorStats;
-
   $scope.setInspectorCode($scope.selectedIndicators[0].code);
  }
 
@@ -380,12 +383,14 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
 
 $scope.showTab = function(tab){
   $("input[value='"+tab+"']").prop('checked', true);
-  if(tab == 'facts'){
-  $scope.currentFact = 0; 
+  $('.inspectorChosenPart').removeClass('inspectorChosenPart'); 
 
+  if(tab == 'facts'){    
+    $scope.currentFact = 0; 
+    $(".fact[data-fact-id='"+$scope.inspector.Facts[0]._id+"']").parent().addClass('inspectorChosenPart');
  }
  else{
-  $scope.setInspectorCode($scope.selectedIndicators[0].code)
+    $scope.setInspectorCode($scope.selectedIndicators[0].code);
  }
   //$scope.factsPaginator = (tab=="fact")?true:false;
   
@@ -452,12 +457,12 @@ $scope.setInspectorCode = function(code){
 
     if($('.course_title_top').length<1)
         $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
-
+reloadURL(); 
        window.setTimeout(function() {
            loadContext(); 
           $('table').show();
           reloadURL(); 
-
+          $scope.$apply();
         }, 0);
 
 
@@ -1250,6 +1255,17 @@ if($scope.inspectorStats.Facts.length>0)
 
 $scope.inspector = $scope.inspectorStats;
 
+if($scope.inspectorStats.Facts.length>0){
+ 
+  $scope.inspector = $scope.inspectorFacts;
+$scope.showTab("facts");
+}
+  else{
+     
+      $scope.inspector = $scope.inspectorStats;
+      $scope.showTab("stats");
+  }
+
 $scope.factTitleDisplay=true;
 
 }
@@ -1297,6 +1313,17 @@ $scope.inspectorFacts={
   else
     $scope.inspectorFacts = {}
 $scope.inspector = $scope.inspectorStats;
+
+if($scope.inspectorStats.Facts.length>0){
+ 
+  $scope.inspector = $scope.inspectorFacts;
+$scope.showTab("facts");
+}
+  else{
+     
+      $scope.inspector = $scope.inspectorStats;
+      $scope.showTab("stats");
+  }
 }
 
 var findChapterIssues = function(chapter, indicator, fact){ 
@@ -1344,7 +1371,16 @@ if(indicator!=null)
     else $scope.inspectorFacts = {}
 
 
-  $scope.inspector = $scope.inspectorStats;
+ if($scope.inspectorStats.Facts.length>0){
+ 
+  $scope.inspector = $scope.inspectorFacts;
+$scope.showTab("facts");
+}
+  else{
+     
+      $scope.inspector = $scope.inspectorStats;
+      $scope.showTab("stats");
+  }
 
 
 }
@@ -1373,16 +1409,21 @@ var findSectionIssues = function(section){
                     
                   };
                   
-if($scope.inspectorStats.Facts.length>0)
+if($scope.inspectorStats.Facts.length>0){
  $scope.inspectorFacts = {
   'id':$scope.inspectorStats.Facts[0].partId,
   'type':$scope.inspectorStats.Facts[0].partType,
   'Facts':$scope.inspectorStats.Facts
   }
-  else
-    $scope.inspectorFacts = {}
-
-  $scope.inspector = $scope.inspectorStats;
+  $scope.inspector = $scope.inspectorFacts;
+$scope.showTab("facts");
+}
+  else{
+      $scope.inspectorFacts = {};
+      $scope.inspector = $scope.inspectorStats;
+      $scope.showTab("stats");
+  }
+  
 
 }
 
@@ -1403,6 +1444,8 @@ switch(granularity){
     break
 
   }
+
+
 
 }
 
@@ -1461,7 +1504,7 @@ var loadContext = function(){
         $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
         computeGranuleFacts('course');
-        $scope.showTab("stats");
+        
         
     }
     else
@@ -1473,7 +1516,7 @@ var loadContext = function(){
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
       displayTomeInfos(partElt, task);
-      $scope.showTab("stats");
+      
       ;
     }
     else
@@ -1487,7 +1530,7 @@ var loadContext = function(){
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleFacts('chapter', chap, fact.classof, fact.classof);
           displayChapterIssues(chap.route, task, chap, indicator);
-          $scope.showTab("facts");
+          
           
         }
         else
@@ -1498,7 +1541,7 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           displayChapterInfos(partElt, task);
-          $scope.showTab("stats");
+          
           
         }
         else{
@@ -1512,7 +1555,7 @@ var loadContext = function(){
           displayChapterIssues(chap.route, task, chap, indicator);
           $scope.inspectorIndicatorCode = indicator;
           $scope.setInspectorCode(indicator);
-          $scope.showTab("stats");
+          
         }
       }
       else{
@@ -1525,7 +1568,7 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           $scope.inspectorDisplaySrc='inspector'; 
           displayPartIssues(part.route, task, part, indicator);
-          $scope.showTab("facts");
+          
           
         }
         else
@@ -1537,7 +1580,7 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           displayPartInfos(partElt, task);
-          $scope.showTab("stats");
+          
           
         }
         else{
@@ -1551,7 +1594,7 @@ var loadContext = function(){
           displayPartIssues(part.route, task, part, indicator);
           $scope.inspectorIndicatorCode = indicator;
           $scope.setInspectorCode(indicator)
-          $scope.showTab("stats");
+          
           
 
         }
@@ -1701,7 +1744,6 @@ var displayChapterIssues =function(url, task, chapter, indicator){
   //resetPath();
   url =url+'&indicator='+indicator; 
   $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
-  $('.td_issue[data-path ="'+url+'"]').hide;
   $scope.context.route = url;     
   var element = resolveRoute(url);
   
@@ -1766,7 +1808,7 @@ var highlightTome =function(index){
     var rowTop = $('.tomes-header> th:nth-child('+index+')').offset();
   var topTop = rowTop.top;
   var left = rowTop.left;
-  $('.tomes-header> th:nth-child('+index+')').addClass('chosenPart')
+  //$('.tomes-header> th:nth-child('+index+')').addClass('chosenPart')
 
   var oneWidth = $('.tomes-header> th:nth-child('+index+')').innerWidth();
   var height = $('.data-table').innerHeight() ;
@@ -1795,7 +1837,7 @@ var highlightChapter =function(index, route){
   var left = rowTop.left;
 
   var oneWidth = $('.chapters-header> th:nth-child('+index+')').innerWidth();
-  $('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
+  //$('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
   var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
@@ -1824,7 +1866,7 @@ var highlightPart =function(index, route){
     var left = rowTop.left;
 
     var oneWidth = $('.parts-header > th:nth-child('+index+')').innerWidth();
-    $('.parts-header > th:nth-child('+index+')').addClass('chosenPart')
+    //$('.parts-header > th:nth-child('+index+')').addClass('chosenPart')
     var height = $('.data-table').innerHeight() - $('.chapters-header th:first').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
