@@ -2349,9 +2349,10 @@ var ComputeGlobalVisuData =function(){
   visuData.push({type:'part_readers_rereaders',data:factChart(-1,'part_readers_rereaders')});  
   visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
   visuData.push({type:'rupture_tx',data:factChart(-1,'rupture_tx')});  
+  visuData.push({type:'norecovery_tx',data:factChart(-1,'norecovery_tx')});
   /*visuData.push({type:'recovery',data:factChart(-1,'recovery')});    
   visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
-  visuData.push({type:'norecovery_tx',data:factChart(-1,'norecovery_tx')});
+  
   visuData.push({type:'next_recovery_tx',data:factChart(-1,'next_recovery')});    
   visuData.push({type:'direct_recovery_tx',data:factChart(-1,'direct_recovery')});    
   visuData.push({type:'prev_recovery_tx',data:factChart(-1,'prev_recovery')});    
