@@ -1700,14 +1700,23 @@ border-radius: 3px;
 
 .btn-actions
 {
-  width: 100%
+  width: 100%;
+  padding-left: 5%
 }
-.btn-actions .btn-primary 
-{
-  
+.btn-actions button, .btn-actions button.enabled-page,.btn-actions button.enabled-page span
+{  
     margin: 0 2px!important;  
-  
+    background: rgb(47, 82, 111)!important; 
+    color:#90CAF9!important
 }
+.btn-actions button:hover,.btn-actions button.enabled-page:hover, 
+.btn-actions button.enabled-page span:hover
+{  
+    
+    color:white!important;
+    background:rgb(21, 44, 64)!important
+}
+
 
 .tab-pane{
   
