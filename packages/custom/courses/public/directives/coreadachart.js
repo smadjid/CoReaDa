@@ -20,7 +20,6 @@ var inspectorCharts = function(scope, element){
           .attr('height', height + margin.top + margin.bottom)
 
 scope.inspectorRenderBars = function(globalData, classe) { 
-console.log(scope.d3opts)
 if(typeof classe =='undefined') 
   {console.log("typeof classes =='undefined'")
 console.log(scope.d3opts)
@@ -45,7 +44,6 @@ if(elementType=='section') elementType='part';
 
 
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
-//console.log(elementType);
           data = data.filter(function(e){ return e.elementType == elementType });
         var xAxis = d3.svg.axis()
             .scale(x)

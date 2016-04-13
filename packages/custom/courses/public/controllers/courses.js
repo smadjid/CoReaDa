@@ -30,8 +30,10 @@ $scope.changeTab = function(tab) {
  $scope.$watch('currentFact', function(newValue, oldValue) {  
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
  if(typeof $scope.inspector=='undefined') return;
- $scope.showComponentChart($scope.inspector.Facts[newValue].classof);
- $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+ if($scope.inspectorFacts.Facts.length>0){
+    $scope.showComponentChart($scope.inspector.Facts[newValue].classof);
+    $(".fact[data-fact-id='"+$scope.inspector.Facts[newValue]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+  }
  
 });
      
@@ -232,12 +234,12 @@ else{
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
       $scope.tabSelect = "facts";
-      $scope.currentFact = 0;       
-      $scope.inspectorFacts ={};
-      $scope.inspectorStats ={};
+      $scope.currentFact = 0;  
       $scope.allFactsDisplay=false;
       $scope.ChaptersFacts = [];
       $scope.SectionsFacts = [];
+      $scope.inspectorFacts={'Facts':[]};
+      $scope.inspectorStats ={'Facts':[]};
 
        $scope.inspector = {'type':'tome', 'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
 
@@ -366,7 +368,7 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
 
 $scope.$watch('tabSelect', function(newValue, oldValue) { 
 $('.inspectorChosenPart').removeClass('inspectorChosenPart');  
- if(newValue == 'facts'){
+ if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
   $scope.currentFact = 0; 
   $scope.inspector = $scope.inspectorFacts;
   $scope.setInspectorCode($scope.inspector.Facts[0].classof);

@@ -31,9 +31,11 @@
     <select class="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">      
     </select>
 
-     <label class="btn-xs btn-primary active">
-    <input type="checkbox" autocomplete="off" ng-model="allFactsDisplay"> Montrer tous les problème
-  </label>
+<div style='padding:3px'>
+     <input type="checkbox" id="2" class="mycheckbox" ng-model="allFactsDisplay"  />
+    <label role='button'  for="2">Montrer tous les problème</label>
+  </div>
+ 
 
     </div>
 
@@ -61,6 +63,8 @@
           </ul>
 
         </label> 
+    
+
          <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
         <label for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
         <label class='inspector-title' ">
