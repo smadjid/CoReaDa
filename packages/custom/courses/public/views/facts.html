@@ -6,16 +6,16 @@
        </h4>
   <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
 
-  <h5> <u>Suggestion</u>: {{fact.suggestion_title}} </h5>
-  <p style='text-align:justify'>{{fact.suggestion_content}}</p>
+  <p  style='font-size:14px;     margin-bottom: 5px'> <u>Suggestion</u>: {{fact.suggestion_title}} </p>
+  <p style='text-align:justify; font-size:14px'>{{fact.suggestion_content}}</p>
 
   <hr/>
   
    <div class="btn-group btn-actions"  align="center">
-  <button type="button" class="btn btn-xs " ng-class="DisablePrevPage()" ng-click="prevPage()"><span class="glyphicon glyphicon-chevron-left" ></span> Précédent</button>
-  <button type="button" class="btn btn-xs "  ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-remove" ></span> Ce n'est pas/plus un problème</button>
-  <button type="button" class="btn btn-xs " ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span> Définir une tâche</button>
-  <button type="button" class="btn btn-xs " ng-class="DisableNextPage()" ng-click="nextPage()"><span>Suivant</span> <span class="glyphicon glyphicon-chevron-right" ></span> </button>
+  <button type="button" class="btn  " ng-class="DisablePrevPage()" ng-click="prevPage()"><span class="glyphicon glyphicon-backward" ></span> Précédent</button>
+  <button type="button" class="btn  "  ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-remove" ></span> Ce n'est pas/plus un problème</button>
+  <button type="button" class="btn  " ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span> Créer une tâche pour ce problème</button>
+  <button type="button" class="btn  " ng-class="DisableNextPage()" ng-click="nextPage()"><span>Suivant</span> <span class="glyphicon glyphicon-forward" ></span></button>
 </div>
 
 </div>

@@ -240,6 +240,7 @@ else{
       $scope.SectionsFacts = [];
       $scope.inspectorFacts={'Facts':[]};
       $scope.inspectorStats ={'Facts':[]};
+      $scope.courseDisplay = true;
 
        $scope.inspector = {'type':'tome', 'Facts':[],'selectedFact':{},'Data':[], 'indicatorCode':'Actions_tx'}
 
@@ -1510,7 +1511,7 @@ var loadContext = function(){
 
   if(tome==-1) {        
     
-        $scope.context.taskText ='(nouvelle tâche globale)';
+        $scope.context.taskText ='(nouvelle tâche)';
         $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
         computeGranuleFacts('course',tab);
@@ -1760,6 +1761,7 @@ var displayChapterIssues =function(url, task, chapter, indicator){
       
  
      $scope.context.inspector_title = chapter.title;
+     $scope.courseDisplay = false;     
      $scope.context.url = chapter.url
 
   showTasksAndFacts(element, indicator, task);
@@ -1776,6 +1778,7 @@ var displayPartIssues =function(url, task, part, indicator){
   var element = resolveRoute(url);
   
      $scope.context.inspector_title = "Section : "+ part.title;//+' - '+nb+ txt ;
+     $scope.courseDisplay = false;
      $scope.context.url = part.url;
 
 
@@ -1970,6 +1973,7 @@ $scope.observedElt ={
 */
 
 $scope.context.inspector_title = "Section : "+element.title;
+$scope.courseDisplay = false;
 $scope.context.url = element.url;
 
 $scope.inspectorDisplaySrc='inspector';
@@ -1985,6 +1989,7 @@ var displayCourseInfos =function(indicator, task){
   resetPath(); 
   //if(indicator==='ALL')
   $scope.context.inspector_title = "Cours : "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
+  $scope.courseDisplay = true;
   $scope.context.url = $scope.course.url;
 
     
@@ -2047,6 +2052,7 @@ var displayTomeInfos =function(partElt, task){
 
 
 $scope.context.inspector_title = "Partie : "+element.title
+$scope.courseDisplay = false;
 
 $scope.context.url = element.url
 $scope.inspectorDisplaySrc='inspector'
@@ -2086,6 +2092,7 @@ var displayChapterInfos =function(partElt, task){
 
 
 $scope.context.inspector_title = "Chapitre : "+element.title;
+$scope.courseDisplay = false;
 $scope.context.url = element.url;
 /*
 

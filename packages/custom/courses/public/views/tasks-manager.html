@@ -3,8 +3,8 @@
 			<i class="panel-title-icon fa fa-tasks"></i>
 			<span class="panel-title">Tâches</span>
 			
-<div id="taskEditor" editable-text="formData" onshow="openEditableArea(true)" onhide="openEditableArea(false)" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()">
-<span id='newTaskSpan'	class="glyphicon glyphicon-plus"></span> 
+<div id="taskEditor" editable-text="formData" onshow="openEditableArea(true)" onhide="openEditableArea(false)" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()" title='Cliquer ici pour ajouter une nouvelle tâche'>
+<span id='newTaskSpan'	  class="glyphicon glyphicon-plus"></span> 
 				{{formData ||  context.taskText  }}
 
 		</div>
@@ -37,9 +37,9 @@
 			<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" aria-hidden="true" ng-click="rowform.$cancel()"></a>
 		</form>
 			<div class="buttons" ng-show="!rowform.$visible">
-				<a role="button" class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
-				<a role="button" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="markTaskDone(task.route, $index)"></a>
-				<a role="button" class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>
+				<a role="button" title='Modifier cette tâche' class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
+				<a role="button" title='Marquer cette tâche comme étant faite'  class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="markTaskDone(task.route, $index)"></a>
+				<a role="button" title='Supprimer cette tâche'  class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>
 			</div>
 		</td>
 	</tr>
