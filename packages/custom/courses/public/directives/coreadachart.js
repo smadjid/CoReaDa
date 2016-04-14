@@ -21,8 +21,8 @@ var inspectorCharts = function(scope, element){
 
 scope.inspectorRenderBars = function(globalData, classe) { 
 if(typeof classe =='undefined') 
-  {console.log("typeof classes =='undefined'")
-console.log(scope.d3opts)
+  {//console.log("typeof classes =='undefined'")
+//console.log(scope.d3opts)
         return;}
 
 //TODO : this is just a hack part section
@@ -97,11 +97,13 @@ if(elementType!=='part')
           var bars = svg.selectAll(".bar").data(data);
           bars.enter()
             .append("rect")
-            .attr("class", "bar")
+            .attr("class", function(d){
+              return (d.part==scope.d3opts.elementId)? 'bar selected':'bar'; 
+            })
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
             .attr("stroke-width", function(d) {
-               return (d.part==scope.d3opts.elementId)? 4:1;
+               return (d.part==scope.d3opts.elementId)? 6:1;
             }
 
               )
@@ -426,7 +428,8 @@ scope.$watch(function(){
 scope.$watch('data', function(){
 
   if(typeof scope.data =='undefined') 
-    {console.log("typeof scope.data =='undefined'")
+    {
+      //console.log("typeof scope.data =='undefined'")
         return;}
 
   //if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
@@ -438,7 +441,7 @@ scope.$watch('data', function(){
 scope.$watch('d3opts', function(){
   //console.log(scope.d3opts.tab)
   if(typeof scope.data =='undefined') 
-    {console.log("typeof scope.data =='undefined'")
+    {//console.log("typeof scope.data =='undefined'")
         return;}
   //  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
      scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)

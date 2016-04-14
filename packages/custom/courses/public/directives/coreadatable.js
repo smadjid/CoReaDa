@@ -8,7 +8,8 @@ angular.module('mean.courses')
           indicatorCode:'=',
           issueCode:'=',
           byParts:'=',
-          allFacts:'='
+          allFacts:'=',
+          selectedFact:'='
         },
 
         link: function (scope, element, attrs) {

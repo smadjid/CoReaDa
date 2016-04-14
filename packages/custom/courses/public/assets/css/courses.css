@@ -732,7 +732,7 @@ html, body {
   
 
   border: 5px solid #45348A!important;
-  animation: pulse 2s infinite;
+  animation: pulse 4s infinite;
 
  box-shadow: 0 0 0 1px #45348A, 0 0 0 3px white inset!important;
 
@@ -759,15 +759,24 @@ html, body {
     padding:1px;
   }
 
-  50% {
+  25% {
     border-color: white;
   }
 
+   50% {
+    border-color: rgba(69, 52, 138, 1);
+  }
+
+  75% {
+    border-color: white;
+  }
   100% {
     border-color: rgba(69, 52, 138, 1);
     padding:1px;
   }
 }
+
+
 .gly-issue{
  /* color: rgba(218, 218, 59, 0.97);
   font-size: 1.5vw;
@@ -2839,4 +2848,42 @@ tr.ng-show {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+}
+
+.dropdown-menu{
+  border: solid 1px #9E9E9E;
+  box-shadow:5px 5px 5px #463F3F; 
+}
+
+svg .bar.selected {
+
+  animation: pulseBars 4s infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
+@keyframes pulseBars {
+  0% {
+    stroke: rgba(69, 52, 138, 1);
+    padding:1px;
+  }
+
+  25% {
+    stroke: rgba(69, 52, 138, .1);
+  }
+
+   50% {
+    stroke: rgba(69, 52, 138, 1);
+  }
+
+  75% {
+    stroke: rgba(69, 52, 138, .1);
+  }
+  100% {
+    stroke: rgba(69, 52, 138, 1);
+    padding:1px;
+  }
 }
