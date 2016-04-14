@@ -2764,7 +2764,7 @@ margin-left: 2px
   padding:0;
   margin-top:0px;
   margin-left:5px;
-  padding-right: 20px;
+  padding-right: 5px;
  
 }
 
@@ -2821,10 +2821,8 @@ tr.ng-show {
   padding: 3 0px;
 }
 
-input[type="checkbox"].mycheckbox {
-    display: none;
-}
-input[type="checkbox"].mycheckbox + label {
+
+.mycheckbox  {
     display: inline;
     position: relative;
     background-color: #b94a48;
@@ -2841,11 +2839,4 @@ input[type="checkbox"].mycheckbox + label {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-}
-input[type="checkbox"].mycheckbox:checked + label {
-    background-color: #468847;
-}
-
-input[type="checkbox"].mycheckbox:disabled + label {
-    opacity: 0.5;
 }
