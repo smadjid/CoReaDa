@@ -732,7 +732,8 @@ html, body {
   
 
   border: 5px solid #45348A!important;
-  animation: pulse 4s infinite;
+  animation: scales 2s linear infinite;
+  
 
  box-shadow: 0 0 0 1px #45348A, 0 0 0 3px white inset!important;
 
@@ -753,6 +754,32 @@ html, body {
   80% { opacity: 0.5; }
 }
 
+@keyframes scales {
+  0% {
+    opacity: .7;
+    transform: scale(1.0);
+    border-color: rgba(69, 52, 138, 1);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.2);
+    border-color: red
+  }
+  50% {
+    opacity: 1;
+     border-color: border-color: rgba(69, 52, 138, 1);
+  }
+    75% {
+   opacity: 1;
+   transform: scale(1.2);
+     border-color: red;
+  }
+    100% {
+    opacity: .7;
+    transform: scale(1.0);
+     border-color: border-color: rgba(69, 52, 138, 1);
+  }
+}
 @keyframes pulse {
   0% {
     border-color: rgba(69, 52, 138, 1);
