@@ -34,7 +34,7 @@ $scope.changeTab = function(tab) {
 
     var fact = $scope.inspectorFacts.Facts[newValue];
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-    $scope.inspectorFacts.id = fact.id;
+    $scope.inspectorFacts.id = fact.partId;
     $scope.inspectorFacts.indicatorCode = fact.issueCode;
 
 
@@ -1337,7 +1337,6 @@ if(facts.length>0)
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
       $scope.tabSelect='facts';
     var fact = $scope.inspectorFacts.Facts[0];
-    alert($scope.inspectorFacts.Facts.length)
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
@@ -1470,6 +1469,7 @@ switch(granularity){
   break;
   case 'tome':
     findTomeIssues(element, indicator, fact, tab);
+    console.log(element)
     break;
   case 'chapter':
     findChapterIssues(element, indicator, fact, tab);
@@ -1547,7 +1547,7 @@ var loadContext = function(){
      if(chap ==-1) {
        task = components.hasOwnProperty('taskid')?$.grep(tome.todos, function(e){ return  e._id == components.taskid })[0]:null;
 
-       computeGranuleFacts('tome',null,null, tome,tab);
+       computeGranuleFacts('tome',tome,null, null,tab);
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
