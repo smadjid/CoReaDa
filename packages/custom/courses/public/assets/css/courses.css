@@ -1186,6 +1186,23 @@ float: left;
 }
 
 
+.course_tour_top, .course_tour_top:focus{
+  font-size: 18px;
+float: left;
+    padding: 12px 15px;
+    line-height: 21px;
+    height: 45px;
+
+    font-family: 'Halflings';
+    
+    -webkit-font-smoothing: antialiased;
+    color:rgb(207, 210, 218);
+}
+.course_tour_top:hover{
+ color:white;
+}
+
+
 
 .course_li>li {
     display: block;
@@ -2913,4 +2930,9 @@ svg .bar.selected {
     stroke: rgba(69, 52, 138, 1);
     padding:1px;
   }
+}
+
+
+.tour-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
 }

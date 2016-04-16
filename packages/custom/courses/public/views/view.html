@@ -1,4 +1,14 @@
 <section data-ng-controller="CoursesController" data-ng-init="findOne()">
+
+<div ng-intro-options="tour.IntroOptions" ng-intro-method="CallMe"
+         ng-intro-oncomplete="tour.CompletedEvent" ng-intro-onexit="tour.ExitEvent"
+         ng-intro-onchange="tour.ChangeEvent" ng-intro-onbeforechange="tour.BeforeChangeEvent"
+         ng-intro-onafterchange="tour.AfterChangeEvent"
+         ng-intro-autostart="tour.ShouldAutoStart"></div>
+
+
+
+
 <div ng-show="dataLoading" id="floatingCirclesG">
 <div class="f_circleG" id="frotateG_01"></div>
   <div class="f_circleG" id="frotateG_02"></div>
@@ -25,7 +35,7 @@
   <div style='margin:0px;margin-bottom:5px;  padding:0;  display: flex; '>
  
 
- <div class="btn-group" uib-dropdown is-open="status.isopen">
+ <div id='tableConfg' class="btn-group" uib-dropdown is-open="status.isopen">
       <button id="single-button" type="button" class="glyphicon glyphicon glyphicon-cog indicatorSelectorButton" uib-dropdown-toggle ng-disabled="disabled"></span>
       </button>
       <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
@@ -36,6 +46,7 @@
                <li class="divider"></li>
         <li role="menuitem" ng-click="indicatorSelectorShow=!indicatorSelectorShow"><a href="#">
 {{indicatorSelectorShow ? "Cacher le Sélecteur d'Indicateurs" : "Afficher le Sélecteur d'Indicateurs"}}</a></li>
+        <li role="menuitem" ng-click="allIndicatorSelectorShow=!allIndicatorSelectorShow"><a href="#">Afficher tous les indicateurs</a></li>
       </ul>
     </div>
  
@@ -116,7 +127,7 @@
 </div>
   </div>  
 
-
+<span  id='tourStarter'   role="button" ng-click ="CallMe()"><i class="glyphicon glyphicon-info-sign"></i> Guided Tour</span>
 </section>
 
 

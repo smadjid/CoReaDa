@@ -248,6 +248,8 @@ else{
       $scope.inspectorFacts={'Facts':[], 'type':'tome', 'selectedFact':'0'};
       $scope.inspectorStats ={'Facts':[], 'indicatorCode':'Actions_tx', 'type':'tome'};
       $scope.courseDisplay = true;
+      $scope.indicatorSelectorShow = false;
+      $scope.allIndicatorSelectorShow = false;
 
        $scope.inspector = {'type':'tome', 'selectedFact':{},'Data':[]}
 
@@ -374,6 +376,12 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
 });
 
+$scope.$watch('allIndicatorSelectorShow', function(newValue, oldValue) {  
+ 
+$scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
+
+});
+
 $scope.$watch('tabSelect', function(newValue, oldValue) { 
 
  if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
@@ -460,8 +468,13 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-        $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
-reloadURL(); 
+        {
+        	var el = $('#tourStarter').detach();
+        	
+                var e = $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
+                $('.course_tour_top').append(el)
+        }
+        reloadURL(); 
        window.setTimeout(function() {
            loadContext(); 
           $('table').show();
@@ -1345,6 +1358,56 @@ if(facts.length>0)
 
 }
 
+/***************** END TOUR ********************/
+$scope.tour={}
+$scope.tour.CompletedEvent = function (scope) {
+        console.log("Completed Event called");
+    };
+
+    $scope.tour.ExitEvent = function (scope) {
+        console.log("Exit Event called");
+    };
+
+    $scope.tour.ChangeEvent = function (targetElement, scope) {
+        console.log("Change Event called");
+        console.log(targetElement);  //The target element
+        console.log(this);  //The IntroJS object
+    };
+
+    $scope.tour.BeforeChangeEvent = function (targetElement, scope) {
+        console.log("Before Change Event called");
+        console.log(targetElement);
+    };
+
+    $scope.tour.AfterChangeEvent = function (targetElement, scope) {
+        console.log("After Change Event called");
+        console.log(targetElement);
+    };
+
+    $scope.tour.IntroOptions = {
+        steps:[
+        {
+            element:'#data-table',
+            intro: "This is the first tooltip.",
+            position: 'bottom'
+        },
+        {
+            element: '#tableConfg',
+            intro: "<strong>You</strong> can also <em>include</em> HTML",
+            position: 'right',
+        }
+        ],
+        showStepNumbers: true,
+        exitOnOverlayClick: true,
+        exitOnEsc:true,
+        nextLabel: '<strong>Suiv.</strong>',
+        prevLabel: '<span style="color:green">Prec.</span>',
+        skipLabel: 'Exit',
+        doneLabel: 'Terminer'
+    };
+
+    $scope.tour.ShouldAutoStart = false;
+    /***************** END TOUR ********************/
 var findChapterIssues = function(chapter, indicator, fact, tab){ 
   
   var mainIssues = [];
@@ -1651,7 +1714,12 @@ var loadContext = function(){
       //  $('.data-table td').attr('width',tdW)
         
         if($('.course_title_top').length<1)
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a>');
+                 {
+        	var el = $('#tourStarter').detach();
+        	
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+                $('.course_tour_top').append(el)
+        }
 
 
 $('.tableScroller').scroll();

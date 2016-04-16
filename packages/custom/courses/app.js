@@ -40,8 +40,10 @@ Courses.register(function(app, auth, database) {
 
 
 
+Courses.aggregateAsset('js',"../lib/intro.js/minified/intro.min.js");
+Courses.aggregateAsset('css',"../lib/intro.js/minified/introjs.min.css");
  
-
+Courses.aggregateAsset('js',"../lib/angular-intro.js/build/angular-intro.min.js");
 
   /*
   Courses.aggregateAsset('js',"../lib/nvd3/build/nv.d3.js");
@@ -62,9 +64,13 @@ Courses.register(function(app, auth, database) {
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
   //Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','ngAnimate']);
-  Courses.angularDependencies(['xeditable','perfect_scrollbar','selector']);
+  Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','angular-intro']);
 
-
-	
+/*
+	Courses.menus.add({
+  title: "Guided tour",
+  link: "course by id",
+  menu: "main"
+});*/
   return Courses;
 });
