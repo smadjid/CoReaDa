@@ -908,8 +908,9 @@ angular.forEach($scope.course.tomes, function(tome) {
   angular.forEach(tome.chapters, function(chapter) {  
     chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
       chapsData.push({
+                        'id':chapter.id,
                         'title':chapter.title,
-                        'route':chapter.route,
+                        'route':chapter.route,                                                
                         'Actions_tx':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
                         'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
                         'RS_nb':parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
@@ -918,6 +919,7 @@ angular.forEach($scope.course.tomes, function(tome) {
     angular.forEach(chapter.parts, function(part) {
       part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
       partsData.push({
+                        'id':part.id,
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
                         'Actions_tx':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
@@ -986,6 +988,7 @@ var topChaps={
       'top_sections':topSections
 
   }
+  
   return result;
 }
 
@@ -1532,7 +1535,6 @@ switch(granularity){
   break;
   case 'tome':
     findTomeIssues(element, indicator, fact, tab);
-    console.log(element)
     break;
   case 'chapter':
     findChapterIssues(element, indicator, fact, tab);
@@ -1925,11 +1927,36 @@ var highlightTome =function(index){
 
 }
 
+$scope.hoverChapter =function(route){ 
+  $('#divOverlay').css('visibility','hidden');
+  if(route==null) return;
+  resetPath();
+  setTimeout(function() {
+  var rowTop = $('.chapter_index[data-path="'+route+'"]').offset();
+  console.log(route);
 
+  var topTop = rowTop.top;
+  var left = rowTop.left;
+
+  var oneWidth = $('.chapter_index[data-path="'+route+'"]').innerWidth();
+  //$('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
+  var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
+
+
+  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
+  $('#divOverlay').height(height);
+  $('#divOverlay').width(oneWidth);
+  $('#divOverlay').css('visibility','visible');
+  $('#divOverlay').delay(200).slideDown('fast');
+
+  //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
+
+  }, 0);
+}
 var highlightChapter =function(index, route){  
   resetPath();
   setTimeout(function() {
-    var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
+  var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
 
   var topTop = rowTop.top;
   var left = rowTop.left;
@@ -1954,7 +1981,32 @@ var highlightChapter =function(index, route){
   
 
 }
+$scope.hoverSection =function(route){ 
+  $('#divOverlay').css('visibility','hidden');
+  if(route==null) return;
+  resetPath();
+  setTimeout(function() {
+  var rowTop = $('.part_index[data-path="'+route+'"]').offset();
+  console.log(route);
 
+  var topTop = rowTop.top;
+  var left = rowTop.left;
+
+  var oneWidth = $('.part_index[data-path="'+route+'"]').innerWidth();
+  //$('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
+  var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
+
+
+  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
+  $('#divOverlay').height(height);
+  $('#divOverlay').width(oneWidth);
+  $('#divOverlay').css('visibility','visible');
+  $('#divOverlay').delay(200).slideDown('fast');
+
+  //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
+
+  }, 0);
+}
 var highlightPart =function(index, route){  
   resetPath();
   
