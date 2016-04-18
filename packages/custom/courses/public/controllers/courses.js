@@ -11,7 +11,7 @@ angular.module('mean.courses')
 
 
 var stopHover = function(url){ 
-  $('#divHoverOverlay').css('visibility','hidden');
+  ;
  }
  
 
@@ -362,7 +362,7 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.toggleSectionDisplay = function(){
-  $('#divHoverOverlay').css('visibility','hidden');
+  ;
   goHome();
 
   
@@ -388,7 +388,7 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 
 $scope.$watch('tabSelect', function(newValue, oldValue) { 
 
-  $('#divHoverOverlay').css('visibility','hidden');
+  ;
 
  if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
   //$scope.currentFact = 0; 
@@ -402,7 +402,14 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
  else{
  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
    
- 
+  
+
+window.setTimeout(function() {
+  $('.componentInfo.active:visible').trigger( "mouseover" );
+   }, 0);
+
+
+  ;
 
 
  }
@@ -730,7 +737,7 @@ var resetPath =function(){
   $('.chosenPart').removeClass('chosenPart'); 
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
-  $('#divHoverOverlay').css('visibility','hidden');
+  ;
   //$('.gly-issue').removeClass('fa fa-exclamation-circle');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
     
@@ -2087,7 +2094,7 @@ var highlightTome =function(index){
 }
 
 $scope.hoverChapter =function(route){ 
-  $('#divHoverOverlay').css('visibility','hidden');
+  ;
   if(route==null) return;
   resetPath();
   setTimeout(function() {
@@ -2105,7 +2112,7 @@ $scope.hoverChapter =function(route){
   $('#divHoverOverlay').offset({top:topTop - 3 ,left:left - 2});
   $('#divHoverOverlay').height(height);
   $('#divHoverOverlay').width(oneWidth);
-  $('#divHoverOverlay').css('visibility','visible');
+  $('divHoverOverlay').css('visibility','visible');
   $('#divHoverOverlay').delay(200).slideDown('fast');
 
   //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
@@ -2141,7 +2148,7 @@ var highlightChapter =function(index, route){
 
 }
 $scope.hoverSection =function(route){ 
-$('#divHoverOverlay').css('visibility','hidden');
+;
   if(route==null) return;
   resetPath();
   setTimeout(function() {
@@ -2159,7 +2166,7 @@ $('#divHoverOverlay').css('visibility','hidden');
   $('#divHoverOverlay').offset({top:topTop - 3 ,left:left - 2});
   $('#divHoverOverlay').height(height);
   $('#divHoverOverlay').width(oneWidth);
-  $('#divHoverOverlay').css('visibility','visible');
+  $('divHoverOverlay').css('visibility','visible');
   $('#divOverlay').delay(200).slideDown('fast');
 
   //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
