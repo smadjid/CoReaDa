@@ -1830,19 +1830,22 @@ border-radius: 3px;
 
  vertical-align: middle;
   position: absolute;
+  padding: 0;
   bottom: 5px;
-  width: 49%;
+  width: 50%;
   overflow: visible;
   z-index: 50;
 
 }
 .btn-actions button, .btn-actions button.enabled-page1,.btn-actions button.enabled-page1 span
 {  
-   padding: 1px 3px;
-    font-size: 12px;
+   padding: 1px 2px;
+    font-size: 13px;
     border-radius: 2px;
+    
 
-    margin: 0 1px!important;  
+
+    margin: 0 !important;  
     background: rgb(47, 82, 111);
     color:white!important;
      float:none!important;
