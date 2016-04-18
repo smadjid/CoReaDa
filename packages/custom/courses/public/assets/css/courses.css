@@ -3028,3 +3028,6 @@ svg .bar.selected {
 .tour-backdrop {
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.introjs-relativePosition > td { position: relative; }
+.introjs-showElement > td { z-index: 9999999 !important; }
