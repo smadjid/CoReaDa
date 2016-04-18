@@ -1831,10 +1831,12 @@ border-radius: 3px;
  vertical-align: middle;
   position: absolute;
   bottom: 5px;
-  width: 49%
+  width: 49%;
+  overflow: visible;
+  z-index: 50;
 
 }
-.btn-actions button, .btn-actions button.enabled-page,.btn-actions button.enabled-page span
+.btn-actions button, .btn-actions button.enabled-page1,.btn-actions button.enabled-page1 span
 {  
    padding: 1px 3px;
     font-size: 12px;
@@ -1846,8 +1848,8 @@ border-radius: 3px;
      float:none!important;
 
 }
-.btn-actions button:hover,.btn-actions button.enabled-page:hover, 
-.btn-actions button.enabled-page span:hover
+.btn-actions button:hover,.btn-actions button.enabled-page1:hover, 
+.btn-actions button.enabled-page1 span:hover
 {  
     
     color:white!important;
@@ -1943,21 +1945,26 @@ margin-bottom: -5px!important;
     background: red!important;
 }
 
-.enabled-page span{
+.enabled-page1 span{
   color:rgb(47, 82, 111);
 }
 
-.enabled-page:hover{
+.enabled-page1:hover{
   background-color: #e6e6e6;
     border-color: #adadad;
 }
-
+.disabled-page{
+  opacity: .7;
+  
+}
 .disabled-page span{
-  color:rgba(128, 128, 128, 0.54);
+  
   cursor: not-allowed;
 }
 
-
+.navbar-header,.navbar-header .logo{
+  width:100%;
+}
 .right-to-left li { float: right; right:0;}
 
 
