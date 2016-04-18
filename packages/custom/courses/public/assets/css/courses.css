@@ -1741,7 +1741,7 @@ border-radius: 3px;
  padding: 0!important;
  margin: 0!important;
  z-index: 5;
-  animation: hoverAnimate 1s linear infinite; 
+ 
 } 
 @keyframes hoverAnimate {
   0% {
@@ -1955,7 +1955,7 @@ margin-bottom: -5px!important;
 }
 .disabled-page{
   opacity: .7;
-  
+
 }
 .disabled-page span{
   

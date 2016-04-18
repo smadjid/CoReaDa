@@ -73,7 +73,7 @@ setTimeout(function() {
   };
 
   $scope.DisablePrevPage = function() {
-    return $scope.currentFact === 0 ? "disabled-page" : "enabled-page";
+    return $scope.currentFact === 0 ? "ddisabled-page" : "enabled-page";
   };
 
   $scope.pageCount = function() {
@@ -388,6 +388,8 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 
 $scope.$watch('tabSelect', function(newValue, oldValue) { 
 
+  $('#divHoverOverlay').css('visibility','hidden');
+
  if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
   //$scope.currentFact = 0; 
     
@@ -399,6 +401,9 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
  }
  else{
  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
+   
+ 
+
 
  }
 
