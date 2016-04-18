@@ -251,6 +251,7 @@ else{
       $scope.indicatorSelectorShow = false;
       $scope.allIndicatorSelectorShow = false;
 
+
        $scope.inspector = {'type':'tome', 'selectedFact':{},'Data':[]}
 
 
@@ -319,7 +320,9 @@ $scope.selectedIndicators=[
     $scope.context.subtasks =computeAllTasks();
     $scope.context.d3 = ComputeGlobalVisuData();
     
-    $scope.context.coursestats = computeCourseStats();
+    computeCourseStats();
+     $scope.context.mainstats = $scope.course.mainstats;
+    computePartsStats();
 
     $scope.tableData = $scope.course;
 
@@ -989,11 +992,106 @@ var topChaps={
 
   }
   
-  return result;
+  $scope.course.mainstats = result;
 }
 
 
 
+var computePartsStats =function(){ 
+ 
+var partsData =[], chapsData =[], tomesData =[];
+
+
+
+angular.forEach($scope.course.tomes, function(tome) {  
+
+  angular.forEach(tome.chapters, function(chapter) {  
+    chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+      chapsData.push({
+                        'id':chapter.id,
+                        'title':chapter.title,
+                        'route':chapter.route,                                                
+                        'Actions_tx':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
+                        'RS_nb':parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                      })
+
+    angular.forEach(chapter.parts, function(part) {
+      part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+      partsData.push({
+                        'id':part.id,
+                        'title':part.title+' (Sec. '+part.id+' )',
+                        'route':part.route,
+                        'Actions_tx':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
+                        'RS_nb':parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                      })
+          
+                
+              
+    })                                 
+  })
+
+
+partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
+var Actions_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
+var Readers = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
+var RS_nb = partsData.slice(0,3);
+var topRS_nb =RS_nb.map(function(o){return {'title':o.title, 'route':o.route}})
+partsData = partsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
+var norecovery_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
+var rereadings_tx = partsData.slice(0,3);
+
+
+var topSections={
+        'Actions_tx':Actions_tx[0],
+        'Readers':Readers[0],
+        'norecovery_tx':norecovery_tx[0],
+        'rereadings_tx':rereadings_tx[0]
+      }
+
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
+Actions_tx = chapsData.slice(0,3);
+
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
+Readers = chapsData.slice(0,3);
+
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
+RS_nb = chapsData.slice(0,3);
+
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
+ norecovery_tx = chapsData.slice(0,3);
+
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
+ rereadings_tx = chapsData.slice(0,3);
+
+var topChaps={
+        'Actions_tx':Actions_tx[0],
+        'Readers':Readers[0],
+        'norecovery_tx':norecovery_tx[0],
+        'rereadings_tx':rereadings_tx[0]
+      }
+ var result = {
+      'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
+      'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),    
+      'mean.achievement':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.achievement'})[0].value),
+      'median.achievement':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.achievement'})[0].value),
+      'nRS':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value),
+      'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
+      'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
+      'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
+      'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
+      'top_chapters':topChaps,
+      'top_sections':topSections
+
+  }
+  
+  tome.mainstats = result
+  })
+}
 
 
 
@@ -1928,7 +2026,7 @@ var highlightTome =function(index){
 }
 
 $scope.hoverChapter =function(route){ 
-  $('#divOverlay').css('visibility','hidden');
+  $('#divHoverOverlay').css('visibility','hidden');
   if(route==null) return;
   resetPath();
   setTimeout(function() {
@@ -1943,11 +2041,11 @@ $scope.hoverChapter =function(route){
   var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
-  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
-  $('#divOverlay').height(height);
-  $('#divOverlay').width(oneWidth);
-  $('#divOverlay').css('visibility','visible');
-  $('#divOverlay').delay(200).slideDown('fast');
+  $('#divHoverOverlay').offset({top:topTop - 3 ,left:left - 2});
+  $('#divHoverOverlay').height(height);
+  $('#divHoverOverlay').width(oneWidth);
+  $('#divHoverOverlay').css('visibility','visible');
+  $('#divHoverOverlay').delay(200).slideDown('fast');
 
   //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
@@ -1982,7 +2080,7 @@ var highlightChapter =function(index, route){
 
 }
 $scope.hoverSection =function(route){ 
-  $('#divOverlay').css('visibility','hidden');
+  $('#divHoverOverlay').css('visibility','hidden');
   if(route==null) return;
   resetPath();
   setTimeout(function() {
@@ -1997,10 +2095,10 @@ $scope.hoverSection =function(route){
   var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
 
 
-  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
-  $('#divOverlay').height(height);
-  $('#divOverlay').width(oneWidth);
-  $('#divOverlay').css('visibility','visible');
+  $('#divHoverOverlay').offset({top:topTop - 3 ,left:left - 2});
+  $('#divHoverOverlay').height(height);
+  $('#divHoverOverlay').width(oneWidth);
+  $('#divHoverOverlay').css('visibility','visible');
   $('#divOverlay').delay(200).slideDown('fast');
 
   //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
@@ -2200,7 +2298,7 @@ $scope.inspectorDisplaySrc='inspector'
     
   //}, 10);
 
-    
+    $scope.context.mainstats = element.mainstats
 }
 
 var displayChapterInfos =function(partElt, task){ 
