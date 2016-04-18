@@ -11,9 +11,9 @@ angular.module('mean.courses')
       
 
 var inspectorCharts = function(scope, element){  
-        var margin = {top: 5, right: 00, bottom: 100, left: 40},
+        var margin = {top: 5, right: 00, bottom: 80, left: 40},
           width = 530 - margin.left - margin.right,
-          height = 300 - margin.top - margin.bottom;
+          height = 280 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)

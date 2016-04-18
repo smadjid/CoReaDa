@@ -736,7 +736,7 @@ html, body {
 
   border: 5px solid #45348A!important;
 
-  animation: scales 2s linear infinite; 
+  
 
   
 
@@ -1812,7 +1812,10 @@ border-radius: 3px;
 
 }
 .fact-div {
-    padding-right:10px;
+    padding-right:15px;
+    padding-left:15px;
+    padding-top:8px;
+    padding-bottom:8px;
     border:none;
     border-right: 2px solid #eee;
     
@@ -1825,7 +1828,11 @@ border-radius: 3px;
 .btn-actions
 {
 
-  width: 100%;
+ vertical-align: middle;
+  position: absolute;
+  bottom: 5px;
+  width: 49%
+
 }
 .btn-actions button, .btn-actions button.enabled-page,.btn-actions button.enabled-page span
 {  
@@ -1834,8 +1841,10 @@ border-radius: 3px;
     border-radius: 2px;
 
     margin: 0 1px!important;  
-    background: rgb(47, 82, 111)!important; 
-    color:white!important
+    background: rgb(47, 82, 111);
+    color:white!important;
+     float:none!important;
+
 }
 .btn-actions button:hover,.btn-actions button.enabled-page:hover, 
 .btn-actions button.enabled-page span:hover
@@ -1894,7 +1903,11 @@ margin-bottom: -5px!important;
   display: inline-block;
   }
 
- 
+ .tab-facts{
+  
+
+  vertical-align: middle;
+ }
 .tab-facts:checked ~ label .paginator{
   visibility: visible;
 }
@@ -2936,10 +2949,16 @@ tr.ng-show {
   border: solid 1px #9E9E9E;
   box-shadow:5px 5px 5px #463F3F; 
 }
+.dropdown-menu a:hover{
+  text-decoration: underline;
+}
+.dropdown-menu > li > a:hover {
+ text-decoration: underline!important;
+}
 
 svg .bar.selected {
 
-  animation: pulseBars 2s linear infinite;
+ 
 }
 
 @keyframes dash {

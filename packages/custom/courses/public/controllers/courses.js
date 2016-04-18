@@ -162,7 +162,7 @@ else{
 }
 
 var computeBgColor =function(val, indicator, range){
-  var scale = chroma.scale('OrRd').domain([range.MinValue, range.MaxValue]);
+  var scale = chroma.scale('OrRd').padding([0,0.25]).domain([range.MinValue, range.MaxValue]);
   
   return   scale(val).hex();
 }
@@ -570,27 +570,27 @@ $scope.completeCourseParts =function(){
 /*********** Compute colours ********************/
 var decideBoundariesScale = function(partType,indicatorCode){
   var boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
-var scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+var scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
 switch(indicatorCode) {
     case "Actions_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
     case "speed":
         boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
-        scale = chroma.scale('OrRd').domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
         break;
     case "rereadings_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
     case "rereadings_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
     case "norecovery_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
-        scale = chroma.scale('OrRd').domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
 }
 return {boundaryValues,scale};
