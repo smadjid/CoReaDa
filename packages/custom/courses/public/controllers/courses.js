@@ -1495,6 +1495,16 @@ $scope.tour.CompletedEvent = function (scope) {
             position: 'bottom'
         },
         {
+            element:'#granuleSwitch',
+            intro: "<b>Swicth granule</b>",
+            position: 'bottom'
+        },
+        {
+            element:'.inspectorChosenPart',
+            intro: "<b>Chosen part</b>",
+            position: 'bottom'
+        },
+        {
             element: '#tableConfg',
             intro: "<strong>Configurer</strong>  indicateurs",
             position: 'right',
@@ -1516,6 +1526,18 @@ $scope.tour.CompletedEvent = function (scope) {
             position: 'bottom',
         },
         {
+            element:'#fact-div',
+            intro: "<strong>Un problème</strong>  ",
+            position: 'top',
+        },
+        {
+            element: '#sugegstionDiv',
+            intro: "<strong>Suggestion</strong>  ",
+            position: 'top'
+        },
+
+
+        {
             element: '#statsTab',
             intro: "<strong>Statistiques</strong>  ",
             position: 'bottom',
@@ -1523,7 +1545,7 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element: '#chartPanel',
             intro: "<strong>Graphique</strong>  ",
-            position: 'bottom',
+            position: 'top',
         },
 
         
