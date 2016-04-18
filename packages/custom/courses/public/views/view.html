@@ -66,13 +66,13 @@
   </div>
   
 
-    <div class="inspector-container">
+    <div class="inspector-container" id="inspector-container">
        <!-- tabs -->
       <div class="coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
        
         
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
-        <label for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}  
+        <label id='factsTab' for="tab2" ng-show='pageCount()>=0'><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()+1}}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}  
 
          <ul class="paginator" ng-show="inspectorFacts.Facts.length>1"> 
               <li ng-class="DisablePrevPage()">
@@ -90,7 +90,7 @@
     
 
          <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
-        <label for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
+        <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
         <label class='inspector-title' ">
           <span   ng-class="{'glyphicon glyphicon-file': !courseDisplay, 'glyphicon glyphicon-home': courseDisplay}"  aria-hidden="true "> </span> 
             <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
@@ -99,7 +99,7 @@
         
         <ul>
 
-          <div class='col-lg-6 pull-right'>
+          <div id='chartPanel' class='col-lg-6 pull-right'>
               <div class='chart-title' ng-show='tabSelect=="stats"'><b>{{getGraphTitle(inspectorStats.indicatorCode)}}</b></div>
               <d3-chart data='context.d3'  ng-show='tabSelect=="stats"' d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,issueCode:inspectorStats.indicatorCode, tab:"stats"}' style="height:0"></d3-chart>
               
@@ -127,7 +127,7 @@
 </div>
   </div>  
 
-<span  id='tourStarter'   role="button" ng-click ="CallMe()"><i class="glyphicon glyphicon-info-sign"></i> Guided Tour</span>
+<span  id='tourStarter' style='visibility:hidden'   role="button" ng-click ="CallMe()"><i class="glyphicon glyphicon-info-sign"></i> Guided Tour</span>
 </section>
 
 

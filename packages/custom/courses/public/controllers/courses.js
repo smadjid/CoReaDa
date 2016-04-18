@@ -362,6 +362,7 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.toggleSectionDisplay = function(){
+  $('#divHoverOverlay').css('visibility','hidden');
   goHome();
 
   
@@ -475,7 +476,8 @@ $scope.getGraphTitle = function(code){
         	var el = $('#tourStarter').detach();
         	
                 var e = $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
-                $('.course_tour_top').append(el)
+                $('.course_tour_top').append(el);
+                $('#tourStarter').css('visibility', 'visible')
         }
         reloadURL(); 
        window.setTimeout(function() {
@@ -1489,21 +1491,52 @@ $scope.tour.CompletedEvent = function (scope) {
         steps:[
         {
             element:'#data-table',
-            intro: "This is the first tooltip.",
+            intro: "<b>Table</b>",
             position: 'bottom'
         },
         {
             element: '#tableConfg',
-            intro: "<strong>You</strong> can also <em>include</em> HTML",
+            intro: "<strong>Configurer</strong>  indicateurs",
             position: 'right',
         }
+        ,
+        {
+            element: '#task-panel',
+            intro: "<strong>Tâches</strong>",
+            position: 'left',
+        },
+        {
+            element: '#inspector-container',
+            intro: "<strong>Inspecteur</strong>",
+            position: 'top',
+        },
+        {
+            element: '#factsTab',
+            intro: "<strong>Problèmes</strong>  ",
+            position: 'bottom',
+        },
+        {
+            element: '#statsTab',
+            intro: "<strong>Statistiques</strong>  ",
+            position: 'bottom',
+        },
+        {
+            element: '#chartPanel',
+            intro: "<strong>Graphique</strong>  ",
+            position: 'bottom',
+        },
+
+        
+        
+        
+
         ],
-        showStepNumbers: true,
+        showStepNumbers: false,
         exitOnOverlayClick: true,
         exitOnEsc:true,
         nextLabel: '<strong>Suiv.</strong>',
         prevLabel: '<span style="color:green">Prec.</span>',
-        skipLabel: 'Exit',
+        skipLabel: 'Fermer',
         doneLabel: 'Terminer'
     };
 
@@ -1818,7 +1851,8 @@ var loadContext = function(){
         	var el = $('#tourStarter').detach();
         	
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
-                $('.course_tour_top').append(el)
+                $('.course_tour_top').append(el);
+                $('#tourStarter').css('visibility', 'visible')
         }
 
 
@@ -2080,7 +2114,7 @@ var highlightChapter =function(index, route){
 
 }
 $scope.hoverSection =function(route){ 
-  $('#divHoverOverlay').css('visibility','hidden');
+$('#divHoverOverlay').css('visibility','hidden');
   if(route==null) return;
   resetPath();
   setTimeout(function() {

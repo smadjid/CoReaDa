@@ -36,7 +36,10 @@
 }
 
 /* Top Navigation */
-
+.navbar-brand{
+  height:0!important;
+  padding: 10px!important;
+}
 .top-nav {
     padding: 0 15px;
 }
@@ -1164,11 +1167,9 @@ a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
 
 }
 .course_title_top, .course_title_top:focus{
-  font-size: 18px;
+  font-size: 17px;
 float: left;
-    padding: 12px 15px;
-    line-height: 21px;
-    height: 45px;
+    padding: 10px 12px;
 
     font-family: 'Halflings';
     
@@ -1181,11 +1182,10 @@ float: left;
 
 
 .course_tour_top, .course_tour_top:focus{
-  font-size: 18px;
+   font-size: 17px;
 float: left;
-    padding: 12px 15px;
-    line-height: 21px;
-    height: 45px;
+    padding: 10px 12px;
+    margin-left: 30px;
 
     font-family: 'Halflings';
     
@@ -1741,24 +1741,35 @@ border-radius: 3px;
  padding: 0!important;
  margin: 0!important;
  z-index: 5;
-  animation: hoverAnimate 2s linear infinite; 
+  animation: hoverAnimate 1s linear infinite; 
 } 
 @keyframes hoverAnimate {
   0% {
-    visibility:visible;
+    opacity:1;
    
    
     border-color: rgba(69, 52, 138, 1);
   }
   
-  50% {
-    visibility:hidden;
+  25% {
+    opacity:0.5;
     
-     border-color: white;
+    
   }
+  50% {
+    opacity:0.1;
+    
+      
+  }
+   75% {
+    opacity:0.5;
+    
+    
+  }
+
     
     100% {
- visibility:visible;
+  opacity:1;
     
      border-color:  rgba(69, 52, 138, 1);
   }
