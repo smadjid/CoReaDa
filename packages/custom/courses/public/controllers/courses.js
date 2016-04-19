@@ -73,7 +73,7 @@ setTimeout(function() {
   };
 
   $scope.DisablePrevPage = function() {
-    return $scope.currentFact === 0 ? "ddisabled-page" : "enabled-page";
+    return $scope.currentFact === 0 ? "disabled-page" : "enabled-page";
   };
 
   $scope.pageCount = function() {
