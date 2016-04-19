@@ -1824,12 +1824,11 @@ border-radius: 3px;
 
 .btn-actions
 {
-
  vertical-align: middle;
   position: absolute;
   padding: 0;
   bottom: 5px;
-  width: 50%;
+  width: 45%;
   overflow: visible;
   z-index: 50;
 
