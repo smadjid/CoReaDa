@@ -1588,7 +1588,7 @@ $scope.tour.CompletedEvent = function (scope) {
         steps:[
         {
             element:'#data-table',
-            intro: "<b>Zone Table de données</b><br/>Cette zone présente pour le cours sélectionné sa structure associée"+
+            intro: "<h4>Zone Table de données</h4>Cette zone présente pour le cours sélectionné sa structure associée"+
             "à une carte de chaleur reflétant les valeurs des différents indicateurs. Les problèmes détectés pour les différentes parties, chapitres et sections du document"+
             "sont indiqués sur le tableau avec le symbole <span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>",
             position: 'bottom'
@@ -1596,21 +1596,21 @@ $scope.tour.CompletedEvent = function (scope) {
         
         {
             element:'#granuleSwitch',
-            intro: "<b>Composant <em>Swicth granule</em></b><br/>"+
+            intro: "<h4>Composant <em>Swicth granule</em></h4>"+
             "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux possibilités sont offertes: "+
             "une analyse niveau <em>chapitre</em> ou, pour aller plus dans le détail, niveau <em>section</em>",
             position: 'right'
         },
         {
             element:'.inspectorChosenPart',
-            intro: "<b>Problème détecté</b><br/>"+
+            intro: "<h4>Problème détecté</h4>"+
             "Une cellule marquée avec ce problème indique qu'un potentiel problème a été détecté pour l'élément renseigné par l'entête de colonne. "+
             "L'indicateur correspondant à ce problème est indiqué sur l'entête de ligne correspondant à la cellule en question",
             position: 'bottom'
         },
         {
             element: '#tableConfg',
-            intro: "<strong>Composant de configuration</strong><br/>"+
+            intro: "<h4>Composant de configuration</h4>"+
             "Ce composant permet de sélectionner les indicateurs à afficher." +
             "D'autre part, il permet de sélectionner le type d'affichage de problème ; "+
             "deux possibilités sont offertes: afficher uniquement les principaux problèmes ou leur totalité.",
@@ -1620,27 +1620,27 @@ $scope.tour.CompletedEvent = function (scope) {
        
         {
             element: '#inspector-container',
-            intro: "<strong>Zone Inspecteur</strong><br/>"+
+            intro: "<h4>Zone Inspecteur</h4>"+
             "Cette zone permet d'étudier les résultats de calcul des indicateurs sous deux angles: problèmes potentiels de lecture et statistiques."+
             "",
             position: 'top',
         },
         {
             element: '#factsTab',
-            intro: "<strong>Onglet <em>Problèmes</em> </strong> <br/> "+
+            intro: "<h4>Onglet <em>Problèmes</em> </h4> "+
             "Cet onglet présente les problèmes détectés pour l'élément sélectionné. "+
             "Il est mené de boutons de navigation entre les problèmes du même élément sélectionné.",
             position: 'bottom',
         },
         {
             element:'#fact-div',
-            intro: "<strong>Un problème</strong> <br/> "+
+            intro: "<h4>Un problème</h4>"+
             "A la sélection d'un problème de lecture, cet espace affiche son titre ainsi qu'une description. Le système essaie de proposer une action possible pour résoudre le problème, sous forme d'une suggestion ",
             position: 'top',
         },
         {
             element:'.btn-actions ',
-            intro: "<strong>Actions sur le problème</strong> <br/> "+
+            intro: "<h4>Actions sur le problème</h4>"+
             "Cet ensemble de butons d'actions permettent, en plus de la navigation vers les problèmes précédents et suivants, deuxautres actions.<br/>"+
             "Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour une des deux raisons suivant:"+
             "soit le problème n'en est pas vraiment un ou bien que des actions appropriées ont déja été prises pour l'éliminer.<br/>"+
@@ -1650,27 +1650,37 @@ $scope.tour.CompletedEvent = function (scope) {
         },
         {
             element: '#statsTab',
-            intro: "<strong>Onglet <em>Statistiques</em> </strong>  "+
+            intro: "<h4>Onglet <em>Statistiques</em></h4>"+
             "Cet onglet présente quelques statistiques de lecture concernant l'élément sélectionné. ",
             position: 'top',
         },
         {
             element: '#chartPanel',
-            intro: "<strong>Graphiques</strong>  <br/>"+
+            intro: "<h4>Graphiques</h4>"+
             "Cet espace présente les graphiques illustrant les données sélectionnées sur le panel à gauche de l'inspecteur. "+
             "L'élément sélectionné est mené d'une bordure épaisse et colorée.",
             position: 'top',
         },
          {
             element: '#task-panel',
-            intro: "<strong>Tâches</strong>",
+            intro: "<h4>Onglet <em>Tâches</em></h4>"+
+            "La zone tâche permet de planifier des actions sur l'élément sélectionné. En plus de la possibilité de définir une suggestion pour un problème comme étant une tâche, il est tout à fait possible d'en définir directement depuis la zone d'édition du composant. <br/>"
+            ,
+            position: 'left',
+        },
+        {
+            element: '#tasks-table',
+            intro: "<h4>Table de <em>Tâches</em></h4>"+
+            "Les tâches planifiées sont affichées sur cette table. Un groupe de boutons permet de (gauche à droite)<br/>"+
+            "<ul>"+
+            "<li><span class='glyphicon glyphicon-pencil'></span> Modifier l'action planifiée"+
+            "<li><span class='glyphicon glyphicon-ok'></span> Marquer l'action comme étant faite"+
+            "<li><span class='glyphicon glyphicon-trash'></span> Supprimer l'action"+
+            "</ul>"
+            ,
             position: 'left',
         }
-
-        
-        
-        
-
+       
         ],
         showStepNumbers: false,
         exitOnOverlayClick: true,
