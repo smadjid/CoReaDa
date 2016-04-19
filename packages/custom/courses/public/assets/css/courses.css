@@ -2954,9 +2954,23 @@ tr.ng-show {
 .dropdown-menu{
   border: solid 1px #9E9E9E;
   box-shadow:5px 5px 5px #463F3F; 
+  background-color: #4179A7;
+      margin-top: -2px;
+    margin-left: 2px;
+    color:white;
+}
+.dropdown-menu a{  
+    color:white!important;
+}
+.dropdown-menu li:hover{
+  background-color: #2E5C82;
+}
+.dropdown-menu  .divider{
+  padding:0!important;
+  margin:0!important;
 }
 .dropdown-menu a:hover{
-  text-decoration: underline;
+  text-decoration: underline; 
 }
 .dropdown-menu > li > a:hover {
  text-decoration: underline!important;
