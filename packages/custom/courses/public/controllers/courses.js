@@ -1465,7 +1465,7 @@ if(($scope.inspectorFacts.length>0) & (tab=='facts')) {
   }
 
 $scope.factTitleDisplay=true;
-
+ $scope.showTab("facts");
 }
 
 var inspectorTomeData = function(tome, indicator, fact, tab){  
@@ -1588,38 +1588,47 @@ $scope.tour.CompletedEvent = function (scope) {
         steps:[
         {
             element:'#data-table',
-            intro: "<b>Table</b>",
+            intro: "<b>Zone Table de données</b><br/>Cette zone présente pour le cours sélectionné sa structure associée"+
+            "à une carte de chaleur reflétant les valeurs des différents indicateurs. Les problèmes détectés pour les différentes parties, chapitres et sections du document"+
+            "sont indiqués sur le tableau avec le symbole <span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>",
             position: 'bottom'
         },
+        
         {
             element:'#granuleSwitch',
-            intro: "<b>Swicth granule</b>",
+            intro: "<b>Composant <em>Swicth granule</em></b><br/>"+
+            "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux possibilités sont offertes: "+
+            "une analyse niveau <em>chapitre</em> ou, pour aller plus dans le détail, niveau <em>section</em>",
             position: 'bottom'
         },
         {
             element:'.inspectorChosenPart',
-            intro: "<b>Chosen part</b>",
+            intro: "<b>Problème détecté</b><br/>"+
+            "Une cellule marquée avec ce problème indique qu'un potentiel problème a été détecté pour l'élément renseigné par l'entête de colonne. "+
+            "L'indicateur correspondant à ce problème est indiqué sur l'entête de ligne correspondant à la cellule en question",
             position: 'bottom'
         },
         {
             element: '#tableConfg',
-            intro: "<strong>Configurer</strong>  indicateurs",
+            intro: "<strong>Composant de configuration</strong><br/>"+
+            "Ce composant permet de sélectionner les indicateurs à afficher." +
+            "D'autre part, il permet de sélectionner le type d'affichage de problème ; "+
+            "deux possibilités sont offertes: afficher uniquement les principaux problèmes ou leur totalité.",
             position: 'right',
         }
         ,
-        {
-            element: '#task-panel',
-            intro: "<strong>Tâches</strong>",
-            position: 'left',
-        },
+       
         {
             element: '#inspector-container',
-            intro: "<strong>Inspecteur</strong>",
+            intro: "<strong>Zone Inspecteur</strong><br/>"+
+            "Cette zone permet d'étudier les résultats de calcul des indicateurs sous deux angles: problèmes potentiels de lecture et statistiques."+
+            "",
             position: 'top',
         },
         {
             element: '#factsTab',
-            intro: "<strong>Problèmes</strong>  ",
+            intro: "<strong>Onbglet <em>Problèmes</em> </strong> <br/> "+
+            "Cet onglet ",
             position: 'bottom',
         },
         {
@@ -1644,6 +1653,11 @@ $scope.tour.CompletedEvent = function (scope) {
             intro: "<strong>Graphique</strong>  ",
             position: 'top',
         },
+         {
+            element: '#task-panel',
+            intro: "<strong>Tâches</strong>",
+            position: 'left',
+        }
 
         
         
