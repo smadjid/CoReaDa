@@ -1599,7 +1599,7 @@ $scope.tour.CompletedEvent = function (scope) {
             intro: "<b>Composant <em>Swicth granule</em></b><br/>"+
             "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux possibilités sont offertes: "+
             "une analyse niveau <em>chapitre</em> ou, pour aller plus dans le détail, niveau <em>section</em>",
-            position: 'bottom'
+            position: 'right'
         },
         {
             element:'.inspectorChosenPart',
@@ -1627,30 +1627,38 @@ $scope.tour.CompletedEvent = function (scope) {
         },
         {
             element: '#factsTab',
-            intro: "<strong>Onbglet <em>Problèmes</em> </strong> <br/> "+
-            "Cet onglet ",
+            intro: "<strong>Onglet <em>Problèmes</em> </strong> <br/> "+
+            "Cet onglet présente les problèmes détectés pour l'élément sélectionné. "+
+            "Il est mené de boutons de navigation entre les problèmes du même élément sélectionné.",
             position: 'bottom',
         },
         {
             element:'#fact-div',
-            intro: "<strong>Un problème</strong>  ",
+            intro: "<strong>Un problème</strong> <br/> "+
+            "A la sélection d'un problème de lecture, cet espace affiche son titre ainsi qu'une description. Le système essaie de proposer une action possible pour résoudre le problème, sous forme d'une suggestion ",
             position: 'top',
         },
         {
-            element: '#sugegstionDiv',
-            intro: "<strong>Suggestion</strong>  ",
-            position: 'top'
+            element:'.btn-actions ',
+            intro: "<strong>Actions sur le problème</strong> <br/> "+
+            "Cet ensemble de butons d'actions permettent, en plus de la navigation vers les problèmes précédents et suivants, deuxautres actions.<br/>"+
+            "Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour une des deux raisons suivant:"+
+            "soit le problème n'en est pas vraiment un ou bien que des actions appropriées ont déja été prises pour l'éliminer.<br/>"+
+            "Le bouton <em>Créer une tâche pour ce problème</em> permet de se placer dans la <b>Zone de Tâches</b> pour planifier une action à ce problème."+
+            "Le système propose alors d'ajuter la suggestion comme action, avec possbilités d'édition et de modification.",
+            position: 'top',
         },
-
-
         {
             element: '#statsTab',
-            intro: "<strong>Statistiques</strong>  ",
-            position: 'bottom',
+            intro: "<strong>Onglet <em>Statistiques</em> </strong>  "+
+            "Cet onglet présente quelques statistiques de lecture concernant l'élément sélectionné. ",
+            position: 'top',
         },
         {
             element: '#chartPanel',
-            intro: "<strong>Graphique</strong>  ",
+            intro: "<strong>Graphiques</strong>  <br/>"+
+            "Cet espace présente les graphiques illustrant les données sélectionnées sur le panel à gauche de l'inspecteur. "+
+            "L'élément sélectionné est mené d'une bordure épaisse et colorée.",
             position: 'top',
         },
          {
