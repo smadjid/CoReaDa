@@ -368,7 +368,7 @@ $scope.toggleSectionDisplay = function(){
   
   setTimeout(function() {
     $scope.sectionDisplay =! $scope.sectionDisplay;
-    findCourseIssues('facts');
+    inspectorCourseData('facts');
     $scope.$apply();
   }, 0);
 
@@ -1010,6 +1010,67 @@ var topChaps={
 }
 
 
+var computeComponentStats =function(element,bySection){ 
+
+var componentData ={'Actions_tx':[], 'speed':[], 'norecovery_tx':[], 'rereadings_tx':[] }
+
+var data=[];
+
+if(element.elementType=='chapitre'){
+  data = $.grep($scope.courseChapters, function(e){ return  e._id ==element._id})[0];
+  if(bySection){
+    data = data.parts;
+  }
+  else{
+    return;
+  }
+}
+else
+if(element.elementType=='partie'){
+  data = $.grep($scope.course.tomes, function(e){ return  e._id ==element._id})[0];
+  if(bySection){
+    var tomeSecs = [];
+    angular.forEach(data.chapters, function(chap){
+      angular.forEach(chap.parts, function(p){
+        tomeSecs.push(p)
+      })
+
+    });
+
+    data = tomeSecs;
+
+   
+  }
+  else{
+     data = data.chapters;
+  }
+
+}
+else
+  return;
+
+    angular.forEach(data, function(elt){
+      componentData.Actions_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value));
+      componentData.speed.push(parseInt(elt.properties.filter(function(value){ return value.property === 'speed'})[0].value));
+      componentData.norecovery_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value));
+      componentData.rereadings_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value));
+
+
+    });
+
+
+var topData={
+        'Actions_tx':d3.mean(componentData.Actions_tx ),
+        'speed':d3.mean(componentData.speed ),
+        'norecovery_tx':d3.mean(componentData.norecovery_tx ),
+        'rereadings_tx':d3.mean( componentData.rereadings_tx)
+      } 
+
+console.log(topData);
+
+  return topData;
+
+}
 
 var computePartsStats =function(){ 
  
@@ -1300,9 +1361,11 @@ else
 });
 
  $scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
+  $scope.currentFact = 0;
  if(newValue){
   $scope.ChaptersFacts = $scope.AllChaptersFacts;
   $scope.SectionsFacts = $scope.AllSectionsFacts;
+
 
  }
  else{
@@ -1314,7 +1377,7 @@ else
     setTimeout(function() {
       
      $scope.goHome();
-  findCourseIssues('facts');
+  inspectorCourseData('facts');
     $scope.$apply();
   }, 0);
 
@@ -1362,7 +1425,7 @@ angular.forEach($scope.course.tomes, function(tome) {
 
 
 
-var findCourseIssues = function(tab){   
+var inspectorCourseData = function(tab){   
 
 $scope.inspector={} 
 var facts=[];
@@ -1389,7 +1452,7 @@ if(facts.length>0)
 
 
 
-if((facts.length>0) & (tab=='facts')) {
+if(($scope.inspectorFacts.length>0) & (tab=='facts')) {
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
       $scope.tabSelect='facts';
     var fact = $scope.inspectorFacts.Facts[0];
@@ -1405,37 +1468,59 @@ $scope.factTitleDisplay=true;
 
 }
 
-var findTomeIssues = function(tome, indicator, fact, tab){  
+var inspectorTomeData = function(tome, indicator, fact, tab){  
 
   var mainIssues = [];
-   if($scope.sectionDisplay) 
-       mainIssues = $scope.SectionsFacts
-  else
+  var  mainStats = computeComponentStats(tome, $scope.sectionDisplay);
+  
+   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
+   if($scope.sectionDisplay){ 
+       mainIssues = $scope.SectionsFacts;
+
+      $scope.factTitleDisplay=true;
+       $scope.inspectorStats = {'type':'chapter',
+                   'id':null,
+                   'typeTxt': 'cette partie',
+                   'indicatorCode':code,                  
+                    'Indicators' :[
+                    {'name':'Actions_tx','value':  Math.round(100*mainStats.Actions_tx,2)+'%',
+                      'comment':'est le taux moyen de visite des sections de cette partie'},
+                    {'name':'rereadings_tx','value':  Math.round(100*mainStats.rereadings_tx)+'%',
+                      'comment':'est le taux moyen de relecture des sections de cette partie'},
+                   {'name':'norecovery_tx', 'value':  Math.round(100*mainStats.norecovery_tx)+'%',
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de cette partie'}  ,
+                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des sections de cette partie'}
+                      ]    
+                    
+                  };
+    }
+  else{
     mainIssues = $scope.ChaptersFacts;
+    $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
+                   'id':tome.id,
+                   'typeTxt': 'cette partie',
+                    'indicatorCode':code,
+                    'Indicators' :[
+                    {'name':'Actions_tx','value':  Math.round(100*mainStats.Actions_tx,2)+'%',
+                      'comment':'est le taux moyen de visite des chapitres de cette partie'},
+                    {'name':'rereadings_tx','value':  Math.round(100*mainStats.rereadings_tx)+'%',
+                      'comment':'est le taux moyen de relecture des chapitres de cette partie'},
+                   {'name':'norecovery_tx', 'value':  Math.round(100*mainStats.norecovery_tx)+'%',
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  ,
+                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'}
+                      ]    
+                    
+                  };
+  }
   
 $scope.factTitleDisplay=true;
   var times =[], users =[], rss =[], rereadings_tx =[], stops =[];
 
 
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
-$scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
-                   'id':tome.id,
-                   'typeTxt': 'cette partie',
-                    'indicatorCode':code,
-                    'Indicators' :[
-                    {'name':'Actions_tx','value':Math.round(100*tome.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
-                      'comment':' des visites  sur le cours ont été observées sur cette partie (avec un total de '+tome.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' visites)'},
-/*                    {'name':'Actions_nb','value':tome.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value,
-                      'comment':' des visites sur le cours ont été observées sur cette partie'},*/
-                    {'name':'rereadings_tx','value':Math.round(100*tome.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
-                      'comment':'des lectures de cette partie sont des relectures'},
-                    {'name':'norecovery_tx','value':Math.round(100*tome.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value,2)+'%',
-                      'comment':'des arrêts définitifs de la lecture se passent sur cette partie'},  
-             /*         {'name':'speed','value':tome.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
-                      'comment':'est la vitesse moyenne de lecture sur cette partie'}*/
-                      ]    
-                    
-                  };
+ 
+
 
   if(indicator!=null) $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
   var facts = mainIssues.filter(function(e){return (e.tome==tome._id)});
@@ -1576,28 +1661,40 @@ $scope.tour.CompletedEvent = function (scope) {
 
     $scope.tour.ShouldAutoStart = false;
     /***************** END TOUR ********************/
-var findChapterIssues = function(chapter, indicator, fact, tab){ 
+var inspectorChapterData = function(chapter, indicator, fact, tab){ 
   
-  var mainIssues = [];
+  var mainIssues = [], mainStats = [];
   if($scope.sectionDisplay) {
       mainIssues= $scope.SectionsFacts;
-      $scope.factTitleDisplay=true
+      mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
+      $scope.factTitleDisplay=true;
+       $scope.inspectorStats = {'type':'section',
+                   'id':null,
+                   'typeTxt': 'ce chapitre',
+                   'indicatorCode':code,                  
+                    'Indicators' :[
+                    {'name':'Actions_tx','value':  Math.round(100*mainStats.Actions_tx,2)+'%',
+                      'comment':'est le taux moyen de visite des sections de ce chapitre'},
+                    {'name':'rereadings_tx','value':  Math.round(100*mainStats.rereadings_tx)+'%',
+                      'comment':'est le taux moyen de relecture des sections de ce chapitre'},
+                   {'name':'norecovery_tx', 'value':  Math.round(100*mainStats.norecovery_tx)+'%',
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de ce chapitre'}  ,
+                      {'name':'speed','value':   mainStats.speed+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des sections de ce chapitre'}
+                      ]    
+                    
+                  };
     }
   else{
     mainIssues= $scope.ChaptersFacts;
     $scope.factTitleDisplay=false;
-  }
-
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
-  $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
+    $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
                    'id':chapter.id,
                    'typeTxt': 'ce chapitre',
                    'indicatorCode':code,                  
                     'Indicators' :[
                     {'name':'Actions_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur ce chapitre'},
-                   /* {'name':'Actions_nb','value':chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value,
-                      'comment':' des visites sur le cours ont été observées sur ce chapitre (avec un total de '+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' visites)'},*/
                     {'name':'rereadings_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures'},
                     {'name':'norecovery_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value,2)+'%',
@@ -1607,6 +1704,10 @@ var findChapterIssues = function(chapter, indicator, fact, tab){
                       ]    
                     
                   };
+  }
+
+  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
+  
 
 if(indicator!=null) $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
   
@@ -1628,8 +1729,9 @@ if(facts.length>0)
   
 
 
- if((facts.length>0) & (tab=='facts')) 
+ if(($scope.inspectorFacts.length>0) & (tab=='facts')) 
      {
+
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
       $scope.tabSelect='facts';
     var fact = $scope.inspectorFacts.Facts[0];
@@ -1639,7 +1741,7 @@ if(facts.length>0)
       $scope.showTab("stats");
 }
 
-var findSectionIssues = function(section, indicator, fact, tab){  
+var inspectorSectionData = function(section, indicator, fact, tab){  
   $scope.factTitleDisplay=false;
  var mainIssues = $scope.SectionsFacts;
   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
@@ -1681,7 +1783,7 @@ if(facts.length>0)
     else $scope.inspectorFacts={'Facts':[]}
 
 
- if((facts.length>0) & (tab=='facts')) 
+ if(($scope.inspectorFacts.length>0) & (tab=='facts')) 
     {
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
       $scope.tabSelect='facts';
@@ -1692,20 +1794,20 @@ if(facts.length>0)
       $scope.showTab("stats");
 }
 
-var computeGranuleFacts = function(granularity, element, indicator, fact, tab){
+var computeGranuleData = function(granularity, element, indicator, fact, tab){
 if(typeof tab=='undefined') tab='facts'
 switch(granularity){
   case 'course':
-    findCourseIssues(tab);
+    inspectorCourseData(tab);
   break;
   case 'tome':
-    findTomeIssues(element, indicator, fact, tab);
+    inspectorTomeData(element, indicator, fact, tab);
     break;
   case 'chapter':
-    findChapterIssues(element, indicator, fact, tab);
+    inspectorChapterData(element, indicator, fact, tab);
     break
   case 'part':
-    findSectionIssues(element, indicator, fact, tab);
+    inspectorSectionData(element, indicator, fact, tab);
     break
 
   }
@@ -1768,7 +1870,7 @@ var loadContext = function(){
         $scope.context.taskText ='(nouvelle tâche)';
         $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
-        computeGranuleFacts('course',tab);
+        computeGranuleData('course',tab);
 
         
         
@@ -1777,7 +1879,7 @@ var loadContext = function(){
      if(chap ==-1) {
        task = components.hasOwnProperty('taskid')?$.grep(tome.todos, function(e){ return  e._id == components.taskid })[0]:null;
 
-       computeGranuleFacts('tome',tome,null, null,tab);
+       computeGranuleData('tome',tome,null, null,tab);
       partElt = $('.tome_index[data-part ='+tome.id+']')[0];
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
@@ -1793,14 +1895,14 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
-          computeGranuleFacts('chapter', chap, fact.classof, fact.classof,tab);
+          computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);
           displayChapterIssues(chap.route, task, chap, indicator);
           
           
         }
         else
         if(indicator =="ALL"){
-          computeGranuleFacts('chapter', chap, null, null,tab);
+          computeGranuleData('chapter', chap, null, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
@@ -1809,7 +1911,7 @@ var loadContext = function(){
           
         }
         else{
-          computeGranuleFacts('chapter', chap, indicator, null,tab);
+          computeGranuleData('chapter', chap, indicator, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
           $scope.context.taskText ='(nouvelle tâche pour ce problème)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
@@ -1824,7 +1926,7 @@ var loadContext = function(){
         task = components.hasOwnProperty('taskid')?$.grep(part.todos, function(e){ return  e._id == components.taskid })[0]:null;
         if(fact!=-1){
           partElt = $('.part_index[data-part ='+part.id+']'); 
-          computeGranuleFacts('part', part, fact.classof, fact.classof,tab);          
+          computeGranuleData('part', part, fact.classof, fact.classof,tab);          
           $scope.context.taskText ='(nouvelle tâche pour ce problème)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           $scope.inspectorDisplaySrc='inspector'; 
@@ -1834,7 +1936,7 @@ var loadContext = function(){
         }
         else
         if(indicator =="ALL"){ 
-          computeGranuleFacts('part', part, null, null,tab); 
+          computeGranuleData('part', part, null, null,tab); 
           //$scope.sectionDisplay = true;
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
@@ -1847,7 +1949,7 @@ var loadContext = function(){
           partElt = $('.part_index[data-part ='+part.id+']');  
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
-          computeGranuleFacts('part', part, indicator, null,tab); 
+          computeGranuleData('part', part, indicator, null,tab); 
           $scope.inspectorDisplaySrc='inspector';
           //$scope.sectionDisplay = true; 
           displayPartIssues(part.route, task, part, indicator);
@@ -2099,8 +2201,7 @@ $scope.hoverChapter =function(route){
   resetPath();
   setTimeout(function() {
   var rowTop = $('.chapter_index[data-path="'+route+'"]').offset();
-  console.log(route);
-
+  
   var topTop = rowTop.top;
   var left = rowTop.left;
 
@@ -2153,8 +2254,7 @@ $scope.hoverSection =function(route){
   resetPath();
   setTimeout(function() {
   var rowTop = $('.part_index[data-path="'+route+'"]').offset();
-  console.log(route);
-
+  
   var topTop = rowTop.top;
   var left = rowTop.left;
 
