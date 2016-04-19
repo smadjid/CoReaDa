@@ -628,11 +628,11 @@ a.list-warning-item:hover {
 
 }
 .content {
-    margin-top: 5px!important;
+    margin-top: 2px!important;
 }
 .container{
     width:100%;
-    padding:2px!important;
+    padding:0!important;
     margin:0!important;
 }
 html, body {
@@ -819,6 +819,8 @@ table {
 {
     padding-left: 0!important;
     padding-right: 0!important;
+    padding-top: 5px!important;
+    padding-bottom: 5px!important;
     line-height: 1.0;
     vertical-align: top;
     
@@ -2089,7 +2091,7 @@ margin-bottom: -5px!important;
 }
 .inspector-title span, .inspector-title a{
   color:white;
-  font-size:  17px!important;
+  font-size:  15px!important;
   -webkit-transition: color 0.5s ease-in;
    -moz-transition: color 0.5s ease-in;
    -o-transition: color 0.5s ease-in;
@@ -2163,7 +2165,7 @@ margin-bottom: -5px!important;
 .coreada-tabs > label i {
   display: block;
   float: left;
-  margin: 0 8px 0 -2px;
+  margin: 0 2px 0 -2px;
   padding: 0;
   border: 0;
   outline: none;
@@ -2586,7 +2588,7 @@ margin-bottom: -5px!important;
 /* default */
 /**/
 .coreada-tabs > label { 
-  padding: 0 20px;
+  padding: 0 15px;
   background: #e5e5e5;
 
   font-size: 13px;
@@ -2860,10 +2862,10 @@ background: #4682B4;
 color:white;
 text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
 box-shadow: inset 0 -.7em .2em rgba(0, 0, 0, .02), 0 .05em .05em rgba(0, 0, 0, .2);
-padding:5px;
+padding:3px;
 width:55px;
 text-align:center;  
-font-size: 16px;
+font-size: 14px;
 margin-left: 2px
 }
 .indicatorSelectorShow{

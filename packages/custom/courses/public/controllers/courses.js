@@ -1015,11 +1015,13 @@ var computeComponentStats =function(element,bySection){
 var componentData ={'Actions_tx':[], 'speed':[], 'norecovery_tx':[], 'rereadings_tx':[] }
 
 var data=[];
+var ids=[]
 
 if(element.elementType=='chapitre'){
   data = $.grep($scope.courseChapters, function(e){ return  e._id ==element._id})[0];
   if(bySection){
     data = data.parts;
+
   }
   else{
     return;
@@ -1054,8 +1056,7 @@ else
       componentData.speed.push(parseInt(elt.properties.filter(function(value){ return value.property === 'speed'})[0].value));
       componentData.norecovery_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value));
       componentData.rereadings_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value));
-
-
+      ids.push(elt.id);
     });
 
 
@@ -1063,10 +1064,9 @@ var topData={
         'Actions_tx':d3.mean(componentData.Actions_tx ),
         'speed':d3.mean(componentData.speed ),
         'norecovery_tx':d3.mean(componentData.norecovery_tx ),
-        'rereadings_tx':d3.mean( componentData.rereadings_tx)
+        'rereadings_tx':d3.mean( componentData.rereadings_tx),
+        'ids':ids
       } 
-
-console.log(topData);
 
   return topData;
 
@@ -1478,8 +1478,8 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
        mainIssues = $scope.SectionsFacts;
 
       $scope.factTitleDisplay=true;
-       $scope.inspectorStats = {'type':'chapter',
-                   'id':null,
+       $scope.inspectorStats = {'type':'part',
+                   'id':mainStats.ids,
                    'typeTxt': 'cette partie',
                    'indicatorCode':code,                  
                     'Indicators' :[
@@ -1497,8 +1497,8 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
     }
   else{
     mainIssues = $scope.ChaptersFacts;
-    $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
-                   'id':tome.id,
+    $scope.inspectorStats = {'type':'chapter',
+                   'id':mainStats.ids,
                    'typeTxt': 'cette partie',
                     'indicatorCode':code,
                     'Indicators' :[
@@ -1696,12 +1696,13 @@ $scope.tour.CompletedEvent = function (scope) {
 var inspectorChapterData = function(chapter, indicator, fact, tab){ 
   
   var mainIssues = [], mainStats = [];
+  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
   if($scope.sectionDisplay) {
       mainIssues= $scope.SectionsFacts;
       mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
       $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'section',
-                   'id':null,
+                   'id':mainStats.ids,
                    'typeTxt': 'ce chapitre',
                    'indicatorCode':code,                  
                     'Indicators' :[

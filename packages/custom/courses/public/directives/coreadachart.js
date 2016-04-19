@@ -27,6 +27,9 @@ if(typeof classe =='undefined')
 
 //TODO : this is just a hack part section
 var elementType = scope.d3opts.elementType;
+var elementId = Array.isArray(scope.d3opts.elementId)?scope.d3opts.elementId: [scope.d3opts.elementId];
+
+
 if(elementType=='section') elementType='part';
   d3.select(element[0]).selectAll("*").remove();
   width = $(element[0]).parent().width() - margin.left - margin.right ;
@@ -98,12 +101,12 @@ if(elementType!=='part')
           bars.enter()
             .append("rect")
             .attr("class", function(d){
-              return (d.part==scope.d3opts.elementId)? 'bar selected':'bar'; 
+              return ($.inArray(d.part, elementId)>-1)? 'bar selected':'bar'; 
             })
             .attr("x", function(d) { return x(d.part); })            
             .attr("width", x.rangeBand())
             .attr("stroke-width", function(d) {
-               return (d.part==scope.d3opts.elementId)? 6:1;
+               return ($.inArray(d.part, elementId)>-1)? 6:1;
             }
 
               )
@@ -119,7 +122,7 @@ if(elementType!=='part')
               })
             .attr('stroke',  function(d) {
                    
-                  return (d.part==scope.d3opts.elementId)? '#45348A':'#9E9E9E'; 
+                  return ($.inArray(d.part, elementId)>-1)? '#45348A':'#9E9E9E'; 
               })
             .on("click", function(d) { 
               if("#"+d.route!=window.location.hash)
@@ -132,7 +135,8 @@ if(elementType!=='part')
               }) 
               .on("mouseout", function (d) {
                   d3.select(this).attr("stroke", 
-                    function(d){return (d.part==scope.d3opts.elementId)?  '#45348A':'#9E9E9E'})
+
+                    function(d){return ($.inArray(d.part, elementId)>-1)?  '#45348A':'#9E9E9E'})
                   
                  
               })  .append("title") .text(function(d) {return d.title;   });;
