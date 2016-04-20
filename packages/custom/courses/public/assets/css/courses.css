@@ -2984,6 +2984,8 @@ tr.ng-show {
       margin-top: -2px;
     margin-left: 2px;
     color:white;
+     border-radius-top-left: 0!important;
+     border-radius-top-right: 0!important;
 }
 .dropdown-menu a{  
     color:white!important;
