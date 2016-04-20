@@ -1584,8 +1584,8 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element:'#data-table',
             intro: "<h4>Zone Table de données du cours</h4>"+
-            "Cette table présente la structure du cours sélectionné avec <i>une carte de chaleur</i>. "+
-            "La carte représente sous une forme colorée les valeurs des différents indicateurs. "+
+            "Cette table présente en abscisse la structure du cours sélectionné et en ordonnées les indicateurs associés. "+
+            "Les cases de la table  représentent sous une forme colorée les valeurs des différents indicateurs, formant une <i>une carte de chaleur</i>. "+
             "Les problèmes détectés pour les différents éléments documentaires "+
             "sont indiqués sur le tableau avec le symbole <span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
             position: 'bottom'
@@ -1601,17 +1601,18 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element:'.inspectorChosenPart',
             intro: "<h4>Problème détecté</h4>"+
-            "Une cellule marquée avec ce problème indique qu'un potentiel problème a été détecté pour l'élément renseigné par l'entête de colonne. "+
-            "L'indicateur correspondant à ce problème est indiqué sur l'entête de ligne correspondant à la cellule en question",
+            "Une cellule marquée avec ce symbole indique qu'un potentiel problème a été détecté pour l'élément renseigné par l'entête de colonne. "+
+            "L'indicateur en question correspond à l'entête de ligne de la cellule en question",
             position: 'bottom'
         },
         {
             element: '#tableConfg',
             intro: "<h4>Composant de configuration</h4>"+
-            "Ce composant permet de sélectionner les indicateurs à afficher." +
-            "D'autre part, il permet de sélectionner le type d'affichage de problème ; "+
-            "deux possibilités sont offertes: afficher uniquement les principaux problèmes ou leur totalité.",
-            position: 'right',
+            "Ce composant permet de:" +
+            "<ol><li>Sélectionner les indicateurs à afficher sur le tableau et à étudier dans l'inspecteur" +
+            "<li>Sélectionner le niveau de détail à afficher des potentiels problèmes détectés."+
+            "Il est possible de basculer entre un affichage unique des principaux problèmes et un affichage exhaustif. </ol>",
+            position: 'bottom',
         }
         ,
        
@@ -1619,30 +1620,31 @@ $scope.tour.CompletedEvent = function (scope) {
             element: '#inspector-container',
             intro: "<h4>Zone Inspecteur</h4>"+
             "Cette zone permet d'étudier les résultats de calcul des indicateurs sous deux angles: problèmes potentiels de lecture et statistiques."+
-            "",
+            "L'élément en question est indiqué sur l'entête de la zone avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
             position: 'top',
         },
         {
             element: '#factsTab',
             intro: "<h4>Onglet <em>Problèmes</em> </h4> "+
-            "Cet onglet présente les problèmes détectés pour l'élément sélectionné. "+
-            "Il est mené de boutons de navigation entre les problèmes du même élément sélectionné.",
+            "Cet onglet présente les problèmes détectés pour l'élément. "+
+            "Deux boutons pemrettent de naviguer entre différents problèmes potentiels du même élément sélectionné.",
             position: 'bottom',
         },
         {
             element:'#fact-div',
-            intro: "<h4>Un problème</h4>"+
-            "A la sélection d'un problème de lecture, cet espace affiche son titre ainsi qu'une description. Le système essaie de proposer une action possible pour résoudre le problème, sous forme d'une suggestion ",
+            intro: "<h4>Description de problèmes potentiels</h4>"+
+            "A la sélection d'un problème de lecture, une description s'affiche sur cet espace motivant le marquage de l'indicateur comme problème potentiel. "+
+            "Des suggestions à même de résoudre le problème décrit sont parfois proposées. Ces suggestions peuvent être marquées comme tâches à faire.",
             position: 'top',
         },
         {
             element:'.btn-actions ',
             intro: "<h4>Actions sur le problème</h4>"+
-            "Cet ensemble de butons d'actions permettent, en plus de la navigation vers les problèmes précédents et suivants, deuxautres actions.<br/>"+
-            "Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour une des deux raisons suivant:"+
+            "Cet ensemble de butons d'actions permettent, en plus de la navigation vers les problèmes précédents et suivants, d'effectuer deux autres actions:<br/>"+
+            "<ul><li>Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour une des deux raisons suivant:"+
             "soit le problème n'en est pas vraiment un ou bien que des actions appropriées ont déja été prises pour l'éliminer.<br/>"+
-            "Le bouton <em>Créer une tâche pour ce problème</em> permet de se placer dans la <b>Zone de Tâches</b> pour planifier une action à ce problème."+
-            "Le système propose alors d'ajuter la suggestion comme action, avec possbilités d'édition et de modification.",
+            "<li>Le bouton <em>Créer une tâche pour ce problème</em> permet de se placer dans la <b>Zone de Tâches</b> pour planifier une action à ce problème."+
+            "Le système propose alors d'ajouter la suggestion comme action, avec possbilités d'édition et de modification.</ul>",
             position: 'top',
         },
         {
