@@ -3016,56 +3016,50 @@ animation: pulseBars 3s linear ;
 }
 
 @keyframes pulseBars {
-  0% {
-  
+  0% {  
     stroke-width: 5px;
-    padding:15px;
-    
-    stroke: white;
+    stroke: rgba(69, 52, 138, 1);
+  }  
+  25% {
+     stroke:white;
+     stroke-width: 7px;
   }
-  
   50% {
-
-  
-     stroke:rgba(69, 52, 138, 1);
+     stroke: rgba(69, 52, 138, 1);
      stroke-width: 10px;
   }
-    
-    100% {
- 
+  75% {
+     stroke:white;
+     stroke-width: 7px;
+  }    
+   100% {
     stroke-width: 5px;
-     stroke: white;
-     
-    
-
+    stroke: rgba(69, 52, 138, 1);
   }
 }
 
 @keyframes pulseCells {
-  0% {
-  
-    box-sizing: border-box;
-    
-    border-color: white;
+  0% {  
+    stroke-width: 5px;
+    border-color: rgba(69, 52, 138, 1);
+  }  
+  25% {
+     border-color:white;
+     padding: 7px;
   }
-  
   50% {
-
-  
-     border-color:rgba(69, 52, 138, 1);
+     border-color: rgba(69, 52, 138, 1);
      padding: 10px;
   }
-    
-    100% {
- 
+  75% {
+     border-color:white;
+     padding: 7px;
+  }    
+   100% {
     padding: 5px;
-     border-color: white;
-     
-    
-
+    border-color: rgba(69, 52, 138, 1);
   }
 }
-
 .tour-backdrop {
     background-color: rgba(0, 0, 0, 0.5);
 }
