@@ -1312,7 +1312,7 @@ var updateMainFacts = function(){
     angular.forEach(tome.chapters, function(chapter){
 
       angular.forEach(chapter.facts, function(f){
-        f.parentTitle='Chapitre \"'+chapter.title+' \" : '
+        f.parentTitle='Chapitre \"'+chapter.title+' \" '
          var indicator=f.issueCode
           var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
           f.mainFact=false;
@@ -1385,7 +1385,7 @@ angular.forEach($scope.course.tomes, function(tome) {
       angular.forEach(chapter.parts, function(part){
         angular.forEach(part.facts, function(f){
           
-          f.parentTitle='Section '+part.id+' ('+part.title+') : '
+          f.parentTitle='Section '+part.id+' ('+part.title+') '
           var indicator=f.issueCode
         var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
         f.mainFact=false;
@@ -1564,7 +1564,6 @@ $scope.tour.CompletedEvent = function (scope) {
     };
 
     $scope.tour.ChangeEvent = function (targetElement, scope) {
-      console.log(navigator.appName);
         console.log("Change Event called");
         console.log(targetElement);  //The target element
         console.log(this);  //The IntroJS object
