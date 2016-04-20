@@ -3072,13 +3072,10 @@ animation: pulseBars 3s linear ;
 color: rgba(255, 255, 255, 0.74); 
 position:fixed; 
 top:10px; 
-right:10px;    
+right:2%;    
 z-index: 1400;
+font-weight: bold;
 }
 .tourStarter:hover{
 color: white; 
-position:fixed; 
-top:10px; 
-right:10px;    
-z-index: 1400;
 }

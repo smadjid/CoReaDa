@@ -1583,17 +1583,19 @@ $scope.tour.CompletedEvent = function (scope) {
         steps:[
         {
             element:'#data-table',
-            intro: "<h4>Zone Table de données</h4>Cette zone présente pour le cours sélectionné sa structure associée"+
-            "à une carte de chaleur reflétant les valeurs des différents indicateurs. Les problèmes détectés pour les différentes parties, chapitres et sections du document"+
-            "sont indiqués sur le tableau avec le symbole <span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>",
+            intro: "<h4>Zone Table de données du cours</h4>"+
+            "Cette table présente la structure du cours sélectionné avec <i>une carte de chaleur</i>. "+
+            "La carte représente sous une forme colorée les valeurs des différents indicateurs. "+
+            "Les problèmes détectés pour les différents éléments documentaires "+
+            "sont indiqués sur le tableau avec le symbole <span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
             position: 'bottom'
         },
         
         {
             element:'#granuleSwitchTH',
             intro: "<h4>Composant <em>Swicth Granule</em></h4>"+
-            "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux possibilités sont offertes: "+
-            "une analyse niveau <em>chapitre</em> ou, pour aller plus dans le détail, niveau <em>section</em>",
+            "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux niveaux existent: "+
+            "<ul><li><b>Chapitre</b> : ce niveau utilise les chapitres du cours comme granules de base <li> <b>Section</b>: ce niveau plus fin se base sur les sections du cours comme granules de base</ul>",          
             position: 'right'
         },
         {
