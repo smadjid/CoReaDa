@@ -1564,6 +1564,7 @@ $scope.tour.CompletedEvent = function (scope) {
     };
 
     $scope.tour.ChangeEvent = function (targetElement, scope) {
+      console.log(navigator.appName);
         console.log("Change Event called");
         console.log(targetElement);  //The target element
         console.log(this);  //The IntroJS object
