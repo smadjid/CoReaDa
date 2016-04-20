@@ -830,10 +830,7 @@ table {
 .table > thead > tr > td, 
 .table > tbody > tr > td
 {
-    padding-left: 0!important;
-    padding-right: 0!important;
-    padding-top: 5px!important;
-    padding-bottom: 5px!important;
+    padding:5px!important;
     line-height: 1.0;
     vertical-align: top;
     
@@ -2883,13 +2880,13 @@ margin-bottom: -5px!important;
   }
 
 .indicatorSelectorButton{
-border-color: #4682B4;
+    border: none;
 background: #4682B4;
 color:white;
 text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-box-shadow: inset 0 -.7em .2em rgba(0, 0, 0, .02), 0 .05em .05em rgba(0, 0, 0, .2);
+
 padding:3px;
-width:55px;
+width:65px;
 text-align:center;  
 font-size: 14px;
 margin-left: 2px
@@ -2981,9 +2978,9 @@ tr.ng-show {
 }
 
 .dropdown-menu{
-  border: solid 1px #9E9E9E;
+  border: none;
   box-shadow:5px 5px 5px #463F3F; 
-  background-color: #4179A7;
+  background-color: #4682B4;
       margin-top: -2px;
     margin-left: 2px;
     color:white;
@@ -3073,3 +3070,19 @@ animation: pulseBars 3s linear ;
 
 .introjs-relativePosition > td { position: relative; }
 .introjs-showElement > td { z-index: 9999999 !important; }
+
+
+.tourStarter{
+color: rgba(255, 255, 255, 0.74); 
+position:fixed; 
+top:10px; 
+right:10px;    
+z-index: 1400;
+}
+.tourStarter:hover{
+color: white; 
+position:fixed; 
+top:10px; 
+right:10px;    
+z-index: 1400;
+}

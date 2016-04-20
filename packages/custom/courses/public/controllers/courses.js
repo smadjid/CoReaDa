@@ -484,13 +484,8 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-        {
-        	var el = $('#tourStarter').detach();
-        	
-                var e = $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
-                $('.course_tour_top').append(el);
-                $('#tourStarter').css('visibility', 'visible')
-        }
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
+      
         reloadURL(); 
        window.setTimeout(function() {
            loadContext(); 
@@ -1595,8 +1590,8 @@ $scope.tour.CompletedEvent = function (scope) {
         },
         
         {
-            element:'#granuleSwitch',
-            intro: "<h4>Composant <em>Swicth granule</em></h4>"+
+            element:'#granuleSwitchTH',
+            intro: "<h4>Composant <em>Swicth Granule</em></h4>"+
             "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux possibilités sont offertes: "+
             "une analyse niveau <em>chapitre</em> ou, pour aller plus dans le détail, niveau <em>section</em>",
             position: 'right'
@@ -2016,13 +2011,8 @@ var loadContext = function(){
       //  $('.data-table td').attr('width',tdW)
         
         if($('.course_title_top').length<1)
-                 {
-        	var el = $('#tourStarter').detach();
-        	
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
-                $('.course_tour_top').append(el);
-                $('#tourStarter').css('visibility', 'visible')
-        }
+                
 
 
 $('.tableScroller').scroll();
