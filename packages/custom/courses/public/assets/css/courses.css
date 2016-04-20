@@ -398,17 +398,30 @@ td {
 }
 
 .fact {
-    display: inline;
-    padding: .2em .6em .3em;
-    font-size: 17px; 
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
+   display: inline-block;    
+
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: .25em;
+   
+
+    padding:0;
+    color:#FFEB3B;
+    text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;
+
 }
+.chapter-fact{
+  font: normal normal normal 1.2vw/1 FontAwesome;
+  -webkit-font-smoothing: antialiased;
+   border-radius: .25em;
+
+}
+.section-fact{
+    font: normal normal normal 1vw/1 FontAwesome;
+  -webkit-font-smoothing: antialiased;
+   border-radius: .15em;  
+}
+
 .list-error-item {
   text-decoration: none!important;
     position: relative;
@@ -732,7 +745,7 @@ html, body {
 100%{box-shadow:0px 0px 10px #4183C4;}
 }
 .inspectorChosenPart{  
-  border: 5px solid #45348A!important;
+  border: 3px solid #45348A!important;
  box-shadow: 0 0 0 1px #45348A, 0 0 0 3px white inset!important;
  animation: pulse 3s linear ;
 
@@ -1828,26 +1841,39 @@ border-radius: 3px;
 {
  vertical-align: middle;
   position: absolute;
-  padding: 0;
-  margin-left: -5px;
+ 
+ display:flex;
+  justify-content:space-around;
+
   bottom: 3px;
-  width: 55%;
+  width: 48%;
   overflow: visible;
   z-index: 50;
+  padding-right:20px;
+  padding-left:20px;
+
+
 
 }
+
 .btn-actions button, .btn-actions button.enabled-page1,.btn-actions button.enabled-page1 span
-{  
-   padding: 1px 2px;
+{ 
+ display:flex;
+text-align:center;
+
+   padding: 5px;
     font-size: 12px;
     border-radius: 2px;
 
 
 
-    margin: 0 !important;  
+    
     background: rgb(47, 82, 111);
     color:white!important;
      float:none!important;
+
+      vertical-align: middle;
+    
 
 }
 .btn-actions button:hover,.btn-actions button.enabled-page1:hover, 

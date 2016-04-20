@@ -115,7 +115,7 @@
           </li>
          
           
- <div class="btn-group btn-actions col-lg-6"  align="center" ng-show='tabSelect=="facts"'>
+ <div class="btn-actions"  align="center" ng-show='tabSelect=="facts"'>
   <button type="button" class="btn  " ng-class="DisablePrevPage()" ng-click="prevPage()"><span class="glyphicon glyphicon-backward" ></span> </button>
   <button type="button" class="btn  "  ng-click="dropFact($event,fact.route)"data-path={{fact.route}}><span class="glyphicon glyphicon-remove" ></span> Ce n'est pas/plus un problème</button>
   <button type="button" class="btn  " ng-click="editSuggestion($event,fact,fact.suggestion_title)"  data-path={{fact.route}}><span class="glyphicon glyphicon-plus" ></span> Créer une tâche pour ce problème</button>

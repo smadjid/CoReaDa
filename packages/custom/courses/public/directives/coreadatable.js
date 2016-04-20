@@ -158,7 +158,7 @@ allFacts.forEach(function(fact){
       .on("click", function(d) {    
                    window.location.hash = fact.route;
                 })
-      .append("<span data-fact-id="+fact._id+" parent-path="+part.route+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
+      .append("<span data-fact-id="+fact._id+" parent-path="+part.route+"  class='fact section-fact fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
       
       
 
@@ -181,7 +181,7 @@ if(!scope.allFacts)
     .on("click", function(d) {    
                    window.location.hash = maxRoute;
                 })
-    .append("<span data-fact-id="+maxFactId+" parent-path="+maxPartRoute+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>")
+    .append("<span data-fact-id="+maxFactId+" parent-path="+maxPartRoute+"  class='fact section-fact fa-exclamation-circle' role='button'  ></span>")
   }
 }
 
@@ -236,7 +236,7 @@ var maxChapRoute="#";
       .on("click", function(d) {    
                    window.location.hash = fact.route;
                 })
-      .append("<span data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
+      .append("<span data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact fa-exclamation-circle' role='button'></span>");
       
 
     }
@@ -256,7 +256,7 @@ if(!scope.allFacts)
     .on("click", function(d) {    
                    window.location.hash = maxRoute;
                 })
-    .append("<span data-fact-id="+maxFactId+" parent-path="+maxChapRoute+"  class='fact fa fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
+    .append("<span data-fact-id="+maxFactId+" parent-path="+maxChapRoute+"  class='fact chapter-fact fa-exclamation-circle' role='button'></span>");
   }
 
 }
