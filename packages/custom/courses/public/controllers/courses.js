@@ -1584,24 +1584,22 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element:'#data-table',
             intro: "<h4>Zone Table de données du cours</h4>"+
-            "Cette table présente en abscisse la structure du cours sélectionné et en ordonnées les indicateurs associés. "+
-            "Les cases de la table  représentent sous une forme colorée les valeurs des différents indicateurs, formant une <i>une carte de chaleur</i>. "+
-            "Les problèmes détectés pour les différents éléments documentaires "+
-            "sont indiqués sur le tableau avec le symbole <span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
+            "Cette table présente en entête de colonnes la structure du cours sélectionné et en entête de lignes les indicateurs associés. Les autres cellules de la table représentent sous une forme colorée les valeurs des différents indicateurs, formant une carte de chaleur. Les problèmes potentiels détectés pour les différents éléments documentaires sont indiqués dans ces cellules à l’aide du symbole"+
+             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
             position: 'bottom'
         },
         
         {
             element:'#granuleSwitchTH',
-            intro: "<h4>Composant <em>Swicth Granule</em></h4>"+
-            "Ce composant permet de sélectionner le niveau de granularité à associer à l'étude des indicateurs du cours. Deux niveaux existent: "+
-            "<ul><li><b>Chapitre</b> : ce niveau utilise les chapitres du cours comme granules de base <li> <b>Section</b>: ce niveau plus fin se base sur les sections du cours comme granules de base</ul>",          
+            intro: "<h4>Composant <em>Changement Granule</em></h4>"+
+            "Ce composant permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés. Deux niveaux existent :"+
+            "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>",          
             position: 'right'
         },
         {
             element:'.inspectorChosenPart',
-            intro: "<h4>Problème détecté</h4>"+
-            "Une cellule marquée avec ce symbole indique qu'un potentiel problème a été détecté pour l'élément renseigné par l'entête de colonne. "+
+            intro: "<h4>Problème potentiel détecté</h4>"+
+            "Une cellule marquée avec ce symbole indique qu'un problème potentiel a été détecté pour l'élément renseigné par l'entête de colonne. "+
             "L'indicateur en question correspond à l'entête de ligne de la cellule en question",
             position: 'bottom'
         },
@@ -1610,8 +1608,8 @@ $scope.tour.CompletedEvent = function (scope) {
             intro: "<h4>Composant de configuration</h4>"+
             "Ce composant permet de:" +
             "<ol><li>Sélectionner les indicateurs à afficher sur le tableau et à étudier dans l'inspecteur" +
-            "<li>Sélectionner le niveau de détail à afficher des potentiels problèmes détectés."+
-            "Il est possible de basculer entre un affichage unique des principaux problèmes et un affichage exhaustif. </ol>",
+            "<li>Sélectionner le seuil de détection problèmes potentiels."+
+            "Il est possible de basculer entre un affichage présentant uniquement les principaux problèmes et un affichage plus exhaustif. </ol>",
             position: 'bottom',
         }
         ,
@@ -1619,32 +1617,27 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element: '#inspector-container',
             intro: "<h4>Zone Inspecteur</h4>"+
-            "Cette zone permet d'étudier les résultats de calcul des indicateurs sous deux angles: problèmes potentiels de lecture et statistiques."+
-            "L'élément en question est indiqué sur l'entête de la zone avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
+            "Cette zone permet d'étudier les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours en question est indiqué sur l'entête de la zone avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
             position: 'top',
         },
         {
             element: '#factsTab',
             intro: "<h4>Onglet <em>Problèmes</em> </h4> "+
-            "Cet onglet présente les problèmes détectés pour l'élément. "+
-            "Deux boutons pemrettent de naviguer entre différents problèmes potentiels du même élément sélectionné.",
+            "Cet onglet présente les problèmes potentiels détectés pour l'élément. Deux boutons permettent de naviguer entre les éventuels problèmes détectés.",
             position: 'bottom',
         },
         {
             element:'#fact-div',
             intro: "<h4>Description de problèmes potentiels</h4>"+
-            "A la sélection d'un problème de lecture, une description s'affiche sur cet espace motivant le marquage de l'indicateur comme problème potentiel. "+
-            "Des suggestions à même de résoudre le problème décrit sont parfois proposées. Ces suggestions peuvent être marquées comme tâches à faire.",
+            "A la sélection d'un problème de lecture, une description du problème s'affiche. Des suggestions à même de le résoudre sont parfois proposées. Ces suggestions peuvent être marquées comme tâches à faire.",
             position: 'top',
         },
         {
             element:'.btn-actions ',
             intro: "<h4>Actions sur le problème</h4>"+
-            "Cet ensemble de butons d'actions permettent, en plus de la navigation vers les problèmes précédents et suivants, d'effectuer deux autres actions:<br/>"+
-            "<ul><li>Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour une des deux raisons suivant:"+
-            "soit le problème n'en est pas vraiment un ou bien que des actions appropriées ont déja été prises pour l'éliminer.<br/>"+
-            "<li>Le bouton <em>Créer une tâche pour ce problème</em> permet de se placer dans la <b>Zone de Tâches</b> pour planifier une action à ce problème."+
-            "Le système propose alors d'ajouter la suggestion comme action, avec possbilités d'édition et de modification.</ul>",
+            "Cet ensemble de boutons d'actions permet, en plus de la navigation vers les problèmes précédents et suivants, d'effectuer deux autres actions:<br/>"+
+            "<ul><li>Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour l’une des deux raisons suivantes: soit le problème n'en est pas un (faux positif), soit des actions pour le résoudre ont déjà été entreprises."+
+            "<li>Le bouton <em>Créer une tâche pour ce problème</em> permet de planifier une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.</ul>",
             position: 'top',
         },
         {
@@ -1656,14 +1649,13 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element: '#chartPanel',
             intro: "<h4>Graphiques</h4>"+
-            "Cet espace présente les graphiques illustrant les données sélectionnées sur le panel à gauche de l'inspecteur. "+
-            "L'élément sélectionné est mené d'une bordure épaisse et colorée.",
+            "Cet espace présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
             position: 'top',
         },
          {
             element: '#task-panel',
-            intro: "<h4>Onglet <em>Tâches</em></h4>"+
-            "La zone tâche permet de planifier des actions sur l'élément sélectionné. En plus de la possibilité de définir une suggestion pour un problème comme étant une tâche, il est tout à fait possible d'en définir directement depuis la zone d'édition du composant. <br/>"
+            intro: "<h4>Zone <em>Tâches</em></h4>"+
+            "La zone tâches permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. <br/>"
             ,
             position: 'left',
         },
@@ -1687,7 +1679,7 @@ $scope.tour.CompletedEvent = function (scope) {
         nextLabel: '<strong>Suiv.</strong>',
         prevLabel: '<span style="color:green">Prec.</span>',
         skipLabel: 'Fermer',
-        doneLabel: 'Terminer'
+        doneLabel: 'Fermer'
     };
 
     $scope.tour.ShouldAutoStart = false;
