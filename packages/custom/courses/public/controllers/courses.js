@@ -2630,9 +2630,11 @@ var insertLocalTask =function(route, task){
  
 }
 
-$scope.editSuggestion =function($event, fact, suggestion){
-  $scope.formData = suggestion; 
-  
+$scope.editSuggestion =function(){
+
+  $scope.formData = $scope.inspectorFacts.Facts[$scope.currentFact].suggestion_title; 
+
+  var fact = $scope.inspectorFacts.Facts[$scope.currentFact];
 var element = resolveRoute(fact.route);
 
 
@@ -2642,9 +2644,6 @@ var element = resolveRoute(fact.route);
            $("#taskEditor").trigger( "click" );
            $(".editable-input ").fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
        }, 0);
-
-
-
 }
 
 
@@ -2759,7 +2758,8 @@ swal({
 
   }
 
-$scope.dropFact = function (route, index) {
+$scope.dropFact = function () {
+  var fact = $scope.inspectorFacts.Facts[$scope.currentFact];
 swal({
       title: "Marquer le problème comme résolu?", 
       text: "Êtes vous sur de vouloir marquer ce problème comme résolu et le supprimer des problèmes potentiels?", 
@@ -2773,7 +2773,7 @@ swal({
       
        //dropFact(parseTaskRequest(route))
         //.success(function(data) {
-     var result = dropFactLocally(index);
+     var result = dropFactLocally( $scope.inspectorFacts.Facts[$scope.currentFact].route);
      updateMainFacts();
            swal({   title: "Problème marqué comme résolu!",   
             text: "Succès", 
