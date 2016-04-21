@@ -1588,6 +1588,19 @@ $scope.tour.CompletedEvent = function (scope) {
              "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
             position: 'bottom'
         },
+        {
+            element: '#inspector-container',
+            intro: "<h4>Zone Inspecteur</h4>"+
+            "Cette zone permet d'étudier les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours en question est indiqué sur l'entête de la zone avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
+            position: 'top',
+        },
+        {
+            element: '#task-panel',
+            intro: "<h4>Zone <em>Tâches</em></h4>"+
+            "La zone tâches permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. <br/>"
+            ,
+            position: 'left',
+        },
         
         {
             element:'#granuleSwitchTH',
@@ -1614,12 +1627,7 @@ $scope.tour.CompletedEvent = function (scope) {
         }
         ,
        
-        {
-            element: '#inspector-container',
-            intro: "<h4>Zone Inspecteur</h4>"+
-            "Cette zone permet d'étudier les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours en question est indiqué sur l'entête de la zone avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
-            position: 'top',
-        },
+        
         {
             element: '#factsTab',
             intro: "<h4>Onglet <em>Problèmes</em> </h4> "+
@@ -1652,13 +1660,7 @@ $scope.tour.CompletedEvent = function (scope) {
             "Cet espace présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
             position: 'top',
         },
-         {
-            element: '#task-panel',
-            intro: "<h4>Zone <em>Tâches</em></h4>"+
-            "La zone tâches permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. <br/>"
-            ,
-            position: 'left',
-        },
+         
         {
             element: '#tasks-table',
             intro: "<h4>Table de <em>Tâches</em></h4>"+
