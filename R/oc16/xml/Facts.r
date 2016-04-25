@@ -1,6 +1,6 @@
 options(stringsAsFactors=FALSE)
 
-selectedCourse='nodejs'
+selectedCourse='xml'
 setwd(paste('data',selectedCourse,sep="/"))
 load(paste(selectedCourse,"rdata",sep="."))
 load(paste(selectedCourse,"structure.rdata",sep="."))
@@ -59,7 +59,7 @@ PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
 PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
 
 PartData$Readers_tx = round(PartData$Readers / nusers, 4)
-PartData$Actions_tx = round(PartData$Actions_nb / nrow(nodejs), 4)
+PartData$Actions_tx = round(PartData$Actions_nb / nrow(xml), 4)
 PartData$Readers_tx = round(PartData$Readers / nusers, 4)
 allRup = max(PartData$rupture)
 finalRupt = max(PartData$norecovery)
@@ -357,7 +357,7 @@ facts =
     maxRereadings,
     maxFinalStops)
 
-save(facts, file="nodejs.facts.rdata")
+save(facts, file="xml.facts.rdata")
 
 
 library('jsonlite')
@@ -876,7 +876,7 @@ facts =
   
 names(facts)[1]="part_id"
 
-save(facts, file="nodejs.facts.rdata")
+save(facts, file="xml.facts.rdata")
 
 
 library('jsonlite')
@@ -884,7 +884,7 @@ library('reshape')
 
 
 facts.json = toJSON(unname(split(facts, 1:nrow(facts))))
-cat(facts.json, file="nodejs.facts.json")
+cat(facts.json, file="xml.facts.json")
 
 
 

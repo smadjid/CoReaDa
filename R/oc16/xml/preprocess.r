@@ -327,7 +327,7 @@ save(xml.RS, file="xml.RS.rdata")
 
 ################ READS #####################################################"
 
-
+library('plyr')
 ### Nombre de lecteurs (RDer), de relecteurs (Rereaders), de lectures (RDing) et de relectures (RRDing)
 xml.Reads = data.frame(part_index=xml.structure$part_index,part_id=xml.structure$part_id,Actions_nb = 0, Readers=0,
                           Rereaders=0,Readings = 0, Rereadings = 0 )
