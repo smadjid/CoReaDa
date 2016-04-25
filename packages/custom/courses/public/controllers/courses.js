@@ -924,8 +924,7 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'title':chapter.title,
                         'route':chapter.route,                                                
                         'Actions_tx':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
-                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
-                        'RS_nb':parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
 
     angular.forEach(chapter.parts, function(part) {
@@ -935,8 +934,7 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
                         'Actions_tx':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
-                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
-                        'RS_nb':parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
           
                 
@@ -949,9 +947,6 @@ partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_tx, 
 var Actions_tx = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 var Readers = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
-var RS_nb = partsData.slice(0,3);
-var topRS_nb =RS_nb.map(function(o){return {'title':o.title, 'route':o.route}})
 partsData = partsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
 var norecovery_tx = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
@@ -971,8 +966,6 @@ Actions_tx = chapsData.slice(0,3);
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 Readers = chapsData.slice(0,3);
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
-RS_nb = chapsData.slice(0,3);
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
  norecovery_tx = chapsData.slice(0,3);
@@ -1082,8 +1075,7 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'title':chapter.title,
                         'route':chapter.route,                                                
                         'Actions_tx':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
-                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
-                        'RS_nb':parseInt(chapter.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
 
     angular.forEach(chapter.parts, function(part) {
@@ -1093,8 +1085,7 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
                         'Actions_tx':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
-                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value),
-                        'RS_nb':parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value)
+                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
           
                 
@@ -1107,9 +1098,6 @@ partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_tx, 
 var Actions_tx = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 var Readers = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
-var RS_nb = partsData.slice(0,3);
-var topRS_nb =RS_nb.map(function(o){return {'title':o.title, 'route':o.route}})
 partsData = partsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
 var norecovery_tx = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
@@ -1129,8 +1117,6 @@ Actions_tx = chapsData.slice(0,3);
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 Readers = chapsData.slice(0,3);
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.RS_nb, y.RS_nb); })
-RS_nb = chapsData.slice(0,3);
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
  norecovery_tx = chapsData.slice(0,3);
@@ -2438,7 +2424,6 @@ $scope.observedElt ={'type':'course',
       'id':0,
   'typeTxt':'Ce cours',
       'nbUsers':0,//$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
-      'nbRS':$scope.course.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value,
       'Actions_tx':$scope.course.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
     };
 
@@ -2467,8 +2452,6 @@ var displayTomeInfos =function(partElt, task){
   angular.forEach(element.chapters, function(chapitre){
   angular.forEach(chapitre.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
-    nbUsers = 0;//nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
-    nbRS = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
     Actions_tx = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
   })
 
@@ -2510,7 +2493,6 @@ var displayChapterInfos =function(partElt, task){
   angular.forEach(element.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
     // nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
-    nbRS = nbRS + parseInt(part.properties.filter(function(value){ return value.property === 'RS_nb'})[0].value);
     Actions_tx = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
   })
 
@@ -2843,13 +2825,11 @@ var ComputeGlobalVisuData =function(){
   var visuData = []
   
    visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
-   visuData.push({type:'RS_nb',data:factChart(-1,'RS_nb')});  
    visuData.push({type:'Readers',data:factChart(-1,'Readers')});  
    visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
    visuData.push({type:'speed',data:factChart(-1,'speed')});  
    visuData.push({type:'Readers_tx',data:factChart(-1,'Readers_tx')});  
-   visuData.push({type:'RS_tx',data:factChart(-1,'RS_tx')});  
- // visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
+    visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
   visuData.push({type:'rereadings_tx',data:factChart(-1,'rereadings_tx')});  
   visuData.push({type:'course_readers_rereaders',data:factChart(-1,'course_readers_rereaders')});  
   visuData.push({type:'part_readers_rereaders',data:factChart(-1,'part_readers_rereaders')});  

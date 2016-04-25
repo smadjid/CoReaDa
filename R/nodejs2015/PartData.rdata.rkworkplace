@@ -1,0 +1,14 @@
+base::::file:///home/madjid/dev/CoReaDa/R/nodejs2015
+help::::rkward://page/rkward_welcome
+script::::file:///home/madjid/dev/CoReaDa/R/oc16/extract_courses.R
+script::::file:///home/madjid/dev/CoReaDa/R/nodejs/preprocess.r
+script::::file:///home/madjid/dev/CoReaDa/R/nodejs/Facts.r
+workspace::sidebar,0::
+commandlog::sidebar,3::
+filebrowser::sidebar,0::
+pendingjobs::sidebar,4::
+console::sidebar,3::
+helpsearch::sidebar,3::
+debugframes::sidebar,1::
+debugconsole::sidebar,4::
+rkdebugmessages::sidebar,4::

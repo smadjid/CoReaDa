@@ -1840,7 +1840,6 @@ border-radius: 3px;
  vertical-align: middle;
   position: absolute;
  
- display:flex;
   justify-content:space-around;
 
   bottom: 3px;
@@ -1851,12 +1850,13 @@ border-radius: 3px;
   padding-left:20px;
 
 
-
+display:flex;
+ 
 }
 
 .btn-actions button, .btn-actions button.enabled-page1,.btn-actions button.enabled-page1 span
 { 
- display:flex;
+ 
 text-align:center;
 
    padding: 5px;

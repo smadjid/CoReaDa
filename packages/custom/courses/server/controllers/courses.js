@@ -383,11 +383,13 @@ module.exports = function(Courses) {
         var part = {
                 'id':part_data[0]['id'],
                 'parent_id':part_data[0]['parent_id'],
-                'title':part_data[0]['part_title'],
-                'elementType':part_data[0]['part_type'],
+                'title':part_data[0]['title'],
+                'elementType':part_data[0]['type'],
                 'properties':[],
                 'facts':[]
             };
+            
+
             for (var i = 0, l = part_data.length; i < l; i++){
                 var prop ={
                     property : part_data[i]['variable'],
@@ -398,10 +400,10 @@ module.exports = function(Courses) {
                 if(part_data[i]['variable']=='part_id') 
                     part.part_id=part_data[i]['value']
                 else
-                    if(part_data[i]['variable']=='part_title') 
+                    if(part_data[i]['variable']=='title') 
                         part.title=part_data[i]['value']
                     else
-                        if(part_data[i]['variable']=='part_type')
+                        if(part_data[i]['variable']=='type')
                             part.type=part_data[i]['value']
                         else
                             if(part_data[i]['variable']=='parent_id')
@@ -413,7 +415,7 @@ module.exports = function(Courses) {
                     'name':part_facts[i].content,
                     'value':part_facts[i].value,
                     'classof':part_facts[i].classe,
-                    'issueCode':part_facts[i].issueCode,
+                    'issueCode':part_facts[i].classe,
                     'type':part_facts[i].type,
                     'elementType':'fact',
                     'description':part_facts[i].description,
@@ -465,10 +467,14 @@ module.exports = function(Courses) {
         }
        else if(part.type==='section') 
         courseParts.push(part);
+
+
+
+      console.log(part.facts)
        }
        
 
-console.log(jsonFacts)         
+
        for (var i = 0; i <=partsCount ; i++){ 
 
             var partProps = subsetByField(jsonPartsdata, 'id', i);
@@ -483,7 +489,7 @@ console.log(jsonFacts)
                     if(jsonFacts[key].part_id==partId) partFacts.push(jsonFacts[key])
                 }
 
-        //    console.log(partFacts)
+          
             
  
             computePart(i, partProps, partFacts);
