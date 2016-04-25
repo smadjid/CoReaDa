@@ -1,0 +1,41 @@
+part_index;part_id;part_parent;part_title;slug;part_type
+0;1946116;0;Avoir l'audace d'entreprendre;avoir-l-audace-d-entreprendre;course
+1;1946122;1946116;Entreprendre : un choix de vie ?;entreprendre-un-choix-de-vie;title-1
+2;1946136;1946122;L’entrepreneuriat aujourd’hui;l-entrepreneuriat-aujourd-hui;chapter
+3;1946141;1946122;Qu’est-ce qu’un entrepreneur ?;qu-est-ce-qu-un-entrepreneur;chapter
+4;1946176;1946122;Entreprendre : une histoire de vie !;entreprendre-une-histoire-de-vie;chapter
+5;1946181;1946122;Ses qualités managériales;ses-qualites-manageriales;chapter
+6;1946191;1946122;Apprivoiser le risque;apprivoiser-le-risque;chapter
+7;2464421;1946122;Interviews;interviews;chapter
+8;2464503;2464421;Interview de Didier Roche ;interview-de-didier-roche;subchapter
+9;2464505;2464421;Interview de Yvon Gattaz;interview-de-yvon-gattaz;subchapter
+10;1946236;1946116;Avoir la bonne idée pour réussir !;avoir-la-bonne-idee-pour-reussir;title-1
+11;1946251;1946236;La construction de son idée;la-construction-de-son-idee;chapter
+12;2552507;1946251;Pour aller plus loin ;pour-aller-plus-loin-67;subchapter
+13;1946291;1946236;L’adéquation homme / projet;l-adequation-homme-projet;chapter
+14;1946306;1946236;Savoir s’entourer : associés,  partenaires,  réseaux (interview);savoir-s-entourer-associes-partenaires-reseaux;chapter
+15;2464358;1946306;Interview de Michelle Jean-Baptiste;interview-de-michelle-jean-baptiste;subchapter
+16;1946321;1946236;Le Lean Start-up;le-lean-start-up;chapter
+17;1946336;1946236;Le Business Model;le-business-model;chapter
+18;1946341;1946116;Pour ne pas rater d’étapes !;pour-ne-pas-rater-d-etapes;title-1
+19;1946366;1946341;Peut-on entreprendre sans Business Plan ?;peut-on-entreprendre-sans-business-plan;chapter
+20;2552547;1946366;Synthèse des 5 parties du Business plan;synthese-des-5-parties-du-business-plan;subchapter
+21;2552548;1946366;Pour aller plus loin;pour-aller-plus-loin-66;subchapter
+22;1946376;1946341;Comment adapter son offre au marché?;comment-adapter-son-offre-au-marche;chapter
+23;2552552;1946376;Pour aller plus loin;pour-aller-plus-loin-40;subchapter
+24;1946381;1946341;Les 7 erreurs à éviter;les-7-erreurs-a-eviter;chapter
+25;2552552;1946381;Pour aller plus loin;pour-aller-plus-loin-39;subchapter
+26;1946396;1946341;Entreprendre seul ou à plusieurs ?;entreprendre-seul-ou-a-plusieurs;chapter
+27;2552562;1946396;Pour aller plus loin;pour-aller-plus-loin-38;subchapter
+28;1946406;1946341;Par qui être aidé dans mon projet?;comment-etre-aide-dans-mon-projet;chapter
+29;2464536;1946341;Interview;interview-6;chapter
+30;2464548;2464536;Interview de Sandrine Joseph;interview-de-sandrine-joseph;subchapter
+31;1946416;1946116;Se lancer avec quelles ressources ?;se-lancer-avec-quelles-ressources;title-1
+32;1946426;1946416;Présenter et soutenir son projet;presenter-et-soutenir-son-projet;chapter
+33;1946431;1946416;La Love Money et les banques;la-love-money-et-les-banques;chapter
+34;1946451;1946416;Les plateformes locales et investisseurs;les-plateformes-locales-et-investisseurs;chapter
+35;1946456;1946416;Les business angels et les fonds d’investissement : entre mythe et réalité ? (interviews);les-business-angels-et-les-fonds-d-investissement-entre-mythe-et-realite;chapter
+36;2464608;1946456;Interview de Jacques Solleau;interview-de-jacques-solleau;subchapter
+37;2464609;1946456;Interview de Éric Gaillat;interview-de-eric-gaillat;subchapter
+38;1946471;1946416;Le crowdfunding et le financement participatif;le-crowdfunding-et-le-financement-participatif;chapter
+39;2556015;1946471;Remerciements;remerciements-3;subchapter

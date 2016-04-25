@@ -1706,7 +1706,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                    'indicatorCode':code,                  
                     'Indicators' :[
                     {'name':'Actions_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur ce chapitre'},
+                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)'},
                     {'name':'rereadings_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures'},
                     {'name':'norecovery_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value,2)+'%',
@@ -1764,9 +1764,9 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                     'Indicators' :[
                     /*{'name':'Actions_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur cette section(avec un total de '+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' visites)'},*/
-                    {'name':'Actions_nb','value':section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value,
-                      'comment':' des visites sur le cours ont été observées sur cette section'},
-                    {'name':'rereadings_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
+                    {'name':'Actions_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
+                      'comment':' des visites sur le cours ont été observées sur cette section ('+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)'},
+                      {'name':'rereadings_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
                       'comment':'des lectures de cette section sont des relectures'},
                     {'name':'norecovery_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur cette section'}  ,
