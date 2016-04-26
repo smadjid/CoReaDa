@@ -1,4 +1,4 @@
-setwd("~/dev/CoReaDa/R/xml")
+setwd("~/dev/CoReaDa/R/oc16/xml")
 options(stringsAsFactors=FALSE)
 # Read the csv
 library('Peirce')

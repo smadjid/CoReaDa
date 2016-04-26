@@ -230,7 +230,7 @@ else{
       ;
       $scope.graphShow=false;
       
-      $scope.achievementSelector = 'mean.achievement';
+    //  $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
       $scope.topSelector = 'Actions_tx';
       $scope.flopSelector = 'Actions_tx';
@@ -982,13 +982,10 @@ var topChaps={
  var result = {
       'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
       'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),    
-      'mean.achievement':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.achievement'})[0].value),
-      'median.achievement':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.achievement'})[0].value),
-      'nRS':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value),
-      'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
-      'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
-      'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
-      'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
+      //'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
+      //'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
+      //'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
+      //'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
       'top_chapters':topChaps,
       'top_sections':topSections
 
@@ -1133,13 +1130,10 @@ var topChaps={
  var result = {
       'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
       'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),    
-      'mean.achievement':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.achievement'})[0].value),
-      'median.achievement':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.achievement'})[0].value),
-      'nRS':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value),
-      'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
-      'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
-      'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
-      'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
+      //'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
+      //'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
+      //'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
+      //'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
       'top_chapters':topChaps,
       'top_sections':topSections
 

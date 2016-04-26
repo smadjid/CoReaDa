@@ -343,8 +343,8 @@ module.exports = function(Courses) {
         var coursedata = fs.readFileSync(courseHome+"/stats.json");
         var coursestats = JSON.parse(coursedata);
 
-        var coursersdata = fs.readFileSync(courseHome+"/rs.json");
-        var coursers = JSON.parse(coursersdata);
+        //var coursersdata = fs.readFileSync(courseHome+"/rs.json");
+        //var coursers = JSON.parse(coursersdata);
 
         var partsdata = fs.readFileSync(courseHome+"/structure.json");
         var jsonPartsdata = JSON.parse(partsdata);
@@ -379,7 +379,8 @@ module.exports = function(Courses) {
             return objectArray;
         }
 
-        var computePart = function(p, part_data, part_facts){            
+        var computePart = function(p, part_data, part_facts){         
+        console.log(part_data)   
         var part = {
                 'id':part_data[0]['id'],
                 'parent_id':part_data[0]['parent_id'],
@@ -553,7 +554,7 @@ module.exports = function(Courses) {
             parts:courseParts,
             properties:courseData.properties,//jsonCoursedata,
             stats:coursestats,
-            rs:coursers,
+          //  rs:coursers,
             tomes:courseTomes,
             elementType:'course',
             content:'course content',

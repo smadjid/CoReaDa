@@ -7,27 +7,26 @@ load(paste(selectedCourse,"structure.rdata",sep="."))
 load(paste(selectedCourse,"Interest.rdata",sep="."))
 load(paste(selectedCourse,"Reads.rdata",sep="."))
 load(paste(selectedCourse,"Ruptures.rdata",sep="."))
-load(paste(selectedCourse,"RS.rdata",sep="."))
+
 load(paste(selectedCourse,"partFollow.rdata",sep="."))
-load(paste(selectedCourse,"chapFollow.rdata",sep="."))
-load(paste(selectedCourse,"tomeFollow.rdata",sep="."))
-load(paste(selectedCourse,"achievement.rdata",sep="."))
+
+
+
 
 structure = eval(parse(text = paste(selectedCourse,"structure",sep=".")))
 Interest = eval(parse(text = paste(selectedCourse,"Interest",sep=".")))
 Reads = eval(parse(text = paste(selectedCourse,"Reads",sep=".")))
 Ruptures = eval(parse(text = paste(selectedCourse,"Ruptures",sep=".")))
-RS = eval(parse(text = paste(selectedCourse,"RS",sep=".")))
-partFollow=eval(parse(text = paste(selectedCourse,"partFollow",sep=".")))
-chapFollow=eval(parse(text = paste(selectedCourse,"chapFollow",sep=".")))
-tomeFollow=eval(parse(text = paste(selectedCourse,"tomeFollow",sep=".")))
+
 data = eval(parse(text = paste(selectedCourse,sep=".")))
-achievement = eval(parse(text = paste(selectedCourse,"achievement",sep=".")))
+
 
 ################################# PARTDATA ########################################################
 PartData = structure
 nParties = nrow(PartData[which(PartData$part_index==0),])
 PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))
+nParties = nrow(PartData[which(PartData$part_index!=0),])
+PartData[which(PartData$part_index!=0),]$part_index=(1:(nParties))
 
 PartData[which(PartData$type=='title-1'),]$type='partie'
 PartData[which(PartData$type=='title-2'),]$type='chapitre'
@@ -39,28 +38,26 @@ PartData[which(PartData$type=='title-3'),]$type='section'
 chaptersIds = PartData[which(PartData$type=='chapitre'),]$part_id
 for(i in 1:length(chaptersIds)){
   PartData[which(PartData$part_id==chaptersIds[i]),]$size = PartData[which(PartData$part_id==chaptersIds[i]),]$size +
-    sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$size)
+    sum(PartData[which(PartData$parentId==chaptersIds[i]),]$size)
   
 }
 
 tomesIds = PartData[which(PartData$type=='partie'),]$part_id
 for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$size =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$size)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$size =  sum(PartData[which(PartData$parentId==chaptersIds[i]),]$size)
   
 }
 
 PartData$speed=round(PartData$size/(PartData$mean.duration/60),2)
 save(PartData, file='PartData.rdata')
 ####################FIN####################
- 
-load('PartData.rdata')
-
+nusers = length(unique(data$user_id))
 PartData = merge(PartData, Reads[,-c(1)], all.x = TRUE)
 PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
 
 PartData$Readers_tx = round(PartData$Readers / nusers, 4)
 PartData$Actions_tx = round(PartData$Actions_nb / nrow(xml), 4)
-PartData$Readers_tx = round(PartData$Readers / nusers, 4)
+
 allRup = max(PartData$rupture)
 finalRupt = max(PartData$norecovery)
 
@@ -78,18 +75,17 @@ PartData[which(PartData$type=='section'),]$rereads_tx =  100 * round(PartData[wh
 # for chapters
 chaptersIds = PartData[which(PartData$type=='chapitre'),]$part_id
 for(i in 1:length(chaptersIds)){
-  PartData[which(PartData$part_id==chaptersIds[i]),]$rereads_tx =  sum(PartData[which(PartData$parent_id==chaptersIds[i]),]$rereads_tx)
+  PartData[which(PartData$part_id==chaptersIds[i]),]$rereads_tx =  sum(PartData[which(PartData$parentId==chaptersIds[i]),]$rereads_tx)
 }
 
 
 
-save(PartData, file='PartData.rdata')
-PartData=PartData[,c("part_index","part_id","parent_id","title",
+
+PartData=PartData[,c("part_index","part_id","parentId","title",
   "type"              ,       "slug"                    ,
  "max.duration"        ,     "mean.duration"           ,
   "median.duration"    ,      "q1.duration"             ,
- "q3.duration"         ,     "chap_index"              ,
-"tome_index"           ,    "size"                    ,
+ "q3.duration"         ,           "size"                    ,
  "speed"               ,     "Actions_nb"              ,
 "Readers"              ,    "Rereaders"               ,
 "Readings"              ,   "Rereadings"              ,
@@ -108,7 +104,10 @@ PartData=PartData[,c("part_index","part_id","parent_id","title",
  "rereads_tx"  
 
 )]
+names(PartData)[3]='parent_id'
+PartData[which(is.na(PartData$rereadings_tx)),]$rereadings_tx = 0
 
+save(PartData, file='PartData.rdata')
 colnames(PartData)[1]="id"
 
 
@@ -344,16 +343,16 @@ maxFinalStops =  rbind(byParts,byChaps)#,byTomes)
 
 
 names(minVisits)[c(1,2)]=
-  names(minSpeed)[c(1,2)]=
+ # names(minSpeed)[c(1,2)]=
   names(maxRereadings)[c(1,2)]=
-  names(maxSpeed)[c(1,2)]=
+#  names(maxSpeed)[c(1,2)]=
   names(maxFinalStops)[c(1,2)]=c("part_id","value")
 
 facts = 
   rbind(
     minVisits,
-    minSpeed,
-    maxSpeed,
+#    minSpeed,
+#    maxSpeed,
     maxRereadings,
     maxFinalStops)
 
