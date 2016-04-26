@@ -36,6 +36,8 @@ Courses.register(function(app, auth, database) {
 
   Courses.aggregateAsset('js',"../lib/angular-animate/angular-animate.min.js");
 
+  Courses.aggregateAsset('js',"../lib/ngFitText/dist/ng-FitText.min.js");
+
 
 
 
@@ -64,7 +66,7 @@ Courses.aggregateAsset('js',"../lib/angular-intro.js/build/angular-intro.min.js"
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
   //Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','ngAnimate']);
-  Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','angular-intro']);
+  Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','angular-intro','ngFitText']);
 
 /*
 	Courses.menus.add({

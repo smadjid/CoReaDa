@@ -20,18 +20,18 @@
   <div class="f_circleG" id="frotateG_08"></div>
 </div>
 <div class="container-fluid row" ng-show="pageLoaded">  
-<div class="col-lg-9 coreada-box">        
+<div class="coreada-box">        
 
-<perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   model="indicatorsSelectionModel"> 
-
-
+  <perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   model="indicatorsSelectionModel"> 
   
  <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
 
 
   <div id="divOverlay"> </div> 
-   <div id="divHoverOverlay" ng-show='courseDisplay && tabSelect=="stats"'> </div> 
+   <div id="divHoverOverlay" ng-show='courseDisplay && tabSelect=="stats"'></div> 
    </perfect-scrollbar>  
+</div>
+
   <div style='margin:0px;margin-bottom:5px;  padding:0;  display: flex; '>
  
 
@@ -67,7 +67,7 @@
 
     <div class="inspector-container" id="inspector-container">
        <!-- tabs -->
-      <div class="coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
+      <div class=" col-lg-9 coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme">
        
         
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
@@ -125,12 +125,13 @@
         </ul>
       </div>
       <!--/ tabs -->
+      <div class="col-lg-3 " >
+  <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
+</div>
     </div>
 
   </div>
-<div class="col-lg-3 coreada-box" >
-  <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
-</div>
+
   </div>  
 
 <span  id='tourStarter1' class='tourStarter' style=''   role="button" ng-click ="CallMe();"><i class="fa fa-compass"></i>&nbsp;&nbsp;Visite guidée</span>

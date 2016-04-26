@@ -1968,8 +1968,8 @@ var loadContext = function(){
 
 
 /*************************************************/
-  var totalWidth = $('.col-lg-9').width();
-        $('.data-table').css('width',totalWidth);
+  var totalWidth = $('.col-lg-12').width();
+     //   $('.data-table').css('width',totalWidth);
         $('th').css('overflow','hidden');
         $('.indicators-header').css('width','50px');
    var nbP = $scope.course.parts.length;
@@ -1980,8 +1980,8 @@ var loadContext = function(){
         
         $('.data-table td').each(function() {
    
-    $(this).css('min-width', 10);     // css attribute of your <td> width:15px; i.e.
-    $(this).css('max-width', 10);     // css attribute of your <td> width:15px; i.e.
+ //   $(this).css('min-width', 10);     // css attribute of your <td> width:15px; i.e.
+  //  $(this).css('max-width', 10);     // css attribute of your <td> width:15px; i.e.
 });
        // $scope.width =tdW;
         //$('.data-table td').css('width',tdW+'px!important');
