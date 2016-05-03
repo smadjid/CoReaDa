@@ -1,4 +1,5 @@
-<div id="fact-div" class="fact-div"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
+<div id="fact-div">
+<div class="fact-div"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 <div class="fat">
 <span class='fact fa fa-exclamation-circle'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;'></span>
 
@@ -12,4 +13,5 @@
 
   
   
+</div>
 </div>

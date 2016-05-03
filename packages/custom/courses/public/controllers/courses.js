@@ -73,7 +73,7 @@ setTimeout(function() {
   };
 
   $scope.DisablePrevPage = function() {
-    return $scope.currentFact === 0 ? "disabled-page" : "enabled-page";
+    return $scope.currentFact === 0 ? "disabled" : "enabled-page";
   };
 
   $scope.pageCount = function() {
@@ -91,7 +91,7 @@ setTimeout(function() {
   };
 
   $scope.DisableNextPage = function() {
-    return $scope.currentFact === $scope.pageCount() ? "disabled-page" : "enabled-page";
+    return $scope.currentFact === $scope.pageCount() ? "disabled" : "enabled-page";
   };
 
   $scope.setPage = function(n) {
@@ -388,7 +388,7 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 
 $scope.$watch('tabSelect', function(newValue, oldValue) { 
 
-  ;
+
 
  if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
   //$scope.currentFact = 0; 
@@ -1427,7 +1427,7 @@ if(facts.length>0)
 
 
 
-if(($scope.inspectorFacts.length>0) & (tab=='facts')) {
+if(($scope.inspectorFacts.length>=0) & (tab=='facts')) {
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
       $scope.tabSelect='facts';
     var fact = $scope.inspectorFacts.Facts[0];
@@ -1558,51 +1558,49 @@ $scope.tour.CompletedEvent = function (scope) {
         console.log("After Change Event called");
         console.log(targetElement);
     };
-
+ 
     $scope.tour.IntroOptions = {
+
         steps:[
         {
             element:'#data-table',
-            intro: "<h4>Zone Table de données du cours</h4>"+
-            "Cette table présente en entête de colonnes la structure du cours sélectionné et en entête de lignes les indicateurs associés. Les autres cellules de la table représentent sous une forme colorée les valeurs des différents indicateurs, formant une carte de chaleur. Les problèmes potentiels détectés pour les différents éléments documentaires sont indiqués dans ces cellules à l’aide du symbole"+
+            intro: "<span class='badge-tour'>1/13</span> <h4>Zone Table de données du cours</h4>"+
+            "Cette table présente en en-tête la structure du cours (colonnes) et les indicateurs associés (lignes). Les cellules intérieures colorées correspondent aux valeurs des différents indicateurs (carte de chaleur). Les problèmes potentiels détectés sont indiqués à l’aide du symbole"+
              "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
             position: 'bottom'
         },
         {
             element: '#inspector-container',
-            intro: "<h4>Zone Inspecteur</h4>"+
-            "Cette zone permet d'étudier les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours en question est indiqué sur l'entête de la zone avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
+            intro: "<span class='badge-tour'>2/8</span> <h4>Inspecteur</h4>"+
+            "Présente les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours concerné est indiqué en haut à gauche avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
             position: 'top',
         },
         {
             element: '#task-panel',
-            intro: "<h4>Zone <em>Tâches</em></h4>"+
-            "La zone tâches permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. <br/>"
-            ,
+            intro: "<span class='badge-tour'>3/13</span> <h4>Tâches</h4>"+
+            "Permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. ",
             position: 'left',
         },
         
         {
             element:'#granuleSwitchTH',
-            intro: "<h4>Composant <em>Changement Granule</em></h4>"+
-            "Ce composant permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés. Deux niveaux existent :"+
+            intro: "<span class='badge-tour'>4/13</span> <h4><em>Changement Granule</em></h4>"+
+            "Permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés :"+
             "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>",          
             position: 'right'
         },
         {
             element:'.inspectorChosenPart',
-            intro: "<h4>Problème potentiel détecté</h4>"+
-            "Une cellule marquée avec ce symbole indique qu'un problème potentiel a été détecté pour l'élément renseigné par l'entête de colonne. "+
-            "L'indicateur en question correspond à l'entête de ligne de la cellule en question",
+            intro: "<span class='badge-tour'>5/13</span> <h4>Problème potentiel détecté</h4>"+
+            "Ce symbole indique qu'un problème potentiel pour l’indicateur (en-tête de ligne) a été détecté pour l'élément (en-tête de colonne).",
             position: 'bottom'
         },
         {
             element: '#tableConfg',
-            intro: "<h4>Composant de configuration</h4>"+
-            "Ce composant permet de:" +
-            "<ol><li>Sélectionner les indicateurs à afficher sur le tableau et à étudier dans l'inspecteur" +
-            "<li>Sélectionner le seuil de détection problèmes potentiels."+
-            "Il est possible de basculer entre un affichage présentant uniquement les principaux problèmes et un affichage plus exhaustif. </ol>",
+            intro: "<span class='badge-tour'>6/13</span> <h4>Configuration</h4>"+
+            "Ce menu permet de:" +
+            "<ol><li>Sélectionner les indicateurs à afficher" +
+            "<li>Sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif </ol>",
             position: 'bottom',
         }
         ,
@@ -1610,40 +1608,40 @@ $scope.tour.CompletedEvent = function (scope) {
         
         {
             element: '#factsTab',
-            intro: "<h4>Onglet <em>Problèmes</em> </h4> "+
-            "Cet onglet présente les problèmes potentiels détectés pour l'élément. Deux boutons permettent de naviguer entre les éventuels problèmes détectés.",
+            intro: "<span class='badge-tour'>7/13</span> <h4>Onglet <em>Problèmes</em> </h4> "+
+            "Présente les problèmes potentiels détectés pour l'élément. Deux boutons permettent de naviguer entre les éventuels problèmes détectés.",
             position: 'bottom',
         },
         {
             element:'#fact-div',
-            intro: "<h4>Description de problèmes potentiels</h4>"+
-            "A la sélection d'un problème de lecture, une description du problème s'affiche. Des suggestions à même de le résoudre sont parfois proposées. Ces suggestions peuvent être marquées comme tâches à faire.",
+            intro: "<span class='badge-tour'>8/13</span> <h4>Description de problèmes potentiels</h4>"+
+            "Affiche une description du problème sélectionné. Des suggestions pour le résoudre sont parfois proposées et peuvent être marquées comme tâches à faire.",
             position: 'top',
         },
         {
             element:'.btn-actions ',
-            intro: "<h4>Actions sur le problème</h4>"+
-            "Cet ensemble de boutons d'actions permet, en plus de la navigation vers les problèmes précédents et suivants, d'effectuer deux autres actions:<br/>"+
-            "<ul><li>Le bouton <em>Ce n'est pas/plus un problème</em> permet d'arrêter l'affichage de ce problème pour l’une des deux raisons suivantes: soit le problème n'en est pas un (faux positif), soit des actions pour le résoudre ont déjà été entreprises."+
-            "<li>Le bouton <em>Créer une tâche pour ce problème</em> permet de planifier une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.</ul>",
+            intro: "<span class='badge-tour'>9/13</span> <h4>Actions sur le problème</h4>"+
+            "En plus de la navigation vers les problèmes précédents et suivants, les deux autres boutons permettent:"+
+            "<ul><li>bouton <em>Ce n'est pas/plus un problème</em> : d’arrêter l'affichage de ce problème (soit le problème n'en est pas un (faux positif), soit des actions pour le résoudre ont déjà été entreprises)."+
+            "<li>bouton <em>Créer une tâche pour ce problème</em> planifie une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.</ul>",
             position: 'top',
         },
         {
             element: '#statsTab',
-            intro: "<h4>Onglet <em>Statistiques</em></h4>"+
-            "Cet onglet présente quelques statistiques de lecture concernant l'élément sélectionné. ",
+            intro: "<span class='badge-tour'>10/13</span> <h4>Onglet <em>Statistiques</em></h4>"+
+            "Présente quelques statistiques sur l'élément sélectionné. ",
             position: 'top',
         },
         {
             element: '#chartPanel',
-            intro: "<h4>Graphiques</h4>"+
-            "Cet espace présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
+            intro: "<span class='badge-tour'>11/13</span> <h4>Graphiques</h4>"+
+            "Présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
             position: 'top',
         },
          
         {
             element: '#tasks-table',
-            intro: "<h4>Table de <em>Tâches</em></h4>"+
+            intro: "<span class='badge-tour'>12/13</span> <h4>Liste de <em>Tâches</em></h4>"+
             "Les tâches planifiées sont affichées sur cette table. Un groupe de boutons permet de (gauche à droite)<br/>"+
             "<ul>"+
             "<li><span class='glyphicon glyphicon-pencil'></span> Modifier l'action planifiée"+
@@ -1651,6 +1649,12 @@ $scope.tour.CompletedEvent = function (scope) {
             "<li><span class='glyphicon glyphicon-trash'></span> Supprimer l'action"+
             "</ul>"
             ,
+            position: 'left',
+        },
+        {
+            element: '#tourStarter1',
+            intro: "<span class='badge-tour'>13/13</span> <h4><em>Merci</em></h4>"+
+            "La visite guidée est terminer. Merci de l'avoir suivie!",
             position: 'left',
         }
        
@@ -1661,7 +1665,7 @@ $scope.tour.CompletedEvent = function (scope) {
         nextLabel: '<strong>Suiv.</strong>',
         prevLabel: '<span style="color:green">Prec.</span>',
         skipLabel: 'Fermer',
-        doneLabel: 'Fermer'
+        doneLabel: 'MERCI'
     };
 
     $scope.tour.ShouldAutoStart = false;
@@ -1735,7 +1739,7 @@ if(facts.length>0)
   
 
 
- if(($scope.inspectorFacts.length>0) & (tab=='facts')) 
+ if(($scope.inspectorFacts.length>=0) & (tab=='facts')) 
      {
 
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
@@ -1789,7 +1793,7 @@ if(facts.length>0)
     else $scope.inspectorFacts={'Facts':[]}
 
 
- if(($scope.inspectorFacts.length>0) & (tab=='facts')) 
+ if(($scope.inspectorFacts.length>=0) & (tab=='facts')) 
     {
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
       $scope.tabSelect='facts';

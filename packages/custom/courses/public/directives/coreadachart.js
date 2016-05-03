@@ -11,9 +11,9 @@ angular.module('mean.courses')
       
 
 var inspectorCharts = function(scope, element){  
-        var margin = {top: 5, right: 00, bottom: 80, left: 40},
+        var margin = {top: 15, right: 00, bottom: 80, left: 40},
           width = 530 - margin.left - margin.right,
-          height = 280 - margin.top - margin.bottom;
+          height = 320 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -38,9 +38,9 @@ if(elementType=='section') elementType='part';
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
-          .attr('class','barChart')
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          .attr('class','barChart');
+        var svgElt =  svg.append("g")
+            .attr("transform", "translate(" + margin.left + "," + 2*margin.top + ")");
 
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
@@ -72,10 +72,10 @@ if(classe=="Readers" | classe=="speed")
           y.domain([0, d3.max(data, function(d) { return d.value; })]);
           
           //Redraw the axes
-          svg.selectAll('g.axis').remove();
-          svg.selectAll('path').remove();
+          svgElt.selectAll('g.axis').remove();
+          svgElt.selectAll('path').remove();
           //X axis
-          var xax = svg.append("g")
+          var xax = svgElt.append("g")
               .attr("class", "x axis")
               .attr("transform", "translate(0," + height + ")")
               .call(xAxis);
@@ -88,7 +88,7 @@ if(elementType!=='part')
             .attr("transform", "rotate(-25)" );
               
           //Y axis
-          svg.append("g")
+          svgElt.append("g")
               .attr("class", "y axis")
               .call(yAxis)
             .append("text")
@@ -97,7 +97,7 @@ if(elementType!=='part')
               .attr("dy", ".71em")
               .style("text-anchor", "end");
               
-          var bars = svg.selectAll(".bar").data(data);
+          var bars = svgElt.selectAll(".bar").data(data);
           bars.enter()
             .append("rect")
             .attr("class", function(d){
@@ -176,7 +176,7 @@ if(elementType!=='part')
 
  
 if(typeof dataMediane !='undefined')
-      svg.append("line")
+      svgElt.append("line")
                      .attr("x1", 0)
                      .attr("y1", y(dataMediane))
                      .attr("x2", width)
@@ -199,19 +199,19 @@ if(typeof dataMediane !='undefined')
       .data([{"text":"Médiane","color":"#F39C12"}/*,{"text":"Médiane","color":"#F39C12"}*/])
       .enter().append("g")
       .attr("class", "legend")
-      .attr("transform", function (d, i) {return "translate(0," + i * 20 + ")";});
+      .attr("transform", function (d, i) {return "translate(0," + parseInt(5+i * 20) + ")";});
 
 
 
 legend.append("text")
-    .attr("x", width - 10)
+    .attr("x", width )
     .attr("y", 0)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function (d) {return d.text;});
 
 legend.append("rect")
-    .attr("x", width - 90)
+    .attr("x", width - 80)
     .attr("y", 0)
     .attr("width", 30)
     .attr("height", 3)    

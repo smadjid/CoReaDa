@@ -378,6 +378,11 @@ td {
 
 
 /*********************************/
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
 
 .well-danger {
   padding: 10px;
@@ -395,6 +400,12 @@ td {
     color: #8a6d3b;
     background-color: #fcf8e3;
     border-color: #faebcc;
+}
+.well-success {
+color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    margin:20px;
 }
 
 .fact {
@@ -635,7 +646,7 @@ a.list-warning-item:hover {
 }
 
 .taskScroller {    
-    max-height:  75vh;
+    max-height:  40vh;
     overflow-y: hidden;
     position: relative;
 
@@ -1200,6 +1211,24 @@ float: left;
  color:white;
 }
 
+
+.badge-tour {
+    display: inline-block;
+    min-width: 10px;
+    padding: 2px 10px;
+    font-size: 15px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border-radius: 10px;
+
+  background-color: #269abc;
+  margin-left: 3px;
+  color:white;
+
+
+}
 
 
 .course_li>li {
@@ -1821,11 +1850,8 @@ border-radius: 3px;
 
 }
 .fact-div {
-   margin:1%;
-    padding-right:5%;
-    padding-left:5%;
-    padding-top:1%;
-    padding-bottom:1%;
+   margin:3%;
+   padding:3%;
     border:none;    
     background-color:rgba(234, 234, 232, 0.42);
     
@@ -1847,40 +1873,24 @@ border-radius: 3px;
   overflow: visible;
   z-index: 50;
   padding-right:20px;
-  padding-left:20px;
+  padding-left:15px;
 
 
 display:flex;
  
 }
 
-.btn-actions button, .btn-actions button.enabled-page1,.btn-actions button.enabled-page1 span
-{ 
- 
-text-align:center;
-
-   padding: 5px;
-    font-size: 12px;
-    border-radius: 2px;
-
-
-
-    
-    background: rgb(47, 82, 111);
-    color:white!important;
-     float:none!important;
-
-      vertical-align: middle;
-    
-
-}
-.btn-actions button:hover,.btn-actions button.enabled-page1:hover, 
-.btn-actions button.enabled-page1 span:hover
+.btn-actions button
 {  
-    
-    color:white!important;
-    background:rgb(21, 44, 64)!important
+text-align:center;
+padding: 5px;
+font-size: 13px!important;
+border-radius: 1px;
+float:none!important;
+vertical-align: middle;
 }
+
+
 
 
 .tab-pane{
@@ -1971,22 +1981,6 @@ margin-bottom: -5px!important;
     background: red!important;
 }
 
-.enabled-page1 span{
-  color:rgb(47, 82, 111);
-}
-
-.enabled-page1:hover{
-  background-color: #e6e6e6;
-    border-color: #adadad;
-}
-.disabled-page{
-  opacity: .7;
-
-}
-.disabled-page span{
-  
-  cursor: not-allowed;
-}
 
 .navbar-header,.navbar-header .logo{
   width:100%;
@@ -2003,6 +1997,7 @@ margin-bottom: -5px!important;
 .inspector-container{
   padding:0px;
   margin:0px;
+  height:  40vh;
  border-color: #213c52!important;
   border-top:none!important; 
 
@@ -2251,6 +2246,7 @@ margin-bottom: -5px!important;
 /* auto height */
 /**/
 .coreada-tabs-height-auto > ul {
+  min-height: 380px!important;
   height: auto !important;
 }
 .coreada-tabs-height-auto > ul > li {
@@ -2689,7 +2685,7 @@ margin-bottom: -5px!important;
 .coreada-tabs-theme > label {
   margin-right: 0;
   margin-bottom: 0;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.4);
   border-radius: 0;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   color: #FCF8E3;
