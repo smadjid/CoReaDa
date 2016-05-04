@@ -2197,7 +2197,7 @@ margin-bottom: -5px!important;
   list-style: none;
   position: relative;
   display: block;
-  overflow: hidden;
+  
   margin: 0;
   padding: 0;
   border: 0;
@@ -2252,6 +2252,7 @@ margin-bottom: -5px!important;
   position: static;
   display: none;
   height: auto !important;
+
 }
 .coreada-tabs-height-auto > .tab-stats:checked ~ ul .tab-stats,
 .coreada-tabs-height-auto > .tab-facts:checked ~ ul .tab-facts,
@@ -3092,3 +3093,13 @@ li.disabled, li[disabled]{
     box-shadow: none;
     opacity: .3;
 }
+
+.clearfix:before,
+.clearfix:after {
+    content: ".";    
+    display: block;    
+    height: 0;    
+    overflow: hidden; 
+}
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; } /* IE < 8 */

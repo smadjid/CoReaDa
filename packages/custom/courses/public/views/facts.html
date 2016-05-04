@@ -38,12 +38,12 @@ Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}}
 
 <tr>
 
-<td  type="button" class="btn-default" style="border: 1px solid grey;width:50%; text-align: center;cursor: pointer;" ng-click="dropFact()">
+<td id='dropFactBtn'  type="button" class="btn-default" style="border: 1px solid grey;width:50%; text-align: center;cursor: pointer;" ng-click="dropFact()">
 <i class="fa fa-times fa-2x fa-pull-left " aria-hidden="true"></i>
 <span  style="font-size: 16px; vertical-align: middle;">Ce n'est pas/plus un problème</span>
 </td>  
 
-<td  type="button" class="btn-default" style="border: 1px solid grey;width:50%; text-align: center;vertical-align: middle; font-size: 16px;cursor: pointer; " ng-click="editSuggestion()">
+<td id='editSuggestionBtn' type="button" class="btn-default" style="border: 1px solid grey;width:50%; text-align: center;vertical-align: middle; font-size: 16px;cursor: pointer; " ng-click="editSuggestion()">
 <i class="fa fa-plus fa-2x fa-pull-left " aria-hidden="true"></i>
 <span  style="font-size: 14px; vertical-align: middle;">Créer une tâche pour ce problème</span>
 </td>  

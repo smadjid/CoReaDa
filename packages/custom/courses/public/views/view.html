@@ -67,13 +67,13 @@
 
     <div class="inspector-container" id="inspector-container">
        <!-- tabs -->
-      <div class=" col-lg-9 coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme coreada-tabs-height-auto ">
+      <div class=" col-lg-9 coreada-tabs coreada-tabs-effect-slide-top coreada-tabs-theme coreada-tabs-height-auto  ">
        
         
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
         <label id='factsTab' for="tab2" ><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()>-1?pageCount()+1:"Aucun" }}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}  
 
-         <ul class="paginator" ng-show="inspectorFacts.Facts.length>1"> 
+         <ul class="paginator " ng-show="inspectorFacts.Facts.length>1"> 
               <li ng-class="DisablePrevPage()" role='button'  ng-click="prevPage()">
                 <span   class='glyphicon glyphicon-backward'></span>
 
@@ -96,10 +96,10 @@
              <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span> 
           </label>
         
-        <ul>
+        <ul class="clearfix">
 
          
-          <li class="tab-content vcenter tab-stats col-lg-12" >
+          <li class="tab-content vcenter tab-stats col-lg-12 clearfix" >
           <div class="container-nginclude col-lg-6"  ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" > </div>
           <div class="container-nginclude col-lg-6" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component.html'" ></div>
            <div id='chartPanel2' class='col-lg-6 pull-right'>
@@ -108,7 +108,7 @@
           </div>
           </li>
           
-          <li class="tab-content vcenter tab-facts col-lg-12"> 
+          <li class="tab-content vcenter tab-facts col-lg-12 clearfix"> 
           
           
            <div ng-show='pageCount()<0' >
