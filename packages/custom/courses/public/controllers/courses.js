@@ -419,13 +419,14 @@ window.setTimeout(function() {
 
 
 $scope.showTab = function(tab){
+  //TODO: no SHOW TAB . DEACTIVATED
+  return;
 
   $("input[value='"+tab+"']").prop('checked', true);
    
 
   if(tab == 'facts'){   
     $scope.currentFact = 0;  
-    $scope.tabSelect='facts'; 
     var fact = $scope.inspectorFacts.Facts[0];
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
 
@@ -437,7 +438,6 @@ $scope.showTab = function(tab){
  }
  else{
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');  
-    $scope.tabSelect='stats';
  }
   //$scope.factsPaginator = (tab=="fact")?true:false;
   
@@ -1228,7 +1228,7 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
 var goHome =function(){ 
 
   window.location.hash = '#';
-  $scope.tabSelect='facts';
+  //$scope.tabSelect='facts';
   
 }
 $scope.goHome =function(){
@@ -1429,7 +1429,7 @@ if(facts.length>0)
 
 if(($scope.inspectorFacts.length>=0) & (tab=='facts')) {
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      $scope.tabSelect='facts';
+      
     var fact = $scope.inspectorFacts.Facts[0];
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
@@ -1523,7 +1523,7 @@ if(facts.length>0)
  if(($scope.inspectorFacts.Facts.length>0) & (tab=='facts')) 
      {
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      $scope.tabSelect='facts';
+      
     var fact = $scope.inspectorFacts.Facts[0];
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
@@ -1743,8 +1743,8 @@ if(facts.length>0)
      {
 
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      $scope.tabSelect='facts';
-    var fact = $scope.inspectorFacts.Facts[0];
+      
+      var fact = $scope.inspectorFacts.Facts[0];
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
@@ -1796,7 +1796,7 @@ if(facts.length>0)
  if(($scope.inspectorFacts.length>=0) & (tab=='facts')) 
     {
       $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      $scope.tabSelect='facts';
+      
     var fact = $scope.inspectorFacts.Facts[0];
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }

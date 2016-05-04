@@ -1,17 +1,56 @@
-<div id="fact-div">
-<div class="fact-div"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
-<div class="fat">
-<span class='fact fa fa-exclamation-circle'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;'></span>
 
- Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}} : {{fact.name}}  <em ng-show='factTitleDisplay'>sur {{fact.parentTitle}}</em>
- </div>
+<div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}}>
 
+<table style="width:100%;padding:0;margin:0">
+
+<thead>
+<tr>
+<td  colspan="2"  style='font-size: 25px;text-align: center;padding-left: 10%;padding-right: 10%;'>
+
+<button type="button" style="padding:0; margin:0; background: none"class="btn pull-left" ng-class="DisablePrevPage()" ng-click="prevPage()">&nbsp;
+<i class="fa fa-arrow-left fa-2x fa-pull-left" aria-hidden="true"></i>
+
+</button> 
+Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}} 
+<button  type="button" style="padding:0; margin:0; background: none"class="btn pull-right" ng-class="DisableNextPage()" ng-click="nextPage()">
+<i class="fa fa-arrow-right fa-2x fa-pull-right" aria-hidden="true"></i>
+</td></tr>
+</thead>
+<tbody style="display:block;border: 1px solid grey;" >
+<tr>
+<td  colspan="2" style='text-align: center; font-weight: bold; font-size: 16px'>
+<!--
+<span class='fact fa fa-exclamation-circle'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;'></span>-->
+
+ {{fact.name}}  <em ng-show='factTitleDisplay'>sur {{fact.parentTitle}}</em>
+
+</td></tr>
+<tr>
+<td colspan="2">
   <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
- 
-  <p  style='font-size:14px;     margin-bottom: 5px'> <u>Suggestion</u>: {{fact.suggestion_title}} </p>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+  <p  style='font-size:14px;     margin-bottom: 5px'> <b>Suggestion</b>: {{fact.suggestion_title}} </p>
   <p style='text-align:justify; font-size:14px'>{{fact.suggestion_content}}</p>
+</td></tr>
 
-  
-  
+<tr>
+
+<td  type="button" class="btn-default" style="border: 1px solid grey;width:50%; text-align: center;cursor: pointer;" ng-click="dropFact()">
+<i class="fa fa-times fa-2x fa-pull-left " aria-hidden="true"></i>
+<span  style="font-size: 16px; vertical-align: middle;">Ce n'est pas/plus un problème</span>
+</td>  
+
+<td  type="button" class="btn-default" style="border: 1px solid grey;width:50%; text-align: center;vertical-align: middle; font-size: 16px;cursor: pointer; " ng-click="editSuggestion()">
+<i class="fa fa-plus fa-2x fa-pull-left " aria-hidden="true"></i>
+<span  style="font-size: 14px; vertical-align: middle;">Créer une tâche pour ce problème</span>
+</td>  
+
+
+</tr>
+</tbody>
+  </table>
 </div>
-</div>
+

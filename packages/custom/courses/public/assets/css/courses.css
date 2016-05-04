@@ -2246,7 +2246,7 @@ margin-bottom: -5px!important;
 /* auto height */
 /**/
 .coreada-tabs-height-auto > ul {
-  min-height: 380px!important;
+  
   height: auto !important;
 }
 .coreada-tabs-height-auto > ul > li {
@@ -3073,4 +3073,23 @@ font-weight: bold;
 }
 .tourStarter:hover{
 color: white; 
+}
+
+.fact-dispaly tr,.fact-dispaly td{
+  border: none;
+}
+.container-nginclude{
+  padding:0!important;
+  margin:0!important;
+  border:none!important;
+}
+.btn.disabled, .btn[disabled]{
+    opacity: .35;
+}
+li.disabled, li[disabled]{
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .3;
 }

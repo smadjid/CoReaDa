@@ -74,14 +74,14 @@
         <label id='factsTab' for="tab2" ><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()>-1?pageCount()+1:"Aucun" }}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}  
 
          <ul class="paginator" ng-show="inspectorFacts.Facts.length>1"> 
-              <li ng-class="DisablePrevPage()">
-                <span  role='button' class='glyphicon glyphicon-backward' ng-click="prevPage()"></span>
+              <li ng-class="DisablePrevPage()" role='button'  ng-click="prevPage()">
+                <span   class='glyphicon glyphicon-backward'></span>
 
               </li>
               <li class="active"><b >{{currentFact+1}}/{{pageCount()+1}}</b>
               
-              <li  ng-class="DisableNextPage()">
-                <span  role='button' class='glyphicon glyphicon-forward' ng-click="nextPage()"></span>
+              <li  ng-class="DisableNextPage()" role='button' ng-click="nextPage()">
+                <span   class='glyphicon glyphicon-forward' ></span>
               </li>
           </ul>
 
@@ -100,8 +100,8 @@
 
          
           <li class="tab-content vcenter tab-stats col-lg-12" >
-          <div class="vcenter col-lg-6"  ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" > </div>
-          <div class="vcenter col-lg-6" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component.html'" ></div>
+          <div class="container-nginclude col-lg-6"  ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" > </div>
+          <div class="container-nginclude col-lg-6" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component.html'" ></div>
            <div id='chartPanel2' class='col-lg-6 pull-right'>
               <div class='chart-title' ><b>{{getGraphTitle(inspectorStats.indicatorCode)}}</b></div>
               <d3-chart data='context.d3'  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,issueCode:inspectorStats.indicatorCode, tab:"stats"}' style="height:0"></d3-chart>
@@ -109,33 +109,23 @@
           </li>
           
           <li class="tab-content vcenter tab-facts col-lg-12"> 
-          <div class="btn-actions"  align="center" ng-show='tabSelect=="facts" && pageCount()>=0'>
-  <button type="button" class="btn btn-primary" ng-class="DisablePrevPage()" ng-click="prevPage()">&nbsp;<span class="glyphicon glyphicon-backward" ></span> &nbsp;</button>
-  <button type="button" class="btn  btn-danger"  ng-click="dropFact()"><span class="glyphicon glyphicon-remove" ></span> &nbsp;Ce n'est pas/plus un problème</button>
-  <button type="button" class="btn  btn-success" ng-click="editSuggestion()" ><span class="glyphicon glyphicon-plus" ></span>&nbsp;Créer une tâche pour ce problème</button>
-  <button type="button" class="btn btn-primary" ng-class="DisableNextPage()" ng-click="nextPage()">&nbsp; <span class="glyphicon glyphicon-forward" ></span>&nbsp;</button>
-</div>
+          
           
            <div ng-show='pageCount()<0' >
-           <div class="well well-success well-lg">
-           <h3>Il n’y a pas de problèmes majeurs dans {{inspectorStats.typeTxt}}. </h3>
-           <br/>
+           
          
-           <h5>Vous pouvez aussi afficher plus de problèmes ou consulter les statistiques globales de {{inspectorStats.typeTxt}}.</h5>
-           <div class="btn-group"  align="center" >
-              <button type="button" class="btn  btn-primary"  ng-click="allFactsDisplay=true">Afficher tous les problèmes</button>
-              <button type="button" class="btn  btn-primary" ng-click="tabSelect='stats'" >Consulter les statistiques</button>
-          </div>
          
-           </div>
-           <div>
-           <br/>
+           <div  style='vertical-align:middle; text-align:center; padding:3%'>
+            <h2>Il n’y a pas de problèmes majeurs dans {{inspectorStats.typeTxt}}.</h2>
+             <h3>Vous pouvez aussi <i href="#" role="button" ng-click="allFactsDisplay=true" style="color: #337ab7">afficher plus de problèmes</i> ou <i href="#" role="button" ng-click="tabSelect='stats'" style="color: #337ab7">consulter les statistiques globales</i> de {{inspectorStats.typeTxt}}.</h3> 
           
-           </div></div>
+          </div>
+          
+           </div>
 
            
 
-          <div class="vcenter col-lg-6" ng-show='pageCount()>=0' ng-include src="'courses/views/facts.html'"> </div>
+          <div class="container-nginclude col-lg-6" ng-show='pageCount()>=0' ng-include src="'courses/views/facts.html'"> </div>
           <div id='chartPanel' class='col-lg-6 pull-right'>
           <div class='chart-title' ng-show='pageCount()>=0'><b>{{getGraphTitle(inspectorFacts.indicatorCode)}}</b></div>
            <d3-chart data='context.d3' ng-show='pageCount()>=0' d3opts='{type:"inspector",elementType:inspectorFacts.type,elementId:inspectorFacts.id,issueCode:inspectorFacts.indicatorCode, tab:"facts"}' style="height:0"></d3-chart>
@@ -152,7 +142,7 @@
           
         </ul>
         <div class="col-lg-3 " >   
-        <div id="task-panel" class="fadein fadeout showpanel panel"  ng-include src="'courses/views/tasks-manager.html'"></div>
+        <div id="task-panel" class="fadein fadeout showpanel panel "  ng-include src="'courses/views/tasks-manager.html'"></div>
       </div>
       </div>
       <!--/ tabs -->
