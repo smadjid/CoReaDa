@@ -103,7 +103,7 @@
           <div class="container-nginclude col-lg-6"  ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" > </div>
           <div class="container-nginclude col-lg-6" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component.html'" ></div>
            <div id='chartPanel2' class='col-lg-6 pull-right'>
-              <div class='chart-title' ><b>{{getGraphTitle(inspectorStats.indicatorCode)}}</b></div>
+              <div class='chart-title' >{{getGraphTitle(inspectorStats.indicatorCode)}}</div>
               <d3-chart data='context.d3'  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,issueCode:inspectorStats.indicatorCode, tab:"stats"}' style="height:0"></d3-chart>
           </div>
           </li>
@@ -127,7 +127,7 @@
 
           <div class="container-nginclude col-lg-6" ng-show='pageCount()>=0' ng-include src="'courses/views/facts.html'"> </div>
           <div id='chartPanel' class='col-lg-6 pull-right'>
-          <div class='chart-title' ng-show='pageCount()>=0'><b>{{getGraphTitle(inspectorFacts.indicatorCode)}}</b></div>
+          <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>
            <d3-chart data='context.d3' ng-show='pageCount()>=0' d3opts='{type:"inspector",elementType:inspectorFacts.type,elementId:inspectorFacts.id,issueCode:inspectorFacts.indicatorCode, tab:"facts"}' style="height:0"></d3-chart>
           </div>
           </div>
