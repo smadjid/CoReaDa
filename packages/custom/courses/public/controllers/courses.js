@@ -19,6 +19,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   '$stateParams', '$location', '$http','Global', 'Courses', '$http',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses) {
     $scope.global = Global;
+
  $scope.view_tab ="tab1";
 $scope.changeTab = function(tab) {
     $scope.view_tab = tab;
@@ -358,6 +359,8 @@ $('.editable-text').on('shown', function (e, editable) {
     });
 
 
+
+/////TODO:
 
 
 
@@ -3037,3 +3040,18 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
 
+app.config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'http://srv*.assets.example.com/**',
+    'https://openclassrooms.com/**',
+    'https://user.oc-static.com/**'
+  ]);
+
+  // The blacklist overrides the whitelist so the open redirect here is blocked.
+  $sceDelegateProvider.resourceUrlBlacklist([
+    'http://myapp.example.com/clickThru**'
+  ]);
+});
