@@ -222,8 +222,8 @@ else{
 
       $scope.formData ='';
       $scope.textBtnForm ='';
-      $scope.chartType = 'Actions_tx';
-      $scope.globalChartSelector = 'Actions_tx';
+      $scope.chartType = 'actions';
+      $scope.globalChartSelector = 'actions';
       $scope.elementTypeSelector = 'part';
       $scope.sectionDisplay = false;
       $scope.context.statChart = false;
@@ -233,8 +233,8 @@ else{
       
     //  $scope.achievementSelector = 'mean.achievement';
       $scope.rsSelector = 'nparts';
-      $scope.topSelector = 'Actions_tx';
-      $scope.flopSelector = 'Actions_tx';
+      $scope.topSelector = 'actions';
+      $scope.flopSelector = 'actions';
       $scope.topElementSelector ='sections',
       $scope.flopElementSelector ='tomes',
       $scope.statSelector ='visits';      
@@ -247,7 +247,7 @@ else{
       $scope.ChaptersFacts = [];
       $scope.SectionsFacts = [];
       $scope.inspectorFacts={'Facts':[], 'type':'tome', 'selectedFact':'0'};
-      $scope.inspectorStats ={'Facts':[], 'indicatorCode':'Actions_tx', 'type':'tome'};
+      $scope.inspectorStats ={'Facts':[], 'indicatorCode':'actions', 'type':'tome'};
       $scope.courseDisplay = true;
       $scope.indicatorSelectorShow = false;
       $scope.allIndicatorSelectorShow = false;
@@ -270,24 +270,24 @@ else{
 
 $scope.resetIndicators = function(){
       $scope.indicatorsHeader=[
-        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'Actions_tx','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'actions','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
         {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'speed','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'rereadings_tx','category':'Indicateurs de relecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'norecovery_tx','category':'Indicateurs d\'arrêt et reprise','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null}
+        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'reread','category':'Indicateurs de relecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'stop','category':'Indicateurs d\'arrêt et reprise','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null}
 
       ]
       
 }
 $scope.resetIndicators();
 $scope.selectedIndicators=[
-        {'code':'Actions_tx', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 
-        'issueCode':'Actions_tx','category':'Indicateurs de lecture'},
+        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 
+        'issueCode':'actions','category':'Indicateurs de lecture'},
         {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 
         'issueCode':'speed','category':'Indicateurs de lecture'},
-        {'code':'rereadings_tx', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 
-        'issueCode':'rereadings_tx','category':'Indicateurs de relecture'},
-        {'code':'norecovery_tx', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue',
-        'issueCode':'norecovery_tx','category':'Indicateurs d\'arrêts et reprise'}
+        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 
+        'issueCode':'reread','category':'Indicateurs de relecture'},
+        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue',
+        'issueCode':'stop','category':'Indicateurs d\'arrêts et reprise'}
       ]
       $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 
@@ -300,7 +300,7 @@ $scope.selectedIndicators=[
       }, function(course) {
      
         $scope.course = course;
-        $scope.chartType = 'Actions_tx';
+        $scope.chartType = 'actions';
         $scope.selectedElement = course;
   
         $scope.completeCourseParts();
@@ -378,9 +378,16 @@ $scope.toggleSectionDisplay = function(){
   
 
 }
+
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
-  function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
+  function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
+//console.log( $scope.inspectorStats.Indicators)
+if($scope.inspectorStats.Indicators !='undefined')
+  $scope.inspectorStats.Indicators = $.grep($scope.inspectorStats.Indicators, 
+  function(e){return ($.inArray(e.name, $scope.indicatorsSelectionModel)>-1)});
+
+
 });
 
 $scope.$watch('allIndicatorSelectorShow', function(newValue, oldValue) {  
@@ -455,7 +462,7 @@ $scope.getShownTab = function(){
 
 $scope.getGraphTitle = function(code){
   switch(code) {
-    case "Actions_tx":
+    case "actions":
         return('Taux de visites');
         break;
     case "Readers":
@@ -467,10 +474,10 @@ $scope.getGraphTitle = function(code){
     case 'mean.duration':
         return('Durée moyenne de lecture de la section(en minutes)')
         break;
-    case 'rereadings_tx':
+    case 'reread':
         return('Taux de lectures qui sont des relectures');
         break;
-    case 'norecovery_tx':
+    case 'stop':
         return('Taux des arrêts définitifs de la lecture');
         break;
     case 'provenance':
@@ -581,7 +588,7 @@ var decideBoundariesScale = function(partType,indicatorCode){
   var boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
 var scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
 switch(indicatorCode) {
-    case "Actions_tx":
+    case "actions":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
@@ -589,15 +596,15 @@ switch(indicatorCode) {
         boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
         break;
-    case "rereadings_tx":
+    case "reread":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
-    case "rereadings_tx":
+    case "reread":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
-    case "norecovery_tx":
+    case "stop":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
@@ -609,17 +616,17 @@ var computeIndividualIndicatorValue =  function(part,indicatorCode, boundaryValu
 
   var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
       switch(indicatorCode) {
-      case "Actions_tx":
+      case "actions":
         partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
         break;
       case "speed":
         partData = Math.abs(boundaryValues.MedianValue - 
           parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
         break;
-      case "rereadings_tx":
+      case "reread":
         partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
         break;
-      case "norecovery_tx":
+      case "stop":
         partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
         break;
       }
@@ -920,22 +927,22 @@ var partsData =[], chapsData =[], tomesData =[];
 angular.forEach($scope.course.tomes, function(tome) {  
 
   angular.forEach(tome.chapters, function(chapter) {  
-    chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+    chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value
       chapsData.push({
                         'id':chapter.id,
                         'title':chapter.title,
                         'route':chapter.route,                                                
-                        'Actions_tx':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+                        'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value),
                         'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
 
     angular.forEach(chapter.parts, function(part) {
-      part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+      part.properties.filter(function(value){ return value.property === 'actions'})[0].value
       partsData.push({
                         'id':part.id,
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
-                        'Actions_tx':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+                        'actions':parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value),
                         'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
           
@@ -945,41 +952,41 @@ angular.forEach($scope.course.tomes, function(tome) {
   })
 })
 
-partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
-var Actions_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
+var actions = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 var Readers = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
-var norecovery_tx = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
-var rereadings_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
+var stop = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
+var reread = partsData.slice(0,3);
 
 
 var topSections={
-        'Actions_tx':Actions_tx[0],
+        'actions':actions[0],
         'Readers':Readers[0],
-        'norecovery_tx':norecovery_tx[0],
-        'rereadings_tx':rereadings_tx[0]
+        'stop':stop[0],
+        'reread':reread[0]
       }
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
-Actions_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
+actions = chapsData.slice(0,3);
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 Readers = chapsData.slice(0,3);
 
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
- norecovery_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
+ stop = chapsData.slice(0,3);
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
- rereadings_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
+ reread = chapsData.slice(0,3);
 
 var topChaps={
-        'Actions_tx':Actions_tx[0],
+        'actions':actions[0],
         'Readers':Readers[0],
-        'norecovery_tx':norecovery_tx[0],
-        'rereadings_tx':rereadings_tx[0]
+        'stop':stop[0],
+        'reread':reread[0]
       }
  var result = {
       'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
@@ -999,7 +1006,7 @@ var topChaps={
 
 var computeComponentStats = function(element,bySection){ 
 
-var componentData ={'Actions_tx':[], 'speed':[], 'norecovery_tx':[], 'rereadings_tx':[] }
+var componentData ={'actions':[], 'speed':[], 'stop':[], 'reread':[] }
 
 var data=[];
 var ids=[]
@@ -1039,19 +1046,19 @@ else
   return;
 
     angular.forEach(data, function(elt){
-      componentData.Actions_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value));
+      componentData.actions.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'actions'})[0].value));
       componentData.speed.push(parseInt(elt.properties.filter(function(value){ return value.property === 'speed'})[0].value));
-      componentData.norecovery_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value));
-      componentData.rereadings_tx.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value));
+      componentData.stop.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'stop'})[0].value));
+      componentData.reread.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'reread'})[0].value));
       ids.push(elt.id);
     });
 
 
 var topData={
-        'Actions_tx':d3.mean(componentData.Actions_tx ),
+        'actions':d3.mean(componentData.actions ),
         'speed':d3.mean(componentData.speed ),
-        'norecovery_tx':d3.mean(componentData.norecovery_tx ),
-        'rereadings_tx':d3.mean( componentData.rereadings_tx),
+        'stop':d3.mean(componentData.stop ),
+        'reread':d3.mean( componentData.reread),
         'ids':ids
       } 
 
@@ -1068,22 +1075,22 @@ var partsData =[], chapsData =[], tomesData =[];
 angular.forEach($scope.course.tomes, function(tome) {  
 
   angular.forEach(tome.chapters, function(chapter) {  
-    chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+    chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value
       chapsData.push({
                         'id':chapter.id,
                         'title':chapter.title,
                         'route':chapter.route,                                                
-                        'Actions_tx':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+                        'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value),
                         'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
 
     angular.forEach(chapter.parts, function(part) {
-      part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+      part.properties.filter(function(value){ return value.property === 'actions'})[0].value
       partsData.push({
                         'id':part.id,
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
-                        'Actions_tx':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value),
+                        'actions':parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value),
                         'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
           
@@ -1093,41 +1100,41 @@ angular.forEach($scope.course.tomes, function(tome) {
   })
 
 
-partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
-var Actions_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
+var actions = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 var Readers = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
-var norecovery_tx = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
-var rereadings_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
+var stop = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
+var reread = partsData.slice(0,3);
 
 
 var topSections={
-        'Actions_tx':Actions_tx[0],
+        'actions':actions[0],
         'Readers':Readers[0],
-        'norecovery_tx':norecovery_tx[0],
-        'rereadings_tx':rereadings_tx[0]
+        'stop':stop[0],
+        'reread':reread[0]
       }
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
-Actions_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
+actions = chapsData.slice(0,3);
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 Readers = chapsData.slice(0,3);
 
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
- norecovery_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
+ stop = chapsData.slice(0,3);
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rereadings_tx, y.rereadings_tx); })
- rereadings_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
+ reread = chapsData.slice(0,3);
 
 var topChaps={
-        'Actions_tx':Actions_tx[0],
+        'actions':actions[0],
         'Readers':Readers[0],
-        'norecovery_tx':norecovery_tx[0],
-        'rereadings_tx':rereadings_tx[0]
+        'stop':stop[0],
+        'reread':reread[0]
       }
  var result = {
       'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
@@ -1402,26 +1409,28 @@ angular.forEach($scope.course.tomes, function(tome) {
 
 
 
+
 var inspectorCourseData = function(tab){   
 
 $scope.inspector={} 
 var facts=[];
   if($scope.sectionDisplay) {
-         facts = $scope.SectionsFacts;
+         facts = $scope.SectionsFacts;   
+
          $scope.inspectorStats.type='part'
   }
   else{
       facts= $scope.ChaptersFacts;
       $scope.inspectorStats.type='chapter';
   }
-
-  
+console.log($scope.indicatorsSelectionModel)
+  console.log(facts)
 if(facts.length>0)
   $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
   'indicatorCode':facts[0].issueCode,
-  'Facts':facts
+  'Facts': $.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)})  
 
   }
   else
@@ -1450,7 +1459,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
   var mainIssues = [];
   var  mainStats = computeComponentStats(tome, $scope.sectionDisplay);
   
-   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
+   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
    if($scope.sectionDisplay){ 
        mainIssues = $scope.SectionsFacts;
 
@@ -1458,13 +1467,14 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
        $scope.inspectorStats = {'type':'part',
                    'id':mainStats.ids,
                    'typeTxt': 'cette partie',
+                   'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'Actions_tx','value':  Math.round(100*mainStats.Actions_tx,2)+'%',
+                    {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
                       'comment':'est le taux moyen de visite des sections de cette partie'},
-                    {'name':'rereadings_tx','value':  Math.round(100*mainStats.rereadings_tx)+'%',
+                    {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
                       'comment':'est le taux moyen de relecture des sections de cette partie'},
-                   {'name':'norecovery_tx', 'value':  Math.round(100*mainStats.norecovery_tx)+'%',
+                   {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
                       'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de cette partie'}  ,
                       {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des sections de cette partie'}
@@ -1477,13 +1487,14 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
     $scope.inspectorStats = {'type':'chapter',
                    'id':mainStats.ids,
                    'typeTxt': 'cette partie',
+                   'indicatorTxt': 'tous les indicateurs',
                     'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'Actions_tx','value':  Math.round(100*mainStats.Actions_tx,2)+'%',
+                    {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
                       'comment':'est le taux moyen de visite des chapitres de cette partie'},
-                    {'name':'rereadings_tx','value':  Math.round(100*mainStats.rereadings_tx)+'%',
+                    {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
                       'comment':'est le taux moyen de relecture des chapitres de cette partie'},
-                   {'name':'norecovery_tx', 'value':  Math.round(100*mainStats.norecovery_tx)+'%',
+                   {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
                       'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  ,
                       {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'}
@@ -1493,13 +1504,16 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
   }
   
 $scope.factTitleDisplay=true;
-  var times =[], users =[], rss =[], rereadings_tx =[], stops =[];
+  var times =[], users =[], rss =[], reread =[], stops =[];
 
 
  
 
 
-  if(indicator!=null) $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
+  if(indicator!=null) {
+    $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)}); 
+  $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
+}
   var facts = mainIssues.filter(function(e){return (e.tome==tome._id)});
 if(facts.length>0)
   {
@@ -1508,7 +1522,8 @@ if(facts.length>0)
     'id':facts[0].partId,
     'type':facts[0].partType,
     'indicatorCode':facts[0].issueCode,
-    'Facts':facts }
+    'Facts':$.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)}) 
+    }
 
     
     if(indicator!=null) $scope.inspectorFacts.Facts = 
@@ -1538,7 +1553,7 @@ return;
 var inspectorChapterData = function(chapter, indicator, fact, tab){ 
   
   var mainIssues = [], mainStats = [];
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
+  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
   if($scope.sectionDisplay) {
       mainIssues= $scope.SectionsFacts;
       mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
@@ -1546,13 +1561,14 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
        $scope.inspectorStats = {'type':'section',
                    'id':mainStats.ids,
                    'typeTxt': 'ce chapitre',
+                   'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'Actions_tx','value':  Math.round(100*mainStats.Actions_tx,2)+'%',
+                    {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
                       'comment':'est le taux moyen de visite des sections de ce chapitre'},
-                    {'name':'rereadings_tx','value':  Math.round(100*mainStats.rereadings_tx)+'%',
+                    {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
                       'comment':'est le taux moyen de relecture des sections de ce chapitre'},
-                   {'name':'norecovery_tx', 'value':  Math.round(100*mainStats.norecovery_tx)+'%',
+                   {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
                       'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de ce chapitre'}  ,
                       {'name':'speed','value':   mainStats.speed+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des sections de ce chapitre'}
@@ -1566,13 +1582,14 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
     $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
                    'id':chapter.id,
                    'typeTxt': 'ce chapitre',
+                   'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'Actions_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
+                    {'name':'actions','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)'},
-                    {'name':'rereadings_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
+                    {'name':'reread','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures'},
-                    {'name':'norecovery_tx','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value,2)+'%',
+                    {'name':'stop','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre'}  ,
                       {'name':'speed','value':chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur ce chapitre'}
@@ -1581,10 +1598,13 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                   };
   }
 
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
+  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
   
 
-if(indicator!=null) $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
+if(indicator!=null) {
+  $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
+  $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
+}
   
 var facts = mainIssues.filter(function(e){return (e.chapter==chapter._id)});
 if(facts.length>0)
@@ -1593,7 +1613,8 @@ if(facts.length>0)
     'id':facts[0].partId,
     'type':facts[0].partType,
     'indicatorCode':facts[0].issueCode,
-    'Facts':facts }
+    'Facts':$.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)}) 
+  }
 
     
     if(indicator!=null) $scope.inspectorFacts.Facts = $scope.inspectorFacts.Facts.filter(function(e){return (e.classof==indicator)});
@@ -1620,19 +1641,20 @@ if(facts.length>0)
 var inspectorSectionData = function(section, indicator, fact, tab){  
   $scope.factTitleDisplay=false;
  var mainIssues = $scope.SectionsFacts;
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
+  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
     $scope.inspectorStats = {'type':'part',
                    'id':section.id,
                    'typeTxt': 'cette section',
+                   'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,
                     'Indicators' :[
-                    /*{'name':'Actions_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
+                    /*{'name':'actions','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur cette section(avec un total de '+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' visites)'},*/
-                    {'name':'Actions_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
+                    {'name':'actions','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur cette section ('+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)'},
-                      {'name':'rereadings_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value,2)+'%',
+                      {'name':'reread','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
                       'comment':'des lectures de cette section sont des relectures'},
-                    {'name':'norecovery_tx','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'norecovery_tx'})[0].value,2)+'%',
+                    {'name':'stop','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur cette section'}  ,
                       {'name':'speed','value':section.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur cette section'}
@@ -1640,7 +1662,10 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                     
                   };
 
-if(indicator!=null) $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
+if(indicator!=null) {
+  $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
+$scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
+}
   
 var facts = mainIssues.filter(function(e){return (e.section==section._id)});
 if(facts.length>0)
@@ -1649,7 +1674,8 @@ if(facts.length>0)
     'id':facts[0].partId,
     'type':facts[0].partType,
     'indicatorCode':facts[0].issueCode,
-    'Facts':facts }
+    'Facts':$.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)}) 
+  }
 
     
     if(indicator!=null) $scope.inspectorFacts.Facts = $scope.inspectorFacts.Facts.filter(function(e){return (e.classof==indicator)});
@@ -2352,7 +2378,7 @@ var sec_num = parseInt(element.properties.filter(function(value){ return value.p
     if (minutes == 0) meanTime = seconds+' minutes';
 
     var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-    var rereads = parseInt(100*element.properties.filter(function(value){ return value.property === 'rereadings_tx'})[0].value)
+    var rereads = parseInt(100*element.properties.filter(function(value){ return value.property === 'reread'})[0].value)
     var rereadTx = rereads ;    
     rereadTx = Math.floor(rereadTx)+'%';
 
@@ -2394,7 +2420,7 @@ $scope.observedElt ={
       'id':element.id,
       'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
       'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
-      'Actions_tx':Math.round(100*element.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value,2)+'%',
+      'actions':Math.round(100*element.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
       'meanTime': meanTime,
       'meanRereads':rereadTx,
       'meanStops':stopTx,
@@ -2443,13 +2469,14 @@ angular.forEach($scope.course.tomes, function(tome){
 
 var nbUsers = 0;
 var nbRS = 0;
-var Actions_tx =0;
+var actions =0;
 
 $scope.observedElt ={'type':'course',
       'id':0,
   'typeTxt':'Ce cours',
+  'indicatorTxt': 'tous les indicateurs',
       'nbUsers':0,//$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
-      'Actions_tx':$scope.course.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value
+      'actions':$scope.course.properties.filter(function(value){ return value.property === 'actions'})[0].value
     };
 
 //window.setTimeout(function() {
@@ -2471,13 +2498,13 @@ var selectTome = function(partElt, task){
   var element =resolveRoute(route);  
   var nbUsers = 0;
   var nbRS = 0;
-  var Actions_tx = 0;
+  var actions = 0;
   showTasksAndFacts(element, 'ALL', task);
   
   angular.forEach(element.chapters, function(chapitre){
   angular.forEach(chapitre.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
-    Actions_tx = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
+    actions = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value);
   })
 
   });
@@ -2511,13 +2538,13 @@ var selectChapter = function(partElt, task){
 
   var nbUsers = 0;
   var nbRS = 0;
-  var Actions_tx = 0;
+  var actions = 0;
 
 
   angular.forEach(element.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
     // nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
-    Actions_tx = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Actions_tx'})[0].value);
+    actions = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value);
   })
 
 
@@ -2777,18 +2804,18 @@ var dropFactLocally = function(route){
 var ComputeGlobalVisuData = function(){ 
   var visuData = []
   
-   visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
+   visuData.push({type:'actions',data:factChart(-1,'actions')});  
    visuData.push({type:'Readers',data:factChart(-1,'Readers')});  
-   visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
+   visuData.push({type:'actions',data:factChart(-1,'actions')});  
    visuData.push({type:'speed',data:factChart(-1,'speed')});  
    visuData.push({type:'Readers_tx',data:factChart(-1,'Readers_tx')});  
     visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
-  visuData.push({type:'rereadings_tx',data:factChart(-1,'rereadings_tx')});  
+  visuData.push({type:'reread',data:factChart(-1,'reread')});  
   visuData.push({type:'course_readers_rereaders',data:factChart(-1,'course_readers_rereaders')});  
   visuData.push({type:'part_readers_rereaders',data:factChart(-1,'part_readers_rereaders')});  
   visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
   visuData.push({type:'rupture_tx',data:factChart(-1,'rupture_tx')});  
-  visuData.push({type:'norecovery_tx',data:factChart(-1,'norecovery_tx')});
+  visuData.push({type:'stop',data:factChart(-1,'stop')});
   /*visuData.push({type:'recovery',data:factChart(-1,'recovery')});    
   visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
   

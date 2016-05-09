@@ -422,7 +422,7 @@ scope.$watch(function(){
 
       if(typeof scope.data =='undefined') return;
       
-              //if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+              //if(scope.d3opts.issueCode in {'actions':'', 'speed':'','reread':'','stop':''})              
                scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
     
@@ -436,7 +436,7 @@ scope.$watch('data', function(){
       //console.log("typeof scope.data =='undefined'")
         return;}
 
-  //if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+  //if(scope.d3opts.issueCode in {'actions':'', 'speed':'','reread':'','stop':''})              
     scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
@@ -447,7 +447,7 @@ scope.$watch('d3opts', function(){
   if(typeof scope.data =='undefined') 
     {//console.log("typeof scope.data =='undefined'")
         return;}
-  //  if(scope.d3opts.issueCode in {'Actions_tx':'', 'speed':'','rereadings_tx':'','norecovery_tx':''})              
+  //  if(scope.d3opts.issueCode in {'actions':'', 'speed':'','reread':'','stop':''})              
      scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
            // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
           }, true);  
@@ -658,9 +658,9 @@ svg.append("g").selectAll("g.linklabelholder")
 
 if(scope.d3opts.type == 'global') 
 {  
-if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
+if(scope.d3opts.issueCode in {'actions':'', 'mean.duration':'','speed':'',
+                        'reread':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                      'rupture_tx':'','stop':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  globalCharts(scope, element)
 
 else 
@@ -672,9 +672,9 @@ else
 else
 if(scope.d3opts.type == 'inspector'){
 inspectorCharts(scope, element,'titre')
-/*if(scope.d3opts.issueCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture_tx':'','norecovery_tx':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
+/*if(scope.d3opts.issueCode in {'actions':'', 'mean.duration':'','speed':'',
+                        'reread':'','course_readers_rereaders':'','part_readers_rereaders':'',
+                      'rupture_tx':'','stop':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  inspectorCharts(scope, element,'titre')
 
   else if(scope.d3opts.issueCode in {'provenance':'','destination':''})

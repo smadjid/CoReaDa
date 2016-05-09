@@ -546,11 +546,6 @@ a.list-warning-item:hover {
   margin: 0;
 }
 
-.btn {
-  cursor: pointer;
-  }
-  .btn:hover {
-    color: #b4b4b9; }
 
 .item {
   cursor: pointer; }
@@ -3083,8 +3078,19 @@ color: white;
   margin:0!important;
   border:none!important;
 }
-.btn.disabled, .btn[disabled]{
-    opacity: .35;
+
+.btn {
+  cursor: pointer;
+   color:#404F70; 
+     
+  }
+  .btn:hover {
+   padding:2px;
+  }
+
+.btn.disabled, .btn[disabled], .btn.disabled:hover, .btn[disabled]:hover{
+  color:#60778A;
+    opacity: .4;
 }
 li.disabled, li[disabled]{
     cursor: not-allowed;
