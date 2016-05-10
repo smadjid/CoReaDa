@@ -1836,11 +1836,10 @@ border-radius: 3px;
 
 .chart-title{
   
-    font-size: 25px;
+    font-size: 16px;
     text-align: center;
-    padding-left: 10%;
-    padding-right: 10%;
-    padding-top: 0;
+    width: 100%;
+    box-shadow: inset 0 0 0 1px rgb(52, 73, 94)
 
 }
 .fact-div {
@@ -2501,6 +2500,13 @@ margin-bottom: -5px!important;
 /*----------------------------------------------------------------------------*/
 /*                                   LAYOUTS                                  */
 /*----------------------------------------------------------------------------*/
+/**/
+/* top right */
+/**/
+.coreada-tabs-layout-top-left {
+  text-align: left;
+}
+
 
 /**/
 /* top right */

@@ -217,6 +217,7 @@ else{
      
       $scope.courseParts =[];
       $scope.courseChapters =[];
+      $scope.courseFacts =[];
       
       $scope.context = {};
 
@@ -228,7 +229,6 @@ else{
       $scope.sectionDisplay = false;
       $scope.context.statChart = false;
       $scope.taskPanelTitle = "Tâches";
-      ;
       $scope.graphShow=false;
       
     //  $scope.achievementSelector = 'mean.achievement';
@@ -524,11 +524,21 @@ $scope.completeCourseParts = function(){
   angular.forEach($scope.course.tomes, function(tome) {
     tome.parts_count = 0;
     tome.route = $.param({'partid':tome._id});
+     tome.fullpath = {
+          'part':{'id':tome._id, 'route':tome.route, 'title':tome.title},
+          'chapter':null,
+          'section':null
+        };
     tome.url = $scope.course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
     angular.forEach(tome.chapters, function(chapter) { 
       tome.indicators = [];
       chapter.parts_count = 0;
       chapter.route =$.param({'partid':tome._id, 'chapid':chapter._id});
+      chapter.fullpath = {
+          'part':{'id':tome._id, 'route':tome.route, 'title':tome.title},
+          'chapter':{'id':chapter._id, 'route':chapter.route, 'title':chapter.title},
+          'section':null
+        };
 
 
       chapter.url = $scope.course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
@@ -552,6 +562,11 @@ $scope.completeCourseParts = function(){
         if(tome.parts_count===1) tome.url = chapter.url;
         chapter.parts_count = chapter.parts_count + 1;
         part.route =$.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id});
+        part.fullpath = {
+          'part':{'id':tome._id, 'route':tome.route, 'title':tome.title},
+          'chapter':{'id':chapter._id, 'route':chapter.route, 'title':chapter.title},
+          'section':{'id':part._id, 'route':part.route, 'title':part.title}
+        };
         part.url = chapter.url+'/'+'#/id/r-'+part.properties.filter(function(value){ return value.property === 'part_id'})[0].value
         angular.forEach(part.facts,function(fact){
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id, 'factid':fact._id});          
@@ -701,6 +716,39 @@ var parseURL =  function(query){
   }
   return hash;
 }; 
+
+var getFullRoute = function(path){
+ 
+   var part = null, chapter=null, section=null, fact=null, partCmp = null, chapterCmp=null, sectionCmp=null, factCmp=null;
+   var components = parseURL(path)
+
+   if(typeof $scope.course == 'undefined')
+      console.log('Error')
+  var result = $scope.course; 
+  //if(components != null)
+   
+   if(components.hasOwnProperty('partid')) {
+       part = $.grep($scope.course.tomes, function(e){ return  e._id == components.partid })[0];
+       partCmp = {'id': part.id, 'route':part.route , 'title':part.title}
+     }
+
+   if(components.hasOwnProperty('chapid')) {
+       chapter = $.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0];
+       chapterCmp = {'id': chapter.id, 'route':chapter.route , 'title':chapter.title}
+     }
+
+   if(components.hasOwnProperty('sectionid')) {
+       section = $.grep(chap.parts, function(e){ return  e._id == components.sectionid })[0];
+       sectionCmp = {'id': section.id, 'route':section.route , 'title':section.title}
+     }
+
+   
+  
+     
+    var result={'part':partCmp, 'chapter':chapterCmp, 'section':sectionCmp}
+ 
+     return result;
+}
 var resolveRoute = function(path){
  
    
@@ -734,6 +782,7 @@ var resolveRoute = function(path){
     }  
   }   
      
+     console.log(result)
  
      return result;
 }
@@ -1423,16 +1472,17 @@ var facts=[];
       facts= $scope.ChaptersFacts;
       $scope.inspectorStats.type='chapter';
   }
-console.log($scope.indicatorsSelectionModel)
-  console.log(facts)
-if(facts.length>0)
+
+if(facts.length>0){
   $scope.inspectorFacts={
   'id':facts[0].partId,
   'type':facts[0].partType,
   'indicatorCode':facts[0].issueCode,
   'Facts': $.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)})  
 
-  }
+  };
+  $scope.courseFacts = $scope.inspectorFacts;
+}
   else
     $scope.inspectorFacts={'Facts':[]}
 
@@ -1449,7 +1499,7 @@ if(( $scope.inspectorFacts.Facts.length>0) & (tab=='facts')) {
       $scope.inspector = $scope.inspectorStats;
       $scope.showTab("stats");
   }
-
+$scope.inspectorStats.breadcrumbsData ={};
 $scope.factTitleDisplay=true;
  $scope.showTab("facts");
 }
@@ -1466,6 +1516,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
       $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'part',
                    'id':mainStats.ids,
+                   'breadcrumbsData': tome.fullpath,
                    'typeTxt': 'cette partie',
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
@@ -1486,6 +1537,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
     mainIssues = $scope.ChaptersFacts;
     $scope.inspectorStats = {'type':'chapter',
                    'id':mainStats.ids,
+                   'breadcrumbsData': tome.fullpath,
                    'typeTxt': 'cette partie',
                    'indicatorTxt': 'tous les indicateurs',
                     'indicatorCode':code,
@@ -1515,7 +1567,7 @@ $scope.factTitleDisplay=true;
   $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
 }
   var facts = mainIssues.filter(function(e){return (e.tome==tome._id)});
-if(facts.length>0)
+/*if(facts.length>0)
   {
    
      $scope.inspectorFacts = {
@@ -1546,7 +1598,7 @@ if(facts.length>0)
     }
   else
       $scope.showTab("stats");
-
+*/
 return;
 }
 
@@ -1561,6 +1613,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
        $scope.inspectorStats = {'type':'section',
                    'id':mainStats.ids,
                    'typeTxt': 'ce chapitre',
+                   'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
@@ -1582,6 +1635,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
     $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
                    'id':chapter.id,
                    'typeTxt': 'ce chapitre',
+                   'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
@@ -1607,7 +1661,7 @@ if(indicator!=null) {
 }
   
 var facts = mainIssues.filter(function(e){return (e.chapter==chapter._id)});
-if(facts.length>0)
+/*if(facts.length>0)
   {
      $scope.inspectorFacts = {
     'id':facts[0].partId,
@@ -1635,7 +1689,7 @@ if(facts.length>0)
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
-      $scope.showTab("stats");
+      $scope.showTab("stats");*/
 }
 
 var inspectorSectionData = function(section, indicator, fact, tab){  
@@ -1645,6 +1699,7 @@ var inspectorSectionData = function(section, indicator, fact, tab){
     $scope.inspectorStats = {'type':'part',
                    'id':section.id,
                    'typeTxt': 'cette section',
+                   'breadcrumbsData': section.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,
                     'Indicators' :[
@@ -1668,7 +1723,7 @@ $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
 }
   
 var facts = mainIssues.filter(function(e){return (e.section==section._id)});
-if(facts.length>0)
+/*if(facts.length>0)
   {
      $scope.inspectorFacts = {
     'id':facts[0].partId,
@@ -1693,7 +1748,7 @@ if(facts.length>0)
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
-      $scope.showTab("stats");
+      $scope.showTab("stats");*/
 }
 
 
@@ -1939,6 +1994,7 @@ var loadContext = function(){
     }
     else
       if(part==-1){
+        console.log(chap)
         task = components.hasOwnProperty('taskid')?$.grep(chap.todos, function(e){ return  e._id == components.taskid })[0]:null;
         if(fact!=-1){
           partElt = $('.part_index[data-part ='+chap.id+']'); 
@@ -1947,6 +2003,7 @@ var loadContext = function(){
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);
           selectChapterIndicator(chap.route, task, chap, indicator, true);
+
           
           
         }
@@ -1958,6 +2015,7 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           selectChapter(partElt, task);
+
           
           
         }

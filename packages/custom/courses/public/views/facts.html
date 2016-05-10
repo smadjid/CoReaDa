@@ -1,22 +1,31 @@
+ <div id='chartPanel' class='col-lg-6 pull-right' style='position:absolute;bottom:5px;right:2px;overflow: hidden;'>
+           <d3-chart data='context.d3' ng-show='pageCount()>=0' d3opts='{type:"inspector",elementType:inspectorFacts.type,elementId:inspectorFacts.id,issueCode:inspectorFacts.indicatorCode, tab:"facts"}' style="height:0"></d3-chart>
+           <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>          
+          </div>
+
 <div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} height=370 style="height:370px!important">
-<div style="text-align: center;vertical-align: middle;padding-left:5%;padding-right:5%;padding-top: 5px;padding-bottom: 5px;">
-<button  type="button" style="padding:0; margin:0; background: none"class="btn pull-left" ng-class="DisablePrevPage()" ng-click="prevPage()">
+
+<div  style=" padding:5px; width:100%">
+<button  type="button" style="padding:0; margin:0; background: none" class="btn" ng-class="DisablePrevPage()" ng-click="prevPage()">
 <i class="fa fa-arrow-left fa-2x fa-pull-left" aria-hidden="true"></i>
 </button>
-<span  style='font-size: 20px;text-align: center;padding-left: 10%;padding-right: 10%;padding-top: 0'> Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}} </span>
-<button  type="button" style="padding:0; margin:0; background: none"class="btn pull-right" ng-class="DisableNextPage()" ng-click="nextPage()">
+<span  style='font-size: 18px'> Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}}</span>
+<button  type="button" style="padding:0; margin:0; margin-right: 20px; background: none"class="btn" ng-class="DisableNextPage()" ng-click="nextPage()">
 <i class="fa fa-arrow-right fa-2x fa-pull-right" aria-hidden="true"></i>
 </button>
+<span  style=' font-weight: bold; font-size: 18px;'>
+<em style='font-weight: normal;'>{{fact.parentTitle}} :</em> {{fact.name}}</span>
 </div>
 
+
+
+<div class=' col-lg-6'>
 
 <div height=350 style="height:350px!important; border: 1px solid grey;width:100%; padding: 0px">
 <div style='height:90%; '>
 
 
-<div  style='text-align: center; font-weight: bold; font-size: 22px;;padding-left:5%;padding-right:5%; padding-top: 5px;padding-bottom: 7px;'>
- <em style='text-align: center; font-weight: normal;" ng-show='factTitleDisplay'>{{fact.parentTitle}} :</em> {{fact.name}}
-</div>
+
 
 <div style="padding-left:5%;padding-right:5%">
   <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
@@ -45,3 +54,4 @@
 
 </div>
 
+</div>
