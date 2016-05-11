@@ -73,7 +73,7 @@
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
         <label id='factsTab' for="tab2" ><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()>-1?pageCount()+1:"Aucun" }}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}}  
 
-         <ul class="paginator " ng-show="inspectorFacts.Facts.length>1"> 
+   <!--      <ul class="paginator " ng-show="inspectorFacts.Facts.length>1"> 
               <li ng-class="DisablePrevPage()" role='button'  ng-click="prevPage()">
                 <span   class='glyphicon glyphicon-backward'></span>
 
@@ -83,13 +83,13 @@
               <li  ng-class="DisableNextPage()" role='button' ng-click="nextPage()">
                 <span   class='glyphicon glyphicon-forward' ></span>
               </li>
-          </ul>
+          </ul>-->
 
         </label> 
     
 
          <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
-        <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistique de la lecture</label>
+        <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture</label>
       
       <!--  <label class='inspector-title' >
           <span   ng-class="{'glyphicon glyphicon-file': !courseDisplay, 'glyphicon glyphicon-home': courseDisplay}"  aria-hidden="true "> </span> 

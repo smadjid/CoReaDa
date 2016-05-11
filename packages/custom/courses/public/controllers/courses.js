@@ -68,8 +68,8 @@ setTimeout(function() {
   };
 
   $scope.prevPage = function() {
-    if ($scope.currentFact > 0) {
-      $scope.currentFact--;
+  if ($scope.currentFact > 0){
+      $scope.setPage($scope.currentFact-1)
     }
   };
 
@@ -83,11 +83,8 @@ setTimeout(function() {
   };
 
   $scope.nextPage = function() {
-     
-    if ($scope.currentFact < $scope.pageCount()) {
-
-      $scope.currentFact++;
-
+    if ($scope.currentFact < $scope.pageCount()){
+      $scope.setPage($scope.currentFact+1)
     }
   };
 
@@ -95,14 +92,14 @@ setTimeout(function() {
     return $scope.currentFact === $scope.pageCount() ? "disabled" : "enabled-page";
   };
 
+
+
   $scope.setPage = function(n) {
     if($scope.inspectorFacts.Facts.length<1) return;
-    if($scope.tabSelect=='facts'){
-    $scope.currentFact = n;
-    $scope.sectionFactChart = $scope.inspectorFacts.Facts[n];
-    }
     
-    
+  $scope.currentFact = n;
+  loadURL($scope.inspectorFacts.Facts[n].route)
+
   };
 var computeTwoBounderyValues = function(type, indicatorCode){
   var studiedFactData=[];
@@ -313,13 +310,13 @@ $scope.selectedIndicators=[
               'Todos':$scope.course.todos,
               'taskText':'(nouvelle tâche)',
               'indicator':'ALL',
-              'd3':[]
+              'statsContext':{},
+              'factsContext':{},
+              'subtasks' : computeAllTasks(),
+              'd3':ComputeGlobalVisuData()
               
             };
 
-    
-    $scope.context.subtasks =computeAllTasks();
-    $scope.context.d3 = ComputeGlobalVisuData();
     
     computeCourseStats();
      $scope.context.mainstats = $scope.course.mainstats;
@@ -365,9 +362,7 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.toggleSectionDisplay = function(){
-  ;
   goHome();
-
   
   setTimeout(function() {
     $scope.sectionDisplay =! $scope.sectionDisplay;
@@ -404,11 +399,14 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
   //$scope.currentFact = 0;   
 
   $scope.inspector = $scope.inspectorFacts; 
+  loadURL($scope.context.factsContext);
   
   $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
 
  }
  else{
+
+  loadURL($scope.context.statsContext);
  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
    
   
@@ -435,14 +433,14 @@ $scope.showTab = function(tab){
    
 
   if(tab == 'facts'){   
-    $scope.currentFact = 0;  
-    var fact = $scope.inspectorFacts.Facts[0];
-    $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+    //$scope.currentFact = 0;  
+    //var fact = $scope.inspectorFacts.Facts[0];
+    //$(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
 
-    setTimeout(function() {
-  $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-  $scope.$apply();
-  }, 500);
+    //setTimeout(function() {
+  //$(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+  //$scope.$apply();
+  //}, 500);
     
  }
  else{
@@ -782,8 +780,7 @@ var resolveRoute = function(path){
     }  
   }   
      
-     console.log(result)
- 
+     
      return result;
 }
 var resetPath = function(){     
@@ -1959,6 +1956,8 @@ var loadContext = function(){
                              ($.grep(part.facts, function(e){ return  e._id == components.factid })[0])
                   ): -1;
 
+    //components.hasOwnProperty('factid')? $scope.context.factsContext = url:$scope.context.statsContext = url;
+
     task = components.hasOwnProperty('taskid')?
     $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
      indicator = components.hasOwnProperty('indicator')? 
@@ -1976,6 +1975,7 @@ var loadContext = function(){
         $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
         computeGranuleData('course',tab);
+        
 
         
         
@@ -1989,12 +1989,9 @@ var loadContext = function(){
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
       selectTome(partElt, task);
-      
-      ;
     }
     else
       if(part==-1){
-        console.log(chap)
         task = components.hasOwnProperty('taskid')?$.grep(chap.todos, function(e){ return  e._id == components.taskid })[0]:null;
         if(fact!=-1){
           partElt = $('.part_index[data-part ='+chap.id+']'); 
@@ -2002,7 +1999,8 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);
-          selectChapterIndicator(chap.route, task, chap, indicator, true);
+          //selectChapterIndicator(chap.route, task, chap, indicator, true);
+          selectFact(chap.route, task, fact, indicator)
 
           
           
@@ -2014,20 +2012,21 @@ var loadContext = function(){
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
-          selectChapter(partElt, task);
+          selectChapter(partElt, task, "ALL");
 
           
           
         }
         else{
 
-          computeGranuleData('chapter', chap, indicator, null,tab);
+          computeGranuleData('chapter', chap, null, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
-          $scope.context.taskText ='(nouvelle tâche pour ce problème)';
+          $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           //$scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='inspector' ;
-          selectChapterIndicator(chap.route, task, chap, indicator, false);
+         // selectChapterIndicator(chap.route, task, chap, indicator, false);
+         selectChapter(partElt, task, indicator);
           $scope.inspectorStats.indicatorCode = indicator;
           
         }
@@ -2040,7 +2039,8 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce problème)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           $scope.inspectorDisplaySrc='inspector'; 
-          selectSectionIndicator(part.route, task, part, indicator, true);
+          //selectSectionIndicator(part.route, task, part, indicator, true);
+          selectFact(part.route, task, fact, indicator)
           
           
         }
@@ -2099,7 +2099,7 @@ var loadContext = function(){
 
 $('.tableScroller').scroll();
  
-$scope.setPage(0);
+
 
 }
 
@@ -2209,31 +2209,29 @@ $('.selectedTask').focus().blur().focus();
 
 }
 
-
-var selectChapterIndicator = function(url, task, chapter, indicator, isFact){//  return;
- 
- if(isFact)
-    $scope.tabSelect='facts'
-  else
-    $scope.tabSelect='stats'
-  //resetPath();
-  url =url+'&indicator='+indicator; 
+ var selectFact= function(url, task,fact, indicator) {
+  //url =url+'&indicator='+indicator; 
   $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   $scope.context.route = url;     
   var element = resolveRoute(url);
   
       
  
-     $scope.context.inspector_title = chapter.title;
+     $scope.context.inspector_title = element.title;
      $scope.courseDisplay = false;     
-     $scope.context.url = chapter.url
+     
 
   showTasksAndFacts(element, indicator, task);
 
 
-  
-  
-    }
+  $scope.tabSelect='facts';
+  var factID = $scope.inspectorFacts.Facts.indexOf(fact)
+  if(factID != $scope.currentFact)
+      $scope.setPage(factID);
+  $scope.context.factsContext = url+'&'+fact.route;
+  $scope.context.statsContext = url+'&indicator='+indicator;;
+ }
+
 
 var selectSectionIndicator = function(url, task, part, indicator, isFact){  
  
@@ -2584,35 +2582,66 @@ $scope.inspectorDisplaySrc='inspector'
 
 }
 
-var selectChapter = function(partElt, task){   
+var selectChapter = function(partElt, task, indicator){   
 
   var route = $(partElt).attr('data-path');
 
   var element =resolveRoute(route);  
+  
+$scope.context.inspector_title = "Chapitre : "+element.title;
+$scope.courseDisplay = false;
+var url = element.route;
+$scope.context.route = url; 
+
+highlightChapter($(partElt).index() + 1, route);
+
+if(indicator=='ALL'){
   showTasksAndFacts(element, 'ALL', task);
   angular.forEach(element.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
+  $scope.context.url = element.url;
   });
 
-  var nbUsers = 0;
-  var nbRS = 0;
-  var actions = 0;
 
+}
+else{ 
+  url =url+'&indicator='+indicator; 
 
-  angular.forEach(element.parts, function(part){
-  showTasksAndFacts(part, 'ALL',task);
-    // nbUsers = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value);
-    actions = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value);
-  })
+  element = resolveRoute(url);
+  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+  showTasksAndFacts(element, indicator, task);
+}
 
+    
 
-$scope.context.inspector_title = "Chapitre : "+element.title;
-$scope.courseDisplay = false;
-$scope.context.url = element.url;
-    highlightChapter($(partElt).index() + 1, route);
     $scope.inspectorDisplaySrc='inspector'
  
 }
+
+var selectChapterIndicator = function(url, task, chapter, indicator, isFact){  return;
+ 
+ if(isFact)
+    $scope.tabSelect='facts'
+  else
+    $scope.tabSelect='stats'
+  //resetPath();
+  url =url+'&indicator='+indicator; 
+  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+  $scope.context.route = url;     
+  var element = resolveRoute(url);
+  
+      
+ 
+     $scope.context.inspector_title = chapter.title;
+     $scope.courseDisplay = false;     
+     $scope.context.url = chapter.url
+
+  showTasksAndFacts(element, indicator, task);
+
+
+  
+  
+    }
 
 var tabsFn = (function() {  
   function init() {
