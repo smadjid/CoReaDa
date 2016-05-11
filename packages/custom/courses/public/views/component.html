@@ -4,11 +4,12 @@
               <tr >
     
                   <tr ng-repeat="indicator in inspectorStats.Indicators" >
-                  <td  class='componentInfo' ng-mouseover="$parent.inspectorStats.indicatorCode=indicator.name" role='button' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="indicator.name">
-    
-                    <span class="blue">{{indicator.value}}</span> {{indicator.comment}}</td></tr>
+                  <td  class='componentInfo' ng-mouseover="$parent.inspectorStats.indicatorCode=indicator.name" aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="indicator.name">
+    <span ng-if="indicator.isFact!=null"  role='button' ng-click='loadURL(indicator.isFact)' class="fact chapter-fact fa-2x pull-right fa-exclamation-circle" role="button"></span>	
+                    <span class="blue">{{indicator.value}}</span> {{indicator.comment}} 
+    									</td></tr>
 
-    
+    			
               </tr>
             </table>
         

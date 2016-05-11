@@ -238,7 +238,7 @@ else{
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
-      $scope.tabSelect = "facts";
+      $scope.tabSelect = "stats";
       $scope.currentFact = 0;  
       $scope.allFactsDisplay=false;
       $scope.ChaptersFacts = [];
@@ -310,8 +310,8 @@ $scope.selectedIndicators=[
               'Todos':$scope.course.todos,
               'taskText':'(nouvelle tâche)',
               'indicator':'ALL',
-              'statsContext':{},
-              'factsContext':{},
+              'statsContext':"#",
+              'factsContext': $scope.MainChaptersFacts[0].route,
               'subtasks' : computeAllTasks(),
               'd3':ComputeGlobalVisuData()
               
@@ -399,6 +399,7 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
   //$scope.currentFact = 0;   
 
   $scope.inspector = $scope.inspectorFacts; 
+  
   loadURL($scope.context.factsContext);
   
   $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
@@ -593,6 +594,9 @@ $scope.completeCourseParts = function(){
   updateMainFacts();
   $scope.ChaptersFacts = $scope.MainChaptersFacts;
   $scope.SectionsFacts = $scope.MainSectionsFacts;
+  
+
+  $scope.context.statsContext = "#"
 
 
 }
@@ -1051,7 +1055,7 @@ var topChaps={
 
 
 var computeComponentStats = function(element,bySection){ 
-
+return;
 var componentData ={'actions':[], 'speed':[], 'stop':[], 'reread':[] }
 
 var data=[];
@@ -1283,6 +1287,7 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
 var goHome = function(){ 
 
   window.location.hash = '#';
+
   //$scope.tabSelect='facts';
   
 }
@@ -1498,7 +1503,7 @@ if(( $scope.inspectorFacts.Facts.length>0) & (tab=='facts')) {
   }
 $scope.inspectorStats.breadcrumbsData ={};
 $scope.factTitleDisplay=true;
- $scope.showTab("facts");
+ $scope.showTab("stats");
 }
 
 var inspectorTomeData = function(tome, indicator, fact, tab){  
@@ -1604,6 +1609,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
   var mainIssues = [], mainStats = [];
   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
   if($scope.sectionDisplay) {
+  	return;
       mainIssues= $scope.SectionsFacts;
       mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
       $scope.factTitleDisplay=true;
@@ -1637,13 +1643,21 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                    'indicatorCode':code,                  
                     'Indicators' :[
                     {'name':'actions','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)'},
+                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)',
+                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'actions'}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
                     {'name':'reread','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
-                      'comment':'des lectures de ce chapitre sont des relectures'},
+                      'comment':'des lectures de ce chapitre sont des relectures',
+                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'reread'}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
                     {'name':'stop','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
-                      'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre'}  ,
+                      'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre',
+                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'stop'}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
                       {'name':'speed','value':chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
-                      'comment':'est la vitesse moyenne de lecture sur ce chapitre'}
+                      'comment':'est la vitesse moyenne de lecture sur ce chapitre',
+                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null}
                       ]    
                     
                   };
@@ -1956,7 +1970,8 @@ var loadContext = function(){
                              ($.grep(part.facts, function(e){ return  e._id == components.factid })[0])
                   ): -1;
 
-    //components.hasOwnProperty('factid')? $scope.context.factsContext = url:$scope.context.statsContext = url;
+    components.hasOwnProperty('factid')? 
+    	$scope.tabSelect='facts':$scope.tabSelect='stats';;
 
     task = components.hasOwnProperty('taskid')?
     $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
@@ -1971,14 +1986,14 @@ var loadContext = function(){
 
   if(tome==-1) {        
     
+        computeGranuleData('course',tab);
+        $scope.context.factsContext = ($scope.sectionDisplay)?$scope.MainSectionsFacts[0].route:$scope.MainChaptersFacts[0].route;
+        $scope.currentFact = 0;
         $scope.context.taskText ='(nouvelle tâche)';
         $scope.context.taskPanelMiniTitle='Cours'
         displayCourseInfos(indicator, task); 
-        computeGranuleData('course',tab);
         
 
-        
-        
     }
     else
      if(chap ==-1) {
@@ -2051,22 +2066,20 @@ var loadContext = function(){
           partElt = $('.part_index[data-part ='+part.id+']');   
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
-          displayPartInfos(partElt, task);
+          selectSection(partElt, task, "ALL");
           
           
         }
         else{
+          computeGranuleData('part', part, null, null,tab); 
           partElt = $('.part_index[data-part ='+part.id+']');  
           $scope.context.taskText ='(nouvelle tâche pour cette section)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
-          computeGranuleData('part', part, indicator, null,tab); 
+          
           $scope.inspectorDisplaySrc='inspector';
           //$scope.sectionDisplay = true; 
-          selectSectionIndicator(part.route, task, part, indicator, false);
+          selectSection(partElt, task, indicator);
           $scope.inspectorStats.indicatorCode = indicator;
-          
-          
-
         }
       }
 
@@ -2229,7 +2242,7 @@ $('.selectedTask').focus().blur().focus();
   if(factID != $scope.currentFact)
       $scope.setPage(factID);
   $scope.context.factsContext = url+'&'+fact.route;
-  $scope.context.statsContext = url+'&indicator='+indicator;;
+  $scope.context.statsContext = url+'&indicator='+indicator;
  }
 
 
@@ -2415,91 +2428,38 @@ var highlightPart = function(index, route){
 
 
 
-var displayPartInfos = function(partElt, task){
+var selectSection = function(partElt, task, indicator){   
 
-var part = $(partElt).attr('data-part');
+  var route = $(partElt).attr('data-path');
 
-    var route = $(partElt).attr('data-path');
-
-
-
-    var element =resolveRoute(route);
-    showTasksAndFacts(element, 'ALL', task);
-
-/*
-var sec_num = parseInt(element.properties.filter(function(value){ return value.property === 'mean.duration'})[0].value, 10); 
-    var minutes = Math.floor(sec_num  / 60);
-    var seconds = sec_num -  (minutes * 60);
-    var meanTime    = minutes+' h '+seconds+' min';
-    if (minutes == 0) meanTime = seconds+' minutes';
-
-    var reads = parseInt(element.properties.filter(function(value){ return value.property === 'Readings'})[0].value);
-    var rereads = parseInt(100*element.properties.filter(function(value){ return value.property === 'reread'})[0].value)
-    var rereadTx = rereads ;    
-    rereadTx = Math.floor(rereadTx)+'%';
-
-    var stop = parseInt(100*element.properties.filter(function(value){ return value.property === 'rupture_tx'})[0].value);
-    var nrs = parseInt($scope.course.stats.filter(function(value){ return value.property === 'nRS'})[0].value);
-    var stopTx = Math.floor(stop)+'%';
-
-    var provData =[
-    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'provenance_identity'})[0].value),
-    text:'est la même section (relectures)'},
-    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_precedent"})[0].value),
-    text:'est la section qui la précède'},
-    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_next_p"})[0].value),
-    text:'est la section qui la suit'},
-    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_past"})[0].value),
-    text:'est une section plus en arrière'},
-    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "provenance_shifted_next"})[0].value),
-    text:'est une section plus en avant'}
-    ];
-
-var destData =[
-    {'property':'identity', 'value': parseInt(element.properties.filter(function(value){ return value.property === 'destination_identity'})[0].value),
-    text:'est la même section (relectures)'},
-    {'property':'precedent', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_precedent"})[0].value),
-    text:'est la section qui la précède'},
-    {'property':'next_p', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_next_p"})[0].value),
-    text:'est la section qui la suit'},
-    {'property':'shifted_past', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_past"})[0].value),
-    text:'est une section plus en arrière'},
-    {'property':'shifted_next', 'value': parseInt(element.properties.filter(function(value){ return value.property ===  "destination_shifted_next"})[0].value),
-    text:'est une section plus en avant'}
-    ];    
-   
-
-
-$scope.observedElt ={
-      'type':'part',
-      'typeTxt':'Cette section ',
-      'id':element.id,
-      'nbUsers':Math.round(100*element.properties.filter(function(value){ return value.property === 'Readers_tx'})[0].value,2)+'%',
-      'nbRS':Math.round(100*element.properties.filter(function(value){ return value.property === 'RS_tx'})[0].value,2)+'%',
-      'actions':Math.round(100*element.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
-      'meanTime': meanTime,
-      'meanRereads':rereadTx,
-      'meanStops':stopTx,
-      'maxProvPercent':d3.max(provData, function(d) { return d.value; }),
-      'maxProvTxt':$.grep(provData, function(e){ return  e.value === d3.max(provData, function(d) { return d.value; })})[0].text,
-      'provLinearity':provData.filter(function(value){ return value.property === 'precedent'})[0].value+'%',
-      'destLinearity':destData.filter(function(value){ return value.property === 'next_p'})[0].value+'%',
-      'maxDestPercent':d3.max(destData, function(d) { return d.value; }),
-      'maxDestTxt':$.grep(destData, function(e){ return  e.value === d3.max(destData, function(d) { return d.value; })})[0].text
-    };    
-*/
-
+  var element =resolveRoute(route);  
+  
 $scope.context.inspector_title = "Section : "+element.title;
 $scope.courseDisplay = false;
-$scope.context.url = element.url;
-
-$scope.inspectorDisplaySrc='inspector';
-
-
-  //alert('ok')
+var url = element.route;
+$scope.context.route = url; 
 
 highlightPart($(partElt).index() + 1, route);
+
+if(indicator=='ALL'){
+  showTasksAndFacts(element, 'ALL', task);
+$scope.context.url = element.url;
+
 }
+else{ 
+  url =url+'&indicator='+indicator; 
+
+  element = resolveRoute(url);
+  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+  showTasksAndFacts(element, indicator, task);
+}
+
+    
+
+    $scope.inspectorDisplaySrc='inspector'
+ 
+}
+
 
 var displayCourseInfos = function(indicator, task){ 
   $scope.indicatorInspectorShow = indicator;

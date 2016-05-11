@@ -3093,11 +3093,12 @@ color: white;
   }
   .btn:hover {
    padding:2px;
+   color:rgb(215, 48, 31)!important
   }
 
 .btn.disabled, .btn[disabled], .btn.disabled:hover, .btn[disabled]:hover{
-  color:#60778A;
-    opacity: .4;
+  color:#60778A!important;
+    opacity: .4!important;
 }
 li.disabled, li[disabled]{
     cursor: not-allowed;
