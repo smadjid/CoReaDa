@@ -98,6 +98,8 @@ setTimeout(function() {
     if($scope.inspectorFacts.Facts.length<1) return;
     
   $scope.currentFact = n;
+  console.log(n)
+  console.log($scope.inspectorFacts.Facts)
   loadURL($scope.inspectorFacts.Facts[n].route)
 
   };
@@ -361,15 +363,21 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 
-$scope.toggleSectionDisplay = function(){
+$scope.toggleSectionDisplay = function(){ 
+  
+  
+    $scope.sectionDisplay =! $scope.sectionDisplay;
+    $scope.currentFact = 0;
+  if($scope.sectionDisplay) {
+         $scope.inspectorFacts.Facts = $scope.SectionsFacts;   
+         $scope.inspectorStats.type='part';
+  }
+  else{
+      $scope.inspectorFacts.Facts= $scope.ChaptersFacts;
+      $scope.inspectorStats.type='chapter';
+  }
   goHome();
   
-  setTimeout(function() {
-    $scope.sectionDisplay =! $scope.sectionDisplay;
-    inspectorCourseData('facts');
-    $scope.$apply();
-  }, 0);
-
   
 
 }
@@ -1403,15 +1411,7 @@ var updateMainFacts = function(){
  $scope.AllChaptersFacts = allFacts;
 
  //////////////// SECTIONS
- $scope.$watch('sectionDisplay', function(newValue, oldValue) {  
- if(newValue)
-  $scope.inspector.type='part'
-else 
-  $scope.inspector.type='chapter';
-
-
  
-});
 
  $scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
   $scope.currentFact = 0;
@@ -2253,14 +2253,17 @@ $('.selectedTask').focus().blur().focus();
      
 
   showTasksAndFacts(element, indicator, task);
+  $scope.context.statsContext = url+'&indicator='+indicator;
 
 
   $scope.tabSelect='facts';
-  var factID = $scope.inspectorFacts.Facts.indexOf(fact)
+  var factID = $scope.inspectorFacts.Facts.indexOf(fact);
+  console.log(fact);
+  console.log($scope.inspectorFacts.Facts);
   if(factID != $scope.currentFact)
       $scope.setPage(factID);
   $scope.context.factsContext = url+'&'+fact.route;
-  $scope.context.statsContext = url+'&indicator='+indicator;
+  
  }
 
 
