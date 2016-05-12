@@ -1563,7 +1563,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                   };
     }
   else{
-    mainIssues= $scope.ChaptersFacts;
+    mainIssues= $scope.ChaptersFacts;console.log($scope.inspectorFacts.Facts)
     $scope.factTitleDisplay=false;
     $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
                    'id':chapter.id,
@@ -1586,7 +1586,8 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
 						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
                       {'name':'speed','value':chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur ce chapitre',
-                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
+                  	   //'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'speed')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null}
                       ]    
                     
