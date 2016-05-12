@@ -1565,7 +1565,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
   else{
     mainIssues= $scope.ChaptersFacts;console.log($scope.inspectorFacts.Facts)
     $scope.factTitleDisplay=false;
-    $scope.inspectorStats = {'type':($scope.sectionDisplay)?'part':'chapter',
+    $scope.inspectorStats = {'type':'chapter',
                    'id':chapter.id,
                    'typeTxt': 'ce chapitre',
                    'breadcrumbsData': chapter.fullpath,
@@ -1574,15 +1574,15 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                     'Indicators' :[
                     {'name':'actions','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)',
-                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'actions'}).length > 0)?
+                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'actions')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
                     {'name':'reread','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures',
-                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'reread'}).length > 0)?
+                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'reread')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
                     {'name':'stop','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre',
-                  	   'isFact':(chapter.facts.filter(function(f){ return f.classof === 'stop'}).length > 0)?
+                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'stop')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
                       {'name':'speed','value':chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur ce chapitre',
@@ -1645,17 +1645,24 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,
                     'Indicators' :[
-                    /*{'name':'actions','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur cette section(avec un total de '+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' visites)'},*/
                     {'name':'actions','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur cette section ('+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)'},
-                      {'name':'reread','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
-                      'comment':'des lectures de cette section sont des relectures'},
+                      'comment':' des visites sur le cours ont été observées sur cette section('+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id &f.classof === 'actions')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
+                    {'name':'reread','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
+                      'comment':'des lectures de cette section sont des relectures',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'reread')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
                     {'name':'stop','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
-                      'comment':'des arrêts définitifs de la lecture se passent sur cette section'}  ,
+                      'comment':'des arrêts définitifs de la lecture se passent sur cette section',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'stop')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
                       {'name':'speed','value':section.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
-                      'comment':'est la vitesse moyenne de lecture sur cette section'}
-                      ]    
+                      'comment':'est la vitesse moyenne de lecture sur cette section',
+                       //'isFact':(section.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'speed')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null}
+                      ]       
                     
                   };
 
