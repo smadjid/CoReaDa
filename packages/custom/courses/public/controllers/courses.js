@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 angular.module('mean.courses')
   .config(['$viewPathProvider',
@@ -88,8 +88,6 @@ setTimeout(function() {
     if($scope.inspectorFacts.Facts.length<1) return;
     
   $scope.currentFact = n;
-  console.log(n)
-  console.log($scope.inspectorFacts.Facts)
   loadURL($scope.inspectorFacts.Facts[n].route)
 
   };
@@ -556,7 +554,7 @@ switch(indicatorCode) {
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
 }
-return {boundaryValues,scale};
+return {'boundaryValues':boundaryValues,'scale':scale};
 }
 var computeIndividualIndicatorValue =  function(part,indicatorCode, boundaryValues){
   
@@ -965,7 +963,7 @@ Readers = chapsData.slice(0,3);
 
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
- stop = chapsData.slice(0,3); console.log(chapsData)
+ stop = chapsData.slice(0,3); 
  var mean_chap_stops = d3.mean(chapsData, function(d) { return parseInt(d.stop); }); 
  
 
@@ -1563,7 +1561,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                   };
     }
   else{
-    mainIssues= $scope.ChaptersFacts;console.log($scope.inspectorFacts.Facts)
+    mainIssues= $scope.ChaptersFacts;
     $scope.factTitleDisplay=false;
     $scope.inspectorStats = {'type':'chapter',
                    'id':chapter.id,
@@ -2196,8 +2194,6 @@ $('.selectedTask').focus().blur().focus();
 
 
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
-  console.log(fact);
-  console.log($scope.inspectorFacts.Facts);
   if(factID != $scope.currentFact)
       $scope.setPage(factID);
   $scope.context.factsContext = url+'&'+fact.route;
