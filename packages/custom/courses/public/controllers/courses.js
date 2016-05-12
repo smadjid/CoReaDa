@@ -244,7 +244,7 @@ else{
       $scope.ChaptersFacts = [];
       $scope.SectionsFacts = [];
       $scope.inspectorFacts={'Facts':[], 'type':'tome', 'selectedFact':'0'};
-      $scope.inspectorStats ={'Facts':[], 'indicatorCode':'actions', 'type':'tome'};
+      $scope.inspectorStats ={'Facts':[], 'indicatorCode':'actions', 'type':'chapter'};
       $scope.courseDisplay = true;
       $scope.indicatorSelectorShow = false;
       $scope.allIndicatorSelectorShow = false;
@@ -977,12 +977,16 @@ var partsData =[], chapsData =[], tomesData =[];
 angular.forEach($scope.course.tomes, function(tome) {  
 
   angular.forEach(tome.chapters, function(chapter) {  
-    chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value
+    
+    
       chapsData.push({
                         'id':chapter.id,
                         'title':chapter.title,
                         'route':chapter.route,                                                
-                        'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value),
+                        'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'speed':parseInt(chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value),
+                        'reread':parseFloat(chapter.properties.filter(function(value){ return value.property === 'reread'})[0].value),
+                        'stop':parseFloat(chapter.properties.filter(function(value){ return value.property === 'stop'})[0].value),
                         'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
 
@@ -992,7 +996,10 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'id':part.id,
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,
-                        'actions':parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value),
+                        'actions':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'speed':parseInt(part.properties.filter(function(value){ return value.property === 'speed'})[0].value),
+                        'reread':parseFloat(part.properties.filter(function(value){ return value.property === 'reread'})[0].value),
+                        'stop':parseFloat(part.properties.filter(function(value){ return value.property === 'stop'})[0].value),
                         'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
           
@@ -1027,7 +1034,9 @@ Readers = chapsData.slice(0,3);
 
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
- stop = chapsData.slice(0,3);
+ stop = chapsData.slice(0,3); console.log(chapsData)
+ var mean_chap_stops = d3.mean(chapsData, function(d) { return parseInt(d.stop); }); 
+ 
 
 chapsData = chapsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
  reread = chapsData.slice(0,3);
@@ -1038,10 +1047,19 @@ var topChaps={
         'stop':stop[0],
         'reread':reread[0]
       }
+      
  var result = {
-      'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
+      'actions':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
       'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),    
-      //'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
+      'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
+      'mean_chap_speed':Math.round(d3.mean(chapsData, function(d) { return parseInt(d.speed); }),0),
+      'mean_chap_stop':Math.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.stop); }),1)+'%',
+      'mean_chap_reread': Math.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.reread); }),1)+'%',
+
+      'mean_sec_speed':Math.round(d3.mean(partsData, function(d) { return parseInt(d.speed); }),0),
+      'mean_sec_stop':Math.round(100* d3.mean(partsData, function(d) { return parseFloat(d.stop); }),1)+'%',
+      'mean_sec_reread': Math.round(100 * d3.mean(partsData, function(d) { return parseFloat(d.reread); }),1)+'%',
+      
       //'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
       //'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
       //'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
@@ -1055,7 +1073,7 @@ var topChaps={
 
 
 var computeComponentStats = function(element,bySection){ 
-return;
+
 var componentData ={'actions':[], 'speed':[], 'stop':[], 'reread':[] }
 
 var data=[];
@@ -1609,12 +1627,12 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
   var mainIssues = [], mainStats = [];
   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
   if($scope.sectionDisplay) {
-  	return;
+  	
       mainIssues= $scope.SectionsFacts;
       mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
       $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'section',
-                   'id':mainStats.ids,
+                   //'id':mainStats.ids,
                    'typeTxt': 'ce chapitre',
                    'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
