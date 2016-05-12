@@ -3000,9 +3000,9 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-xs';
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
-app.config(function ($compileProvider) {
+/*app.config(function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
-});
+});*/
 app.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     // Allow same origin resource loads.
