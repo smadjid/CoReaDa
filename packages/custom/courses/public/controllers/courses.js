@@ -377,63 +377,9 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 
 });
 
-$scope.$watch('tabSelect', function(newValue, oldValue) { 
-resetPath();
 
+$scope.$watch('tabSelect', function(newValue, oldValue) { selectTab(newValue)});
 
- if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
-  $scope.inspector = $scope.inspectorFacts; 
-  
-  loadURL($scope.context.factsContext);
-  
-  $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-
- }
- else{
-
-  loadURL($scope.context.statsContext);
- $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-   
-  
-
-window.setTimeout(function() {
-  $('.componentInfo.active:visible').trigger( "mouseover" );
-   }, 0);
-
-
-  ;
-
-
- }
-
- 
-});
-
-
-$scope.showTab = function(tab){
-  //TODO: no SHOW TAB . DEACTIVATED
-  return;
-
-  $("input[value='"+tab+"']").prop('checked', true);
-   
-
-  if(tab == 'facts'){   
-    //$scope.currentFact = 0;  
-    //var fact = $scope.inspectorFacts.Facts[0];
-    //$(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-
-    //setTimeout(function() {
-  //$(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-  //$scope.$apply();
-  //}, 500);
-    
- }
- else{
-  $('.inspectorChosenPart').removeClass('inspectorChosenPart');  
- }
-  //$scope.factsPaginator = (tab=="fact")?true:false;
-  
-}
 
 $scope.getShownTab = function(){
   //alert($("input:checked").attr('value'))
@@ -1484,21 +1430,10 @@ if(facts.length>0){
     $scope.inspectorFacts={'Facts':[]}
 
 
-
-if(( $scope.inspectorFacts.Facts.length>0) & (tab=='facts')) {
-  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      
-    var fact = $scope.inspectorFacts.Facts[0];
-    $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-    }
-  else{
-     
-      $scope.inspector = $scope.inspectorStats;
-      $scope.showTab("stats");
-  }
+   $scope.inspector = $scope.inspectorStats;
 $scope.inspectorStats.breadcrumbsData ={};
 $scope.factTitleDisplay=true;
- $scope.showTab("stats");
+ 
 }
 
 var inspectorTomeData = function(tome, indicator, fact, tab){  
@@ -1594,7 +1529,7 @@ $scope.factTitleDisplay=true;
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
-      $scope.showTab("stats");
+      
 */
 return;
 }
@@ -1695,7 +1630,7 @@ var facts = mainIssues.filter(function(e){return (e.chapter==chapter._id)});
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
-      $scope.showTab("stats");*/
+      */
 }
 
 var inspectorSectionData = function(section, indicator, fact, tab){  
@@ -1754,7 +1689,7 @@ var facts = mainIssues.filter(function(e){return (e.section==section._id)});
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     }
   else
-      $scope.showTab("stats");*/
+      */
 }
 
 
@@ -1927,6 +1862,25 @@ switch(granularity){
 
 }
 
+var selectTab = function(tab){
+  resetPath();
+  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
+   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){
+    
+    
+    loadURL($scope.context.factsContext);  
+    $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+
+   }
+   else{
+    loadURL($scope.context.statsContext);
+    
+    window.setTimeout(function() {
+        $('.componentInfo.active:visible').trigger( "mouseover" );
+    }, 0);
+  }
+
+}
 /********************************************/
 var loadContext = function(){
   var width = $('.data-table').innerWidth() ;
@@ -1947,36 +1901,38 @@ var loadContext = function(){
     var indicator = 'ALL'
   
   
-  
+  var course  = $scope.course;
   var components = parseURL(path)
   if(components == null){
     var tome=-1;
+    $scope.tabSelect = 'stats'
+   // selectTab('stats');
   }
   else{
-    var tab=components.hasOwnProperty('tab')?components.tab:'facts';
-    var course  = $scope.course;
     var tome = components.hasOwnProperty('partid')?$.grep(course.tomes, function(e){ return  e._id == components.partid })[0]:-1;
-    var chap = components.hasOwnProperty('chapid')?$.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0]:-1;
+     var chap = components.hasOwnProperty('chapid')?$.grep(tome.chapters, function(e){ return  e._id == components.chapid })[0]:-1;
     var part  = components.hasOwnProperty('sectionid')?$.grep(chap.parts, function(e){ return  e._id == components.sectionid })[0]:-1;     
     var partElt = -1;
+    var tab=components.hasOwnProperty('tab')?components.tab:'facts';
     var fact  = components.hasOwnProperty('factid')?
                 (
                   (part==-1)?($.grep(chap.facts, function(e){ return  e._id == components.factid })[0]):
                              ($.grep(part.facts, function(e){ return  e._id == components.factid })[0])
                   ): -1;
 
-    components.hasOwnProperty('factid')? 
-    	$scope.tabSelect='facts':$scope.tabSelect='stats';;
+    
 
     task = components.hasOwnProperty('taskid')?
     $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
      indicator = components.hasOwnProperty('indicator')? 
                             components.indicator: components.hasOwnProperty('factid')?
                             fact.classof:'ALL';
-    
-   }
 
-   
+     
+            $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';
+
+  }
+  
 
 
   if(tome==-1) {        
