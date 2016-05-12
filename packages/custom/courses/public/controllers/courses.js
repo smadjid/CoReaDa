@@ -32,7 +32,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 setTimeout(function() {
   $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
   $scope.$apply();
-  }, 500);
+  }, 0);
   }
  
 });
@@ -2269,7 +2269,6 @@ var highlightTome = function(index){
 }
 
 $scope.hoverChapter = function(route){ 
-  ;
   if(route==null) return;
   resetPath();
   setTimeout(function() {
@@ -2993,7 +2992,9 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-xs';
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
-
+app.config(function ($compileProvider) {
+  $compileProvider.debugInfoEnabled(false);
+});
 app.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     // Allow same origin resource loads.
