@@ -10,21 +10,11 @@ angular.module('mean.courses')
 
 
 
-var stopHover = function(url){ 
-  ;
- }
- 
 
 var app =angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope',
   '$stateParams', '$location', '$http','Global', 'Courses', '$http',
   function($scope, $rootScope, $stateParams, $location, $http, Global, Courses) {
     $scope.global = Global;
-
- $scope.view_tab ="tab1";
-$scope.changeTab = function(tab) {
-    $scope.view_tab = tab;
-}
-
 
  $scope.itemsPerPage = 1;
  
@@ -230,13 +220,6 @@ else{
       $scope.taskPanelTitle = "Tâches";
       $scope.graphShow=false;
       
-    //  $scope.achievementSelector = 'mean.achievement';
-      $scope.rsSelector = 'nparts';
-      $scope.topSelector = 'actions';
-      $scope.flopSelector = 'actions';
-      $scope.topElementSelector ='sections',
-      $scope.flopElementSelector ='tomes',
-      $scope.statSelector ='visits';      
       $scope.studiedPart = '';
 //      $scope.context.otherFacts=[];
       $scope.inspectorChart = false;
@@ -257,9 +240,6 @@ else{
 
       $scope.tab = 0;
   
-  $scope.changeTab = function(newTab){
-    $scope.tab = newTab;
-  };
   
   $scope.isActiveTab = function(tab){
     return $scope.tab === tab;
@@ -339,9 +319,7 @@ $scope.selectedIndicators=[
 
 
     */
-$(window).bind('hashchange',function(e){ 
-   //console.log('old: '+e.originalEvent.oldURL)
-    //console.log('new: '+e.originalEvent.newURL)
+$(window).bind('hashchange',function(e){
   $scope.dataLoading = true;
   
    loadContext();
@@ -400,12 +378,10 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 });
 
 $scope.$watch('tabSelect', function(newValue, oldValue) { 
-//resetPath();
+resetPath();
 
 
  if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){
-  //$scope.currentFact = 0;   
-
   $scope.inspector = $scope.inspectorFacts; 
   
   loadURL($scope.context.factsContext);
@@ -797,6 +773,7 @@ var resolveRoute = function(path){
 }
 var resetPath = function(){     
   $('.chosenPart').removeClass('chosenPart'); 
+  $('.inspectorChosenPart').removeClass('chosenPart'); 
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
   ;
@@ -804,10 +781,10 @@ var resetPath = function(){
   $('.inspector-item-selected').removeClass('inspector-item-selected');
     
 
-    for (var i = 0; i < $scope.context.subtasks.length; i++)   
+ /*   for (var i = 0; i < $scope.context.subtasks.length; i++)   
       {$scope.context.subtasks[i].selected = 'notRelevantTask' }
 
-
+*/
 }
 
 var parseTask = function(path, content){
@@ -1311,10 +1288,10 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
 
 
 var goHome = function(){ 
+  resetPath();
 
   window.location.hash = '#';
 
-  //$scope.tabSelect='facts';
   
 }
 $scope.goHome = function(){
@@ -2009,7 +1986,7 @@ var loadContext = function(){
         $scope.currentFact = 0;
         $scope.context.taskText ='(nouvelle tâche)';
         $scope.context.taskPanelMiniTitle='Cours'
-        displayCourseInfos(indicator, task); 
+        selectCourse(indicator, task); 
         
 
     }
@@ -2071,8 +2048,7 @@ var loadContext = function(){
           computeGranuleData('part', part, fact.classof, fact.classof,tab);          
           $scope.context.taskText ='(nouvelle tâche pour ce problème)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
-          $scope.inspectorDisplaySrc='inspector'; 
-          //selectSectionIndicator(part.route, task, part, indicator, true);
+          $scope.inspectorDisplaySrc='inspector';           
           selectFact(part.route, task, fact, indicator)
           
           
@@ -2192,7 +2168,6 @@ $scope.triggerClick = function($event){
 //$scope.hoverElements(msg)        
       });
 
-//  $scope.stopHover =  stopHover();
 
 
 var showTasksAndFacts = function(element, indicator, task){ 
@@ -2256,7 +2231,6 @@ $('.selectedTask').focus().blur().focus();
   $scope.context.statsContext = url+'&indicator='+indicator;
 
 
-  $scope.tabSelect='facts';
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
   console.log(fact);
   console.log($scope.inspectorFacts.Facts);
@@ -2267,13 +2241,8 @@ $('.selectedTask').focus().blur().focus();
  }
 
 
-var selectSectionIndicator = function(url, task, part, indicator, isFact){  
+var selectSectionIndicator = function(url, task, part, indicator){  
  
- if(isFact)
-    $scope.tabSelect='facts'
-  else
-    $scope.tabSelect='stats'
- // resetPath();
   url =url+'&indicator='+indicator;
   $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   $scope.context.route = url;     
@@ -2482,7 +2451,7 @@ else{
 }
 
 
-var displayCourseInfos = function(indicator, task){ 
+var selectCourse = function(indicator, task){ 
   $scope.indicatorInspectorShow = indicator;
   resetPath(); 
   //if(indicator==='ALL')
@@ -2504,28 +2473,19 @@ angular.forEach($scope.course.tomes, function(tome){
 });
 
 
-var nbUsers = 0;
-var nbRS = 0;
-var actions =0;
 
 $scope.observedElt ={'type':'course',
       'id':0,
   'typeTxt':'Ce cours',
-  'indicatorTxt': 'tous les indicateurs',
-      'nbUsers':0,//$scope.course.properties.filter(function(value){ return value.property === 'Users_nb'})[0].value,
-      'actions':$scope.course.properties.filter(function(value){ return value.property === 'actions'})[0].value
+  'indicatorTxt': 'tous les indicateurs'
     };
-
-//window.setTimeout(function() {
-    resetPath();
-    //$(':focus').blur();
     selectIndictor(indicator); 
       if(indicator ==='ALL') 
         $scope.inspectorDisplaySrc='course'
 
     else 
     $scope.inspectorDisplaySrc='indicators'
- // }, 10);
+
 }
 
 
@@ -2601,11 +2561,6 @@ else{
 
 var selectChapterIndicator = function(url, task, chapter, indicator, isFact){  return;
  
- if(isFact)
-    $scope.tabSelect='facts'
-  else
-    $scope.tabSelect='stats'
-  //resetPath();
   url =url+'&indicator='+indicator; 
   $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   $scope.context.route = url;     
