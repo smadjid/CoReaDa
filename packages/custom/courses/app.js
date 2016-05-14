@@ -55,7 +55,7 @@ Courses.aggregateAsset('js',"../lib/angular-intro.js/build/angular-intro.min.js"
 
   
   Courses.aggregateAsset('css', 'courses.css');
-  Courses.aggregateAsset('css', '../lib/font-awesome/css/font-awesome.min.css');
+  
   
     Courses.settings({
         'theme': 'bs3'

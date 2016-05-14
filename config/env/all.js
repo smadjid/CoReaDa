@@ -58,7 +58,7 @@ module.exports = {
   sessionName: 'connect.sid',
   // Set bodyParser options
   bodyParser: {
-    json: {limit: '100kb'},
-    urlencoded: {limit: '100kb', extended: true}
+    json: {limit: '800kb'},
+    urlencoded: {limit: '300kb', extended: true}
   }
 };

@@ -5,13 +5,13 @@
 
 <div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} height=370 style="height:370px!important" >
 
-<div  style=" padding:5px; width:100%">
+<div  style=" padding:5px; width:100%; font-size: 16px; ">
 <button  type="button" style="padding:0; margin:0; background: none" class="btn" ng-class="DisablePrevPage()" ng-click="prevPage()">
-<i class="fa fa-chevron-circle-left fa-2x fa-pull-left" aria-hidden="true"></i>
+<span class="glyphicon glyphicon-menu-left pull-left" style='font-weight: bolder' aria-hidden="true"></span>
 </button>
-<span  style='font-size: 16px; color:#404F70;font-weight: bold;'> Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}}</span>
+<span  style='color:#404F70;font-weight: bold;'> Problème {{currentFact + 1}}/{{inspectorFacts.Facts.length}}</span>
 <button  type="button" style="padding:0; margin:0; margin-right: 20px; background: none"class="btn" ng-class="DisableNextPage()" ng-click="nextPage()">
-<i class="fa fa-chevron-circle-right fa-2x fa-pull-right" aria-hidden="true"></i>
+<span class="glyphicon glyphicon-menu-right pull-right" style='font-weight: bolder' aria-hidden="true"></span>
 </button>
 <span  style=' font-weight: bold; font-size: 18px;'>
 <em style='font-weight: normal;'>{{fact.parentTitle}} :</em> {{fact.name}}</span>
@@ -21,35 +21,43 @@
 
 <div class=' col-lg-6'>
 
-<div height=350 style="height:350px!important; border: 1px solid grey;width:100%; padding: 0px">
+<div height=350 style="height:350px!important; border: 0px solid grey;width:100%; padding: 0px; position: relative">
 <div style='height:90%; '>
 
 
-
-
-<div style="padding:5%">
+<div style="padding-top:10px">
+   <p  style='font-size:14px;     margin-bottom: 5px'> <b>Explication</b></p>
   <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
 
-  <p  style='font-size:14px;     margin-bottom: 5px'> <b>Suggestion</b>: {{fact.suggestion_title}} </p>
+  <p  style='font-size:14px;     margin-bottom: 5px'> <b>Suggestion</b>: <em>{{fact.suggestion_title}} </em></p>
   <p style='text-align:justify; font-size:14px'>{{fact.suggestion_content}}</p>
 </div>
 
 </div>
-<div style='height:10%; bottom: 0'>
 
+<div style=' width: 100%; position:absolute; bottom: 0; vertical-align: middle'>
+<table style="width: 100%;"><tr>
+<td width='50%' type='button' ng-click="dropFact()" style="border: 1px solid grey;padding:5px;text-align: center;vertical-align: middle; font-size: 14px;cursor: pointer;" class='btn-default'>
+<ul class='myul'>
+		<li style=''>
+			<i class="glyphicon glyphicon-remove"></i>
+			<p>Ceci n'est pas/plus <br/> un problème</p>
+		</li>
+</ul>
+</td>
 
-<div id='dropFactBtn'  type="button" class="btn-default pull-left" style="border: 1px solid grey;border-left:none;width:50%; padding:5px;text-align: center;vertical-align: middle; font-size: 14px;cursor: pointer;" ng-click="dropFact()">
-<i class="fa fa-times fa-2x fa-pull-left " aria-hidden="true"></i>
-<span  style="font-size: 14px; vertical-align: middle;">Ce n'est pas/plus un problème</span>
-</div>  
-
-<div id='editSuggestionBtn' type="button" class="btn-default pull-right" style="border: 1px solid grey;border-right:none;width:50%;padding:5px; text-align: center;vertical-align: middle; font-size: 14px;cursor: pointer; " ng-click="editSuggestion()">
-<i class="fa fa-plus fa-2x fa-pull-left " aria-hidden="true"></i>
-<span  style="font-size: 14px; vertical-align: middle;">Créer une tâche pour ce problème</span>
-</div>  
-
-
+<td width='50%' type="button"  ng-click="editSuggestion()" style="border: 1px solid grey;padding:5px; text-align: center;vertical-align: middle; font-size: 14px;cursor: pointer; " class='btn-default'>
+<ul class='myul'>
+		<li>
+			<i class="glyphicon glyphicon-plus"></i>
+			<p>Créer une tâche <br/> pour ce problème</p>
+		</li>
+</ul>
+</td>
+</tr>
+</table>
 </div>
+
 </div>
 
 </div>

@@ -457,9 +457,9 @@ scope.$watch('d3opts', function(){
 var RereadingsChart = function(scope, element, title){  
    
    
-    var margin = {top: 20, right: 10, bottom: 30, left: 40},
+    var margin = {top: 20, right: 10, bottom: 0, left: 40},
           width = 580 - margin.left - margin.right,
-          height = 320 - margin.top - margin.bottom;
+          height = 300 - margin.top - margin.bottom;
           var color = d3.scale.category20c();
           var r = height/2;
 

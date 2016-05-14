@@ -158,8 +158,7 @@ allFacts.forEach(function(fact){
       .on("click", function(d) {    
                    window.location.hash = fact.route;
                 })
-      .append("<span data-fact-id="+fact._id+" parent-path="+part.route+"  class='fact section-fact fa-exclamation-circle' role='button'  style='padding:0;color:#FFEB3B;text-shadow:-1px -1px 0 red,  1px -1px 0 red,    -1px 1px 0 red,     1px 1px 0 red;font-size:1.7vw'></span>");
-      
+      .append("<img data-fact-id="+fact._id+" parent-path="+part.route+"  class='fact section-fact' role='button' width='25' src='/courses/assets/img/fact.png'></img>");      
       
 
   }
@@ -181,7 +180,7 @@ if(!scope.allFacts)
     .on("click", function(d) {    
                    window.location.hash = maxRoute;
                 })
-    .append("<span data-fact-id="+maxFactId+" parent-path="+maxPartRoute+"  class='fact section-fact fa-exclamation-circle' role='button'  ></span>")
+    .append("<img data-fact-id="+maxFactId+" parent-path="+maxPartRoute+"  class='fact section-fact'  role='button' width='25' src='/courses/assets/img/fact.png'></img>")  
   }
 }
 
@@ -236,7 +235,7 @@ var maxChapRoute="#";
       .on("click", function(d) {    
                    window.location.hash = fact.route;
                 })
-      .append("<span data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact fa-exclamation-circle' role='button'></span>");
+      .append("<img data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact'' width='25' role='button' src='/courses/assets/img/fact.png'></img>");
       
 
     }
@@ -256,7 +255,7 @@ if(!scope.allFacts)
     .on("click", function(d) {    
                    window.location.hash = maxRoute;
                 })
-    .append("<span data-fact-id="+maxFactId+" parent-path="+maxChapRoute+"  class='fact chapter-fact fa-exclamation-circle' role='button'></span>");
+    .append("<img data-fact-id="+maxFactId+" parent-path="+maxChapRoute+"  class='fact chapter-fact' width='25' role='button' src='/courses/assets/img/fact.png'></img>");
   }
 
 }

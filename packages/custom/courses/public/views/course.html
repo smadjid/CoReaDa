@@ -1,5 +1,5 @@
-
-<table style='display:table' ng-show="!sectionDisplay">
+<div style=" top: 50%; left: 50%; transform: translate(0%,40%);  ">
+<table ng-show="!sectionDisplay" style='display:table; width:100%'>
    <tr><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'actions'" ng-mouseover="$parent.inspectorStats.indicatorCode='actions'">Du <b>15 octobre 2015</b> au <b>22 décembre 2015</b>, le cours a été visité <span class="blue">{{course.mainstats.actions}} fois</span> par <span class="blue">{{course.mainstats.nusers}} lecteurs</span></td></tr>
 
 <tr><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'reread'" ng-mouseover="$parent.inspectorStats.indicatorCode='reread'">Le taux moyen de relecture des chapitres du cours est de  <span class="blue">{{course.mainstats.mean_chap_reread}}</span></td></tr>
@@ -22,7 +22,7 @@
 </table>
 
 
-<table style='display:table' ng-show="sectionDisplay">
+<table ng-show="sectionDisplay" style='display:table; width:100%'>
 <!--  <tr><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'Readers'" ng-click="$parent.inspectorStats.indicatorCode='Readers'">Pour la période allant du <b>15 octobre 2015</b> au <b>22 décembre 2015</b>, le cours a été visité par <span class="blue">{{context.mainstats.nusers}} lecteurs</span></td></tr>-->
 <tr><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'actions'" ng-mouseover="$parent.inspectorStats.indicatorCode='actions'">Du <b>15 octobre 2015</b> au <b>22 décembre 2015</b>, le cours a été visité <span class="blue">{{course.mainstats.actions}} fois</span> par <span class="blue">{{course.mainstats.nusers}} lecteurs</span></td></tr>
 
@@ -33,3 +33,4 @@
 
 <tr><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'stop'" ng-mouseover="$parent.inspectorStats.indicatorCode='stop'">Le taux moyen des arrêts définitifs sur les sections du cours est de  <span class="blue">{{course.mainstats.mean_sec_stop}}</span></td></tr>
 </table>
+</div>
