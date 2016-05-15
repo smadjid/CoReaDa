@@ -376,7 +376,9 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 });
 
 
-$scope.$watch('tabSelect', function(newValue, oldValue) { selectTab(newValue)});
+$scope.$watch('tabSelect', function(newValue, oldValue) { 
+
+	selectTab(newValue)});
 
 
 $scope.getShownTab = function(){
@@ -1879,10 +1881,11 @@ var selectTab = function(tab){
 
    }
    else{
+   	
     loadURL($scope.context.statsContext);
     
     window.setTimeout(function() {
-        $('.componentInfo.active:visible').trigger( "mouseover" );
+      //  $('.componentInfo.active:visible').trigger( "mouseover" );
     }, 0);
   }
 
@@ -1935,6 +1938,8 @@ var loadContext = function(){
                             fact.classof:'ALL';
 
      
+            
+            $scope.context.statsContext = path;
             $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';
 
   }

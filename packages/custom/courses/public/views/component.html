@@ -1,4 +1,8 @@
 
+          <div  class='col-lg-6 pull-right' style='position:absolute;bottom:5px;right:5px;padding-right:0;overflow: hidden;'>
+             <d3-chart data='context.d3' ng-show='pageCount()>=0'  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,issueCode:inspectorStats.indicatorCode, tab:"stats"}' style="height:0"></d3-chart>
+             <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}}</div>             
+          </div>
 
 <div class='col-lg-6' style="transform: translate(0%,40%);  ">
         
