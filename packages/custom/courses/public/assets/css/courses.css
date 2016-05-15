@@ -803,16 +803,6 @@ html, body {
 }
 
 
-.gly-issue{
- /* color: rgba(218, 218, 59, 0.97);
-  font-size: 1.5vw;
-  text-shadow:-1px -1px 0 black,  1px -1px 0 black,    -1px 1px 0 black,     1px 1px 0 black*/
-}
-
-
-
-
-
 
 .myul {
     list-style: none;
@@ -821,6 +811,7 @@ html, body {
   }
   .myul li {
     display: table;
+    width:95%;
   
   }
  .myul p {
@@ -2881,7 +2872,7 @@ margin-bottom: -5px!important;
 /**/
 .coreada-tabs > ul,
 .coreada-tabs > ul > li {
-  /*height: 370px;*/
+  height: 400px;
 }
 
 .indicatorSelectorContainer{
@@ -3137,3 +3128,26 @@ li.disabled, li[disabled]{
 .clearfix { zoom: 1; } /* IE < 8 */
 
 
+
+
+/**/
+/*Exact height */
+/**/
+.inspector-content{
+  
+}
+.inspector-content > ul {
+  
+  
+}
+.inspector-content > ul > li {
+  position: static;
+  display: none;
+  
+
+}
+.inspector-content > .tab-stats:checked ~ ul .tab-stats,
+.inspector-content > .tab-facts:checked ~ ul .tab-facts,
+.inspector-content > .tab-content-last:checked ~ ul .tab-content-last {
+  display: block;
+}

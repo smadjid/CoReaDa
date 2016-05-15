@@ -1,4 +1,6 @@
-   <div style=" top: 50%; left: 50%; transform: translate(0%,40%);  ">
+
+
+<div class='col-lg-6' style="transform: translate(0%,40%);  ">
         
           <table class='coreada-box  ' style='display:table; width:100%'>
               <tr >
@@ -16,22 +18,3 @@
         
       </div>
        
-
-<div id='tabfacts' ng-show='activatetab=="tabFacts" && pageCount()>=0' >
-  <div class="col-lg-6" >        
-
-        <ol class="paginator" ng-show='pageCount()>0' >
-        <i>{{pageCount()+1}} problèmes potentiels</i>
-              <li ng-repeat="n in range()" ng-class="{active: n == currentFact}" ng-click="setPage(n)">
-                <span role='button'>{{n}}</span>
-              </li>
-              <hr/>
-        </ol>
-        
-
- 
-
-  </div>
-</div>
-   
-
