@@ -278,7 +278,6 @@ $scope.selectedIndicators=[
       }, function(course) {
      
         $scope.course = course;
-        console.log(course);
         $scope.chartType = 'actions';
         $scope.selectedElement = course;
   
@@ -321,7 +320,6 @@ $scope.selectedIndicators=[
 $(window).bind('hashchange',function(e){
   $scope.dataLoading = true;
   
-  console.log(location.hash)
    loadContext();
 
   $scope.dataLoading = false;
@@ -363,7 +361,7 @@ $scope.toggleSectionDisplay = function(){
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
-//console.log( $scope.inspectorStats.Indicators)
+
 if($scope.inspectorStats.Indicators !='undefined')
   $scope.inspectorStats.Indicators = $.grep($scope.inspectorStats.Indicators, 
   function(e){return ($.inArray(e.name, $scope.indicatorsSelectionModel)>-1)});
@@ -1459,7 +1457,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
   	
       mainIssues= $scope.SectionsFacts;
       mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
-      $scope.factTitleDisplay=true;alert(mainStats.stop)
+      $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'section',
                    //'id':mainStats.ids,
                    'typeTxt': 'ce chapitre',
@@ -1920,6 +1918,7 @@ var loadContext = function(){
           //$scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='inspector' ;
          $scope.inspectorStats.indicatorCode = indicator;
+         
          selectChapter(partElt, task, indicator);
           
           
