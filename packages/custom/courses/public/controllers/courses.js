@@ -1914,6 +1914,7 @@ var loadContext = function(){
   var components = parseURL(path)
   if(components == null){
     var tome=-1;
+     $scope.context.statsContext = "#";
     $scope.tabSelect = 'stats'
    // selectTab('stats');
   }
@@ -2409,8 +2410,11 @@ else{
 
 
 var selectCourse = function(indicator, task){ 
-  $scope.indicatorInspectorShow = indicator;
   resetPath(); 
+   $scope.inspectorDisplaySrc='course' ;
+
+  $scope.indicatorInspectorShow = indicator;
+  
   //if(indicator==='ALL')
   $scope.context.inspector_title = "Cours : "+$scope.course.title;// +" - " +$scope.context.subfacts.length +" problèmes potentiels";
   $scope.courseDisplay = true;
@@ -2436,12 +2440,17 @@ $scope.observedElt ={'type':'course',
   'typeTxt':'Ce cours',
   'indicatorTxt': 'tous les indicateurs'
     };
-    selectIndictor(indicator); 
-      if(indicator ==='ALL') 
-        $scope.inspectorDisplaySrc='course'
 
-    else 
-    $scope.inspectorDisplaySrc='indicators'
+
+resetPath(); 
+window.setTimeout(function() {
+  $('#data-table').addClass('highlight-table');
+}, 0);
+
+
+
+   // selectIndictor(indicator); 
+    
 
 }
 
@@ -2450,28 +2459,14 @@ var selectTome = function(partElt, task){
 
   var route = $(partElt).attr('data-path');
   var element =resolveRoute(route);  
-  var nbUsers = 0;
-  var nbRS = 0;
-  var actions = 0;
   showTasksAndFacts(element, 'ALL', task);
   
-  angular.forEach(element.chapters, function(chapitre){
-  angular.forEach(chapitre.parts, function(part){
-  showTasksAndFacts(part, 'ALL',task);
-    actions = nbUsers + parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value);
-  })
-
-  });
-
 
 $scope.context.inspector_title = "Partie : "+element.title
 $scope.courseDisplay = false;
 
 $scope.context.url = element.url
 $scope.inspectorDisplaySrc='inspector'
-//window.setTimeout(function() {
-    
-    //$(':focus').blur();
     highlightTome($(partElt).index() + 1);
     
   //}, 10);
