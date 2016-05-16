@@ -2003,8 +2003,9 @@ var loadContext = function(){
           //$scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='inspector' ;
          // selectChapterIndicator(chap.route, task, chap, indicator, false);
+         $scope.inspectorStats.indicatorCode = indicator;
          selectChapter(partElt, task, indicator);
-          $scope.inspectorStats.indicatorCode = indicator;
+          
           
         }
       }
@@ -2038,9 +2039,9 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           
           $scope.inspectorDisplaySrc='inspector';
-          //$scope.sectionDisplay = true; 
-          selectSection(partElt, task, indicator);
+          
           $scope.inspectorStats.indicatorCode = indicator;
+          selectSection(partElt, task, indicator);
         }
       }
 
@@ -2206,24 +2207,6 @@ $('.selectedTask').focus().blur().focus();
  }
 
 
-var selectSectionIndicator = function(url, task, part, indicator){  
- 
-  url =url+'&indicator='+indicator;
-  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
-  $scope.context.route = url;     
-  var element = resolveRoute(url);
-  
-     $scope.context.inspector_title = "Section : "+ part.title;//+' - '+nb+ txt ;
-     $scope.courseDisplay = false;
-     $scope.context.url = part.url;
-
-
-  showTasksAndFacts(element, indicator, task);
-
-  
-  
-    }
-
 var selectIndictor = function(indicator){ 
 
   if(indicator ==='ALL') 
@@ -2301,7 +2284,7 @@ $scope.hoverChapter = function(route){
 
   }, 0);
 }
-var highlightChapter = function(index, route){  
+var highlightChapter = function(index, route, indicator){  
   resetPath();
   setTimeout(function() {
   var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
@@ -2322,6 +2305,12 @@ var highlightChapter = function(index, route){
   $('#divOverlay').width(oneWidth);
   $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(200).slideDown('fast');
+
+  if(indicator!='ALL'){
+    url =route+'&indicator='+indicator; 
+ $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+ console.log($('.td_issue[data-path ="'+url+'"]'))
+  }
 
   //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
@@ -2354,7 +2343,7 @@ $scope.hoverSection = function(route){
 
   }, 0);
 }
-var highlightPart = function(index, route){  
+var highlightPart = function(index, route, indicator){  
   resetPath();
   
   setTimeout(function() {
@@ -2373,6 +2362,12 @@ var highlightPart = function(index, route){
       $('#divOverlay').width(oneWidth);
       $('#divOverlay').css('visibility','visible');
     $('#divOverlay').delay(200).slideDown('fast');
+
+     if(indicator!='ALL'){
+       url =route+'&indicator='+indicator; 
+        $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+ 
+  }
 
 //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
 
@@ -2393,7 +2388,7 @@ $scope.courseDisplay = false;
 var url = element.route;
 $scope.context.route = url; 
 
-highlightPart($(partElt).index() + 1, route);
+highlightPart($(partElt).index() + 1, route, indicator);
 
 if(indicator=='ALL'){
   showTasksAndFacts(element, 'ALL', task);
@@ -2402,9 +2397,7 @@ $scope.context.url = element.url;
 }
 else{ 
   url =url+'&indicator='+indicator; 
-
   element = resolveRoute(url);
-  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   showTasksAndFacts(element, indicator, task);
 }
 
@@ -2498,7 +2491,7 @@ $scope.courseDisplay = false;
 var url = element.route;
 $scope.context.route = url; 
 
-highlightChapter($(partElt).index() + 1, route);
+highlightChapter($(partElt).index() + 1, route, indicator);
 
 if(indicator=='ALL'){
   showTasksAndFacts(element, 'ALL', task);
@@ -2513,7 +2506,7 @@ else{
   url =url+'&indicator='+indicator; 
 
   element = resolveRoute(url);
-  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+ 
   showTasksAndFacts(element, indicator, task);
 }
 
