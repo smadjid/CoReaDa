@@ -302,8 +302,7 @@ $scope.selectedIndicators=[
     
     computeCourseStats();
      $scope.context.mainstats = $scope.course.mainstats;
-    computePartsStats();
-
+    
     $scope.tableData = $scope.course;
 
      
@@ -322,6 +321,7 @@ $scope.selectedIndicators=[
 $(window).bind('hashchange',function(e){
   $scope.dataLoading = true;
   
+  console.log(location.hash)
    loadContext();
 
   $scope.dataLoading = false;
@@ -1070,89 +1070,6 @@ var topData={
 
 }
 
-var computePartsStats = function(){ 
-  // HERE
- return;
-var partsData =[], chapsData =[], tomesData =[];
-
-
-
-angular.forEach($scope.course.tomes, function(tome) {  
-
-  angular.forEach(tome.chapters, function(chapter) {  
-      chapsData.push({
-                        'id':chapter.id,
-                        'title':chapter.title,
-                        'route':chapter.route,                                                
-                        'actions':chapter.actions,
-                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
-                      })
-
-    angular.forEach(chapter.parts, function(part) {
-      part.properties.filter(function(value){ return value.property === 'actions'})[0].value
-      partsData.push({
-                        'id':part.id,
-                        'title':part.title+' (Sec. '+part.id+' )',
-                        'route':part.route,
-                        'actions':parseInt(part.properties.filter(function(value){ return value.property === 'actions'})[0].value),
-                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
-                      })
-          
-                
-              
-    })                                 
-  })
-
-
-partsData = partsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
-var actions = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
-var Readers = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
-var stop = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
-var reread = partsData.slice(0,3);
-
-
-var topSections={
-        'actions':actions[0],
-        'Readers':Readers[0],
-        'stop':stop[0],
-        'reread':reread[0]
-      }
-
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
-actions = chapsData.slice(0,3);
-
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
-Readers = chapsData.slice(0,3);
-
-
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
- stop = chapsData.slice(0,3);
-
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
- reread = chapsData.slice(0,3);
-
-var topChaps={
-        'actions':actions[0],
-        'Readers':Readers[0],
-        'stop':stop[0],
-        'reread':reread[0]
-      }
- var result = {
-      'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
-      'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),  
-      'top_chapters':topChaps,
-      'top_sections':topSections
-
-  }
-  
-  tome.mainstats = result
-  })
-}
-
-
 
 var computeAllTasks = function(){ 
  
@@ -1336,6 +1253,7 @@ var updateMainFacts = function(){
  
 
  $scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
+  if(newValue == oldValue) return;
   $scope.currentFact = 0;
  if(newValue){
   $scope.ChaptersFacts = $scope.AllChaptersFacts;
@@ -1976,7 +1894,6 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);
-          //selectChapterIndicator(chap.route, task, chap, indicator, true);
           selectFact(chap.route, task, fact, indicator)
 
           
@@ -2002,7 +1919,6 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           //$scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='inspector' ;
-         // selectChapterIndicator(chap.route, task, chap, indicator, false);
          $scope.inspectorStats.indicatorCode = indicator;
          selectChapter(partElt, task, indicator);
           
@@ -2056,16 +1972,6 @@ var loadContext = function(){
         if (nbP>40) nbP =40;
    var tdW = (totalWidth - 0)/nbP; 
         
-        
-        $('.data-table td').each(function() {
-   
- //   $(this).css('min-width', 10);     // css attribute of your <td> width:15px; i.e.
-  //  $(this).css('max-width', 10);     // css attribute of your <td> width:15px; i.e.
-});
-       // $scope.width =tdW;
-        //$('.data-table td').css('width',tdW+'px!important');
-        //$('.data-table td').css('display','table');
-      //  $('.data-table td').attr('width',tdW)
         
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
@@ -2235,28 +2141,7 @@ var selectIndictor = function(indicator){
 
 
 var highlightTome = function(index){  
-  resetPath();
   
-  setTimeout(function() {
-    var rowTop = $('.tomes-header> th:nth-child('+index+')').offset();
-  var topTop = rowTop.top;
-  var left = rowTop.left;
-  //$('.tomes-header> th:nth-child('+index+')').addClass('chosenPart')
-
-  var oneWidth = $('.tomes-header> th:nth-child('+index+')').innerWidth();
-  var height = $('.data-table').innerHeight() ;
-
-
-  var rowBottom = $('.data-table tbody tr:last-child > td:nth-child('+index+')').offset();
-  var topBottom = rowBottom.top;
-
-  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
-  $('#divOverlay').height(height);
-  $('#divOverlay').width(oneWidth);
-   $('#divOverlay').css('visibility','visible');
-  $('#divOverlay').delay(200).slideDown('fast');
-  }, 0);
- 
 
 }
 
@@ -2285,36 +2170,7 @@ $scope.hoverChapter = function(route){
   }, 0);
 }
 var highlightChapter = function(index, route, indicator){  
-  resetPath();
-  setTimeout(function() {
-  var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
-
-  var topTop = rowTop.top;
-  var left = rowTop.left;
-
-  var oneWidth = $('.chapters-header> th:nth-child('+index+')').innerWidth();
-  //$('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
-  var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
-
-
-  var rowBottom = $('.data-table tbody tr:last-child > td:nth-child('+index+')').offset();
-  var topBottom = rowBottom.top;
-
-  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
-  $('#divOverlay').height(height);
-  $('#divOverlay').width(oneWidth);
-  $('#divOverlay').css('visibility','visible');
-  $('#divOverlay').delay(200).slideDown('fast');
-
-  if(indicator!='ALL'){
-    url =route+'&indicator='+indicator; 
- $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
- console.log($('.td_issue[data-path ="'+url+'"]'))
-  }
-
-  //$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
-
-  }, 0);
+  
   
 
 }
@@ -2344,7 +2200,26 @@ $scope.hoverSection = function(route){
   }, 0);
 }
 var highlightPart = function(index, route, indicator){  
+  
+}
+
+
+
+var selectSection = function(partElt, task, indicator){   
+
+  var route = $(partElt).attr('data-path');
+
+  var element =resolveRoute(route);  
+
   resetPath();
+  
+$scope.context.inspector_title = "Section : "+element.title;
+$scope.courseDisplay = false;
+var url = element.route;
+$scope.context.route = url; 
+
+var index = $(partElt).index() + 1;
+
   
   setTimeout(function() {
     var rowTop = $('.parts-header > th:nth-child('+index+')').offset();
@@ -2369,26 +2244,8 @@ var highlightPart = function(index, route, indicator){
  
   }
 
-//$(".gly-issue[parent-path='"+route+"']").addClass('fa fa-exclamation-circle');
-
   
   }, 0);
-}
-
-
-
-var selectSection = function(partElt, task, indicator){   
-
-  var route = $(partElt).attr('data-path');
-
-  var element =resolveRoute(route);  
-  
-$scope.context.inspector_title = "Section : "+element.title;
-$scope.courseDisplay = false;
-var url = element.route;
-$scope.context.route = url; 
-
-highlightPart($(partElt).index() + 1, route, indicator);
 
 if(indicator=='ALL'){
   showTasksAndFacts(element, 'ALL', task);
@@ -2446,15 +2303,13 @@ window.setTimeout(function() {
   $('#data-table').addClass('highlight-table');
 }, 0);
 
-
-
-   // selectIndictor(indicator); 
     
 
 }
 
 
 var selectTome = function(partElt, task){ 
+resetPath();
 
   var route = $(partElt).attr('data-path');
   var element =resolveRoute(route);  
@@ -2466,7 +2321,31 @@ $scope.courseDisplay = false;
 
 $scope.context.url = element.url
 $scope.inspectorDisplaySrc='inspector'
-    highlightTome($(partElt).index() + 1);
+    
+
+var index = $(partElt).index() + 1
+    
+  
+  setTimeout(function() {
+    var rowTop = $('.tomes-header> th:nth-child('+index+')').offset();
+  var topTop = rowTop.top;
+  var left = rowTop.left;
+  //$('.tomes-header> th:nth-child('+index+')').addClass('chosenPart')
+
+  var oneWidth = $('.tomes-header> th:nth-child('+index+')').innerWidth();
+  var height = $('.data-table').innerHeight() ;
+
+
+  var rowBottom = $('.data-table tbody tr:last-child > td:nth-child('+index+')').offset();
+  var topBottom = rowBottom.top;
+
+  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
+  $('#divOverlay').height(height);
+  $('#divOverlay').width(oneWidth);
+   $('#divOverlay').css('visibility','visible');
+  $('#divOverlay').delay(200).slideDown('fast');
+  }, 0);
+ 
     
   //}, 10);
 
@@ -2474,7 +2353,8 @@ $scope.inspectorDisplaySrc='inspector'
 
 }
 
-var selectChapter = function(partElt, task, indicator){   
+var selectChapter = function(partElt, task, indicator){  
+resetPath(); 
 
   var route = $(partElt).attr('data-path');
 
@@ -2485,9 +2365,49 @@ $scope.courseDisplay = false;
 var url = element.route;
 $scope.context.route = url; 
 
-highlightChapter($(partElt).index() + 1, route, indicator);
 
-if(indicator=='ALL'){
+var index = $(partElt).index() + 1;
+
+
+  setTimeout(function() {
+  var rowTop = $('.chapters-header> th:nth-child('+index+')').offset();
+
+  var topTop = rowTop.top;
+  var left = rowTop.left;
+
+  var oneWidth = $('.chapters-header> th:nth-child('+index+')').innerWidth();
+  //$('.chapters-header> th:nth-child('+index+')').addClass('chosenPart')
+  var height = $('.data-table').innerHeight() - $('.tomes-header th:first').innerHeight();
+
+
+  var rowBottom = $('.data-table tbody tr:last-child > td:nth-child('+index+')').offset();
+  var topBottom = rowBottom.top;
+
+  $('#divOverlay').offset({top:topTop - 3 ,left:left - 2});
+  $('#divOverlay').height(height);
+  $('#divOverlay').width(oneWidth);
+  $('#divOverlay').css('visibility','visible');
+  $('#divOverlay').delay(200).slideDown('fast');
+
+  if(indicator!='ALL'){
+    url =route+'&indicator='+indicator; 
+ $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
+ 
+  }
+
+ 
+
+  }, 0);
+
+if(indicator!='ALL'){ 
+  url =url+'&indicator='+indicator; 
+
+  element = resolveRoute(url);
+ 
+  showTasksAndFacts(element, indicator, task);
+}
+
+else{
   showTasksAndFacts(element, 'ALL', task);
   angular.forEach(element.parts, function(part){
   showTasksAndFacts(part, 'ALL',task);
@@ -2496,53 +2416,13 @@ if(indicator=='ALL'){
 
 
 }
-else{ 
-  url =url+'&indicator='+indicator; 
 
-  element = resolveRoute(url);
- 
-  showTasksAndFacts(element, indicator, task);
-}
 
     
 
-    $scope.inspectorDisplaySrc='inspector'
+    $scope.inspectorDisplaySrc='component'
  
 }
-
-var selectChapterIndicator = function(url, task, chapter, indicator, isFact){  return;
- 
-  url =url+'&indicator='+indicator; 
-  $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
-  $scope.context.route = url;     
-  var element = resolveRoute(url);
-  
-      
- 
-     $scope.context.inspector_title = chapter.title;
-     $scope.courseDisplay = false;     
-     $scope.context.url = chapter.url
-
-  showTasksAndFacts(element, indicator, task);
-
-
-  
-  
-    }
-
-var tabsFn = (function() {  
-  function init() {
-    setHeight();
-  }  
-  function setHeight() {
-    var $tabPane = $('.tab-pane'),
-    tabsHeight = $('.nav-tabs').height();
-      
-    $tabPane.css({ height: tabsHeight });
-  }
-    
-  $(init);
-})();
 
 
 
@@ -2989,9 +2869,22 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.inputClass = 'input-xs';
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
+
 /*app.config(function ($compileProvider) {
   $compileProvider.debugInfoEnabled(false);
 });*/
+app.config(['fitTextConfigProvider', function(fitTextConfigProvider) {
+  fitTextConfigProvider.config = {
+    debounce: function(a,b,c) {         // OR specify your own function
+      var d;return function(){var e=this,f=arguments;clearTimeout(d),d=setTimeout(function(){d=null,c||a.apply(e,f)},b),c&&!d&&a.apply(e,f)}
+    },
+    delay: 500,                        // debounce delay
+    loadDelay: 10,                      // global default delay before initial calculation
+    compressor: 1,                      // global default calculation multiplier
+    min: 10,                             // global default min
+    max: 17       // global default max
+  };
+}]);
 app.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     // Allow same origin resource loads.

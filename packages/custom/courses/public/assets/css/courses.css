@@ -854,6 +854,11 @@ table {
 
 .table > thead > tr > th {
  border-bottom: 1px!important;
+ font-size: 1vw;
+  }
+
+  .table > thead > tr > th span{
+ font-size: 1vw;
   }
 
 .container-fluid {
