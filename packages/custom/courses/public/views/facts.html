@@ -1,4 +1,4 @@
-<div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} height=370 style="height:370px!important" >
+<div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} >
 
 <div  style=" padding:5px; width:100%; font-size: 16px; ">
 <button  type="button" style="padding:0; margin:0; background: none" class="btn" ng-class="DisablePrevPage()" ng-click="prevPage()">

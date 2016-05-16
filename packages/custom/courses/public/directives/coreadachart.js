@@ -13,7 +13,7 @@ angular.module('mean.courses')
 var inspectorCharts = function(scope, element){  
         var margin = {top: 15, right: 00, bottom: 80, left: 40},
           width = 530 - margin.left - margin.right,
-          height = 300 - margin.top - margin.bottom;
+          height = 270 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
@@ -459,7 +459,7 @@ var RereadingsChart = function(scope, element, title){
    
     var margin = {top: 0, right: 10, bottom: 0, left: 40},
           width = 580 - margin.left - margin.right,
-          height = 300 - margin.top - margin.bottom;
+          height = 270 - margin.top - margin.bottom;
           var color = d3.scale.category20c();
           var r = height/2;
 

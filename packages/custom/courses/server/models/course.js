@@ -147,6 +147,26 @@ var PartSchema = new Schema({
   title: {
     type: String
   },
+  url: {
+    type: String
+  },
+
+  actions: {
+    type: Number
+  },
+  nbactions: {
+    type: Number
+  },
+  reread: {
+    type: Number
+  },
+  stop: {
+    type: Number
+  },
+  speed: {
+    type: Number
+  },
+
   properties: [DescriptionSchema],
   todos: [TodoSchema],
   facts: [FactSchema]
@@ -164,9 +184,29 @@ var ChapterSchema = new Schema({
   title: {
     type: String
   },
+  url: {
+    type: String
+  },
   elementType:{
     type:String
   },
+
+  actions: {
+    type: Number
+  },
+  nbactions: {
+    type: Number
+  },
+  reread: {
+    type: Number
+  },
+  stop: {
+    type: Number
+  },
+  speed: {
+    type: Number
+  },
+
   parts: [PartSchema],
   properties: [DescriptionSchema],
   todos: [TodoSchema],
@@ -185,6 +225,9 @@ var TomeSchema = new Schema({
     type: Number
   },
   title: {
+    type: String
+  },
+  url: {
     type: String
   },
   elementType:{
@@ -209,6 +252,9 @@ var CourseSchema = new Schema({
     type: String,
     required: true,
     trim: true
+  },
+  url: {
+    type: String
   },
   content: {
     type: String,
