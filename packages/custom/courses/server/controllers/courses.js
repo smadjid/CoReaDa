@@ -387,7 +387,13 @@ module.exports = function(Courses) {
                 'title':part_data[0]['title'],
                 'elementType':part_data[0]['type'],
                 'properties':[],
-                'facts':[]
+                'url':'',
+                'facts':[],
+                'actions':0.0,
+                'nbactions':0,
+                'reread':0.0,
+                'stop':0.0,
+                'speed':0
             };
             
 
@@ -404,11 +410,29 @@ module.exports = function(Courses) {
                     if(part_data[i]['variable']=='title') 
                         part.title=part_data[i]['value']
                     else
+                        if(part_data[i]['variable']=='slug') 
+                        part.url=part_data[i]['value']
+                        else
                         if(part_data[i]['variable']=='type')
                             part.type=part_data[i]['value']
                         else
                             if(part_data[i]['variable']=='parent_id')
                                 part.parent_id=part_data[i]['value']
+                            else
+                            if(part_data[i]['variable']=='speed')
+                                part.speed=parseInt(part_data[i]['value'])
+                            else
+                            if(part_data[i]['variable']=='actions')
+                                part.actions=parseFloat(part_data[i]['value'])
+                            else
+                            if(part_data[i]['variable']=='reread')
+                                part.reread=parseFloat(part_data[i]['value'])
+                            else
+                            if(part_data[i]['variable']=='stop')
+                                part.stop=parseFloat(part_data[i]['value'])
+                             else
+                            if(part_data[i]['variable']=='Actions_nb')
+                                part.nbactions=parseInt(part_data[i]['value'])
             };
 
             for (var i = 0, l = part_facts.length; i < l; i++){              
@@ -430,11 +454,16 @@ module.exports = function(Courses) {
             };
         if(part.type==='course') {
             courseData.title = part.title;
+            courseData.url = part.slug;
             courseData.properties = part.properties;
             
         };
         if(part.type==='partie') {
-            var  tome={
+            var tome = part;
+            tome.elementType = 'partie';
+            tome.chapters = []
+
+           /* var  tome={
                 'id':part.id,
                 'part_id':part.part_id,
                 'title':part.title,
@@ -443,13 +472,16 @@ module.exports = function(Courses) {
                 'properties': part.properties,
                 'facts':part.facts,
                 'chapters':[]
-            };
+            };*/
             courseTomes.push(tome); 
             
         };
         if(part.type==='chapitre') {
 
-            var chapter={
+            var chapter=part;
+            chapter.elementType='chapitre';
+            chapter.parts=[];
+            /*{
                 'id':part.id,
                 'part_id':part.part_id,
                 'parent_id':part.parent_id,
@@ -459,7 +491,7 @@ module.exports = function(Courses) {
                 'properties': part.properties,
                 'facts':part.facts,
                 'parts':[]
-            }
+            }*/
             
             
             courseChapters.push(chapter);            
@@ -471,7 +503,7 @@ module.exports = function(Courses) {
 
 
 
-      console.log(part.facts)
+      console.log(part)
        }
        
 
@@ -550,6 +582,7 @@ module.exports = function(Courses) {
         
         var course = new Course( {
             title : courseData.title,
+            url:courseData.url,
             version : 1.0,
             parts:courseParts,
             properties:courseData.properties,//jsonCoursedata,

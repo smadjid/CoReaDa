@@ -96,14 +96,14 @@ var computeTwoBounderyValues = function(type, indicatorCode){
 
 if(type=='chapter'){
   $scope.courseChapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      var partData = parseFloat(chapter[indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   $scope.courseChapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      var partData = parseFloat(part[indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -124,14 +124,14 @@ var computeMinBounderyValues = function(type, indicatorCode){
 
 if(type=='chapter'){
   $scope.courseChapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      var partData = parseFloat(chapter[indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   $scope.courseChapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      var partData = parseFloat(part[indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -163,14 +163,14 @@ var computeBounderyValues = function(type, indicatorCode){
 
 if(type=='chapter'){
   $scope.courseChapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      var partData = parseFloat(chapter[indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   $scope.courseChapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
+      var partData = parseFloat(part[indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -200,6 +200,7 @@ else{
      $scope.inspectorDisplaySrc='course';
      $scope.indicatorInspectorShow = 'course';
      $scope.course ={};
+
      $scope.tableData ={};
      
       $scope.courseParts =[];
@@ -277,6 +278,7 @@ $scope.selectedIndicators=[
       }, function(course) {
      
         $scope.course = course;
+        console.log(course);
         $scope.chartType = 'actions';
         $scope.selectedElement = course;
   
@@ -446,7 +448,8 @@ $scope.pageLoaded = true;
 $scope.completeCourseParts = function(){ 
   var courseParts = [], courseChapters = [];
   var base_url = "https://openclassrooms.com/courses";
-  $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
+  //$scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
+  $scope.course.url = base_url+'/'+$scope.course.url;
  // var course_route = $.param({'csid':course._id})
 
   
@@ -470,7 +473,7 @@ $scope.completeCourseParts = function(){
         };
 
 
-      chapter.url = $scope.course.url+'/'+chapter.properties.filter(function(value){ return value.property === 'slug'})[0].value;
+      chapter.url = $scope.course.url+'/'+chapter.url;
       angular.forEach(chapter.facts,function(fact){        
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
           fact.tome=tome._id;
@@ -496,7 +499,7 @@ $scope.completeCourseParts = function(){
           'chapter':{'id':chapter._id, 'route':chapter.route, 'title':chapter.title},
           'section':{'id':part._id, 'route':part.route, 'title':part.title}
         };
-        part.url = chapter.url+'/'+'#/id/r-'+part.properties.filter(function(value){ return value.property === 'part_id'})[0].value
+        part.url = chapter.url+'/'+'#/id/r-'+part.part_id;
         angular.forEach(part.facts,function(fact){
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id, 'factid':fact._id});          
           fact.tome=tome._id;
@@ -910,29 +913,31 @@ angular.forEach($scope.course.tomes, function(tome) {
   angular.forEach(tome.chapters, function(chapter) {  
     
     
-      chapsData.push({
+     
+   chapsData.push({
                         'id':chapter.id,
                         'title':chapter.title,
                         'route':chapter.route,                                                
-                        'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
-                        'speed':parseInt(chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value),
-                        'reread':parseFloat(chapter.properties.filter(function(value){ return value.property === 'reread'})[0].value),
-                        'stop':parseFloat(chapter.properties.filter(function(value){ return value.property === 'stop'})[0].value),
+                      //  'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
+                        'actions':chapter.actions,
+                        'speed':chapter.speed,
+                        'reread':chapter.reread,
+                        'stop':chapter.stop,
                         'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
-                      })
+                      });
 
-    angular.forEach(chapter.parts, function(part) {
-      part.properties.filter(function(value){ return value.property === 'actions'})[0].value
+      
+    angular.forEach(chapter.parts, function(part) {      
       partsData.push({
                         'id':part.id,
                         'title':part.title+' (Sec. '+part.id+' )',
-                        'route':part.route,
-                        'actions':parseInt(part.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
-                        'speed':parseInt(part.properties.filter(function(value){ return value.property === 'speed'})[0].value),
-                        'reread':parseFloat(part.properties.filter(function(value){ return value.property === 'reread'})[0].value),
-                        'stop':parseFloat(part.properties.filter(function(value){ return value.property === 'stop'})[0].value),
+                        'route':part.route,                                                
+                        'actions':part.actions,
+                        'speed':part.speed,
+                        'reread':part.reread,
+                        'stop':part.stop,
                         'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
-                      })
+                      });
           
                 
               
@@ -1045,10 +1050,10 @@ else
   return;
 
     angular.forEach(data, function(elt){
-      componentData.actions.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'actions'})[0].value));
-      componentData.speed.push(parseInt(elt.properties.filter(function(value){ return value.property === 'speed'})[0].value));
-      componentData.stop.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'stop'})[0].value));
-      componentData.reread.push(parseFloat(elt.properties.filter(function(value){ return value.property === 'reread'})[0].value));
+      componentData.actions.push(elt.actions);
+      componentData.speed.push(elt.speed);
+      componentData.stop.push(elt.stop);
+      componentData.reread.push(elt.reread);
       ids.push(elt.id);
     });
 
@@ -1066,7 +1071,8 @@ var topData={
 }
 
 var computePartsStats = function(){ 
- 
+  // HERE
+ return;
 var partsData =[], chapsData =[], tomesData =[];
 
 
@@ -1074,12 +1080,11 @@ var partsData =[], chapsData =[], tomesData =[];
 angular.forEach($scope.course.tomes, function(tome) {  
 
   angular.forEach(tome.chapters, function(chapter) {  
-    chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value
       chapsData.push({
                         'id':chapter.id,
                         'title':chapter.title,
                         'route':chapter.route,                                                
-                        'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value),
+                        'actions':chapter.actions,
                         'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
                       })
 
@@ -1137,11 +1142,7 @@ var topChaps={
       }
  var result = {
       'visits':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
-      'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),    
-      //'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
-      //'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
-      //'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
-      //'median_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.nparts'})[0].value),
+      'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),  
       'top_chapters':topChaps,
       'top_sections':topSections
 
@@ -1197,8 +1198,6 @@ angular.forEach($scope.course.tomes, function(tome) {
                   angular.forEach(part.facts, function(fact){
                var factTasks = angular.copy(fact.todos);
                     for(var i = 0; i<factTasks.length; i++){ 
-                 //var txt =  $scope.indicatorsHeader.filter(function(value){ return value.value === fact.classof})[0].label;
-                      
                       factTasks[i].route = fact.route+'&taskid='+factTasks[i]._id+'&indicator='+factTasks[i].classof
                        factTasks[i].minipath ='Section: '+part.title;//+' - ' +txt; 
                       tasks.push(factTasks[i]);}
@@ -1542,7 +1541,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
   	
       mainIssues= $scope.SectionsFacts;
       mainStats = computeComponentStats(chapter, $scope.sectionDisplay)
-      $scope.factTitleDisplay=true;
+      $scope.factTitleDisplay=true;alert(mainStats.stop)
        $scope.inspectorStats = {'type':'section',
                    //'id':mainStats.ids,
                    'typeTxt': 'ce chapitre',
@@ -1572,19 +1571,19 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'actions','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)',
+                    {'name':'actions','value':Math.round(100*chapter.actions,2)+'%',
+                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.nbactions+' actions)',
                   	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'actions')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
-                    {'name':'reread','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
+                    {'name':'reread','value':Math.round(100*chapter.reread,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures',
                   	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'reread')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
-                    {'name':'stop','value':Math.round(100*chapter.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
+                    {'name':'stop','value':Math.round(100*chapter.stop,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre',
                   	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'stop')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
-                      {'name':'speed','value':chapter.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
+                      {'name':'speed','value':chapter.speed+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur ce chapitre',
                   	   //'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'speed')}).length > 0)?
@@ -1645,19 +1644,19 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'actions','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'actions'})[0].value,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur cette section('+section.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value+' actions)',
+                    {'name':'actions','value':Math.round(100*section.actions,2)+'%',
+                      'comment':' des visites sur le cours ont été observées sur cette section('+section.nbactions+' actions)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id &f.classof === 'actions')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
-                    {'name':'reread','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'reread'})[0].value,2)+'%',
+                    {'name':'reread','value':Math.round(100*section.reread,2)+'%',
                       'comment':'des lectures de cette section sont des relectures',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'reread')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
-                    {'name':'stop','value':Math.round(100*section.properties.filter(function(value){ return value.property === 'stop'})[0].value,2)+'%',
+                    {'name':'stop','value':Math.round(100*section.stop,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur cette section',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'stop')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
-                      {'name':'speed','value':section.properties.filter(function(value){ return value.property === 'speed'})[0].value+' mots par minute',
+                      {'name':'speed','value':section.speed+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur cette section',
                        //'isFact':(section.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'speed')}).length > 0)?
@@ -2725,9 +2724,8 @@ swal({
 
 setTimeout(function() {
     loadURL(result);
-    reloadURL();
-      
-      $scope.tableData = $scope.course;
+    reloadURL(); 
+    $scope.tableData = $scope.course;     
       $scope.$apply()
   }, 0);
       
@@ -2780,17 +2778,19 @@ var ComputeGlobalVisuData = function(){
   var visuData = []
   
    visuData.push({type:'actions',data:factChart(-1,'actions')});  
-   visuData.push({type:'Readers',data:factChart(-1,'Readers')});  
-   visuData.push({type:'actions',data:factChart(-1,'actions')});  
+   visuData.push({type:'stop',data:factChart(-1,'stop')});
    visuData.push({type:'speed',data:factChart(-1,'speed')});  
-   visuData.push({type:'Readers_tx',data:factChart(-1,'Readers_tx')});  
-    visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
-  visuData.push({type:'reread',data:factChart(-1,'reread')});  
-  visuData.push({type:'course_readers_rereaders',data:factChart(-1,'course_readers_rereaders')});  
-  visuData.push({type:'part_readers_rereaders',data:factChart(-1,'part_readers_rereaders')});  
-  visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
-  visuData.push({type:'rupture_tx',data:factChart(-1,'rupture_tx')});  
-  visuData.push({type:'stop',data:factChart(-1,'stop')});
+   visuData.push({type:'reread',data:factChart(-1,'reread')});  
+  // visuData.push({type:'Readers',data:factChart(-1,'Readers')});  
+   
+  // visuData.push({type:'Readers_tx',data:factChart(-1,'Readers_tx')});  
+   // visuData.push({type:'mean.duration',data:factChart(-1,'mean.duration')});
+  
+ // visuData.push({type:'course_readers_rereaders',data:factChart(-1,'course_readers_rereaders')});  
+ // visuData.push({type:'part_readers_rereaders',data:factChart(-1,'part_readers_rereaders')});  
+ // visuData.push({type:'rupture',data:factChart(-1,'rupture')});  
+ // visuData.push({type:'rupture_tx',data:factChart(-1,'rupture_tx')});  
+  
   /*visuData.push({type:'recovery',data:factChart(-1,'recovery')});    
   visuData.push({type:'norecovery',data:factChart(-1,'norecovery')});    
   
@@ -2933,7 +2933,7 @@ chartData.push({'part':$scope.course._id,
             'title':$scope.course.title,
              'elementType':'course',
             'route':$scope.course.route,
-            'value': parseFloat($scope.course.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'value': $scope.course[issueCode],
             'color':'grey'
           })
 
@@ -2942,7 +2942,7 @@ chartData.push({'part':$scope.course._id,
             'title':tome.title,
              'elementType':'tome',
             'route':tome.route,
-            'value': parseFloat(tome.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'value': tome[issueCode],
             'color':parseInt(factedPartID) ===parseInt(tome.id)?'#45348A':'grey'
           })
           angular.forEach(tome.chapters, function(chapter){
@@ -2950,7 +2950,7 @@ chartData.push({'part':$scope.course._id,
             'title':chapter.title,
              'elementType':'chapter',
             'route':chapter.route,
-            'value': parseFloat(chapter.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'value': chapter[issueCode],
             'color':parseInt(factedPartID) ===parseInt(chapter.id)?'#45348A':'grey',
             'indicators':chapter.indicators
           })
@@ -2959,7 +2959,7 @@ chartData.push({'part':$scope.course._id,
             'title':part.title,
              'elementType':'part',
             'route':part.route,
-            'value': parseFloat(part.properties.filter(function(value){ return  value.property === issueCode})[0].value),
+            'value': part[issueCode],
             'color':parseInt(factedPartID) ===parseInt(part.id)?'#45348A':'grey',
             'indicators':part.indicators
           })
