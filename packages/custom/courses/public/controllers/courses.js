@@ -1356,7 +1356,8 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
   var mainIssues = [];
   var  mainStats = computeComponentStats(tome, $scope.sectionDisplay);
   
-   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+   //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+   var code=$scope.inspectorStats.indicatorCode;
    if($scope.sectionDisplay){ 
        mainIssues = $scope.SectionsFacts;
 
@@ -1452,7 +1453,8 @@ return;
 var inspectorChapterData = function(chapter, indicator, fact, tab){ 
   
   var mainIssues = [], mainStats = [];
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  var code=$scope.inspectorStats.indicatorCode;
   if($scope.sectionDisplay) {
   	
       mainIssues= $scope.SectionsFacts;
@@ -1552,7 +1554,8 @@ var facts = mainIssues.filter(function(e){return (e.chapter==chapter._id)});
 var inspectorSectionData = function(section, indicator, fact, tab){  
   $scope.factTitleDisplay=false;
  var mainIssues = $scope.SectionsFacts;
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  var code=$scope.inspectorStats.indicatorCode;
     $scope.inspectorStats = {'type':'part',
                    'id':section.id,
                    'typeTxt': 'cette section',
@@ -1918,7 +1921,7 @@ var loadContext = function(){
           //$scope.sectionDisplay = false;   
           $scope.inspectorDisplaySrc='inspector' ;
          $scope.inspectorStats.indicatorCode = indicator;
-         
+
          selectChapter(partElt, task, indicator);
           
           
