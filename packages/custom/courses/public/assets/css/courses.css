@@ -622,6 +622,13 @@ a.list-warning-item:hover {
     margin-bottom:0!important;
 
 }
+.factScroller{
+    height: 220px;
+    overflow-y: hidden;
+    position: relative;
+    padding-right: 15px
+
+}
 .inspectorScroller {
     
     max-height:  50vh;
@@ -1949,8 +1956,7 @@ margin-bottom: -5px!important;
   display: inline-block;
   }
 
- .tab-facts{
-  
+ .tab-facts{  
 
   vertical-align: middle;
  }

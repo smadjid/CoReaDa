@@ -1,3 +1,7 @@
+<div  class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
+             <d3-chart data='context.d3' ng-show='pageCount()>=0' d3opts='{type:"inspector",elementType:inspectorFacts.type,elementId:inspectorFacts.id,issueCode:inspectorFacts.indicatorCode, tab:"facts"}' style="height:0"></d3-chart>
+             <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>              
+          </div>
 <div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} >
 
 <div  style=" padding:5px; width:100%; font-size: 16px; ">
@@ -17,7 +21,9 @@
 <div class='col-lg-6'>
 
 <div  style=" border: 0px solid grey;width:100%; padding: 0px; position: relative">
-<div style='height:auto; '>
+<perfect-scrollbar class="factScroller" suppress-scroll-x="true" scrollY-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20" > 
+
+
 
 
 <div style="padding-top:10px">
@@ -28,7 +34,7 @@
   <p style='text-align:justify; font-size:14px'>{{fact.suggestion_content}}</p>
 </div>
 
-</div>
+</perfect-scrollbar>
 
 
 
@@ -39,7 +45,7 @@
 </div>
 
 <div class='col-lg-6' style='position:absolute; bottom: 5px; vertical-align: middle'>
-<table style="width: 100%;"><tr>
+<table style="width: 95%;"><tr>
 <td width='50%' type='button' ng-click="dropFact()" style="border: 1px solid grey;padding:5px;text-align: center;vertical-align: middle; font-size: 14px;cursor: pointer;" class='btn-default'>
 <ul class='myul'>
 		<li style=''>

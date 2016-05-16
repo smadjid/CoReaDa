@@ -102,8 +102,7 @@
          
           <li class="tab-content vcenter tab-stats col-lg-12 inspector-content clearfix" >
 
-
-           <div class="col-lg-12">
+<div class="col-lg-12">
           <span  class="glyphicon glyphicon-home"  aria-hidden="true "> </span> 
             <a  role='button' ng-click='loadURL("#")'>{{course.title }}</a>
           
@@ -122,21 +121,16 @@
           </span>          
             
              <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></a> 
-          </div>
+</div>
+           
 
-          <div class="container-nginclude col-lg-12"  ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" style="position: absolute;top: 25px; bottom: 0;"> </div>
-          <div class="container-nginclude col-lg-12" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component.html'" style="position: absolute;top: 25px; bottom: 0;"></div>
+          <div class="container-nginclude"  ng-show='inspectorDisplaySrc=="course"'  ng-include src="'courses/views/course.html'" style="width:100%;padding:0;margin:0"> </div>
+          <div class="container-nginclude" ng-show='inspectorDisplaySrc!="course"' ng-include src="'courses/views/component.html'"  style="width:100%;padding:0;margin:0"></div>
           
           </li>
           
           <li class="tab-content vcenter tab-facts col-lg-12 inspector-content clearfix "> 
 
-          <div  class='col-lg-6 pull-right' style='position:absolute;bottom:5px;right:0;padding-right:0;overflow: hidden;'>
-             <d3-chart data='context.d3' ng-show='pageCount()>=0' d3opts='{type:"inspector",elementType:inspectorFacts.type,elementId:inspectorFacts.id,issueCode:inspectorFacts.indicatorCode, tab:"facts"}' style="height:0"></d3-chart>
-             <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>              
-          </div>
-          
-          
            <div ng-show='pageCount()<0' >
            
          
