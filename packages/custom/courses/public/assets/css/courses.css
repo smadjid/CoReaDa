@@ -1876,33 +1876,26 @@ border-radius: 3px;
     margin-bottom: 5px;
 }
 
-.btn-actions
-{
- vertical-align: middle;
-  position: absolute;
- 
-  justify-content:space-around;
+.btn-action {
+   
+  
+  padding: 9px 15px 8px;
+  text-align: center;
+  vertical-align: middle; 
+  font-size: 14px;
 
-  bottom: 3px;
-  width: 48%;
-  overflow: visible;
-  z-index: 50;
-  padding-right:20px;
-  padding-left:15px;
+    cursor: pointer;
+    background: #e1e1e1;
+    text-decoration: none;
+    color: #666;
 
-
-display:flex;
- 
+  
 }
+.btn-action:hover, .btn-action:focus, .btn-action:active {
 
-.btn-actions button
-{  
-text-align:center;
-padding: 5px;
-font-size: 13px!important;
-border-radius: 1px;
-float:none!important;
-vertical-align: middle;
+      background-color: #B8BFC7;
+    border-color: #AAB3BB; 
+
 }
 
 
@@ -3097,9 +3090,7 @@ font-weight: bold;
 color: white; 
 }
 
-.fact-dispaly tr,.fact-dispaly td{
-  border: none;
-}
+
 .container-nginclude{
   padding:0!important;
   margin:0!important;
