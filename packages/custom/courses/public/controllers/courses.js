@@ -293,7 +293,7 @@ $scope.selectedIndicators=[
               'indicator':'ALL',
               'statsContext':"#",
               'factsContext': $scope.MainChaptersFacts[0].route,
-              'subtasks' : computeAllTasks(),
+              'Tasks' : computeAllTasks(),
               'd3':ComputeGlobalVisuData()
               
             };
@@ -728,8 +728,8 @@ var resetPath = function(){
   $('.inspector-item-selected').removeClass('inspector-item-selected');
     
 
- /*   for (var i = 0; i < $scope.context.subtasks.length; i++)   
-      {$scope.context.subtasks[i].selected = 'notRelevantTask' }
+ /*   for (var i = 0; i < $scope.context.Tasks.length; i++)   
+      {$scope.context.Tasks[i].selected = 'notRelevantTask' }
 
 */
 }
@@ -1409,13 +1409,13 @@ $scope.factTitleDisplay=true;
 
  
 
-
+/*
   if(indicator!=null) {
     $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)}); 
   $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
 }
   var facts = mainIssues.filter(function(e){return (e.tome==tome._id)});
-/*if(facts.length>0)
+if(facts.length>0)
   {
    
      $scope.inspectorFacts = {
@@ -1513,14 +1513,14 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
 
   var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
   
-
+/*
 if(indicator!=null) {
   $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
   $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
 }
   
 var facts = mainIssues.filter(function(e){return (e.chapter==chapter._id)});
-/*if(facts.length>0)
+if(facts.length>0)
   {
      $scope.inspectorFacts = {
     'id':facts[0].partId,
@@ -1583,14 +1583,14 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                       ]       
                     
                   };
-
+/*
 if(indicator!=null) {
   $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
 $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
 }
   
 var facts = mainIssues.filter(function(e){return (e.section==section._id)});
-/*if(facts.length>0)
+if(facts.length>0)
   {
      $scope.inspectorFacts = {
     'id':facts[0].partId,
@@ -2046,28 +2046,28 @@ $scope.triggerClick = function($event){
 
 
 
-var showTasksAndFacts = function(element, indicator, task){ 
+var filterTasks = function(element, indicator, task){ 
 
   if(indicator ==='ALL'){
        angular.forEach(element.todos, function(todo){
-   var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0]
+   var results = $.grep($scope.context.Tasks, function(e){ return  e._id == todo._id})[0]
         if(typeof results !== 'undefined') results.selected ='relevantTask';
       });
       angular.forEach(element.facts, function(fact){
         angular.forEach(fact.todos, function(todo){
-   var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id})[0];
+   var results = $.grep($scope.context.Tasks, function(e){ return  e._id == todo._id})[0];
         if(typeof results !== 'undefined') results.selected ='relevantTask';
       })
       });
     }
     else{
        angular.forEach(element.todos, function(todo){
- var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof ==indicator})[0]
+ var results = $.grep($scope.context.Tasks, function(e){ return  e._id == todo._id && e.classof ==indicator})[0]
       if(typeof results !== 'undefined') results.selected ='relevantTask';
         });
         angular.forEach(element.facts, function(fact){
           angular.forEach(fact.todos, function(todo){
-     var results = $.grep($scope.context.subtasks, function(e){ return  e._id == todo._id && e.classof ==indicator})[0];
+     var results = $.grep($scope.context.Tasks, function(e){ return  e._id == todo._id && e.classof ==indicator})[0];
           if(typeof results !== 'undefined') results.selected ='relevantTask';
         })
         });
@@ -2078,7 +2078,7 @@ var showTasksAndFacts = function(element, indicator, task){
      
       var task_id =  task._id;
 
- var selection = $.grep($scope.context.subtasks, function(e){ return  e._id == task_id})[0];
+ var selection = $.grep($scope.context.Tasks, function(e){ return  e._id == task_id})[0];
  
 selection.selected ='selectedTask';
 $('.selectedTask').focus().blur().focus();
@@ -2103,7 +2103,7 @@ $('.selectedTask').focus().blur().focus();
      $scope.courseDisplay = false;     
      
 
-  showTasksAndFacts(element, indicator, task);
+  filterTasks(element, indicator, task);
   $scope.context.statsContext = url+'&indicator='+indicator;
 
 
@@ -2250,14 +2250,14 @@ var index = $(partElt).index() + 1;
   }, 0);
 
 if(indicator=='ALL'){
-  showTasksAndFacts(element, 'ALL', task);
+  filterTasks(element, 'ALL', task);
 $scope.context.url = element.url;
 
 }
 else{ 
   url =url+'&indicator='+indicator; 
   element = resolveRoute(url);
-  showTasksAndFacts(element, indicator, task);
+  filterTasks(element, indicator, task);
 }
 
     
@@ -2280,13 +2280,13 @@ var selectCourse = function(indicator, task){
 
     
 
-showTasksAndFacts($scope.course, indicator,task);
+filterTasks($scope.course, indicator,task);
 angular.forEach($scope.course.tomes, function(tome){
-  showTasksAndFacts(tome, indicator, task);
+  filterTasks(tome, indicator, task);
   angular.forEach(tome.chapters, function(chapter){
-    showTasksAndFacts(chapter, indicator, task);
+    filterTasks(chapter, indicator, task);
     angular.forEach(chapter.parts, function(part){
-      showTasksAndFacts(part,indicator,task)
+      filterTasks(part,indicator,task)
     })
   })
 });
@@ -2315,7 +2315,7 @@ resetPath();
 
   var route = $(partElt).attr('data-path');
   var element =resolveRoute(route);  
-  showTasksAndFacts(element, 'ALL', task);
+  filterTasks(element, 'ALL', task);
   
 
 $scope.context.inspector_title = "Partie : "+element.title
@@ -2406,13 +2406,13 @@ if(indicator!='ALL'){
 
   element = resolveRoute(url);
  
-  showTasksAndFacts(element, indicator, task);
+  filterTasks(element, indicator, task);
 }
 
 else{
-  showTasksAndFacts(element, 'ALL', task);
+  filterTasks(element, 'ALL', task);
   angular.forEach(element.parts, function(part){
-  showTasksAndFacts(part, 'ALL',task);
+  filterTasks(part, 'ALL',task);
   $scope.context.url = element.url;
   });
 
@@ -2439,7 +2439,7 @@ var insertLocalTask = function(route, task){
   element.todos.unshift(task);
 
 
-  $scope.context.subtasks =computeAllTasks();
+  $scope.context.Tasks =computeAllTasks();
 
 
   var rt = route+'&taskid='+task._id;
@@ -2529,11 +2529,11 @@ var updateLocalTasks = function(route, data){
 }
 
 var deleteTaskLocally = function(index){
-  $scope.context.subtasks.splice(index,1)
+  $scope.context.Tasks.splice(index,1)
 }
 
 var editTaskLocally = function(index, task){
-  $scope.context.subtasks[index] = task;
+  $scope.context.Tasks[index] = task;
 }
 
 $scope.openEditableArea = function(status){
@@ -2543,7 +2543,7 @@ $scope.openEditableArea = function(status){
   //else $scope.taskPanelTitle = x;
 }
 $scope.markTaskDone = function (route, index) {
-  $scope.context.subtasks[index].done=true
+  $scope.context.Tasks[index].done=true
 }
 $scope.deleteTask = function (route, index) {
 swal({

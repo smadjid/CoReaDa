@@ -21,7 +21,7 @@
 
 	
 
-	<tr role='button' ng-repeat="task in context.subtasks"   ng-class="task.selected" >
+	<tr role='button' ng-repeat="task in context.Tasks"   ng-class="task.selected" >
 		<td style="width: 85%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
 		<div  editable-textarea="task.todo" onshow="openEditableArea(task.minipath)" onhide="openEditableArea(false)" e-name="name" e-form="rowform" e-required  >
 		
@@ -43,7 +43,7 @@
 		</td>
 	</tr>
 <!--
-	<tr ng-repeat="task in context.subtasks|filter:{'selected':'0'}" class="unselectedTask">
+	<tr ng-repeat="task in context.Tasks|filter:{'selected':'0'}" class="unselectedTask">
 		<td style="width: 70%;" >
 <uib-accordion close-others="oneAtATime" style="width:50%">
    <uib-accordion-group is-open="status.open" class='task-accordion'>
