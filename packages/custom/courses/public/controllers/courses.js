@@ -731,10 +731,10 @@ var resetPath = function(){
   //$('.gly-issue').removeClass('fa fa-exclamation-circle');  
     
 
- /*   for (var i = 0; i < $scope.context.Tasks.length; i++)   
+    for (var i = 0; i < $scope.context.Tasks.length; i++)   
       {$scope.context.Tasks[i].selected = 'notRelevantTask' }
 
-*/
+
 }
 
 var parseTask = function(path, content){
@@ -1723,7 +1723,7 @@ $scope.tour.CompletedEvent = function (scope) {
             position: 'top',
         },
         {
-            element:'#editSuggestionBtn',
+            element:'#createFactTaskBtn',
             intro: "<span class='badge-tour'>10/14</span> <h4>Bouton <em>Créer une tâche</em></h4>"+            
             "Ce bouton planifie une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.",
             position: 'top',
@@ -1827,7 +1827,7 @@ var loadContext = function(){
 
    $scope.context.route = url;
    
-   $scope.context.Tasks =element.todos; 
+   //$scope.context.Tasks =element.todos; 
 
    
    var path = url;
@@ -2447,7 +2447,7 @@ $scope.clearEditingTask = function(){
   $scope.formData ='';return false;
 }
 var insertLocalTask = function(route, task){
-
+console.log(route)
   var element = resolveRoute(route);
 
   element.todos.unshift(task);
@@ -2462,7 +2462,7 @@ var insertLocalTask = function(route, task){
  
 }
 
-$scope.editSuggestion = function(){
+$scope.createFactTask = function(){
 
   $scope.formData = $scope.inspectorFacts.Facts[$scope.currentFact].suggestion_title; 
 
@@ -2505,7 +2505,7 @@ $scope.addTask = function (data) {
    
         
         addTask(query.route,query.todo)
-        .success(function(data) {
+        .success(function(data) {          
           insertLocalTask(route, data);
            $scope.formData = undefined;
            $scope.dataLoading = false;
