@@ -734,10 +734,6 @@ html, body {
 
 .chosenPart{  
      
-   box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-  
     border-color: #45348A!important;
     background-color: #45348A!important;
    
@@ -750,7 +746,7 @@ html, body {
 }
 .inspectorChosenPart{  
   border-color: #45348A;
- box-shadow: 0 0 0 1px #45348A, 0 0 0 3px white inset!important;
+ box-shadow: 0 0 0 5px #45348A inset!important;
  animation: pulse 3s linear ;
 
 }

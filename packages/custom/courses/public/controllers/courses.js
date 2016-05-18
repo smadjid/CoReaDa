@@ -19,6 +19,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
  $scope.itemsPerPage = 1;
  
  $scope.$watch('currentFact', function(newValue, oldValue) {  
+  if($scope.tabSelect != 'facts') return;
   $('.inspectorChosenPart').removeClass('inspectorChosenPart');
  if(typeof $scope.inspectorFacts=='undefined') return;
  if($scope.inspectorFacts.Facts.length>0){
@@ -292,13 +293,12 @@ $scope.selectedIndicators=[
               'taskText':'(nouvelle tâche)',
               'indicator':'ALL',
               'statsContext':"#",
-              'factsContext': $scope.MainChaptersFacts[0].route,
               'Tasks' : computeAllTasks(),
               'd3':ComputeGlobalVisuData()
               
             };
 
-    
+    goHome();
     computeCourseStats();
      $scope.context.mainstats = $scope.course.mainstats;
     
@@ -340,10 +340,10 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.toggleSectionDisplay = function(){ 
-  
+  goHome();
   
     $scope.sectionDisplay =! $scope.sectionDisplay;
-    $scope.currentFact = 0;
+
   if($scope.sectionDisplay) {
          $scope.inspectorFacts.Facts = $scope.SectionsFacts;   
          $scope.inspectorStats.type='part';
@@ -352,7 +352,12 @@ $scope.toggleSectionDisplay = function(){
       $scope.inspectorFacts.Facts= $scope.ChaptersFacts;
       $scope.inspectorStats.type='chapter';
   }
-  goHome();
+
+
+  $scope.currentFact = 0;
+  
+  
+  
   
   
 
@@ -376,9 +381,7 @@ $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
 });
 
 
-$scope.$watch('tabSelect', function(newValue, oldValue) { 
-
-	selectTab(newValue)});
+$scope.$watch('tabSelect', function(newValue, oldValue) {	selectTab(newValue)});
 
 
 $scope.getShownTab = function(){
@@ -422,7 +425,7 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome();resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
       
         reloadURL(); 
        window.setTimeout(function() {
@@ -720,12 +723,12 @@ var resolveRoute = function(path){
 }
 var resetPath = function(){     
   $('.chosenPart').removeClass('chosenPart'); 
-  $('.inspectorChosenPart').removeClass('chosenPart'); 
+  $('.inspectorChosenPart').removeClass('inspectorChosenPart'); 
   $('.data-table').removeClass('highlight-table');
   $('#divOverlay').css('visibility','hidden');
-  ;
-  //$('.gly-issue').removeClass('fa fa-exclamation-circle');
   $('.inspector-item-selected').removeClass('inspector-item-selected');
+
+  //$('.gly-issue').removeClass('fa fa-exclamation-circle');  
     
 
  /*   for (var i = 0; i < $scope.context.Tasks.length; i++)   
@@ -1148,9 +1151,11 @@ angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
 
 
 var goHome = function(){ 
-  resetPath();
 
   window.location.hash = '#';
+  //resetPath();
+
+  //window.location.hash = '#';
 
   
 }
@@ -1200,9 +1205,9 @@ var getTasks = function(courseId, partId, todoData) {
         return $http.get('/api/tasks/get/'+courseId+'/'+partId)
         };
       
-var filterTasks = function(studiedPart) {
+/*var filterTasks = function(studiedPart) {
           return studiedPart.todos;
-      };
+      };*/
 
 
 var updateMainFacts = function(){  
@@ -1267,7 +1272,7 @@ var updateMainFacts = function(){
 
     setTimeout(function() {
       
-     $scope.goHome();
+     $scope.goHome(); 
   inspectorCourseData('facts');
     $scope.$apply();
   }, 0);
@@ -1346,6 +1351,8 @@ if(facts.length>0){
 
 
    $scope.inspector = $scope.inspectorStats;
+   $scope.currentFact = 0;
+    
 $scope.inspectorStats.breadcrumbsData ={};
 $scope.factTitleDisplay=true;
  
@@ -1789,22 +1796,22 @@ switch(granularity){
 }
 
 var selectTab = function(tab){
-  resetPath();
-  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){
-    
-    
-    loadURL($scope.context.factsContext);  
-    $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-
+  
+   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
+    loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route); 
+    window.setTimeout(function() {
+      resetPath();
+      $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent()
+      .addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+    }, 0); 
    }
    else{
-   	
-    loadURL($scope.context.statsContext);
+    resetPath();  
+    window.setTimeout(function() { 	
+        loadURL($scope.context.statsContext);
+     }, 0); 
     
-    window.setTimeout(function() {
-      //  $('.componentInfo.active:visible').trigger( "mouseover" );
-    }, 0);
+    
   }
 
 }
@@ -1821,6 +1828,7 @@ var loadContext = function(){
    $scope.context.route = url;
    
    $scope.context.Tasks =element.todos; 
+
    
    var path = url;
    resetPath();
@@ -1868,8 +1876,6 @@ var loadContext = function(){
   if(tome==-1) {        
     
         computeGranuleData('course',tab);
-        $scope.context.factsContext = ($scope.sectionDisplay)?$scope.MainSectionsFacts[0].route:$scope.MainChaptersFacts[0].route;
-        $scope.currentFact = 0;
         $scope.context.taskText ='(nouvelle tâche)';
         $scope.context.taskPanelMiniTitle='Cours'
         selectCourse(indicator, task); 
@@ -1976,7 +1982,7 @@ var loadContext = function(){
         
         
         if($('.course_title_top').length<1)
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="resetPath();goHome()" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
                 
 
 
@@ -2004,6 +2010,11 @@ var reloadURL = function(){
 
 
 var loadURL = function(url){
+
+  window.location.hash = url;
+  return;
+
+
   if(url == window.location.hash)
  {
   goHome();
@@ -2110,7 +2121,9 @@ $('.selectedTask').focus().blur().focus();
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
   if(factID != $scope.currentFact)
       $scope.setPage(factID);
-  $scope.context.factsContext = url+'&'+fact.route;
+  
+  
+  
   
  }
 
@@ -2300,8 +2313,9 @@ $scope.observedElt ={'type':'course',
     };
 
 
-resetPath(); 
+
 window.setTimeout(function() {
+  resetPath(); 
   $('#data-table').addClass('highlight-table');
 }, 0);
 
