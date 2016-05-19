@@ -1,6 +1,6 @@
 <section data-ng-controller="CoursesController" data-ng-init="findOne()">
 
-<div ng-intro-options="tour.IntroOptions" ng-intro-method="CallMe"
+<div ng-intro-options="tour.IntroOptions" ng-intro-method="launchGuidedTour"
          ng-intro-oncomplete="tour.CompletedEvent" ng-intro-onexit="tour.ExitEvent"
          ng-intro-onchange="tour.ChangeEvent" ng-intro-onbeforechange="tour.BeforeChangeEvent"
          ng-intro-onafterchange="tour.AfterChangeEvent"
@@ -170,7 +170,7 @@
 
   </div>  
 
-<span  id='tourStarter1' class='tourStarter' style=''   role="button" ng-click ="CallMe();"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Visite guidée</span>
+<span  id='tourStarter' class='tourStarter' style=''   role="button" ng-click ="startGuidedTour();"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Visite guidée</span>
 <!--<div id='elementContent'>{{context.url}}</div>
 <iframe src="https://openclassrooms.com/courses/des-applications-ultra-rapides-avec-node-js/node-js-mais-a-quoi-ca-sert" ></iframe>
 -->

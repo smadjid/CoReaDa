@@ -1,8 +1,8 @@
-<div  class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
+<div id='factChartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
              <d3-chart data='context.d3' ng-show='pageCount()>=0' d3opts='{type:"inspector",elementType:inspectorFacts.type,elementId:inspectorFacts.id,issueCode:inspectorFacts.indicatorCode, tab:"facts"}' style="height:0"></d3-chart>
              <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>              
           </div>
-<div id="fact-div"  class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} >
+<div class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} >
 
 <div  style=" padding:5px; width:100%; font-size: 16px; ">
 <button  type="button" style="padding:0; margin:0; background: none" class="btn" ng-class="DisablePrevPage()" ng-click="prevPage()">
@@ -26,7 +26,7 @@
 
 
 
-<div style="padding-top:10px">
+<div style="padding-top:10px" id="fact-div">
    <p  style='font-size:14px;     margin-bottom: 5px'> <b>Explication</b></p>
   <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
 
@@ -48,7 +48,7 @@
 <table style="width: 95%;"><tr>
 <td width='50%' type='button' ng-click="dropFact()" class='btn-action'>
 <ul class='myul'>
-		<li style=''>
+		<li id='dropFactBtn'>
 			<i class="glyphicon glyphicon-remove"></i>
 			<p>Ceci n'est pas/plus <br/> un problème</p>
 		</li>
@@ -57,7 +57,7 @@
 
 <td width='50%' type="button"  ng-click="createFactTask()"  class='btn-action'>
 <ul class='myul'>
-		<li>
+		<li id='createFactTaskBtn'>
 			<i class="glyphicon glyphicon-plus"></i>
 			<p>Créer une tâche <br/> pour ce problème</p>
 		</li>

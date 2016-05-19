@@ -1656,7 +1656,14 @@ $scope.tour.CompletedEvent = function (scope) {
         console.log("After Change Event called");
         console.log(targetElement);
     };
- 
+ $scope.startGuidedTour = function(){
+    goHome(); 
+    selectTab('facts'); 
+    window.setTimeout(function() {
+      $scope.launchGuidedTour();
+    }, 0); 
+    
+ }
     $scope.tour.IntroOptions = {
 
         steps:[
@@ -1707,7 +1714,7 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element: '#factsTab',
             intro: "<span class='badge-tour'>7/14</span> <h4>Onglet <em>Problèmes</em> </h4> "+
-            "Présente les problèmes potentiels détectés pour l'élément. Deux boutons permettent de naviguer entre les éventuels problèmes détectés.",
+            "Présente les problèmes potentiels détectés pour l'élément.  ",
             position: 'bottom',
         },
         {
@@ -1735,7 +1742,7 @@ $scope.tour.CompletedEvent = function (scope) {
             position: 'top',
         },
         {
-            element: '#chartPanel',
+            element: '#factChartPanel',
             intro: "<span class='badge-tour'>12/14</span> <h4>Graphiques</h4>"+
             "Présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
             position: 'top',
@@ -1754,10 +1761,10 @@ $scope.tour.CompletedEvent = function (scope) {
             position: 'left',
         },
         {
-            element: '#tourStarter1',
+            element: '.logo',
             intro: "<span class='badge-tour'>14/14</span> <h4><em>Merci</em></h4>"+
             "La visite guidée est terminer. Merci de l'avoir suivie!",
-            position: 'left',
+            position: 'bottom',
         }
        
         ],
