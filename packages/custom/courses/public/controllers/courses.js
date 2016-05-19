@@ -1205,9 +1205,6 @@ var getTasks = function(courseId, partId, todoData) {
         return $http.get('/api/tasks/get/'+courseId+'/'+partId)
         };
       
-/*var filterTasks = function(studiedPart) {
-          return studiedPart.todos;
-      };*/
 
 
 var updateMainFacts = function(){  
@@ -1908,6 +1905,7 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);
+          
           selectFact(chap.route, task, fact, indicator)
 
           
@@ -2066,7 +2064,7 @@ $scope.triggerClick = function($event){
 
 var filterTasks = function(element, indicator, task){ 
 
-  if(indicator ==='ALL'){
+  //if(indicator ==='ALL'){
        angular.forEach(element.todos, function(todo){
    var results = $.grep($scope.context.Tasks, function(e){ return  e._id == todo._id})[0]
         if(typeof results !== 'undefined') results.selected ='relevantTask';
@@ -2077,7 +2075,7 @@ var filterTasks = function(element, indicator, task){
         if(typeof results !== 'undefined') results.selected ='relevantTask';
       })
       });
-    }
+ /*   }
     else{
        angular.forEach(element.todos, function(todo){
  var results = $.grep($scope.context.Tasks, function(e){ return  e._id == todo._id && e.classof ==indicator})[0]
@@ -2089,21 +2087,21 @@ var filterTasks = function(element, indicator, task){
           if(typeof results !== 'undefined') results.selected ='relevantTask';
         })
         });
-    };
+    };*/
 
 
     if(task != null){
+      
      
       var task_id =  task._id;
 
  var selection = $.grep($scope.context.Tasks, function(e){ return  e._id == task_id})[0];
  
+ 
 selection.selected ='selectedTask';
-$('.selectedTask').focus().blur().focus();
-        window.setTimeout(function() {
-          selection.selected ='selectedTask';
-          $('.selectedTask').focus().blur().focus();
-        }, 0);        
+
+
+      
     }
    
 
@@ -2121,7 +2119,7 @@ $('.selectedTask').focus().blur().focus();
      $scope.courseDisplay = false;     
      
 
-  filterTasks(element, indicator, task);
+  
   $scope.context.statsContext = url+'&indicator='+indicator;
 
 
@@ -2130,7 +2128,7 @@ $('.selectedTask').focus().blur().focus();
       $scope.setPage(factID);
   
   
-  
+  filterTasks(element, indicator, task);
   
  }
 
@@ -2300,18 +2298,6 @@ var selectCourse = function(indicator, task){
 
     
 
-filterTasks($scope.course, indicator,task);
-angular.forEach($scope.course.tomes, function(tome){
-  filterTasks(tome, indicator, task);
-  angular.forEach(tome.chapters, function(chapter){
-    filterTasks(chapter, indicator, task);
-    angular.forEach(chapter.parts, function(part){
-      filterTasks(part,indicator,task)
-    })
-  })
-});
-
-
 
 $scope.observedElt ={'type':'course',
       'id':0,
@@ -2324,6 +2310,17 @@ $scope.observedElt ={'type':'course',
 window.setTimeout(function() {
   resetPath(); 
   $('#data-table').addClass('highlight-table');
+  filterTasks($scope.course, indicator,task);
+  angular.forEach($scope.course.tomes, function(tome){
+  filterTasks(tome, indicator, task);
+  angular.forEach(tome.chapters, function(chapter){
+    filterTasks(chapter, indicator, task);
+    angular.forEach(chapter.parts, function(part){
+      filterTasks(part,indicator,task)
+    })
+  })
+});
+  
 }, 0);
 
     
@@ -2336,7 +2333,7 @@ resetPath();
 
   var route = $(partElt).attr('data-path');
   var element =resolveRoute(route);  
-  filterTasks(element, 'ALL', task);
+  
   
 
 $scope.context.inspector_title = "Partie : "+element.title
@@ -2368,6 +2365,8 @@ var index = $(partElt).index() + 1
    $('#divOverlay').css('visibility','visible');
   $('#divOverlay').delay(200).slideDown('fast');
   }, 0);
+
+  filterTasks(element, 'ALL', task);
  
     
   //}, 10);
