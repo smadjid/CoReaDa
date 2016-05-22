@@ -93,6 +93,9 @@ setTimeout(function() {
 
 
   var components = parseURL(window.location.hash)
+  if(components == null)    
+   		loadURL($scope.inspectorFacts.Facts[n].route);
+   	else
  if(components.hasOwnProperty('factid')) 
     if(components.factid != $scope.inspectorFacts.Facts[n]._id)
       loadURL($scope.inspectorFacts.Facts[n].route);
@@ -1783,7 +1786,7 @@ $scope.tour.CompletedEvent = function (scope) {
         {
             element: '.logo',
             intro: "<span class='badge-tour'>14/14</span> <h4><em>Merci</em></h4>"+
-            "La visite guidée est terminer. Merci de l'avoir suivie!",
+            "La visite guidée est terminée. Merci de l'avoir suivie!",
             position: 'bottom',
         }
        
@@ -1824,7 +1827,10 @@ switch(granularity){
 
 var selectTab = function(tab){
   var components = parseURL(window.location.hash)
-   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){     
+   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
+   	if(components == null)    
+   		loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
+   	else
      if(components.hasOwnProperty('factid')) 
         if(components.factid != $scope.inspectorFacts.Facts[$scope.currentFact]._id)
           loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
