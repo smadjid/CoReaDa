@@ -89,8 +89,14 @@ setTimeout(function() {
     if($scope.inspectorFacts.Facts.length<1) return;
     
   $scope.currentFact = n;
-  loadURL($scope.inspectorFacts.Facts[n].route)
+  
 
+
+  var components = parseURL(window.location.hash)
+ if(components.hasOwnProperty('factid')) 
+    if(components.factid != $scope.inspectorFacts.Facts[n]._id)
+      loadURL($scope.inspectorFacts.Facts[n].route);
+       
   };
 var computeTwoBounderyValues = function(type, indicatorCode){
   var studiedFactData=[];
@@ -338,6 +344,24 @@ $('.editable-text').on('shown', function (e, editable) {
 /////TODO:
 
 
+
+$scope.setSectionDisplay = function(value){ 
+  $scope.sectionDisplay = value;
+window.setTimeout(function() {
+ 
+  if(value) {
+         $scope.inspectorFacts.Facts = $scope.SectionsFacts;   
+         $scope.inspectorStats.type='part';
+  }
+  else{
+      $scope.inspectorFacts.Facts= $scope.ChaptersFacts;
+      $scope.inspectorStats.type='chapter';
+  }
+
+
+  $scope.currentFact = 0;
+  }, 0);
+}
 
 $scope.toggleSectionDisplay = function(){ 
   goHome();
@@ -1168,9 +1192,8 @@ $scope.taskContexter = function(task,$event) {
   var element = deparseTask(task.route);
  
   loadURL(element);
-
-  $($event.currentTarget).parent().blur();
-  $($event.currentTarget).parent().focus();
+  //$($event.currentTarget).parent().blur();
+  //$($event.currentTarget).parent().focus();
 
 };
 
@@ -1800,9 +1823,12 @@ switch(granularity){
 }
 
 var selectTab = function(tab){
-  
-   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
-    loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route); 
+  var components = parseURL(window.location.hash)
+   if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){     
+     if(components.hasOwnProperty('factid')) 
+        if(components.factid != $scope.inspectorFacts.Facts[$scope.currentFact]._id)
+          loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
+
     window.setTimeout(function() {
       resetPath();
       $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent()
@@ -1812,6 +1838,7 @@ var selectTab = function(tab){
    else{
     resetPath();  
     window.setTimeout(function() { 	
+
         loadURL($scope.context.statsContext);
      }, 0); 
     
@@ -1862,8 +1889,7 @@ var loadContext = function(){
 
     
 
-    task = components.hasOwnProperty('taskid')?
-    $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
+    task = components.hasOwnProperty('taskid')?   $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
      indicator = components.hasOwnProperty('indicator')? 
                             components.indicator: components.hasOwnProperty('factid')?
                             fact.classof:'ALL';
@@ -1871,7 +1897,7 @@ var loadContext = function(){
      
             
             $scope.context.statsContext = path;
-            $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';
+            
 
   }
   
@@ -1900,13 +1926,18 @@ var loadContext = function(){
       if(part==-1){
         task = components.hasOwnProperty('taskid')?$.grep(chap.todos, function(e){ return  e._id == components.taskid })[0]:null;
         if(fact!=-1){
+          if($scope.sectionDisplay)
+            $scope.setSectionDisplay(false);
+          window.setTimeout(function() {
+
+          task = components.hasOwnProperty('taskid')?   $.grep(fact.todos, function(e){ return  e._id == components.taskid })[0]:null;
           partElt = $('.part_index[data-part ='+chap.id+']'); 
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
-          computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);
-          
+          computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);          
           selectFact(chap.route, task, fact, indicator)
+             }, 0);
 
           
           
@@ -1939,8 +1970,13 @@ var loadContext = function(){
         }
       }
       else{
+        if(!$scope.sectionDisplay)
+          $scope.setSectionDisplay(true);
+        window.setTimeout(function() {
+
         task = components.hasOwnProperty('taskid')?$.grep(part.todos, function(e){ return  e._id == components.taskid })[0]:null;
         if(fact!=-1){
+          task = components.hasOwnProperty('taskid')?   $.grep(fact.todos, function(e){ return  e._id == components.taskid })[0]:null;
           partElt = $('.part_index[data-part ='+part.id+']'); 
           computeGranuleData('part', part, fact.classof, fact.classof,tab);          
           $scope.context.taskText ='(nouvelle tâche pour ce problème)';
@@ -1972,6 +2008,7 @@ var loadContext = function(){
           $scope.inspectorStats.indicatorCode = indicator;
           selectSection(partElt, task, indicator);
         }
+         }, 0);
       }
 
 
@@ -1989,8 +2026,8 @@ var loadContext = function(){
         if($('.course_title_top').length<1)
                 $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
                 
-
-
+if(components != null)
+  $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';
 $('.tableScroller').scroll();
  
 
@@ -2386,6 +2423,7 @@ $scope.context.inspector_title = "Chapitre : "+element.title;
 $scope.courseDisplay = false;
 var url = element.route;
 $scope.context.route = url; 
+
 
 
 var index = $(partElt).index() + 1;
