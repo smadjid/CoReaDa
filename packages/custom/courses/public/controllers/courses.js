@@ -9,13 +9,102 @@ angular.module('mean.courses')
 
 
 
+var app =angular.module('mean.courses').controller('FeedbackController', ['$scope', '$rootScope',
+  '$stateParams', '$location', '$http','ngDialog', 'Global', 'Courses',
+  function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses) {
+    $scope.global = Global;
+    //////////////// FEEDBACKS
+$scope.result = 'hidden'
+    $scope.resultMessage;
+    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
+    $scope.submitButtonDisabled = false;
+    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
+    $scope.sendFeedback = function(contactform) {
+        $scope.submitted = true;
+        $scope.submitButtonDisabled = true;
+       
+        if (contactform.$valid) {
+          $http.post('/api/feedback',$scope.feedbackFormData)
+          .success(function(data){
+                console.log(data);
+               
+                    $scope.submitButtonDisabled = true;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-success';
+               swal({   title: "Merci!",   
+            text: "Nous avons bien reçu votre message. Merci.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+            })
+          .error(function(data) {
+              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
+              $scope.submitButtonDisabled = false;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-danger';
+            });  
+            console.log($scope.feedbackFormData)
+        } else {
+            $scope.submitButtonDisabled = false;
+            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
+            $scope.result='bg-danger';
+        }
+    }
 
+
+  }]);
 
 var app =angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope',
-  '$stateParams', '$location', '$http','Global', 'Courses', '$http',
-  function($scope, $rootScope, $stateParams, $location, $http, Global, Courses) {
+  '$stateParams', '$location', '$http','ngDialog', 'Global', 'Courses',
+  function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses) {
     $scope.global = Global;
 
+
+ $scope.clickToOpen = function () {
+        ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', 
+        controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
+        function($scope, $rootScope,  $stateParams, $location, $http) {
+        $scope.result = 'hidden'
+    $scope.resultMessage;
+    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
+    $scope.submitButtonDisabled = false;
+    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
+    
+    $scope.sendFeedback = function(contactform) {
+        $scope.submitted = true;
+        $scope.submitButtonDisabled = true;
+       
+        if (contactform.$valid) {
+          $http.post('/api/feedback',$scope.feedbackFormData)
+          .success(function(data){
+                console.log(data);
+               
+                    $scope.submitButtonDisabled = true;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-success';
+               swal({   title: "Merci!",   
+            text: "Nous avons bien reçu votre message. Merci.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+            })
+          .error(function(data) {
+              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
+              $scope.submitButtonDisabled = false;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-danger';
+            });  
+            console.log($scope.feedbackFormData)
+        } else {
+            $scope.submitButtonDisabled = false;
+            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
+            $scope.result='bg-danger';
+        }
+    }
+
+    }]
+      });
+    };
  $scope.itemsPerPage = 1;
  
  $scope.$watch('currentFact', function(newValue, oldValue) {  
@@ -205,7 +294,7 @@ else{
 
   $scope.observedElt ={};
 
-     $('table').hide();
+     //$('table').hide();
      
      $scope.inspectorDisplaySrc='course';
      $scope.indicatorInspectorShow = 'course';
@@ -2917,43 +3006,8 @@ return chartData;
 
 }
 
-//////////////// FEEDBACKS
-$scope.result = 'hidden'
-    $scope.resultMessage;
-    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
-    $scope.submitButtonDisabled = false;
-    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
-    $scope.sendFeedback = function(contactform) {
-        $scope.submitted = true;
-        $scope.submitButtonDisabled = true;
-       
-        if (contactform.$valid) {
-          $http.post('/api/feedback',$scope.feedbackFormData)
-          .success(function(data){
-                console.log(data);
-               
-                    $scope.submitButtonDisabled = true;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-success';
-               swal({   title: "Merci!",   
-            text: "Nous avons bien reçu votre message. Merci.", 
-             animation: "slide-from-top",
-             type:"info"  ,
-            timer: 1500,   showConfirmButton: false });
-            })
-          .error(function(data) {
-              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
-              $scope.submitButtonDisabled = false;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-danger';
-            });  
-            console.log($scope.feedbackFormData)
-        } else {
-            $scope.submitButtonDisabled = false;
-            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
-            $scope.result='bg-danger';
-        }
-    }
+
+
   // end
    
   }

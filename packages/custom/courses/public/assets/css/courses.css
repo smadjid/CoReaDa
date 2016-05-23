@@ -3082,7 +3082,7 @@ position:fixed;
 top:10px; 
 right:2%;    
 z-index: 1400;
-font-weight: bold;
+font-weight: normal;
 }
 .tourStarter:hover{
 color: white; 
@@ -3151,3 +3151,18 @@ li.disabled, li[disabled]{
 .inspector-content > .tab-content-last:checked ~ ul .tab-content-last {
   display: block;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
