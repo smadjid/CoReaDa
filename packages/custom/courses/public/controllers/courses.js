@@ -2917,7 +2917,43 @@ return chartData;
 
 }
 
- 
+//////////////// FEEDBACKS
+$scope.result = 'hidden'
+    $scope.resultMessage;
+    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
+    $scope.submitButtonDisabled = false;
+    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
+    $scope.sendFeedback = function(contactform) {
+        $scope.submitted = true;
+        $scope.submitButtonDisabled = true;
+       
+        if (contactform.$valid) {
+          $http.post('/api/feedback',$scope.feedbackFormData)
+          .success(function(data){
+                console.log(data);
+               
+                    $scope.submitButtonDisabled = true;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-success';
+               swal({   title: "Merci!",   
+            text: "Nous avons bien reçu votre message. Merci.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+            })
+          .error(function(data) {
+              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
+              $scope.submitButtonDisabled = false;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-danger';
+            });  
+            console.log($scope.feedbackFormData)
+        } else {
+            $scope.submitButtonDisabled = false;
+            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
+            $scope.result='bg-danger';
+        }
+    }
   // end
    
   }

@@ -6,7 +6,9 @@
 var mongoose = require('mongoose'),
     Course = mongoose.model('Course'),
     config = require('meanio').loadConfig(),
-    _ = require('lodash');
+    _ = require('lodash'),
+    nodemailer = require('nodemailer'),
+    transporter = nodemailer.createTransport('smtps://coreada.project%40gmail.com:madjid1980@smtp.gmail.com');
 
 module.exports = function(Courses) {
 
@@ -21,6 +23,31 @@ module.exports = function(Courses) {
                 req.course = course;
                 next();
             });
+        },
+
+        /**
+         * Show a course
+         */
+        feedback: function(req, res) {
+           
+            // setup e-mail data with unicode symbols
+     
+var mailOptions = {
+    from:req.body.inputName + ' &lt;' + req.body.inputEmail + '&gt;', 
+    to: 'coreada.project@gmail.com', // list of receivers
+    subject: 'COREDA: '+req.body.inputSubject,
+    text:req.body.inputName + ' &lt;' + req.body.inputEmail + '&gt;' + req.body.inputMessage,
+    html: req.body.inputName + ' &lt;' + req.body.inputEmail + '&gt;'+ req.body.inputMessage
+};
+// send mail with defined transport object
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        return res.status(501).type('application/json').json({error:'Error: ' + error});
+    }
+    return res.status(200).type('application/json').json({message:'Message envoyé. Merci! ' /*+ info.response*/});
+});
+
+
         },
         
        

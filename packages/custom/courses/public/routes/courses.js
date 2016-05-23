@@ -10,7 +10,7 @@ angular.module('mean.courses').config(['$stateProvider',
         url: '/courses',
         templateUrl: '/courses/views/list.html',
         requiredCircles : {
-          circles: ['authenticated'],
+          circles: ['anonymous'],
           denyState: 'auth.login'
         }
       })
@@ -31,6 +31,14 @@ angular.module('mean.courses').config(['$stateProvider',
       .state('course by id', {
         url: '/courses/:courseId',
         templateUrl: '/courses/views/view.html',
+        requiredCircles : {
+          circles: ['anonymous'],
+          denyState: 'auth.login'
+        }
+      })
+      .state('about', {
+        url: '/about',
+        templateUrl: '/courses/views/about.html',
         requiredCircles : {
           circles: ['anonymous'],
           denyState: 'auth.login'
