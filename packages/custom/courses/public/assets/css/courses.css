@@ -3155,9 +3155,30 @@ li.disabled, li[disabled]{
 
 
 
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    border-left-color: #428bca;
+}
+.bs-callout h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: #428bca;
+}
 
+.feedbackbox{
 
-
+  background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    top: 20px;
+    
+    -webkit-box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+}
 
 
 
