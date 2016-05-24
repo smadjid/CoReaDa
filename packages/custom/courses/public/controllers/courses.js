@@ -1781,7 +1781,7 @@ $scope.tour.CompletedEvent = function (scope) {
         steps:[
         {
             element:'.logo',
-            intro: "<span class='badge-tour'>1/14</span> <h4>Zone Table de données du cours</h4>"+
+            intro: "<span class='badge-tour'>1/14</span> <h4>Bienvenu</h4>"+
             "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
             "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
             "Vous pouvez arrêter cette visite à tout moment."+
