@@ -21,6 +21,7 @@ Courses.register(function(app, auth, database) {
   Courses.aggregateAsset('js',"../lib/ng-dialog/js/ngDialog.min.js");
   Courses.aggregateAsset('css',"../lib/ng-dialog/css/ngDialog.css");
   Courses.aggregateAsset('css',"../lib/ng-dialog/css/ngDialog-theme-default.css");
+  Courses.aggregateAsset('css',"../lib/ng-dialog/css/ngDialog-theme-plain.css");
   
 
   Courses.aggregateAsset('css', '../lib/angular-xeditable/dist/css/xeditable.css');

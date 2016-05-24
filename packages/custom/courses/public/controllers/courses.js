@@ -61,7 +61,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
 
  $scope.clickToOpen = function () {
-        ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', 
+        ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '60%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
         $scope.result = 'hidden'

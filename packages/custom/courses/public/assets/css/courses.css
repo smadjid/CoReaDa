@@ -3084,7 +3084,7 @@ right:2%;
 z-index: 1400;
 font-weight: normal;
 }
-.tourStarter:hover{
+.tourStarter span:hover{
 color: white; 
 }
 
