@@ -1780,41 +1780,50 @@ $scope.tour.CompletedEvent = function (scope) {
 
         steps:[
         {
-            element:'#data-table',
+            element:'.logo',
             intro: "<span class='badge-tour'>1/14</span> <h4>Zone Table de données du cours</h4>"+
+            "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
+            "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
+            "Vous pouvez arrêter cette visite à tout moment."+
+             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
+            position: 'bottom'
+        },
+        {
+            element:'#data-table',
+            intro: "<span class='badge-tour'>2/14</span> <h4>Zone Table de données du cours</h4>"+
             "Cette table présente en en-tête la structure du cours (colonnes) et les indicateurs associés (lignes). Les cellules intérieures colorées correspondent aux valeurs des différents indicateurs (carte de chaleur). Les problèmes potentiels détectés sont indiqués à l’aide du symbole"+
              "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
             position: 'bottom'
         },
         {
             element: '#inspector-container',
-            intro: "<span class='badge-tour'>2/14</span> <h4>Inspecteur</h4>"+
+            intro: "<span class='badge-tour'>3/14</span> <h4>Inspecteur</h4>"+
             "Présente les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours concerné est indiqué en haut à gauche avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
             position: 'top',
         },
         {
             element: '#task-panel',
-            intro: "<span class='badge-tour'>3/14</span> <h4>Tâches</h4>"+
+            intro: "<span class='badge-tour'>4/14</span> <h4>Tâches</h4>"+
             "Permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. ",
             position: 'left',
         },
         
         {
             element:'#granuleSwitchTH',
-            intro: "<span class='badge-tour'>4/14</span> <h4><em>Changement Granule</em></h4>"+
+            intro: "<span class='badge-tour'>5/14</span> <h4><em>Changement Granule</em></h4>"+
             "Permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés :"+
             "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>",          
             position: 'right'
         },
         {
             element:'.inspectorChosenPart',
-            intro: "<span class='badge-tour'>5/14</span> <h4>Problème potentiel détecté</h4>"+
+            intro: "<span class='badge-tour'>6/14</span> <h4>Problème potentiel détecté</h4>"+
             "Ce symbole indique qu'un problème potentiel pour l’indicateur (en-tête de ligne) a été détecté pour l'élément (en-tête de colonne).",
             position: 'bottom'
         },
         {
             element: '#tableConfg',
-            intro: "<span class='badge-tour'>6/14</span> <h4>Configuration</h4>"+
+            intro: "<span class='badge-tour'>7/14</span> <h4>Configuration</h4>"+
             "Ce menu permet de:" +
             "<ol><li>Sélectionner les indicateurs à afficher" +
             "<li>Sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif </ol>",
@@ -1825,37 +1834,37 @@ $scope.tour.CompletedEvent = function (scope) {
         
         {
             element: '#factsTab',
-            intro: "<span class='badge-tour'>7/14</span> <h4>Onglet <em>Problèmes</em> </h4> "+
+            intro: "<span class='badge-tour'>8/14</span> <h4>Onglet <em>Problèmes</em> </h4> "+
             "Présente les problèmes potentiels détectés pour l'élément.  ",
             position: 'bottom',
         },
         {
             element:'#fact-div',
-            intro: "<span class='badge-tour'>8/14</span> <h4>Description de problèmes potentiels</h4>"+
+            intro: "<span class='badge-tour'>9/14</span> <h4>Description de problèmes potentiels</h4>"+
             "Affiche une description du problème sélectionné. Des suggestions pour le résoudre sont parfois proposées et peuvent être marquées comme tâches à faire.",
             position: 'top',
         },
         {
             element:'#dropFactBtn',
-            intro: "<span class='badge-tour'>9/14</span> <h4>Bouton <em>Ce n'est pas/plus un problème</em></h4>"+
+            intro: "<span class='badge-tour'>10/14</span> <h4>Bouton <em>Ce n'est pas/plus un problème</em></h4>"+
             "Ce bouton permet d’arrêter l'affichage de ce problème (soit le problème n'en est pas un (faux positif), soit des actions pour le résoudre ont déjà été entreprises).",
             position: 'top',
         },
         {
             element:'#createFactTaskBtn',
-            intro: "<span class='badge-tour'>10/14</span> <h4>Bouton <em>Créer une tâche</em></h4>"+            
+            intro: "<span class='badge-tour'>11/14</span> <h4>Bouton <em>Créer une tâche</em></h4>"+            
             "Ce bouton planifie une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.",
             position: 'top',
         },
         {
             element: '#statsTab',
-            intro: "<span class='badge-tour'>11/14</span> <h4>Onglet <em>Statistiques</em></h4>"+
+            intro: "<span class='badge-tour'>12/14</span> <h4>Onglet <em>Statistiques</em></h4>"+
             "Présente quelques statistiques sur l'élément sélectionné. ",
             position: 'top',
         },
         {
             element: '#factChartPanel',
-            intro: "<span class='badge-tour'>12/14</span> <h4>Graphiques</h4>"+
+            intro: "<span class='badge-tour'>13/14</span> <h4>Graphiques</h4>"+
             "Présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
             position: 'top',
         },
@@ -1873,9 +1882,9 @@ $scope.tour.CompletedEvent = function (scope) {
             position: 'left',
         },
         {
-            element: '.logo',
+            element: '#contact_us',
             intro: "<span class='badge-tour'>14/14</span> <h4><em>Merci</em></h4>"+
-            "La visite guidée est terminée. Merci de l'avoir suivie!",
+            "La visite guidée est terminée. Merci de l'avoir suivie! N'hésitez pas à nous contacter.",
             position: 'bottom',
         }
        
