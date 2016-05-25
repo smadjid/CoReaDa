@@ -239,7 +239,33 @@ var TomeSchema = new Schema({
   facts: [FactSchema]
 });
 
+/**
+ * Actions Schema
+ */
+var ActionParamsSchema = new Schema({   
+  paramName:{
+    type:String
+  },  
+  paramValue:{
+    type:String
+  }
+});
 
+var LogRecordSchema = new Schema({    
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  elementId:{
+    type:String,
+    required: true
+  },
+  name:{
+    type:String,
+    required: true
+  },
+  params:[ActionParamsSchema]
+});
 /**
  * Course Schema
  */
@@ -283,8 +309,12 @@ var CourseSchema = new Schema({
   facts: [FactSchema],
   todos: [TodoSchema],
   rs:[RSSchema],
-  stats:[DescriptionSchema]
+  stats:[DescriptionSchema],
+  logs:[LogRecordSchema]
 });
+
+
+
 
 /**
  * Statics

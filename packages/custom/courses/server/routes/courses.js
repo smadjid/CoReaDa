@@ -34,6 +34,9 @@ module.exports = function(Courses, app) {
     app.route('/api/part/tasks/delete/:courseId/:tomeId/:chapterId/:partId/:factId/:todoId')
       .delete(courses.removePartTodo);
 
+    app.route('/api/courses/log/:courseId')
+      .post(courses.addLog);
+
     app.route('/api/feedback')
     .post(courses.feedback);
 

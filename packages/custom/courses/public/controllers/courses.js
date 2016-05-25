@@ -24,7 +24,7 @@ $scope.result = 'hidden'
         $scope.submitButtonDisabled = true;
        
         if (contactform.$valid) {
-          $http.post('/api/feedback',$scope.feedbackFormData)
+          $http.post('/api/feedback',{'courseId':$scope.course._id,'feedback':$scope.feedbackFormData})
           .success(function(data){
                 console.log(data);
                
@@ -75,10 +75,8 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
         $scope.submitButtonDisabled = true;
        
         if (contactform.$valid) {
-          $http.post('/api/feedback',$scope.feedbackFormData)
+          $http.post('/api/feedback',{'feedback':$scope.feedbackFormData})
           .success(function(data){
-                console.log(data);
-               
                     $scope.submitButtonDisabled = true;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-success';
@@ -104,6 +102,12 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
 
     }]
       });
+
+      ///////////// LOG ////////////
+      saveLog({
+            'name':'feedback'
+          });
+      //////////////////////////////
     };
  $scope.itemsPerPage = 1;
  
@@ -395,6 +399,9 @@ $scope.selectedIndicators=[
               'd3':ComputeGlobalVisuData()
               
             };
+          /**********LOG*********/
+          console.log(course.logs)
+          /**********************/
 
     goHome();
     computeCourseStats();
@@ -1289,6 +1296,9 @@ $scope.taskContexter = function(task,$event) {
 
 };
 
+var saveLog = function(route,params) {
+        return $http.post('/api/courses/log/'+$scope.course._id,params);
+      };
 
 var addTask = function(route,params) {
         return $http.post('/api/tasks/add/'+route,params);
@@ -2157,6 +2167,8 @@ var reloadURL = function(){
 
 var loadURL = function(url){
 
+   
+
   window.location.hash = url;
   return;
 
@@ -2187,6 +2199,15 @@ $scope.triggerClick = function($event){
  }
  $scope.triggerFactClick = function($event){  
   var url = $($event.currentTarget).attr('data-path');
+  ///////////// LOG ////////////
+      saveLog({
+            'name':'factClick',
+            'elementId':resolveRoute(url)._id,
+            'params':[
+             {'paramName':'url','paramValue':url}, 
+             {'paramName':'content','paramValue':_course.todos[0].todo}] 
+          });
+      //////////////////////////////
   loadURL(url); 
   
  }
@@ -2640,7 +2661,9 @@ window.setTimeout(function() {
         }, 0);
 
 }
+$scope.saveLog = function(params){
 
+}
 $scope.addTask = function (data) {
   
   $scope.dataLoading = true;
