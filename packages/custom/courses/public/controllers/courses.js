@@ -1296,7 +1296,7 @@ $scope.taskContexter = function(task,$event) {
 
 };
 
-var saveLog = function(route,params) {
+var saveLog = function(params) {
         return $http.post('/api/courses/log/'+$scope.course._id,params);
       };
 
@@ -1784,6 +1784,13 @@ $scope.tour.CompletedEvent = function (scope) {
     window.setTimeout(function() {
       $scope.launchGuidedTour();
     }, 0); 
+     ///////////// LOG ////////////
+      saveLog({
+            'name':'startTour',
+            'elementId':$scope.course._id,
+            'params':[] 
+          });
+      //////////////////////////////
     
  }
     $scope.tour.IntroOptions = {
@@ -1934,7 +1941,15 @@ switch(granularity){
 }
 
 var selectTab = function(tab){
-  var components = parseURL(window.location.hash)
+  var components = parseURL(window.location.hash);
+   ///////////// LOG ////////////
+    if(components!=null)  saveLog({
+            'name':'selectTab',
+            'elementId':components._id,
+            'params':[
+             {'paramName':'url','paramValue':window.location.hash}] 
+          });
+      //////////////////////////////
    if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
    	if(components == null)    
    		loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
@@ -2151,7 +2166,15 @@ $('.tableScroller').scroll();
 
 
 window.onresize = function(){
-   $scope.$broadcast('content.reload');;
+   ///////////// LOG ////////////
+      saveLog({
+            'name':'resive',
+            'elementId':$scope.course._id,
+            'params':[] 
+          });
+      //////////////////////////////
+   $scope.$broadcast('content.reload');
+
 }
 
 var reloadURL = function(){ 
@@ -2193,6 +2216,14 @@ $scope.loadURL = loadURL;
 $scope.triggerClick = function($event){ 
 
   var url = '#'+$($event.currentTarget).attr('data-path');
+   ///////////// LOG ////////////
+      saveLog({
+            'name':'cellClick',
+            'elementId':resolveRoute(url)._id,
+            'params':[
+             {'paramName':'url','paramValue':url}] 
+          });
+      //////////////////////////////
   
   loadURL(url); 
   

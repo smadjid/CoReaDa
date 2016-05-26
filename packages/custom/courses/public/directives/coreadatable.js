@@ -6,6 +6,7 @@ angular.module('mean.courses')
         scope:{
           data:'=',
           indicatorCode:'=',
+          courseId:'=',
           issueCode:'=',
           byParts:'=',
           allFacts:'=',
@@ -117,6 +118,9 @@ else{
    
   return {'MinValue':min,'MedianValue':median,'MaxValue':max};
 }
+var saveLog = function(params) {
+        return $http.post('/api/courses/log/'+scope.courseId,params);
+      };
 var partsIssuesDisplay=function(){
 var html=[];
 var maxValue = 0;
@@ -139,7 +143,18 @@ var maxPartRoute="#"
                .attr('data-path',part.route+'&indicator='+scope.indicatorCode)
                .append('<span></span>')
                .css('background-color',tdColor)
-               .on("click", function(d) { window.location.hash = '#'+$(this).attr('data-path')});
+               .on("click", function(d) { 
+               
+             ///////////// LOG ////////////
+                saveLog({
+                'name':'cellClick',
+                'elementId':part._id,
+                'params':[
+                 {'paramName':'url','paramValue':part.route+'&indicator='+scope.indicatorCode}] 
+                });
+            //////////////////////////////
+          window.location.hash = '#'+$(this).attr('data-path');
+              });
 
 
 allFacts.forEach(function(fact){  
@@ -156,7 +171,16 @@ allFacts.forEach(function(fact){
   else{
     $(td)
       .on("click", function(d) {    
-                   window.location.hash = fact.route;
+                   
+                    ///////////// LOG ////////////
+                saveLog({
+                'name':'factCellClick',
+                'elementId':fact._id,
+                'params':[
+                 {'paramName':'url','paramValue':fact.route}] 
+                });
+            //////////////////////////////
+            window.location.hash = fact.route;
                 })
       .append("<img data-fact-id="+fact._id+" parent-path="+part.route+"  class='fact section-fact' role='button' width='25' src='/courses/assets/img/fact.png'></img>");      
       
@@ -211,6 +235,14 @@ var maxChapRoute="#";
              .append('<span></span>')
              .css('background-color',tdColor)
              .on("click", function(d) {    
+                   ///////////// LOG ////////////
+                saveLog({
+                'name':'factCellClick',
+                'elementId':chapter._id,
+                'params':[
+                 {'paramName':'url','paramValue':chapter.route}] 
+                });
+            //////////////////////////////
                  window.location.hash = '#'+$(this).attr('data-path')
               });
              
@@ -233,6 +265,14 @@ var maxChapRoute="#";
      
       $(td)
       .on("click", function(d) {    
+             ///////////// LOG ////////////
+                saveLog({
+                'name':'factCellClick',
+                'elementId':fact._id,
+                'params':[
+                 {'paramName':'url','paramValue':fact.route}] 
+                });
+            //////////////////////////////
                    window.location.hash = fact.route;
                 })
       .append("<img data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact'' width='25' role='button' src='/courses/assets/img/fact.png'></img>");

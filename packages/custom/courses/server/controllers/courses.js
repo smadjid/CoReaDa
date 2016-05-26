@@ -528,11 +528,12 @@ transporter.sendMail(mailOptions, function(error, info){
          * Create a todo
          */
         addLog: function(req, res) {
-            console.log('add log')
+            console.log(req.body)               
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error saving the log.");   
             var _result = _course.logs;
-             _course.logs.unshift(req.body);                
+             _course.logs.unshift(req.body); 
+             
             _course.save();
             
             return res.status(200).json('Success - Log saved: '+_course.logs[0]);

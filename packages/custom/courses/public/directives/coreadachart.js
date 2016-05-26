@@ -18,7 +18,9 @@ var inspectorCharts = function(scope, element){
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
-
+var saveLog = function(params) {
+        return $http.post('/api/courses/log/'+scope.d3opts.courseId,params);
+      };
 scope.inspectorRenderBars = function(globalData, classe) { 
 if(typeof classe =='undefined') 
   {//console.log("typeof classes =='undefined'")
@@ -125,6 +127,14 @@ if(elementType!=='part')
                   return ($.inArray(d.part, elementId)>-1)? '#45348A':'#9E9E9E'; 
               })
             .on("click", function(d) { 
+              ///////////// LOG ////////////
+                saveLog({
+                'name':'barClick',
+                'elementId':d._id,
+                'params':[
+                 {'paramName':'url','paramValue':+d.route}] 
+                });
+              //////////////////////////////
               if("#"+d.route!=window.location.hash)
                window.location.hash = "#"+d.route+"&tab="+scope.d3opts.tab;
             })

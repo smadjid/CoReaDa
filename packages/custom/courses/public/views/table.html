@@ -33,7 +33,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr table-td by-parts='true' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
+        <tr table-td by-parts='true' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay' ng-show='sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" course-id="course._id">
             <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
                 
                 <b >{{indicator.label}}</b>
@@ -43,8 +43,8 @@
         
         
        
-       <tr table-td by-parts='false' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData" >
-            <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
+       <tr table-td by-parts='false' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay' ng-show='!sectionDisplay' ng-repeat='indicator in selectedIndicators'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData"  course-id="course._id">
+            <th   class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}} >
                 
                 <b>{{indicator.label}}</b>
                 
