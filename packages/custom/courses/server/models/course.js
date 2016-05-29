@@ -47,7 +47,11 @@ var TodoSchema = new Schema({
   updated:{
     type: Date, 
     default: Date.now
-  },  
+  },   
+  done:{
+    type: Boolean, 
+    default: false
+  },   
   suggestions : [SuggestionSchema]
 });
 

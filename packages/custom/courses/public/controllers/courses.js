@@ -1293,7 +1293,7 @@ angular.forEach($scope.course.tomes, function(tome) {
 
   for (var i = 0; i < tasks.length; i++)   
     {tasks[i].selected = 'relevantTask';
-        tasks[i].done = false;}
+       }
 
   return tasks
 
@@ -2805,6 +2805,7 @@ var deleteTaskLocally = function(index){
 
 var editTaskLocally = function(index, task){
   $scope.context.Tasks[index] = task;
+  $scope.context.Tasks[index].done=false;
 }
 
 $scope.openEditableArea = function(status){
@@ -2814,7 +2815,17 @@ $scope.openEditableArea = function(status){
   //else $scope.taskPanelTitle = x;
 }
 $scope.markTaskDone = function (route, index) {
-  $scope.context.Tasks[index].done=true
+  $scope.context.Tasks[index].done=!$scope.context.Tasks[index].done;
+  var txt = $scope.context.Tasks[index].done?"faite.":"non encore faite";
+
+  $scope.context.Tasks[index].updated=Date.now;
+        editTask(parseTaskRequest(route), $scope.context.Tasks[index])
+        .success(function(data) {
+          swal({   title: "Tâche marquée comme "+txt,  
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 2000,   showConfirmButton: false });
+        });
 }
 $scope.deleteTask = function (route, index) {
 swal({

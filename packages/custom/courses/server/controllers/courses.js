@@ -226,8 +226,8 @@ transporter.sendMail(mailOptions, function(error, info){
                 var todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
                                 ] });
 
@@ -239,8 +239,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     var todo = _course.todos.id(req.params.todoId);
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo}
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo}
                                 ] });
                     _course.todos.id(req.params.todoId).remove(); 
                 }              
@@ -259,8 +259,8 @@ transporter.sendMail(mailOptions, function(error, info){
                  var todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_tome._id}
                                 ] });
                 _fact.todos.id(req.params.todoId).remove();               
@@ -271,8 +271,8 @@ transporter.sendMail(mailOptions, function(error, info){
                      var todo = _tome.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
                                 ] });
                     _tome.todos.id(req.params.todoId).remove();     
@@ -293,8 +293,8 @@ transporter.sendMail(mailOptions, function(error, info){
                  var todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
                                 ] });
                 _fact.todos.id(req.params.todoId).remove();               
@@ -305,8 +305,8 @@ transporter.sendMail(mailOptions, function(error, info){
                      var todo = _chapter.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
                                 ] });
                     _chapter.todos.id(req.params.todoId).remove();
@@ -329,8 +329,8 @@ transporter.sendMail(mailOptions, function(error, info){
                  var todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_part._id}
                                 ] });
                 _fact.todos.id(req.params.todoId).remove();               
@@ -342,8 +342,8 @@ transporter.sendMail(mailOptions, function(error, info){
                      var todo = _fact.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_part._id}
                                 ] });
                     _part.todos.id(req.params.todoId).remove();
@@ -373,9 +373,9 @@ transporter.sendMail(mailOptions, function(error, info){
                 _fact.save();
                  _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
                                 ] });
             }
@@ -384,13 +384,14 @@ transporter.sendMail(mailOptions, function(error, info){
                     var _todo = _course.todos.id(req.params.todoId);
                     var old = _todo.todo;
                     _todo.todo = req.body.todo;
+                    _todo.done = req.body.done;
                     _todo.updated = req.body.updated;
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.courseId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo}
+                                    {'paramName':'content','paramValue':_todo.todo}
                                 ] });
                 }               
             _course.save();
@@ -408,13 +409,14 @@ transporter.sendMail(mailOptions, function(error, info){
                 _todo = _fact.todos.id(req.params.todoId);    
                 var old = _todo.todo;
                 _todo.todo = req.body.todo;
+                _todo.done = req.body.done;
                 _todo.save();           
                 _fact.save();  
                 _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_tome._id}
                                 ] });              
             }
@@ -426,9 +428,9 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.tomeId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo}
+                                    {'paramName':'content','paramValue':_todo.todo}
                                 ] }); 
 
                 }
@@ -450,13 +452,14 @@ transporter.sendMail(mailOptions, function(error, info){
                 _todo = _fact.todos.id(req.params.todoId);   
                 var old = _todo.todo; 
                 _todo.todo = req.body.todo;
+                _todo.done = req.body.done;
                 _todo.save();           
                 _fact.save();     
                 _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
                                 ] });            
             }
@@ -465,12 +468,13 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo = _chapter.todos.id(req.params.todoId);     
                     var old = _todo.todo;          
                     _todo.todo = req.body.todo;
+                    _todo.done = req.body.done;
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.chapterId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo}
+                                    {'paramName':'content','paramValue':_todo.todo}
                                 ] }); 
 
                 }
@@ -493,13 +497,14 @@ transporter.sendMail(mailOptions, function(error, info){
                 _todo = _fact.todos.id(req.params.todoId);      
                 var old = _todo.todo;         
                 _todo.todo = req.body.todo;
+                _todo.done = req.body.done;
                 _todo.save();
                 _fact.save();
                 _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo},
+                                    {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_part._id}
                                 ] }); 
                 
@@ -509,12 +514,13 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo = _part.todos.id(req.params.todoId);
                     var old = _todo.todo;
                     _todo.todo = req.body.todo;
+                    _todo.done = req.body.done;
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.partId,
                                 'params':[
-                                    {'paramName':'todoId','paramValue':todo._id}, 
+                                    {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
-                                    {'paramName':'content','paramValue':todo.todo}
+                                    {'paramName':'content','paramValue':_todo.todo}
                                 ] }); 
                 }               
             _part.save();

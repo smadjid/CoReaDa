@@ -3107,12 +3107,15 @@ animation: pulseBars 3s linear ;
 
 
 .tourStarter{
-color: rgba(255, 255, 255, 0.74); 
-position:fixed; 
-top:10px; 
-right:2%;    
-z-index: 1400;
-font-weight: normal;
+color: rgba(255, 255, 255, 0.74);
+    position: fixed;
+    top: 0px;
+    right: 2%;
+    z-index: 1400;
+    /* font-weight: normal; */
+    padding: 10px 12px;
+    font-size: 17px;
+    font-family: 'Halflings';
 }
 .tourStarter span:hover{
 color: white; 

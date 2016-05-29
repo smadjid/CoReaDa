@@ -37,7 +37,7 @@
 		</form>
 			<div class="buttons" ng-show="!rowform.$visible">
 				<a role="button" title='Modifier cette tâche' class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
-				<a role="button" title='Marquer cette tâche comme étant faite'  class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="markTaskDone(task.route, $index)"></a>
+				<a role="button" ng-attr-title="{{task.done && 'Marquer cette tâche comme non encore faite' || 'Marquer cette tâche comme étant faite' }}"  class="glyphicon " ng-class="{'glyphicon-tag': task.done, 'glyphicon-ok': !task.done}" aria-hidden="true" ng-click="markTaskDone(task.route, $index)"></a>
 				<a role="button" title='Supprimer cette tâche'  class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>
 			</div>
 		</td>
