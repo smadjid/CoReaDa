@@ -4,7 +4,7 @@
           </div>
 <div class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} >
 
-<div  style=" padding:5px; width:100%; font-size: 16px; ">
+<div  style=" padding:12px; width:100%; font-size: 16px; padding-top:5px">
 <button  type="button" style="padding:0; margin:0; background: none" class="btn" ng-class="DisablePrevPage()" ng-click="prevPage()">
 <span class="glyphicon glyphicon-menu-left pull-left" style='font-weight: bolder' aria-hidden="true"></span>
 </button>
@@ -12,13 +12,13 @@
 <button  type="button" style="padding:0; margin:0; margin-right: 20px; background: none"class="btn" ng-class="DisableNextPage()" ng-click="nextPage()">
 <span class="glyphicon glyphicon-menu-right pull-right" style='font-weight: bolder' aria-hidden="true"></span>
 </button>
-<span  style=' font-weight: bold; font-size: 18px;'>
+<span  style=' font-weight: bold; font-size: 16px;'>
 <em style='font-weight: normal;'>{{fact.parentTitle}} :</em> {{fact.name}}</span>
 </div>
 
 
 
-<div class='col-lg-6'>
+<div class='col-lg-6' >
 
 <div  style=" border: 0px solid grey;width:100%; padding: 0px; position: relative">
 <perfect-scrollbar class="factScroller" suppress-scroll-x="true" scrollY-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20" > 

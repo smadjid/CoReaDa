@@ -73,49 +73,32 @@
         <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
         <label id='factsTab' for="tab2" ><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()>-1?pageCount()+1:"Aucun" }}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}} pour ce cours
 
-   <!--      <ul class="paginator " ng-show="inspectorFacts.Facts.length>1"> 
-              <li ng-class="DisablePrevPage()" role='button'  ng-click="prevPage()">
-                <span   class='glyphicon glyphicon-backward'></span>
-
-              </li>
-              <li class="active"><b >{{currentFact+1}}/{{pageCount()+1}}</b>
-              
-              <li  ng-class="DisableNextPage()" role='button' ng-click="nextPage()">
-                <span   class='glyphicon glyphicon-forward' ></span>
-              </li>
-          </ul>-->
-
+ 
         </label> 
     
 
          <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
         <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture pour <em>{{context.inspector_title}}</em></label>
       
-      <!--  <label class='inspector-title' >
-          <span   ng-class="{'glyphicon glyphicon-file': !courseDisplay, 'glyphicon glyphicon-home': courseDisplay}"  aria-hidden="true "> </span> 
-            <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}" ><em>{{context.inspector_title}}</em></a>
-             <span  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></span> 
-          </label>
-        -->
         <ul class="clearfix">
  
          
           <li class="tab-content vcenter tab-stats col-lg-12 inspector-content clearfix" >
 
-<div class="col-lg-12">
-          <span  class="glyphicon glyphicon-home"  aria-hidden="true "> </span> 
-            <a  role='button' ng-click='loadURL("#")'>{{course.title }}</a>
+        <div class="col-lg-12" style=" padding:12px; width:100%; font-size: 16px;   padding-top:5px">
+          <span  class="glyphicon glyphicon-home"  aria-hidden="true " "> </span> 
+            <a style="font-size: 14px"  role='button' ng-click='loadURL("#")'>{{course.title }}</a>
           
 
-          <span ng-if="inspectorStats.breadcrumbsData.part !=null ">
+          <span ng-if="inspectorStats.breadcrumbsData.part !=null " style="font-size: 14px">
            <span class="glyphicon glyphicon-menu-right"></span>
               <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.part.route)'>{{inspectorStats.breadcrumbsData.part.title }}</a>
           </span>           
-          <span ng-if="inspectorStats.breadcrumbsData.chapter !=null ">
+          <span ng-if="inspectorStats.breadcrumbsData.chapter !=null " style="font-size: 14px">
           <span class="glyphicon glyphicon-menu-right"></span>
               <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.chapter.route)'> {{inspectorStats.breadcrumbsData.chapter.title }}</a>
           </span> 
-          <span ng-if="inspectorStats.breadcrumbsData.section !=null ">
+          <span ng-if="inspectorStats.breadcrumbsData.section !=null " style="font-size: 14px">
           <span class="glyphicon glyphicon-menu-right"></span>
               <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.section.route)'>{{inspectorStats.breadcrumbsData.section.title }}</a>
           </span>          

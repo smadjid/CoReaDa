@@ -626,7 +626,7 @@ a.list-warning-item:hover {
     height: 220px;
     overflow-y: hidden;
     position: relative;
-    padding-right: 15px
+    /*padding-right: 15px*/
 
 }
 .inspectorScroller {
@@ -1802,7 +1802,15 @@ border-radius: 3px;
 
 .tab-stats{
   position:relative;
-  overflow:visible!important
+  overflow:visible!important;
+}
+.tab-stats .stats{
+  vertical-align: middle;
+    display: table-cell !important;
+    vertical-align: middle;
+    padding: 0!important;
+    margin: 0!important;
+    height:300px ;
 }
 #divHoverOverlay {  
 position: absolute; 
