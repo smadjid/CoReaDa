@@ -12,7 +12,7 @@
     <img width="25" ng-if="indicator.isFact!=null"  role='button' ng-click='loadURL(indicator.isFact)' class="fact chapter-fact fa-2x pull-right fa-exclamation-circle" style='margin-left: 10px;' role="button" width="25" role="button" src="/courses/assets/img/fact.png"></img >
 
   
-                    <span class="blue">{{indicator.value}}</span> {{indicator.comment}} 
+                    <span ng-class="{'red':indicator.isFact!=null,'blue':indicator.isFact==null}">{{indicator.value}}</span> {{indicator.comment}} 
     									</td></tr>
 
     			

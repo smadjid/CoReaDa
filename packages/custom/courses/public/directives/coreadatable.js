@@ -170,6 +170,8 @@ allFacts.forEach(function(fact){
     }
   else{
     $(td)
+      .prop('onclick',null).off('click')
+      .empty() 
       .on("click", function(d) {    
                    
                     ///////////// LOG ////////////
@@ -201,6 +203,8 @@ allFacts.forEach(function(fact){
 if(!scope.allFacts)
   {
     $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxPart})[0])
+    .prop('onclick',null).off('click')
+    .empty() 
     .on("click", function(d) {    
                    window.location.hash = maxRoute;
                 })
@@ -232,8 +236,7 @@ var maxChapRoute="#";
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',scope.indicatorCode)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
-             .append('<span></span>')
-             .css('background-color',tdColor)
+             
              .on("click", function(d) {    
                    ///////////// LOG ////////////
                 saveLog({
@@ -244,7 +247,10 @@ var maxChapRoute="#";
                 });
             //////////////////////////////
                  window.location.hash = '#'+$(this).attr('data-path')
-              });
+               //alert('one')
+              })
+             .append('<span></span>')
+             .css('background-color',tdColor);
              
     
     allFacts.forEach(function(fact){  
@@ -263,8 +269,10 @@ var maxChapRoute="#";
     }
     else{
      
-      $(td)
-      .on("click", function(d) {    
+      $(td)    
+      .prop('onclick',null).off('click')
+      .empty()  
+      .on("click", function(d) { 
              ///////////// LOG ////////////
                 saveLog({
                 'name':'factCellClick',
@@ -273,9 +281,9 @@ var maxChapRoute="#";
                  {'paramName':'url','paramValue':fact.route}] 
                 });
             //////////////////////////////
-                   window.location.hash = fact.route;
+             //      window.location.hash = fact.route;
                 })
-      .append("<img data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact'' width='25' role='button' src='/courses/assets/img/fact.png'></img>");
+      .append("<img data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact'' width='25' role='button' src='/courses/assets/img/fact.png' ng-click='window.location.hash ="+ fact.route+"'></img>");
       
 
     }
@@ -292,8 +300,12 @@ if(!scope.allFacts)
 
   {
     $(html.filter(function(s){ return $(s[0]).attr('data-part') ==maxChap})[0])
-    .on("click", function(d) {    
-                   window.location.hash = maxRoute;
+    .prop('onclick',null).off('click')
+    .empty()    
+    .on("click", function(d) {   
+    
+                  window.location.hash = maxRoute;
+                  return false;
                 })
     .append("<img data-fact-id="+maxFactId+" parent-path="+maxChapRoute+"  class='fact chapter-fact' width='25' role='button' src='/courses/assets/img/fact.png'></img>");
   }
