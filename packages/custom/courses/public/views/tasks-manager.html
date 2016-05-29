@@ -30,7 +30,7 @@
 			<div class='taskMiniPath'>(<em>{{ task.minipath}}</em>)</div>
 		</div>
 	</td>
-	<td style="width: 10%;" valign="top">
+	<td style="width: 10%;text-align: right" valign="top">
 		<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
 			<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="rowform.$save()"></a>
 			<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" aria-hidden="true" ng-click="rowform.$cancel()"></a>
