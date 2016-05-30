@@ -125,6 +125,7 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
     $scope.inspectorFacts.id = fact.partId;
     $scope.inspectorFacts.indicatorCode = fact.issueCode;
+    $scope.currentElement.id = fact.partId;
 
 
 setTimeout(function() {
@@ -2108,7 +2109,7 @@ var loadContext = function(){
       $scope.context.indicator = components.hasOwnProperty('indicator')? components.indicator:$scope.context.indicator;      
             $scope.context.statsURL=path;
 
-             if($scope.context.indicator == "ALL") $scope.context.indicator == "actions";
+             if(indicator == "ALL") indicator = $scope.context.indicator;
 
   }
   
@@ -2418,14 +2419,15 @@ selection.selected ='selectedTask';
  
 
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
-  if(factID != $scope.currentFact)
-      $scope.setPage(factID);
+  if(factID > -1 )
+    $scope.currentFact = factID;
+      //$scope.setPage(factID);
   
  $scope.context.statsURL = url;
  $scope.context.indicator = indicator;
   filterTasks(element, indicator, task);
 
-  $scope.currentElement = fact.partId;
+  $scope.currentElement.id = fact.partId;
 
 
   
