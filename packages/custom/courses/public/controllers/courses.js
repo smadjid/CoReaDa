@@ -109,10 +109,15 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
       //////////////////////////////
     };
  $scope.itemsPerPage = 1;
+ $scope.$watch('context.indicator', function(newValue, oldValue) { 
+  if($scope.tabSelect == 'stats') {
+
+  }
  
- $scope.$watch('currentFact', function(newValue, oldValue) {   console.log(oldValue+' -> '+newValue);return;
+ })
+ $scope.$watch('currentFact', function(newValue, oldValue) { 
   if($scope.tabSelect != 'facts') return;
-  $('.inspectorChosenPart').removeClass('inspectorChosenPart');
+
  if(typeof $scope.inspectorFacts=='undefined') return;
  if($scope.inspectorFacts.Facts.length>0){
 
@@ -191,8 +196,9 @@ setTimeout(function() {
     if(components.factid != $scope.inspectorFacts.Facts[n]._id)
       loadURL($scope.inspectorFacts.Facts[n].route);
 
-    $scope.context.statsContext = {'url':$scope.inspectorFacts.Facts[n].partRoute,'indicator': $scope.inspectorFacts.Facts[n].classof};
-    console.log($scope.inspectorFacts.Facts[n])
+    //$scope.context.statsURL = $scope.inspectorFacts.Facts[n].partRoute;
+    //$scope.context.indicator = $scope.inspectorFacts.Facts[n].classof;
+    
 
      window.setTimeout(function() {
  resetPath();
@@ -334,6 +340,7 @@ else{
       $scope.inspectorChart = false;
       $scope.tabSelect = "stats";
       $scope.currentFact = 0;  
+      $scope.currentElement = {'id':null, route:'#', 'type':'course'};  
       $scope.allFactsDisplay=false;
       $scope.ChaptersFacts = [];
       $scope.SectionsFacts = [];
@@ -400,8 +407,8 @@ $scope.selectedIndicators=[
               'title':$scope.course.title,
               'Todos':$scope.course.todos,
               'taskText':'(nouvelle tâche)',
-              'indicator':'ALL',
-              'statsContext':{"url":"#","indicator":"ALL"},
+              'indicator':'actions',
+              'statsURL':"#",
               'Tasks' : computeAllTasks(),
               'd3':ComputeGlobalVisuData()
               
@@ -525,10 +532,15 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
              {'paramName':'url','paramValue':window.location.hash}] 
           });
       //////////////////////////////
-   if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){ //return;
-    //if(components == null)    
-     // loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
-  
+   if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
+console.log($scope.currentFact);
+if(components == null)    
+      loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
+else
+    if(!components.hasOwnProperty('factid'))
+      loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
+    
+ 
 
     window.setTimeout(function() {
       resetPath();
@@ -539,8 +551,7 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
    else{
     resetPath();  
     window.setTimeout(function() { 
-
-        loadURL($scope.context.statsContext.url+'&indicator='+$scope.context.statsContext.indicator);
+        loadURL($scope.currentElement.route+'&indicator='+$scope.context.indicator);
      }, 0); 
     
     
@@ -1537,6 +1548,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
       $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'part',
                    'id':mainStats.ids,
+                   'mairoute':tome.route,
                    'breadcrumbsData': tome.fullpath,
                    'typeTxt': 'cette partie',
                    'indicatorTxt': 'tous les indicateurs',
@@ -1558,6 +1570,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
     mainIssues = $scope.ChaptersFacts;
     $scope.inspectorStats = {'type':'chapter',
                    'id':mainStats.ids,
+                   'mairoute':tome.route,
                    'breadcrumbsData': tome.fullpath,
                    'typeTxt': 'cette partie',
                    'indicatorTxt': 'tous les indicateurs',
@@ -1635,6 +1648,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
       $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'section',
                    //'id':mainStats.ids,
+                   'mainroute':chapter.route,
                    'typeTxt': 'ce chapitre',
                    'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
@@ -1657,6 +1671,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
     $scope.factTitleDisplay=false;
     $scope.inspectorStats = {'type':'chapter',
                    'id':chapter.id,
+                   'mairoute':chapter.route,
                    'typeTxt': 'ce chapitre',
                    'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
@@ -1731,6 +1746,7 @@ var inspectorSectionData = function(section, indicator, fact, tab){
   var code=$scope.inspectorStats.indicatorCode;
     $scope.inspectorStats = {'type':'part',
                    'id':section.id,
+                   'mairoute':section.route,
                    'typeTxt': 'cette section',
                    'breadcrumbsData': section.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
@@ -1984,7 +2000,23 @@ switch(granularity){
 
 }
 
-var selectTab = function(tab){alert('yes') ;return;
+var factSelector = function(currentElt){
+  if($scope.context.indicator == "ALL") $scope.context.indicator == "actions";
+  
+   var facts = $.grep($scope.inspectorFacts.Facts, function(e){ return  e.classof == $scope.context.indicator});
+   if(facts==null) return;
+   var fact = $.grep(facts, function(e){ return  e.partId == currentElt.id })[0]
+   if(fact==null) fact = facts[0];
+
+   
+
+   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
+   if(factID>-1)
+    if(factID != $scope.currentFact) $scope.currentFact = factID;
+  
+}
+
+var selectTab = function(tab){return;
   var components = parseURL(window.location.hash);
    ///////////// LOG ////////////
     if(components!=null)  saveLog({
@@ -2011,9 +2043,8 @@ var selectTab = function(tab){alert('yes') ;return;
    else{
     resetPath();  
     window.setTimeout(function() { 	
-
         
-        loadURL($scope.context.statsContext.url+'&indicator='+$scope.context.statsContext.indicator);
+        loadURL($scope.context.statsURL+'&indicator='+$scope.context.indicator);
      }, 0); 
     
     
@@ -2044,12 +2075,14 @@ var loadContext = function(){
   
   var course  = $scope.course;
   var components = parseURL(path)
+
   if(components == null){
     var tome=-1;
      
-     //$scope.context.statsContext ={'url': "#", 'indicator':'ALL'}
+     //$scope.context.statsURL ={'url': "#", 'indicator':'ALL'}
 
-    $scope.tabSelect = 'stats'
+    $scope.tabSelect = 'stats';
+
    // selectTab('stats');
   }
   else{
@@ -2069,12 +2102,13 @@ var loadContext = function(){
     task = components.hasOwnProperty('taskid')?   $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
      indicator = components.hasOwnProperty('indicator')? 
                             components.indicator: components.hasOwnProperty('factid')?
-                            fact.classof:'ALL';
+                            fact.classof:'actions';
 
      
-            
-            $scope.context.statsContext.url=path;
-            
+      $scope.context.indicator = components.hasOwnProperty('indicator')? components.indicator:$scope.context.indicator;      
+            $scope.context.statsURL=path;
+
+             if($scope.context.indicator == "ALL") $scope.context.indicator == "actions";
 
   }
   
@@ -2087,6 +2121,8 @@ var loadContext = function(){
         $scope.context.taskPanelMiniTitle='Cours'
         selectCourse(indicator, task); 
         
+        $scope.currentElement = {'id': null, route:'#', 'type':'course'};  
+        
 
     }
     else
@@ -2098,6 +2134,9 @@ var loadContext = function(){
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
       selectTome(partElt, task);
+      $scope.currentElement = tome.id;
+      $scope.currentElement = {'id': tome.id, route:tome.route, 'type':'chapter'};  
+      factSelector(tome);
     }
     else
       if(part==-1){
@@ -2113,35 +2152,42 @@ var loadContext = function(){
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector';           
           computeGranuleData('chapter', chap, fact.classof, fact.classof,tab);      
-          selectFact(chap.route, task, fact, indicator)
+          selectFact(chap.route, task, fact, indicator);
+          $scope.currentElement = {'id': chap.id, route:chap.route, 'type':'chapter'};  
+          factSelector(chap);
              }, 0);
 
           
           
         }
         else
-        if((indicator =="ALL")&($scope.context.statsContext.indicator =="ALL")){
-          //alert(indicator+' '+$scope.context.statsContext.indicator)
+        if((indicator =="ALL")&($scope.context.indicator =="ALL")){
+          //alert(indicator+' '+$scope.context.indicator)
           computeGranuleData('chapter', chap, null, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           selectChapter(partElt, task, "ALL");
+          $scope.currentElement = {'id': chap.id, route:chap.route, 'type':'chapter'}; 
+          factSelector(chap);
 
           
           
         }
         else{
-          //alert(indicator+' '+$scope.context.statsContext.indicator)
-          if(indicator=='ALL') indicator = $scope.context.statsContext.indicator;
+         
+          if(indicator=='ALL') indicator = $scope.context.indicator;
           computeGranuleData('chapter', chap, null, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
           $scope.inspectorDisplaySrc='inspector' ;//alert(indicator)
+
          
 
          selectChapter(partElt, task, indicator);
+         $scope.currentElement = {'id': chap.id, route:chap.route, 'type':'chapter'}; 
+         factSelector(chap);
           
           
         }
@@ -2159,7 +2205,9 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour ce problème)';
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           $scope.inspectorDisplaySrc='inspector';           
-          selectFact(part.route, task, fact, indicator)
+          selectFact(part.route, task, fact, indicator);
+          $scope.currentElement = {'id': part.id, route:part.route, 'type':'part'}; 
+          factSelector(part);
           
           
         }
@@ -2171,6 +2219,8 @@ var loadContext = function(){
           $scope.context.taskText ='(nouvelle tâche pour cette section)'; 
           $scope.context.taskPanelMiniTitle='Section: '+part.title;
           selectSection(partElt, task, "ALL");
+          $scope.currentElement = {'id': part.id, route:part.route, 'type':'part'}; 
+          factSelector(part);
           
           
         }
@@ -2184,6 +2234,8 @@ var loadContext = function(){
           
           $scope.inspectorStats.indicatorCode = indicator;
           selectSection(partElt, task, indicator);
+          $scope.currentElement = {'id': part.id, route:part.route, 'type':'part'}; 
+          factSelector(part);
         }
          }, 0);
       }
@@ -2369,8 +2421,11 @@ selection.selected ='selectedTask';
   if(factID != $scope.currentFact)
       $scope.setPage(factID);
   
- $scope.context.statsContext = {'url':url,'indicator': indicator};
+ $scope.context.statsURL = url;
+ $scope.context.indicator = indicator;
   filterTasks(element, indicator, task);
+
+  $scope.currentElement = fact.partId;
 
 
   
@@ -2702,7 +2757,6 @@ $scope.clearEditingTask = function(){
   $scope.formData ='';return false;
 }
 var insertLocalTask = function(route, task){
-console.log(route)
   var element = resolveRoute(route);
 
   element.todos.unshift(task);

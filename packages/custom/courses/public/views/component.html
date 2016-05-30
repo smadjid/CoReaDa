@@ -1,17 +1,13 @@
-<div id='chartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
-	<d3-chart data='context.d3' ng-show='pageCount()>=0'  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,issueCode:inspectorStats.indicatorCode,courseId:course._id, tab:"stats"}' style="height:0"></d3-chart>
-	<div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}}</div>             
-</div>
+
 
 <!--<div class='' style="position:absolute; top: 0; transform: translate(0%,30%);  ">-->
         
           <table class='col-lg-6' style='display:table;height:90%; padding-top: 20px;  padding-bottom: 40px;'>
               
                   <tr ng-repeat="indicator in inspectorStats.Indicators" >
-                  <td  class='componentInfo' ng-mouseover="$parent.inspectorStats.indicatorCode=indicator.name" aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="indicator.name">
-    <img width="25" ng-if="indicator.isFact!=null"  role='button' ng-click='loadURL(indicator.isFact)' class="fact chapter-fact fa-2x pull-right fa-exclamation-circle" style='margin-left: 10px;' role="button" width="25" role="button" src="/courses/assets/img/fact.png"></img >
+                  <td  class='componentInfo' aria-pressed="false" ng-model="$parent.context.indicator" ng-click="loadURL(currentElement.route+'&indicator='+indicator.name)"  uib-btn-radio="indicator.name">
+    <img width="25" ng-if="indicator.isFact!=null"  role='button' ng-click='loadURL(indicator.isFact); $event.stopPropagation();' class="fact chapter-fact fa-2x pull-right fa-exclamation-circle" style='margin-left: 10px;' role="button" width="25" role="button" src="/courses/assets/img/fact.png"></img >
 
-  
                     <span ng-class="{'red':indicator.isFact!=null,'blue':indicator.isFact==null}">{{indicator.value}}</span> {{indicator.comment}} 
     									</td></tr>
 
