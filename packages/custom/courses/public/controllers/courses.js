@@ -2101,10 +2101,9 @@ var loadContext = function(){
     
 
     task = components.hasOwnProperty('taskid')?   $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
-     indicator = components.hasOwnProperty('indicator')? 
-                            components.indicator: components.hasOwnProperty('factid')?
-                            fact.classof:'actions';
-
+    indicator = components.hasOwnProperty('indicator')? 
+                            components.indicator:indicator;
+     
      
       $scope.context.indicator = components.hasOwnProperty('indicator')? components.indicator:$scope.context.indicator;      
             $scope.context.statsURL=path;
