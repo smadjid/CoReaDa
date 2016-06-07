@@ -602,7 +602,7 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome();resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em></a><span class="course_tour_top pull-right"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome();resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em> <i>(données du 15 octobre 2015 au 22 décembre 2015)</i> </a><span class="course_tour_top pull-right"></span>');
       
         reloadURL(); 
        window.setTimeout(function() {
@@ -2253,7 +2253,7 @@ var loadContext = function(){
         
         
         if($('.course_title_top').length<1)
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em>'+$scope.course.title+'</em>    </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du 15 octobre 2015 au 22 décembre 2015)</i>  </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
                 
 if(components != null)
   $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';
