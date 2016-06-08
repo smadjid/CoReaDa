@@ -173,7 +173,8 @@ setTimeout(function() {
 
   $scope.nextPage = function() {
     if ($scope.currentFact < $scope.pageCount()){
-      $scope.setPage($scope.currentFact+1)
+      
+      $scope.setPage($scope.currentFact + 1)
     }
   };
 
@@ -184,10 +185,12 @@ setTimeout(function() {
 
 
   $scope.setPage = function(n) {
-    if($scope.inspectorFacts.Facts.length<1) return;
-    
+    //if($scope.inspectorFacts.Facts.length<1) return;
+  console.log( $scope.currentFact+' and '+n)
+
   $scope.currentFact = n;
-  
+
+  //alert(n)
 
   var components = parseURL(window.location.hash)
   if(components == null)    
@@ -202,9 +205,9 @@ setTimeout(function() {
     
 
      window.setTimeout(function() {
- resetPath();
-      $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent()
-      .addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+        resetPath();
+         $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent()
+         .addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
       }, 0);
        
   };
@@ -534,7 +537,6 @@ $scope.$watch('tabSelect', function(newValue, oldValue) {
           });
       //////////////////////////////
    if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
-console.log($scope.currentFact);
 if(components == null)    
       loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
 else
@@ -2012,8 +2014,10 @@ var factSelector = function(currentElt){
    
 
    var factID = $scope.inspectorFacts.Facts.indexOf(fact);
+   return;
    if(factID>-1)
-    if(factID != $scope.currentFact) $scope.currentFact = factID;
+    if(factID != $scope.currentFact) 
+      $scope.currentFact = factID;
   
 }
 
@@ -2418,9 +2422,8 @@ selection.selected ='selectedTask';
  
 
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
-  if(factID > -1 )
-    $scope.currentFact = factID;
-      //$scope.setPage(factID);
+  if(factID > -1 )    
+      $scope.setPage(factID);
   
  $scope.context.statsURL = url;
  $scope.context.indicator = indicator;
