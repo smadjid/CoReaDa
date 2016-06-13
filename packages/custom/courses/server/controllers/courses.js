@@ -534,7 +534,7 @@ transporter.sendMail(mailOptions, function(error, info){
          * Create a todo
          */
         addLog: function(req, res) {
-            console.log(req.body)               
+            
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error saving the log.");   
             var _result = _course.logs;
@@ -595,7 +595,7 @@ transporter.sendMail(mailOptions, function(error, info){
         }
 
         var computePart = function(p, part_data, part_facts){         
-        console.log(part_data)   
+        
         var part = {
                 'id':part_data[0]['id'],
                 'parent_id':part_data[0]['parent_id'],
@@ -668,9 +668,10 @@ transporter.sendMail(mailOptions, function(error, info){
                 part.facts.push(fact);
             };
         if(part.type==='course') {
+            
             courseData.title = part.title;
             courseData.url = part.slug;
-            courseData.properties = part.properties;
+            courseData.properties = part.properties; 
             
         };
         if(part.type==='partie') {
@@ -718,7 +719,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
 
 
-      console.log(part)
+      
        }
        
 

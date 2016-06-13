@@ -628,8 +628,9 @@ $scope.pageLoaded = true;
 $scope.completeCourseParts = function(){ 
   var courseParts = [], courseChapters = [];
   var base_url = "https://openclassrooms.com/courses";
-  //$scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
-  $scope.course.url = base_url+'/'+$scope.course.url;
+  $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
+  //$scope.course.url = base_url+'/'+$scope.course.url;
+  console.log($scope.course)
  // var course_route = $.param({'csid':course._id})
 
   
