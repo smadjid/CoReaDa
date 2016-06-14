@@ -507,10 +507,14 @@ $scope.toggleSectionDisplay = function(){
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
-
+/*
 if($scope.inspectorStats.Indicators !='undefined')
   $scope.inspectorStats.Indicators = $.grep($scope.inspectorStats.Indicators, 
-  function(e){return ($.inArray(e.name, $scope.indicatorsSelectionModel)>-1)});
+  function(e){console.log(e);return ($.inArray(e.name, $scope.indicatorsSelectionModel)>-1)});
+*/
+
+
+//console.log($scope.inspectorStats.Indicators)
 
 
 });
@@ -1559,13 +1563,13 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                    'indicatorCode':code,                  
                     'Indicators' :[
                     {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
-                      'comment':'est le taux moyen de visite des sections de cette partie'},
+                      'comment':'est le taux moyen de visite des sections de cette partie'} ,
+                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des sections de cette partie'},                      
                     {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
                       'comment':'est le taux moyen de relecture des sections de cette partie'},
                    {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
-                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de cette partie'}  ,
-                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
-                      'comment':'est la vitesse moyenne de lecture des sections de cette partie'}
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de cette partie'} 
                       ]    
                     
                   };
@@ -1582,12 +1586,12 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                     'Indicators' :[
                     {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
                       'comment':'est le taux moyen de visite des chapitres de cette partie'},
+                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'},
                     {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
                       'comment':'est le taux moyen de relecture des chapitres de cette partie'},
                    {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
-                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  ,
-                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
-                      'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'}
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  
                       ]    
                     
                   };
@@ -1660,12 +1664,12 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                     'Indicators' :[
                     {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
                       'comment':'est le taux moyen de visite des sections de ce chapitre'},
+                    {'name':'speed','value':   mainStats.speed+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des sections de ce chapitre'},
                     {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
                       'comment':'est le taux moyen de relecture des sections de ce chapitre'},
-                   {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
-                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de ce chapitre'}  ,
-                      {'name':'speed','value':   mainStats.speed+' mots par minutes',
-                      'comment':'est la vitesse moyenne de lecture des sections de ce chapitre'}
+                    {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de ce chapitre'}  
                       ]    
                     
                   };
@@ -1685,6 +1689,11 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                       'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.nbactions+' actions)',
                   	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'actions')}).length > 0)?
 						chapter.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
+                      {'name':'speed','value':chapter.speed+' mots par minute',
+                      'comment':'est la vitesse moyenne de lecture sur ce chapitre',
+                       //'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'speed')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null},
                     {'name':'reread','value':Math.round(100*chapter.reread,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures',
                   	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'reread')}).length > 0)?
@@ -1692,12 +1701,7 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                     {'name':'stop','value':Math.round(100*chapter.stop,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre',
                   	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'stop')}).length > 0)?
-						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
-                      {'name':'speed','value':chapter.speed+' mots par minute',
-                      'comment':'est la vitesse moyenne de lecture sur ce chapitre',
-                  	   //'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
-                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'speed')}).length > 0)?
-						chapter.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null}
+						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null}
                       ]    
                     
                   };
@@ -1760,6 +1764,11 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                       'comment':' des visites sur le cours ont été observées sur cette section('+section.nbactions+' actions)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id &f.classof === 'actions')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
+                      {'name':'speed','value':section.speed+' mots par minute',
+                      'comment':'est la vitesse moyenne de lecture sur cette section',
+                       //'isFact':(section.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'speed')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null},
                     {'name':'reread','value':Math.round(100*section.reread,2)+'%',
                       'comment':'des lectures de cette section sont des relectures',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'reread')}).length > 0)?
@@ -1767,12 +1776,7 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                     {'name':'stop','value':Math.round(100*section.stop,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur cette section',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'stop')}).length > 0)?
-            section.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null},
-                      {'name':'speed','value':section.speed+' mots par minute',
-                      'comment':'est la vitesse moyenne de lecture sur cette section',
-                       //'isFact':(section.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
-                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'speed')}).length > 0)?
-            section.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null}
+            section.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null}
                       ]       
                     
                   };
