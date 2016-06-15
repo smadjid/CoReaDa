@@ -2538,6 +2538,7 @@ var selectSection = function(partElt, task, indicator){
   var route = $(partElt).attr('data-path');
 
   var element =resolveRoute(route);  
+$scope.context.url = element.url;
 
   resetPath();
   
@@ -2647,7 +2648,8 @@ resetPath();
 $scope.context.inspector_title = "Partie : "+element.title
 $scope.courseDisplay = false;
 
-$scope.context.url = element.url
+$scope.context.url = element.url;
+
 $scope.inspectorDisplaySrc='inspector'
     
 
@@ -2689,6 +2691,8 @@ resetPath();
   var route = $(partElt).attr('data-path');
 
   var element =resolveRoute(route);  
+  $scope.context.url = element.url;
+
   
 $scope.context.inspector_title = "Chapitre : "+element.title;
 $scope.courseDisplay = false;
@@ -2746,7 +2750,7 @@ else{
   filterTasks(element, 'ALL', task);
   angular.forEach(element.parts, function(part){
   filterTasks(part, 'ALL',task);
-  $scope.context.url = element.url;
+  
   });
 
 
