@@ -427,6 +427,8 @@ $scope.selectedIndicators=[
     
     $scope.tableData = $scope.course;
 
+
+
      
     /********  Update on @ change ****************/
     /* URL#
@@ -507,14 +509,6 @@ $scope.toggleSectionDisplay = function(){
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
-/*
-if($scope.inspectorStats.Indicators !='undefined')
-  $scope.inspectorStats.Indicators = $.grep($scope.inspectorStats.Indicators, 
-  function(e){console.log(e);return ($.inArray(e.name, $scope.indicatorsSelectionModel)>-1)});
-*/
-
-
-//console.log($scope.inspectorStats.Indicators)
 
 
 });
@@ -567,12 +561,6 @@ else
 }  );
 
 
-$scope.getShownTab = function(){
-  ////alert($("input:checked").attr('value'))
-  return $("input:checked").attr('value');
-  
-}
-
 
 
 $scope.getGraphTitle = function(code){
@@ -622,8 +610,16 @@ $scope.getGraphTitle = function(code){
        
 $scope.dataLoading = false;
 $scope.pageLoaded = true;
+
+ setTimeout(function() {     
+    selectTab('facts'); 
+    $scope.tabSelect = 'facts';
+    //alert('hh')
+  }, 500);
+
     
       });
+
     };
 
 
@@ -716,7 +712,7 @@ $scope.completeCourseParts = function(){
 
   
   
-
+ 
 
 }
 /*********** Compute colours ********************/
