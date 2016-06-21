@@ -59,7 +59,11 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $scope.global = Global;
 
 
- $scope.clickToOpen = function () {
+
+$scope.lauchEvaluation = function(){
+  
+}
+ $scope.sendMail = function () {
         ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '60%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
