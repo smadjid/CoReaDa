@@ -59,30 +59,31 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
     $scope.global = Global;
 
 
+$scope.signalFact = function(){
 
-$scope.lauchEvaluation = function(fact){
-
-        ngDialog.open({ template: 'courses/views/facts-eval.html', className: 'ngdialog-theme-default', width: '60%',
+        ngDialog.open({ template: 'courses/views/facts-signal.html', className: 'ngdialog-theme-default', width: '50%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
-        $scope.result = 'hidden'
-    $scope.resultMessage;
-    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
-    $scope.submitButtonDisabled = false;
-    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
-    
-    $scope.sendFeedback = function(contactform) {
+        
+    $scope.textarea_text="(Votre description)";
+
+    $scope.sendFeedback = function(facteval) {
         $scope.submitted = true;
         $scope.submitButtonDisabled = true;
-       
-        if (contactform.$valid) {
-          $http.post('/api/feedback',{'feedback':$scope.feedbackFormData})
+        var feedback ={
+          'inputName':'author',
+          'inputEmail':'author@author.com',
+          'inputSubject':'new fact',
+          'inputMessage':$scope.textarea_text
+        }
+        
+          $http.post('/api/feedback',{'feedback':feedback})
           .success(function(data){
                     $scope.submitButtonDisabled = true;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-success';
                swal({   title: "Merci!",   
-            text: "Nous avons bien reçu votre message. Merci.", 
+            text: "Nous avons bien reçu votre suggestion. Merci.", 
              animation: "slide-from-top",
              type:"info"  ,
             timer: 1500,   showConfirmButton: false });
@@ -92,13 +93,10 @@ $scope.lauchEvaluation = function(fact){
               $scope.submitButtonDisabled = false;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-danger';
-            });  
+            }); 
+            ngDialog.closeAll(); 
             
-        } else {
-            $scope.submitButtonDisabled = false;
-            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
-            $scope.result='bg-danger';
-        }
+        
     }
 
     }]
@@ -110,6 +108,63 @@ $scope.lauchEvaluation = function(fact){
           });
       //////////////////////////////
 }
+
+$scope.lauchEvaluation = function(fact){
+
+        ngDialog.open({ template: 'courses/views/facts-eval.html', className: 'ngdialog-theme-default', width: '50%',
+        controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
+        function($scope, $rootScope,  $stateParams, $location, $http) {
+        
+    $scope.fact_val=0;
+    $scope.prop_val=0;
+
+    $scope.sendFeedback = function(facteval) {
+        $scope.submitted = true;
+        $scope.submitButtonDisabled = true;
+        alert($scope.fact_val)
+        var feedback ={
+          'inputName':'author',
+          'inputEmail':'author@author.com',
+          'inputSubject':'new fact',
+          'inputMessage':$scope.textarea_text
+        }
+        console.log(feedback)
+          $http.post('/api/feedback',{'feedback':feedback})
+          .success(function(data){
+                    $scope.submitButtonDisabled = true;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-success';
+               swal({   title: "Merci!",   
+            text: "Nous avons bien reçu votre suggestion. Merci.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+            })
+          .error(function(data) {
+              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
+              $scope.submitButtonDisabled = false;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-danger';
+            });  
+          ngDialog.closeAll(); 
+            
+        
+    }
+
+    }]
+      });
+
+      ///////////// LOG ////////////
+      saveLog({
+            'name':'feedback'
+          });
+      //////////////////////////////
+}
+
+
+
+
+
  $scope.sendMail = function () {
         ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '60%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
@@ -137,7 +192,7 @@ $scope.lauchEvaluation = function(fact){
             timer: 1500,   showConfirmButton: false });
             })
           .error(function(data) {
-              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
+              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a peut-être pas pu être envoyé", "error");
               $scope.submitButtonDisabled = false;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-danger';
@@ -152,6 +207,7 @@ $scope.lauchEvaluation = function(fact){
 
     }]
       });
+        ngDialog.closeAll(); 
 
       ///////////// LOG ////////////
       saveLog({
@@ -237,7 +293,7 @@ setTimeout(function() {
 
   $scope.setPage = function(n) {
     //if($scope.inspectorFacts.Facts.length<1) return;
-  console.log( $scope.currentFact+' and '+n)
+  //console.log( $scope.currentFact+' and '+n)
 
   $scope.currentFact = n;
 
@@ -681,7 +737,7 @@ $scope.completeCourseParts = function(){
   var base_url = "https://openclassrooms.com/courses";
   $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
   //$scope.course.url = base_url+'/'+$scope.course.url;
-  console.log($scope.course)
+  //console.log($scope.course)
  // var course_route = $.param({'csid':course._id})
 
   
@@ -2772,7 +2828,7 @@ var index = $(partElt).index() + 1;
   $('#divOverlay').delay(200).slideDown('fast');
 
   if(indicator=='ALL'){
-console.log('indicator all')
+//console.log('indicator all')
   }
   else{
     url =route+'&indicator='+indicator; 
