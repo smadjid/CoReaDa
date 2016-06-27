@@ -115,25 +115,25 @@ $scope.lauchEvaluation = function(fact){
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
         
-    $scope.fact_val=0;
-    $scope.prop_val=0;
+  
 
     $scope.sendFeedback = function(facteval) {
         $scope.submitted = true;
         $scope.submitButtonDisabled = true;
-        alert($scope.fact_val)
+        
         var feedback ={
           'inputName':'author',
           'inputEmail':'author@author.com',
-          'inputSubject':'new fact',
-          'inputMessage':$scope.textarea_text
+          'inputSubject':'FACT EVALUATION: '+fact._id,
+          'inputMessage':'Fact pertincence: '+$scope.fact_val+' - Suggestion: '+$scope.prop_val
         }
-        console.log(feedback)
+        
           $http.post('/api/feedback',{'feedback':feedback})
           .success(function(data){
                     $scope.submitButtonDisabled = true;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-success';
+                     ngDialog.closeAll(); 
                swal({   title: "Merci!",   
             text: "Nous avons bien reçu votre suggestion. Merci.", 
              animation: "slide-from-top",
@@ -145,8 +145,9 @@ $scope.lauchEvaluation = function(fact){
               $scope.submitButtonDisabled = false;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-danger';
+                     ngDialog.closeAll(); 
             });  
-          ngDialog.closeAll(); 
+         
             
         
     }
@@ -185,6 +186,7 @@ $scope.lauchEvaluation = function(fact){
                     $scope.submitButtonDisabled = true;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-success';
+                     ngDialog.closeAll(); 
                swal({   title: "Merci!",   
             text: "Nous avons bien reçu votre message. Merci.", 
              animation: "slide-from-top",
@@ -196,18 +198,20 @@ $scope.lauchEvaluation = function(fact){
               $scope.submitButtonDisabled = false;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-danger';
+                     ngDialog.closeAll(); 
             });  
             
         } else {
             $scope.submitButtonDisabled = false;
             $scope.resultMessage = 'Failed :( Please fill out all the fields.';
             $scope.result='bg-danger';
+             ngDialog.closeAll(); 
         }
     }
 
     }]
       });
-        ngDialog.closeAll(); 
+       
 
       ///////////// LOG ////////////
       saveLog({
@@ -1950,7 +1954,7 @@ $scope.tour.CompletedEvent = function (scope) {
         console.log(targetElement);
     };
  $scope.startGuidedTour = function(){
-    goHome(); 
+    //goHome(); 
     selectTab('facts'); 
     window.setTimeout(function() {
       $scope.launchGuidedTour();
@@ -2059,7 +2063,7 @@ $scope.tour.CompletedEvent = function (scope) {
          
         {
             element: '#tasks-table',
-            intro: "<span class='badge-tour'>13/14</span> <h4>Liste de <em>Tâches</em></h4>"+
+            intro: "<span class='badge-tour'>14/14</span> <h4>Liste de <em>Tâches</em></h4>"+
             "Les tâches planifiées sont affichées sur cette table. Un groupe de boutons permet de (gauche à droite)<br/>"+
             "<ul>"+
             "<li><span class='glyphicon glyphicon-pencil'></span> Modifier l'action planifiée"+
@@ -2071,8 +2075,7 @@ $scope.tour.CompletedEvent = function (scope) {
         },
         {
             element: '#contact_us',
-            intro: "<span class='badge-tour'>14/14</span> <h4><em>Merci</em></h4>"+
-            "La visite guidée est terminée. Merci de l'avoir suivie! N'hésitez pas à nous contacter.",
+            intro: "La visite guidée est terminée. Merci de l'avoir suivie! N'hésitez pas à nous contacter.",
             position: 'bottom',
         }
        
@@ -2083,7 +2086,7 @@ $scope.tour.CompletedEvent = function (scope) {
         nextLabel: '<strong>Suiv.</strong>',
         prevLabel: '<span style="color:green">Prec.</span>',
         skipLabel: 'Fermer',
-        doneLabel: 'MERCI'
+        doneLabel: 'Fermer'
     };
 
     $scope.tour.ShouldAutoStart = false;
