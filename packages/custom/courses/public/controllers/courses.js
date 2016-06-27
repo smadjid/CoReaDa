@@ -709,7 +709,7 @@ $scope.getGraphTitle = function(code){
     if($('.course_title_top').length<1)
       $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome();resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em> <i>(données du 15 octobre 2015 au 22 décembre 2015)</i> </a><span class="course_tour_top pull-right"></span>');
       
-        reloadURL(); 
+        /*reloadURL(); return;
        window.setTimeout(function() {
            loadContext(); 
           $('table').show();
@@ -717,7 +717,7 @@ $scope.getGraphTitle = function(code){
           $scope.$apply();
         }, 0);
 
-
+*/
        
 $scope.dataLoading = false;
 $scope.pageLoaded = true;
@@ -725,6 +725,7 @@ $scope.pageLoaded = true;
  setTimeout(function() {     
     selectTab('facts'); 
     $scope.tabSelect = 'facts';
+     $scope.$apply();
     //alert('hh')
   }, 500);
 
