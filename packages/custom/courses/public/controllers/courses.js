@@ -165,6 +165,61 @@ $scope.lauchEvaluation = function(fact){
 
 
 
+ $scope.about = function () {
+        ngDialog.open({ template: 'courses/views/splash.html', className: 'ngdialog-theme-default', width: '90%',
+        controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
+        function($scope, $rootScope,  $stateParams, $location, $http) {
+        $scope.result = 'hidden'
+    $scope.resultMessage;
+    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
+    $scope.submitButtonDisabled = false;
+    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
+    
+    $scope.sendFeedback = function(contactform) {
+        $scope.submitted = true;
+        $scope.submitButtonDisabled = true;
+       
+        if (contactform.$valid) {
+          $http.post('/api/feedback',{'feedback':$scope.feedbackFormData})
+          .success(function(data){
+                    $scope.submitButtonDisabled = true;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-success';
+                     ngDialog.closeAll(); 
+               swal({   title: "Merci!",   
+            text: "Nous avons bien reçu votre message. Merci.", 
+             animation: "slide-from-top",
+             type:"info"  ,
+            timer: 1500,   showConfirmButton: false });
+            })
+          .error(function(data) {
+              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a peut-être pas pu être envoyé", "error");
+              $scope.submitButtonDisabled = false;
+                    $scope.resultMessage = data.message;
+                    $scope.result='bg-danger';
+                     ngDialog.closeAll(); 
+            });  
+            
+        } else {
+            $scope.submitButtonDisabled = false;
+            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
+            $scope.result='bg-danger';
+             ngDialog.closeAll(); 
+        }
+    }
+
+    }]
+      });
+       
+
+      ///////////// LOG ////////////
+      saveLog({
+            'name':'feedback'
+          });
+      //////////////////////////////
+    };
+
+
 
  $scope.sendMail = function () {
         ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '60%',
@@ -1956,10 +2011,13 @@ $scope.tour.CompletedEvent = function (scope) {
     };
  $scope.startGuidedTour = function(){
     //goHome(); 
+    setTimeout(function() {     
     selectTab('facts'); 
-    window.setTimeout(function() {
+    $scope.tabSelect = 'facts';
+     $scope.$apply();
       $scope.launchGuidedTour();
-    }, 0); 
+  }, 500);
+    
      ///////////// LOG ////////////
       saveLog({
             'name':'startTour',
@@ -1974,7 +2032,7 @@ $scope.tour.CompletedEvent = function (scope) {
         steps:[
         {
             element:'.logo',
-            intro: "<span class='badge-tour'>1/14</span> <h4>Bienvenu</h4>"+
+            intro: "<span class='badge-tour'>1/14</span> <h4>Bienvenue</h4>"+
             "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
             "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
             "Vous pouvez arrêter cette visite à tout moment."+
