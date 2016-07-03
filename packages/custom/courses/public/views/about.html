@@ -27,17 +27,27 @@
       Comment ça marche ?
     </v-pane-header>
     <v-pane-content>
-      <img src="/courses/assets/img/about.png" width="60%">
+    <table><tr>
+    <td width="50%">Le processus est organisé en 3 étapes principales:
+    <ol>
+    <li>Traçage des lecteurs et collecte des données. Les logs de traces ainsi récupérés sont sauvegardés dans une base de données dédiées.
+    <li>Traitement de données. Différents traitement sont réalisés sur les traces sauvegardées afin de calculer différents indicateurs de lecture. Ces traitements permettent par ailleurs d'inférer d'éventuels problèmes de lecture
+    <li>Génération de visualisations. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour envisager de réaliser de modifications à même de résoudre les problèmes détéctés.
+    </li>
+
+    </td>
+    <td width="50%">  <img src="/courses/assets/img/about.png" width="90%" ></td>
+    </tr></table>
     </v-pane-content>
   </v-pane>
 
  
   <v-pane>
     <v-pane-header>
-      Qu'est ce qui est tracé ?
+      Qu'est ce que l'on entend par traçage ?
     </v-pane-header>
     <v-pane-content>
-      Pane content #2
+      Le traçage consiste à surveiller un utilisateur et à enrtegistrer toutes ses actions de navigation au sein de votre cours. Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.
     </v-pane-content>
   </v-pane>
 
@@ -46,7 +56,11 @@
       C'est quoi un indicateur ?
     </v-pane-header>
     <v-pane-content>
-      Pane content #2
+      Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.
+
+
+
+     
     </v-pane-content>
   </v-pane>
 
@@ -55,7 +69,7 @@
      Comment sont calculés les problèmes de lecture ?
     </v-pane-header>
     <v-pane-content>
-      Pane content #2
+      Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.
     </v-pane-content>
   </v-pane>
 

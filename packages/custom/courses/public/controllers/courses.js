@@ -786,6 +786,8 @@ $scope.pageLoaded = true;
     //alert('hh')
   }, 500);
 
+ $scope.about();
+
     
       });
 
@@ -2605,7 +2607,7 @@ selection.selected ='selectedTask';
 
 
     $scope.inspectorStats.indicatorCode = fact.issueCode;
-    
+
 
   console.log(fact.issueCode)
 
