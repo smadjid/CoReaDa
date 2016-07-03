@@ -1,52 +1,65 @@
- <section data-ng-controller="CoursesController" >
-                 <div class="row-fluid" >
-                   
-                      
-                     <div class="col-md-offset-4 col-md-4" id="box">
-                      <h2>Nous contacter</h2>
-                       
-                            <hr>
-                           
-<form ng-submit="sendFeedback(contactform)" name="contactform" method="post"   class="form-horizontal" role="form">
+<h1> Bienvenue sur CoReaDa</h1>
+
+<!-- add `multiple` attribute to allow multiple sections to open at once -->
+<v-accordion class="vAccordion--default" style="border-left: solid;    padding-left: 15px;">
+
+   <v-pane>
+    <v-pane-header>
+      Qu'est-ce le projet CoReaDa ?
+    </v-pane-header>
+    <v-pane-content>
+      <b>CoReaDa</b>, littéralement <i>Course Reading Dashboard</i>, ....
+    </v-pane-content>
+  </v-pane>
 
 
-                        <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
-                            <label for="inputName" class="col-lg-2 control-label">Name</label>
-                            <div class="col-lg-10">
-                                <input ng-model="feedbackFormData.inputName" type="text" class="form-control" id="inputName" name="inputName" placeholder="Your Name" required>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-class="{ 'has-error': contactform.inputEmail.$invalid && submitted }">
-                            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-                            <div class="col-lg-10">
-                                <input ng-model="feedbackFormData.inputEmail" type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Your Email" required>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-class="{ 'has-error': contactform.inputSubject.$invalid && submitted }">
-                            <label for="inputSubject" class="col-lg-2 control-label">Subject</label>
-                            <div class="col-lg-10">
-                                <input ng-model="feedbackFormData.inputSubject" type="text" class="form-control" id="inputSubject" name="inputSubject" placeholder="Subject Message" required>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-class="{ 'has-error': contactform.inputMessage.$invalid && submitted }">
-                            <label for="inputMessage" class="col-lg-2 control-label">Message</label>
-                            <div class="col-lg-10">
-                                <textarea ng-model="feedbackFormData.inputMessage" class="form-control" rows="4" id="inputMessage" name="inputMessage" placeholder="Your message..." required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
-                                <button type="submit" class="btn btn-default" ng-disabled="submitButtonDisabled">
-                                    Send Message
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+  <v-pane>
+    <v-pane-header expanded>
+      Quels sont les objectifs du projet CoReaDa ?
+    </v-pane-header>
+    <v-pane-content>
+      <b>CoReaDa</b> est un tableau de bord qui vous présente des données sur la lecture de votre cours, vous montre de potentiels problèmes de lecture et vous suggère des actions appropriées. Pour ce faire, l'outil collecte les logs des utilisateurs qui lisent votre cours sur OpenClassrooms et les analyse. Des indicateurs sont ainsi calculés pour chaque chapitre et chaque section du cours. Quand des valeurs anormales sont observées, l'outil vous indique un problème de lecture et vous suggère des actions qui peuvent potentiellement résoudre le problème détecté.
+    </v-pane-content>
+  </v-pane>
 
-                              
-                                <p ng-class="result" style="padding: 15px; margin: 0;">{{ resultMessage }}</p>
-                    </div> 
+  <v-pane>
+    <v-pane-header>
+      Comment ça marche ?
+    </v-pane-header>
+    <v-pane-content>
+      <img src="/courses/assets/img/about.png" width="60%">
+    </v-pane-content>
+  </v-pane>
 
-</section>
+ 
+  <v-pane>
+    <v-pane-header>
+      Qu'est ce qui est tracé ?
+    </v-pane-header>
+    <v-pane-content>
+      Pane content #2
+    </v-pane-content>
+  </v-pane>
 
+   <v-pane>
+    <v-pane-header>
+      C'est quoi un indicateur ?
+    </v-pane-header>
+    <v-pane-content>
+      Pane content #2
+    </v-pane-content>
+  </v-pane>
+
+  <v-pane>
+    <v-pane-header>
+     Comment sont calculés les problèmes de lecture ?
+    </v-pane-header>
+    <v-pane-content>
+      Pane content #2
+    </v-pane-content>
+  </v-pane>
+
+ 
+
+</v-accordion>
 

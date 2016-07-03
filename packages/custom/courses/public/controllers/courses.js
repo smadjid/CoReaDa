@@ -166,7 +166,7 @@ $scope.lauchEvaluation = function(fact){
 
 
  $scope.about = function () {
-        ngDialog.open({ template: 'courses/views/splash.html', className: 'ngdialog-theme-default', width: '95%',
+        ngDialog.open({ template: 'courses/views/about.html', className: 'ngdialog-theme-default', width: '95%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
         $scope.result = 'hidden'
@@ -555,6 +555,8 @@ $scope.selectedIndicators=[
         'issueCode':'stop','category':'Indicateurs d\'arrêts et reprise'}
       ]
       $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
+
+
 
 
  $scope.findOne = function() {
@@ -2597,9 +2599,15 @@ selection.selected ='selectedTask';
   
  $scope.context.statsURL = url;
  $scope.context.indicator = indicator;
-  filterTasks(element, indicator, task);
 
+  filterTasks(element, indicator, task);
   $scope.currentElement.id = fact.partId;
+
+
+    $scope.inspectorStats.indicatorCode = fact.issueCode;
+    
+
+  console.log(fact.issueCode)
 
 
   
