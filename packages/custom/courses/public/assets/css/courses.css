@@ -1755,12 +1755,6 @@ hr {
 
 
 
-td,tr,th,  div{
-   -webkit-transition: all 0.3s linear;
-    -moz-transition: all 0.3s linear;
-    -o-transition: all 0.3s linear;
-    transition: all 0.3s linear;
-}
 
 @keyframes myChange {
     from {
@@ -2977,24 +2971,6 @@ margin-left: 2px
 }
 
 /********** ANIMATIOn************/
-tr.ng-hide-add, tr.ng-hide-remove {
-  transition: none;
-}
-
-tr.ng-hide {
-  line-height: 0;
-  opacity: 0;
-  padding: 0 0px;
-}
-tr.ng-show-add, tr.ng-show-remove {
-  transition: all linear 0.5s;
-}
-
-tr.ng-show {
-  line-height: 0;
-  opacity: 0;
-  padding: 3 0px;
-}
 
 
 .mycheckbox  {

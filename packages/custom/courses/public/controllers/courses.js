@@ -166,7 +166,7 @@ $scope.lauchEvaluation = function(fact){
 
 
  $scope.about = function () {
-        ngDialog.open({ template: 'courses/views/about.html', className: 'ngdialog-theme-default', width: '95%',
+        ngDialog.open({ template: 'courses/views/about.html', className: 'ngdialog-theme-default', width: '75%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
         $scope.result = 'hidden'
