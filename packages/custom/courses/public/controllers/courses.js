@@ -915,6 +915,7 @@ switch(indicatorCode) {
 return {'boundaryValues':boundaryValues,'scale':scale};
 }
 var computeIndividualIndicatorValue =  function(part,indicatorCode, boundaryValues){
+  console.log(indicatorCode)
   
 
   var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));

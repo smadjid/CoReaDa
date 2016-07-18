@@ -84,6 +84,7 @@ for(i in 1:length(chaptersIds)){
 
 
 save(PartData, file='PartData.rdata')
+####################FIN####################
 PartData=PartData[,c("part_index","part_id","parent_id","title",
   "type"              ,       "slug"                    ,
  "max.duration"        ,     "mean.duration"           ,
@@ -304,7 +305,7 @@ Sinon, regarder l'indicateur de relecture plus spécifique (même séance ou sé
 
 
 maxRereadings =  rbind(byParts,byChaps)#,byTomes)
-
+####### MAX STOPS
 # arrets définitif de la lecture
 StopData = PartData[which(PartData$type=='section'),c('part_id','norecovery_tx')]
 byParts = StopData[which(StopData$norecovery_tx>quantile(StopData$norecovery_tx,0.9,na.rm = TRUE)),]
@@ -363,7 +364,7 @@ save(facts, file="nodejs.facts.rdata")
 library('jsonlite')
 library('reshape')
 
-
+ 
 facts.json = toJSON(unname(split(facts, 1:nrow(facts))))
 cat(facts.json, file="facts.json")
 
@@ -890,7 +891,7 @@ cat(facts.json, file="nodejs.facts.json")
 
 
 
-########## RS stats
+########## Stats
 CourseStats = data.frame(id=0, title='title')
 CourseStats$nactions =sum(Interest$Actions_nb)
 CourseStats$nusers =length(unique(data$user_id)) 

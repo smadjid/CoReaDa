@@ -668,6 +668,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 part.facts.push(fact);
             };
         if(part.type==='course') {
+            console.log(part)
             
             courseData.title = part.title;
             courseData.url = part.slug;

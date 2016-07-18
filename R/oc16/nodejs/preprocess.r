@@ -223,7 +223,6 @@ save(Users_RS, file="nodejs.Users_RS.rdata")
 ########################
 
 ### INTEREST
-#nRS
 nodejs=nodejs[order(nodejs$date),]
 allParts=nodejs.structure$part_id
 nodejs.Interest = data.frame(part_id=allParts,  Actions_nb=0, Users_nb = 0,Sessions_nb=0, RS_nb = 0)
@@ -243,7 +242,6 @@ for(i in 1:(length(parts)))
 }
 
 #Aggregate for chapters
-
 chapters = nodejs.structure[which(nodejs.structure$type=='title-2'),]$part_id
 nchapters = length(unique(chapters))
 for(i in 1:nchapters){
@@ -288,7 +286,7 @@ nodejs.Interest[which(nodejs.Interest$part_id==courseId),]=c(part_id=courseId,
 nodejs.Interest = merge(nodejs.Interest, nodejs.structure[,c('part_index','part_id','type')])
 save(nodejs.Interest, file="nodejs.Interest.rdata")
 
-
+   
 ########################"Coverage
 nRS=nrow(unique(subset(nodejs, select=c("user_id","seance"))))
 
@@ -311,11 +309,6 @@ for(i in 1:nusers)
     RS[which(RS$id==cpt),]$nparts = length(unique(seance$part_id))
   
     RS[which(RS$id==cpt),]$duration = sum(seance$duration, na.rm = TRUE)
-    print(paste('duration: ',RS[which(RS$id==cpt),]$duration))
-  #  RS[which(RS$id==cpt),]$parts[[1]] = list(seance$part_index)
-   # RS[which(RS$id==cpt),]$dates[[1]] = list(seance$date)
-  #  RS[which(RS$id==cpt),]$durations[[1]] = list(seance$duration)
-    
   }
 }
 #RS$duration=round(RS$duration/60,1)
@@ -326,7 +319,6 @@ save(nodejs.RS, file="nodejs.RS.rdata")
 
 
 ################ READS #####################################################"
-
 
 ### Nombre de lecteurs (RDer), de relecteurs (Rereaders), de lectures (RDing) et de relectures (RRDing)
 nodejs.Reads = data.frame(part_index=nodejs.structure$part_index,part_id=nodejs.structure$part_id,Actions_nb = 0, Readers=0,
