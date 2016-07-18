@@ -764,7 +764,7 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome();resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em> <i>(données du 15 octobre 2015 au 22 décembre 2015)</i> </a><span class="course_tour_top pull-right"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
       
         /*reloadURL(); return;
        window.setTimeout(function() {
@@ -799,7 +799,10 @@ $scope.pageLoaded = true;
 $scope.completeCourseParts = function(){ 
   var courseParts = [], courseChapters = [];
   var base_url = "https://openclassrooms.com/courses";
-  $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value
+  $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value;
+
+  $scope.course.begin = $scope.course.stats.filter(function(value){ return value.property === 'ob_begin'})[0].value;
+  $scope.course.end = $scope.course.stats.filter(function(value){ return value.property === 'ob_end'})[0].value;
   //$scope.course.url = base_url+'/'+$scope.course.url;
   //console.log($scope.course)
  // var course_route = $.param({'csid':course._id})
@@ -815,6 +818,7 @@ $scope.completeCourseParts = function(){
         };
     tome.url = $scope.course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
     angular.forEach(tome.chapters, function(chapter) { 
+
       tome.indicators = [];
       chapter.parts_count = 0;
       chapter.route =$.param({'partid':tome._id, 'chapid':chapter._id});
@@ -839,6 +843,7 @@ $scope.completeCourseParts = function(){
           fact.d3 ={ 'chapter':chapter.route,'tome':tome.route};
 
         });
+      if(chapter.parts.length==0) tome.parts_count = tome.parts_count + 1;
       
       angular.forEach(chapter.parts, function(part) {
         part.parent = chapter._id;
@@ -915,9 +920,6 @@ switch(indicatorCode) {
 return {'boundaryValues':boundaryValues,'scale':scale};
 }
 var computeIndividualIndicatorValue =  function(part,indicatorCode, boundaryValues){
-  console.log(indicatorCode)
-  
-
   var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
       switch(indicatorCode) {
       case "actions":
@@ -2431,8 +2433,10 @@ var loadContext = function(){
    var tdW = (totalWidth - 0)/nbP; 
         
         
-        if($('.course_title_top').length<1)
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du 15 octobre 2015 au 22 décembre 2015)</i>  </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+        if($('.course_title_top').length<1){
+          alert($scope.course.begin)
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+                }
                 
 if(components != null)
   $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';

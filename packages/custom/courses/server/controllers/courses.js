@@ -813,6 +813,7 @@ transporter.sendMail(mailOptions, function(error, info){
             todos: [],
             logs:[]
         });
+        console.log(course.properties)
 
         
         
