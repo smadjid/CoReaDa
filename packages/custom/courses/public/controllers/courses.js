@@ -1563,6 +1563,30 @@ var getTasks = function(courseId, partId, todoData) {
         };
       
 
+$scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
+  if(newValue == oldValue) return;
+  $scope.currentFact = 0;
+ if(newValue){
+  $scope.ChaptersFacts = $scope.AllChaptersFacts;
+  $scope.SectionsFacts = $scope.AllSectionsFacts;
+
+
+ }
+ else{
+    $scope.ChaptersFacts = $scope.MainChaptersFacts;
+    $scope.SectionsFacts = $scope.MainSectionsFacts;
+  };
+   
+
+    setTimeout(function() {
+      
+     $scope.goHome();     
+    inspectorCourseData('facts');
+    selectTab('facts'); 
+    $scope.$apply();
+  }, 0);
+
+});
 
 var updateMainFacts = function(){  
   $scope.resetIndicators();
@@ -1608,31 +1632,6 @@ var updateMainFacts = function(){
 
  //////////////// SECTIONS
  
-
- $scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
-  if(newValue == oldValue) return;
-  $scope.currentFact = 0;
- if(newValue){
-  $scope.ChaptersFacts = $scope.AllChaptersFacts;
-  $scope.SectionsFacts = $scope.AllSectionsFacts;
-
-
- }
- else{
-    $scope.ChaptersFacts = $scope.MainChaptersFacts;
-    $scope.SectionsFacts = $scope.MainSectionsFacts;
-  };
- 
-
-    setTimeout(function() {
-      
-     $scope.goHome();     
-    inspectorCourseData('facts');
-    selectTab('facts'); 
-    $scope.$apply();
-  }, 0);
-
-});
 
 allFacts=[]; 
 angular.forEach($scope.course.tomes, function(tome) {
@@ -2614,7 +2613,7 @@ selection.selected ='selectedTask';
     $scope.inspectorStats.indicatorCode = fact.issueCode;
 
 
-  console.log(fact.issueCode)
+  //console.log(fact.issueCode)
 
 
   
@@ -3121,7 +3120,30 @@ swal({
        //dropFact(parseTaskRequest(route))
         //.success(function(data) {
      var result = dropFactLocally( $scope.inspectorFacts.Facts[$scope.currentFact].route);
+
      updateMainFacts();
+     
+  
+  if($scope.sectionDisplay){
+    if($scope.allFactsDisplay){
+      $scope.SectionsFacts = $scope.AllSectionsFacts;
+    }
+      else{
+        $scope.SectionsFacts = $scope.MainSectionsFacts;
+      }
+    $scope.inspectorFacts.Facts = $scope.SectionsFacts;
+  }
+  else{
+     if($scope.allFactsDisplay){
+      $scope.ChaptersFacts = $scope.AllChaptersFacts;
+     }
+      else{
+        $scope.ChaptersFacts = $scope.MainChaptersFacts;
+      }
+    $scope.inspectorFacts.Facts = $scope.ChaptersFacts;
+  }
+     console.log($scope.inspectorFacts.Facts.length)
+    
            swal({   title: "Problème marqué comme résolu!",   
             text: "Succès", 
              animation: "slide-from-top",
@@ -3134,9 +3156,11 @@ swal({
       });*/
 
 setTimeout(function() {
+    
+    //goHome(); 
+    $scope.tableData = $scope.course; 
     loadURL(result);
-    reloadURL(); 
-    $scope.tableData = $scope.course;     
+    // $scope.inspectorFacts.Facts = null;    
       $scope.$apply()
   }, 0);
       
@@ -3144,6 +3168,7 @@ setTimeout(function() {
 }
 
 var dropFactLocally = function(route){
+
   var result = ""
   var components = parseURL(route)
   if(components.hasOwnProperty('partid')) {
@@ -3156,7 +3181,7 @@ var dropFactLocally = function(route){
        if(components.hasOwnProperty('factid')){        
         var fact = $.grep(part.facts, function(e){ return  e._id == components.factid })[0];          
          part.facts.splice(part.facts.indexOf(fact),1);
-          $scope.inspectorFacts.Facts.splice($scope.inspectorFacts.Facts.indexOf(fact),1);
+         // $scope.inspectorFacts.Facts.splice($scope.inspectorFacts.Facts.indexOf(fact),1);
           result = part.route;
        }
       }
@@ -3164,7 +3189,7 @@ var dropFactLocally = function(route){
         if(components.hasOwnProperty('factid')){
           var fact = $.grep(chap.facts, function(e){ return  e._id == components.factid })[0];          
           chap.facts.splice(chap.facts.indexOf(fact),1);
-          $scope.inspectorFacts.Facts.splice($scope.inspectorFacts.Facts.indexOf(fact),1);
+        //  $scope.inspectorFacts.Facts.splice($scope.inspectorFacts.Facts.indexOf(fact),1);
           result = chap.route;
           
 
@@ -3228,7 +3253,6 @@ var ComputeGlobalVisuData = function(){
 
 
 var mean = function(numbers) {
-    // mean of [3, 5, 4, 4, 1, 1, 2, 3] is 2.875
     var total = 0,
         i;
     for (i = 0; i < numbers.length; i += 1) {
