@@ -15,7 +15,7 @@
         <tr class='chapters-header'>
         <th id='granuleSwitchTH'><em>Chapitres</em><br/>
 
-        <span id='granuleSwitch' role='button' ng-attr-title="{{sectionDisplay && 'Masquer les sections' || 'Afficher les sections' }}" style='font-size: 14px;font-weight: bold; padding-top:8px;padding-bottom:2px; width:100%;color:#29384D' ng-class="{'glyphicon glyphicon-menu-down': !sectionDisplay, 'glyphicon glyphicon-menu-up': sectionDisplay}" ng-click='toggleSectionDisplay()'></span>
+        <span id='granuleSwitch'  ng-show="sectionsAvailable" role='button' ng-attr-title="{{sectionDisplay && 'Masquer les sections' || 'Afficher les sections' }}" style='font-size: 14px;font-weight: bold; padding-top:8px;padding-bottom:2px; width:100%;color:#29384D' ng-class="{'glyphicon glyphicon-menu-down': !sectionDisplay, 'glyphicon glyphicon-menu-up': sectionDisplay}" ng-click='toggleSectionDisplay()'></span>
 
         </th>         
             <th role='button' ng-click='triggerClick($event)'  class="chapter_index" ng-repeat="chapter in courseChapters"  colspan={{chapter.parts_count}}  data-part={{chapter.id}} data-path={{chapter.route}}>

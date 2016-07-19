@@ -500,6 +500,7 @@ else{
       $scope.chartType = 'actions';
       $scope.globalChartSelector = 'actions';
       $scope.elementTypeSelector = 'part';
+      $scope.sectionsAvailable = false;
       $scope.sectionDisplay = false;
       $scope.context.statChart = false;
       $scope.taskPanelTitle = "Tâches";
@@ -519,6 +520,7 @@ else{
       $scope.courseDisplay = true;
       $scope.indicatorSelectorShow = false;
       $scope.allIndicatorSelectorShow = false;
+
 
 
        $scope.inspector = {'type':'tome', 'selectedFact':{},'Data':[]}
@@ -764,7 +766,7 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
       
         /*reloadURL(); return;
        window.setTimeout(function() {
@@ -2434,7 +2436,7 @@ var loadContext = function(){
         
         if($('.course_title_top').length<1){
           alert($scope.course.begin)
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>  - <span class="course_tour_top pull-right"  role="button"></span>');
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
                 }
                 
 if(components != null)
