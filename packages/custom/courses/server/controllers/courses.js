@@ -77,13 +77,16 @@ transporter.sendMail(mailOptions, function(error, info){
                 }
 
                 var result = [];
-                for (var i = 0; i< courses.length; i++){              
+                for (var i = 0; i< courses.length; i++){   
+                 console.log(Date.now());      ;
                 var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
-                    'created':courses[i].created
+                    'nbfacts':courses[i].nbfacts,
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
                 }
-
                result.push(course);
             };
 
@@ -111,6 +114,8 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'todoId','paramValue':_course.todos[0]._id}, 
                                     {'paramName':'content','paramValue':_course.todos[0].todo}
                                 ] });               
+                _course.nbtasks = _course.nbtasks + 1;
+                _course.update=Date.now();
                 _course.save();
                 _result = _course.todos[0];
                 console.log('course todo added');
@@ -124,7 +129,9 @@ transporter.sendMail(mailOptions, function(error, info){
                                 'params':[
                                     {'paramName':'todoId','paramValue':tome.todos[0]._id}, 
                                     {'paramName':'content','paramValue':tome.todos[0].todo}
-                                ] });  
+                                ] }); 
+                    _course.nbtasks = _course.nbtasks + 1; 
+                    _course.update=Date.now();
                     _course.save();
                     _result = tome.todos[0];
                     console.log('tome todo added');
@@ -144,7 +151,9 @@ transporter.sendMail(mailOptions, function(error, info){
                                 'params':[
                                     {'paramName':'todoId','paramValue':chapter.todos[0]._id}, 
                                     {'paramName':'content','paramValue':chapter.todos[0].todo}
-                                ] });    
+                                ] });   
+                            _course.nbtasks = _course.nbtasks + 1; 
+                            _course.update=Date.now();
                             _course.save();
                             _result = chapter.todos[0];
                             console.log('chapter todo added');
@@ -164,6 +173,8 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':fact.todos[0].todo},
                                     {'paramName':'parentId','paramValue':chapter._id}
                                 ] });   
+                            _course.nbtasks = _course.nbtasks + 1;
+                            _course.update=Date.now();
                             _course.save();
                             _result = fact.todos[0];
                             console.log('chapter FACT todo added');
@@ -183,7 +194,9 @@ transporter.sendMail(mailOptions, function(error, info){
                                 'params':[
                                     {'paramName':'todoId','paramValue':part.todos[0]._id}, 
                                     {'paramName':'content','paramValue':part.todos[0].todo}
-                                ] });    
+                                ] }); 
+                                _course.nbtasks = _course.nbtasks + 1;   
+                                _course.update=Date.now();
                                 _course.save();
                                 _result = part.todos[0];
                                 console.log('part todo added');
@@ -204,6 +217,8 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':fact.todos[0].todo},
                                     {'paramName':'parentId','paramValue':part._id}
                                 ] });   
+                                _course.nbtasks = _course.nbtasks + 1;
+                                _course.update=Date.now();
                                 _course.save();
                                 _result = fact.todos[0];
                                 console.log('part FACT todo added');
@@ -214,6 +229,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 } 
             }
 
+
             res.json(_result);
             })
         },
@@ -223,7 +239,7 @@ transporter.sendMail(mailOptions, function(error, info){
             if(err) return next("Error finding the course.");   
             if(req.params.factId != 0){
                 var _fact = _course.facts.id(req.params.factId);
-                var todo = _fact.todos.id(req.params.todoId);                
+                var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -236,7 +252,7 @@ transporter.sendMail(mailOptions, function(error, info){
             }
             else 
                 {
-                    var todo = _course.todos.id(req.params.todoId);
+                    var _todo = _course.todos.id(req.params.todoId);
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -244,6 +260,8 @@ transporter.sendMail(mailOptions, function(error, info){
                                 ] });
                     _course.todos.id(req.params.todoId).remove(); 
                 }              
+            _course.nbtasks = _course.nbtasks - 1;
+            _course.update=Date.now();
             _course.save();
             res.json('ok');
             })
@@ -256,7 +274,7 @@ transporter.sendMail(mailOptions, function(error, info){
             var _tome = _course.tomes.id(req.params.tomeId)           
             if(req.params.factId != 0){
                 var _fact = _tome.facts.id(req.params.factId);
-                 var todo = _fact.todos.id(req.params.todoId);                
+                 var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -268,7 +286,7 @@ transporter.sendMail(mailOptions, function(error, info){
             }
             else 
                 {
-                     var todo = _tome.todos.id(req.params.todoId);                
+                     var _todo = _tome.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -278,6 +296,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     _tome.todos.id(req.params.todoId).remove();     
                 }          
             _tome.save();
+            _course.nbtasks = _course.nbtasks - 1;
+            _course.update=Date.now();
             _course.save();
             res.json('ok');
             })
@@ -290,7 +310,7 @@ transporter.sendMail(mailOptions, function(error, info){
             var _chapter = _tome.chapters.id(req.params.chapterId)           
             if(req.params.factId != 0){
                 var _fact = _chapter.facts.id(req.params.factId);
-                 var todo = _fact.todos.id(req.params.todoId);                
+                 var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -302,7 +322,7 @@ transporter.sendMail(mailOptions, function(error, info){
             }
             else 
                 {
-                     var todo = _chapter.todos.id(req.params.todoId);                
+                     var _todo = _chapter.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -313,6 +333,8 @@ transporter.sendMail(mailOptions, function(error, info){
                 }               
             _chapter.save();
             _tome.save();
+            _course.nbtasks = _course.nbtasks - 1;
+            _course.update=Date.now();
             _course.save();
             res.json('ok');
             })
@@ -326,7 +348,7 @@ transporter.sendMail(mailOptions, function(error, info){
             var _part = _chapter.parts.id(req.params.partId);
             if(req.params.factId != 0){
                 var _fact = _part.facts.id(req.params.factId);
-                 var todo = _fact.todos.id(req.params.todoId);                
+                 var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -339,7 +361,7 @@ transporter.sendMail(mailOptions, function(error, info){
             }
             else 
                 {
-                     var todo = _fact.todos.id(req.params.todoId);                
+                     var _todo = _fact.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
                                     {'paramName':'todoId','paramValue':_todo._id}, 
@@ -351,6 +373,8 @@ transporter.sendMail(mailOptions, function(error, info){
             _part.save();
             _chapter.save();
             _tome.save();
+            _course.nbtasks = _course.nbtasks - 1;
+            _course.update=Date.now();
             _course.save();
             res.json('ok');
             })
@@ -394,6 +418,7 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] });
                 }               
+            _course.update=Date.now();
             _course.save();
             res.json(_todo);
             })
@@ -435,6 +460,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
                 }
             _tome.save();
+            _course.update=Date.now();
             _course.save();
             res.json(_todo);
             })
@@ -480,6 +506,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 }
             _chapter.save();
             _tome.save();
+            _course.update=Date.now();
             _course.save();
             res.json(_todo);
             })
@@ -526,6 +553,7 @@ transporter.sendMail(mailOptions, function(error, info){
             _part.save();
             _chapter.save();
             _tome.save();
+            _course.update=Date.now();
             _course.save();
             res.json(_todo);
             })
@@ -539,7 +567,7 @@ transporter.sendMail(mailOptions, function(error, info){
             if(err) return next("Error saving the log.");   
             var _result = _course.logs;
              _course.logs.unshift(req.body); 
-             
+             _course.update=Date.now();
             _course.save();
             
             return res.status(200).json('Success - Log saved: '+_course.logs[0]);
@@ -667,8 +695,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
                 part.facts.push(fact);
             };
-        if(part.type==='course') {
-            console.log(part)
+        if(part.type==='course') {           
             
             courseData.title = part.title;
             courseData.url = part.slug;
@@ -801,6 +828,8 @@ transporter.sendMail(mailOptions, function(error, info){
             title : courseData.title,
             url:courseData.url,
             version : 1.0,
+            nbtasks : 0,
+            nbfacts : jsonFacts.length,
             parts:courseParts,
             properties:courseData.properties,//jsonCoursedata,
             stats:coursestats,

@@ -15,7 +15,7 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
 
     $scope.find = function() {
       Courses.query(function(courses) {
-        $scope.courses = courses;
+        $scope.courses = courses; 
 
         if($('.course_title_top').length>0) $('.course_title_top').remove();
         

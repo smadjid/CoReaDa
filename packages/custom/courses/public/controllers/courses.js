@@ -562,7 +562,8 @@ $scope.selectedIndicators=[
 
 
  $scope.findOne = function() {
-
+    
+    $scope.about();
   
       Courses.get({
         courseId: $stateParams.courseId
@@ -788,7 +789,7 @@ $scope.pageLoaded = true;
     //alert('hh')
   }, 500);
 
- $scope.about();
+ 
 
     
       });
@@ -1102,7 +1103,7 @@ var parseTask = function(path, content){
     var taskId=0;
     var factId=0;
     var indicator='ALL';
-    
+
   if(components != null){   
   var tome = components.hasOwnProperty('partid')?$.grep($scope.course.tomes, function(e){ return  e._id == components.partid })[0]:-1;
      if(tome!=-1) partid = tome._id

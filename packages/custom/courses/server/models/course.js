@@ -240,7 +240,9 @@ var TomeSchema = new Schema({
   chapters: [ChapterSchema],
   properties: [DescriptionSchema],
   todos: [TodoSchema],
-  facts: [FactSchema]
+  old_todos: [TodoSchema],
+  facts: [FactSchema],
+  old_facts: [FactSchema]
 });
 
 /**
@@ -299,7 +301,22 @@ var CourseSchema = new Schema({
     type: Array
   },
   updated: {
-    type: Array
+    type: Date,
+    default: Date.now
+  },
+  fromDate:{
+    type:String
+  },
+  toDate:{
+    type:String
+  },
+  nbfacts: {
+    type: Number,
+    default: 0
+  },
+  nbtasks: {
+    type: Number,
+    default: 0
   },
 
 
