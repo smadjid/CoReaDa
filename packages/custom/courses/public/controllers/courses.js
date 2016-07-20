@@ -1102,6 +1102,7 @@ var parseTask = function(path, content){
     var taskId=0;
     var factId=0;
     var indicator='ALL';
+    
   if(components != null){   
   var tome = components.hasOwnProperty('partid')?$.grep($scope.course.tomes, function(e){ return  e._id == components.partid })[0]:-1;
      if(tome!=-1) partid = tome._id
@@ -1116,7 +1117,7 @@ var parseTask = function(path, content){
       else{
         var fact = components.hasOwnProperty('factid')?$.grep(chap.facts, function(e){ return  e._id == components.factid })[0]:-1;
           if(fact!=-1) {factId = fact._id; indicator=fact.classof}
-        var indicator = components.hasOwnProperty('indicator')?$.grep(chap.facts, function(e){ return  e._id == components.indicator })[0]:'ALL';
+        var indicator = components.hasOwnProperty('indicator')?components.indicator:'ALL';
       }
   
 }
