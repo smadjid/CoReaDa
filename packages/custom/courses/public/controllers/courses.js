@@ -767,7 +767,7 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.ob_begin+' au '+$scope.course.ob_end+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
       
         /*reloadURL(); return;
        window.setTimeout(function() {
@@ -804,8 +804,6 @@ $scope.completeCourseParts = function(){
   var base_url = "https://openclassrooms.com/courses";
   $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value;
 
-  $scope.course.begin = $scope.course.stats.filter(function(value){ return value.property === 'ob_begin'})[0].value;
-  $scope.course.end = $scope.course.stats.filter(function(value){ return value.property === 'ob_end'})[0].value;
   //$scope.course.url = base_url+'/'+$scope.course.url;
   //console.log($scope.course)
  // var course_route = $.param({'csid':course._id})
@@ -2437,8 +2435,8 @@ var loadContext = function(){
         
         
         if($('.course_title_top').length<1){
-          alert($scope.course.begin)
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.begin+' au '+$scope.course.end+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
+          
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.ob_begin+' au '+$scope.course.ob_end+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
                 }
                 
 if(components != null)

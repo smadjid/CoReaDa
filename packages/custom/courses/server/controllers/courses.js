@@ -78,11 +78,13 @@ transporter.sendMail(mailOptions, function(error, info){
 
                 var result = [];
                 for (var i = 0; i< courses.length; i++){   
-                 console.log(Date.now());      ;
+                 //console.log(Date.now());      ;
                 var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
                     'nbfacts':courses[i].nbfacts,
+                    'ob_begin':courses[i].ob_begin,
+                    'ob_end':courses[i].ob_end,
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated
@@ -828,6 +830,8 @@ transporter.sendMail(mailOptions, function(error, info){
             title : courseData.title,
             url:courseData.url,
             version : 1.0,
+            ob_begin:subsetByField(coursestats,'property','ob_begin')[0].value ,
+            ob_end:subsetByField(coursestats,'property','ob_end')[0].value ,
             nbtasks : 0,
             nbfacts : jsonFacts.length,
             parts:courseParts,
@@ -842,10 +846,7 @@ transporter.sendMail(mailOptions, function(error, info){
             todos: [],
             logs:[]
         });
-        console.log(course.properties)
 
-        
-        
         course.save(function(err){
             if (err){
                 console.log("erreur d'écriture: "+ err)

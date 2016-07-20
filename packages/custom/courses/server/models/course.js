@@ -304,10 +304,10 @@ var CourseSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  fromDate:{
+  ob_begin:{
     type:String
   },
-  toDate:{
+  ob_end:{
     type:String
   },
   nbfacts: {
