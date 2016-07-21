@@ -10,6 +10,10 @@ module.exports = function(Courses, app) {
     .get(courses.show);
   app.route('/api/seed/:courseTitle')
       .get(courses.seed);
+  app.route('/api/seedall')
+      .get(courses.seedall);
+  app.route('/api/find/:courseCode')
+      .get(courses.find);
 
 
   app.route('/api/tasks/add/:courseId/:tomeId/:chapterId/:partId/:factId')

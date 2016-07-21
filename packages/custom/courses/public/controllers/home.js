@@ -11,16 +11,47 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
 
     $scope.availableCircles = [];
 
+    $scope.courseCoder = function(coursecodeform){      
+      $scope.courses = []
+        if (coursecodeform.$valid) {
+          $('#loadCourseBtn').text('Chargement en cours')
+        
+          $http.get('/api/find/'+$scope.courseCode)
+          .success(function(data){
+              $scope.courses = data;
+              $('#loadCourseBtn').text('Charger')
+            })   
+          .error(function(data) {             
+              swal("Oops", "Aucun cours trouvé pour ce code", "error");   
+              $('#loadCourseBtn').text('Charger')           
+            }); 
+        };
+        
+
+
+      
+    }
+
+
   
 
-    $scope.find = function() {
+    $scope.findCourse = function() {
       Courses.query(function(courses) {
-        $scope.courses = courses; 
+     //   $scope.courses = courses; 
 
         if($('.course_title_top').length>0) $('.course_title_top').remove();
         
 
       });
+    };
+      $scope.find = function() {
+       Courses.query('nodejs',function(courses) {
+      //  $scope.courses = courses; 
+
+        if($('.course_title_top').length>0) $('.course_title_top').remove();
+        
+
+      }); 
     };
 
     //////////////// FEEDBACKS

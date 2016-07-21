@@ -285,6 +285,9 @@ var CourseSchema = new Schema({
     required: true,
     trim: true
   },
+  courseCode: {
+    type: String
+  },
   url: {
     type: String
   },

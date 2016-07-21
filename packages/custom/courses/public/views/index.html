@@ -22,8 +22,14 @@ Le projet CoReaDa aspire à offrir un outil simple et intuitif aux auteurs des c
 </p>  
   </div>
   <div class="col-md-12 bs-callout">
-  <h3>Cours analysés</h3>
-  <br/>
+  <h3>Cours à analyser</h3>
+  <form class="navbar-form navbar-left" role="search"  id="coursecodeform" name="coursecodeform" ng-submit="courseCoder(coursecodeform)" style="width:100%">
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Code d'accès du cours" ng-model="courseCode" required>
+  </div>
+  <button id="loadCourseBtn" type="submit" class="btn-action" >Charger</button>
+</form>
+  <br/><br/>
   <ul class='course_li'>
     <li data-ng-repeat="course in courses">
        <h4><a data-ng-href="/courses/{{course._id}}"><strong>{{course.title}}</strong></a></h4>
