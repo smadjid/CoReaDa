@@ -26,9 +26,8 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
               $('#loadCourseBtn').text('Charger')           
             }); 
         };
-        
 
-
+         if($('.course_title_top').length>0) $('.course_title_top').remove();
       
     }
 
@@ -39,7 +38,7 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
       Courses.query(function(courses) {
      //   $scope.courses = courses; 
 
-        if($('.course_title_top').length>0) $('.course_title_top').remove();
+       
         
 
       });
