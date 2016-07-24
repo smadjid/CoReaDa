@@ -79,38 +79,7 @@ $scope.signalFact = function(){
     $scope.submitButtonDisabled = false;
     $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
     
-    $scope.sendFeedback = function(contactform) {
-        $scope.submitted = true;
-        $scope.submitButtonDisabled = true;
-       
-        if (contactform.$valid) {
-          $http.post('/api/feedback',{'feedback':$scope.feedbackFormData})
-          .success(function(data){
-                    $scope.submitButtonDisabled = true;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-success';
-                     ngDialog.closeAll(); 
-               swal({   title: "Merci!",   
-            text: "Nous avons bien reçu votre message. Merci.", 
-             animation: "slide-from-top",
-             type:"info"  ,
-            timer: 1500,   showConfirmButton: false });
-            })
-          .error(function(data) {
-              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a peut-être pas pu être envoyé", "error");
-              $scope.submitButtonDisabled = false;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-danger';
-                     ngDialog.closeAll(); 
-            });  
-            
-        } else {
-            $scope.submitButtonDisabled = false;
-            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
-            $scope.result='bg-danger';
-             ngDialog.closeAll(); 
-        }
-    }
+
 
     }]
       });
@@ -684,11 +653,13 @@ $scope.getGraphTitle = function(code){
 */
        
 $scope.dataLoading = false;
-$scope.pageLoaded = true;
+
 
  setTimeout(function() {     
     selectTab('facts'); 
     $scope.tabSelect = 'facts';
+    $scope.dataLoading = false;
+    $scope.pageLoaded = true;
      $scope.$apply();
     //alert('hh')
   }, 500);
