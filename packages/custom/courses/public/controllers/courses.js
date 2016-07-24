@@ -345,8 +345,7 @@ else{
 }
 
   $scope.d3opts = [];
-  $scope.dataLoading = true;
-  $scope.pageLoaded = false;
+ 
   $scope.myBrowsers = [ "GC", "AS" ];
 
   $(window).unbind('hashchange');
@@ -435,6 +434,8 @@ $scope.selectedIndicators=[
 
 
  $scope.findOne = function() {
+   $scope.dataLoading = true;
+  $scope.pageLoaded = false;
     
     $scope.about();
   
@@ -487,11 +488,8 @@ $scope.selectedIndicators=[
 
     */
 $(window).bind('hashchange',function(e){
-  $scope.dataLoading = true;
-  
+    
    loadContext();
-
-  $scope.dataLoading = false;
   
 });
 
@@ -652,7 +650,7 @@ $scope.getGraphTitle = function(code){
 
 */
        
-$scope.dataLoading = false;
+
 
 
  setTimeout(function() {     
@@ -2276,7 +2274,6 @@ var loadContext = function(){
         }
          }, 0);
       }
-
 
 /*************************************************/
   var totalWidth = $('.col-lg-12').width();
