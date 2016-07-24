@@ -118,12 +118,12 @@
   </div>
   </div>
    <div class="col-md-5 feedbackbox" id="box">
-                      <h3>Nous envoyer un commentaire</h3> <hr/>
+                      <h3>Nous envoyer un commentaire</h3> <hr/> 
                            
 <form id="contactform" ng-submit="sendFeedback(contactform)" name="contactform" method="post"   class="form-horizontal" role="form">
 
 
-       <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
                             <label for="inputName" class="col-lg-2 control-label">Nom</label>
                             <div class="col-lg-10">
                                 <input ng-model="feedbackFormData.inputName" type="text" class="form-control" id="inputName" name="inputName" placeholder="Votre nom" required>
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-lg-offset-9 col-lg-3">
                                 <button type="submit" class="btn-action pull-right" ng-disabled="submitButtonDisabled">
                                     Envoyer
                                 </button>
@@ -157,7 +157,7 @@
                     </form>
 
                               
-                                <p ng-class="result" style="padding: 15px; margin: 0;">{{ resultMessage }}</p>
+                <!--                <p ng-class="result" style="padding: 15px; margin: 0;">{{ resultMessage }}</p>-->
                     </div>
 
 

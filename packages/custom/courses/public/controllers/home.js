@@ -59,37 +59,44 @@ $scope.result = 'hidden'
     $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
     $scope.submitButtonDisabled = false;
     $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
-    $scope.sendFeedback = function(contactform) {
+
+    
+
+
+      $scope.sendFeedback = function(facteval) {
+
+
         $scope.submitted = true;
         $scope.submitButtonDisabled = true;
-       
-        if (contactform.$valid) {
-          $http.post('/api/feedback',$scope.feedbackFormData)
+        var feedback ={
+          'inputName':$scope.feedbackFormData.inputName,
+          'inputEmail':$scope.feedbackFormData.inputEmail,
+          'inputSubject':$scope.feedbackFormData.inputSubject,
+          'inputMessage':$scope.feedbackFormData.inputMessage
+        }
+        console.log(feedback);
+      //  return;
+        
+          $http.post('/api/feedback',{'feedback':feedback})
           .success(function(data){
-                console.log(data);
-               
-                    $scope.submitButtonDisabled = false;
+                    $scope.submitButtonDisabled = true;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-success';
                swal({   title: "Merci!",   
-            text: "Nous avons bien reçu votre message. Merci.", 
+            text: "Nous avons bien reçu votre commentaire. Merci.", 
              animation: "slide-from-top",
              type:"info"  ,
             timer: 1500,   showConfirmButton: false });
-              $('#contactform')[0].reset();
             })
           .error(function(data) {
               swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
-              $scope.submitButtonDisabled = true;
+              $scope.submitButtonDisabled = false;
                     $scope.resultMessage = data.message;
                     $scope.result='bg-danger';
-            });  
-            console.log($scope.feedbackFormData)
-        } else {
-           // $scope.submitButtonDisabled = false;
-            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
-            $scope.result='bg-danger';
-        }
+            }); 
+            
+            
+        
     }
 
    

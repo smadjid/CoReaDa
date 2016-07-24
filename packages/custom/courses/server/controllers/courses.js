@@ -299,11 +299,11 @@ console.log("\n *FINISHED SEEDING* "+courseData.title+" \n");
             // setup e-mail data with unicode symbols
      
 var mailOptions = {
-    from:req.body.feedback.inputName + ' &lt;' + req.body.feedback.inputEmail + '&gt;', 
+    from:req.body.feedback.inputName + ' &lt; ' + req.body.feedback.inputEmail + ' &gt; ', 
     to: 'coreada.project@gmail.com', // list of receivers
-    subject: 'COREADA: '+req.body.feedback.inputSubject,
-    text:req.body.feedback.inputName + ' &lt;' + req.body.feedback.inputEmail + '&gt;' + req.body.feedback.inputMessage,
-    html: req.body.feedback.inputName + ' &lt;' + req.body.feedback.inputEmail + '&gt;'+ req.body.feedback.inputMessage
+    subject: 'COREADA : '+req.body.feedback.inputSubject,
+    text:req.body.feedback.inputName + ' &lt;' + req.body.feedback.inputEmail + ' &gt; ' + req.body.feedback.inputMessage,
+    html: req.body.feedback.inputName + ' &lt;' + req.body.feedback.inputEmail + ' &gt; '+ req.body.feedback.inputMessage
 };
 
 

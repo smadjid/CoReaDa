@@ -8,54 +8,9 @@ angular.module('mean.courses')
 ]);
 
 
-
-var app =angular.module('mean.courses').controller('FeedbackController', ['$scope', '$rootScope',
-  '$stateParams', '$location', '$http','ngDialog', 'Global', 'Courses',
-  function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses) {
-    $scope.global = Global;
-    //////////////// FEEDBACKS
-$scope.result = 'hidden'
-    $scope.resultMessage;
-    $scope.feedbackFormData; //feddbackFormData is an object holding the name, email, subject, and message
-    $scope.submitButtonDisabled = false;
-    $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
-    $scope.sendFeedback = function(contactform) {
-        $scope.submitted = true;
-        $scope.submitButtonDisabled = true;
-       
-        if (contactform.$valid) {
-          $http.post('/api/feedback',{'courseId':$scope.course._id,'feedback':$scope.feedbackFormData})
-          .success(function(data){
-                
-                    $scope.submitButtonDisabled = true;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-success';
-               swal({   title: "Merci!",   
-            text: "Nous avons bien reçu votre message. Merci.", 
-             animation: "slide-from-top",
-             type:"info"  ,
-            timer: 1500,   showConfirmButton: false });
-            })
-          .error(function(data) {
-              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
-              $scope.submitButtonDisabled = false;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-danger';
-            });  
-            
-        } else {
-            $scope.submitButtonDisabled = false;
-            $scope.resultMessage = 'Failed :( Please fill out all the fields.';
-            $scope.result='bg-danger';
-        }
-    }
-
-
-  }]);
-
 var app =angular.module('mean.courses').controller('CoursesController', ['$scope', '$rootScope',
-  '$stateParams', '$location', '$http','ngDialog', 'Global', 'Courses',
-  function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses) {
+  '$stateParams', '$location', '$http','ngDialog', 'Global', 'Courses','nzTour',
+  function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses, nzTour) {
     $scope.global = Global;
 
 
@@ -68,6 +23,7 @@ $scope.signalFact = function(){
     $scope.textarea_text="(Votre description)";
 
     $scope.sendFeedback = function(facteval) {
+
         $scope.submitted = true;
         $scope.submitButtonDisabled = true;
         var feedback ={
@@ -76,6 +32,7 @@ $scope.signalFact = function(){
           'inputSubject':'new fact',
           'inputMessage':$scope.textarea_text
         }
+
         
           $http.post('/api/feedback',{'feedback':feedback})
           .success(function(data){
@@ -95,59 +52,6 @@ $scope.signalFact = function(){
                     $scope.result='bg-danger';
             }); 
             ngDialog.closeAll(); 
-            
-        
-    }
-
-    }]
-      });
-
-      ///////////// LOG ////////////
-      saveLog({
-            'name':'feedback'
-          });
-      //////////////////////////////
-}
-
-$scope.lauchEvaluation = function(fact){
-
-        ngDialog.open({ template: 'courses/views/facts-eval.html', className: 'ngdialog-theme-default', width: '50%',
-        controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
-        function($scope, $rootScope,  $stateParams, $location, $http) {
-        
-  
-
-    $scope.sendFeedback = function(facteval) {
-        $scope.submitted = true;
-        $scope.submitButtonDisabled = true;
-        
-        var feedback ={
-          'inputName':'author',
-          'inputEmail':'author@author.com',
-          'inputSubject':'FACT EVALUATION: '+fact._id,
-          'inputMessage':'Fact pertincence: '+$scope.fact_val+' - Suggestion: '+$scope.prop_val
-        }
-        
-          $http.post('/api/feedback',{'feedback':feedback})
-          .success(function(data){
-                    $scope.submitButtonDisabled = true;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-success';
-                     ngDialog.closeAll(); 
-               swal({   title: "Merci!",   
-            text: "Nous avons bien reçu votre suggestion. Merci.", 
-             animation: "slide-from-top",
-             type:"info"  ,
-            timer: 1500,   showConfirmButton: false });
-            })
-          .error(function(data) {
-              swal("Oops", "Une erreur interne du serveur est survenue. Le message n'a pas probablement pas pu être envoyé", "error");
-              $scope.submitButtonDisabled = false;
-                    $scope.resultMessage = data.message;
-                    $scope.result='bg-danger';
-                     ngDialog.closeAll(); 
-            });  
-         
             
         
     }
@@ -220,7 +124,7 @@ $scope.lauchEvaluation = function(fact){
     };
 
 
-
+/////// Sendmail from the menu
  $scope.sendMail = function () {
         ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '60%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
@@ -537,23 +441,23 @@ else{
 
 $scope.resetIndicators = function(){
       $scope.indicatorsHeader=[
-        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'actions','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'speed','category':'Indicateurs de lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'reread','category':'Indicateurs de relecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'stop','category':'Indicateurs d\'arrêt et reprise','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null}
+        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'actions','category':'Indicateurs de lecture','title':'Le taux de vitesse est ','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'speed','category':'Indicateurs de lecture','title':'la vitesse de lecture est ','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'reread','category':'Indicateurs de relecture','title':'Le taux de relecture est','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
+        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'stop','category':'Indicateurs d\'arrêt et reprise','title':'Le taux arret de la lecture','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null}
 
       ]
       
 }
 $scope.resetIndicators();
 $scope.selectedIndicators=[
-        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 
+        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'title':' ',
         'issueCode':'actions','category':'Indicateurs de lecture'},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'title':' ',
         'issueCode':'speed','category':'Indicateurs de lecture'},
-        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 
+        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'title':' ',
         'issueCode':'reread','category':'Indicateurs de relecture'},
-        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue',
+        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','title':' ',
         'issueCode':'stop','category':'Indicateurs d\'arrêts et reprise'}
       ]
       $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
@@ -1993,37 +1897,138 @@ if(facts.length>0)
 
 
 /***************** TOUR ********************/
-$scope.tour={}
-$scope.tour.CompletedEvent = function (scope) {
-        console.log("Completed Event called");
-    };
 
-    $scope.tour.ExitEvent = function (scope) {
-        console.log("Exit Event called");
-    };
+ 
+    $scope.nztour = {
+    config: {
+        mask: {
+            visible: true, // Shows the element mask
+            clickThrough: false, // Allows the user to interact with elements beneath the mask
+            clickExit: false, // Exit the tour when the user clicks on the mask
+            scrollThrough: true, // Allows the user to scroll while hovered over the mask
+            color: 'rgba(0,0,0,.7)' // The mask color
+        },
+        container: 'body', // The container to mask
+        scrollBox: 'body', // The container to scroll when searching for elements
+        placementPriority: ['top', 'right', 'bottom','left'],
+        previousText: 'Précédent',
+        nextText: 'Suivant',
+        finishText: 'Fermer',
+        animationDuration: 400, // Animation Duration for the box and mask
+        disableInteraction: true, // Disable interaction with the highlighted elements
+        dark: false // Dark mode (Works great with `mask.visible = false`)
+    },
+    steps: [
+        {
+            target:'.logo',
+            content: "<h4>Bienvenue</h4>"+
+            "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
+            "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
+            "Vous pouvez arrêter cette visite à tout moment."+
+             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>"
+        },
+        {
+            target:'#data-table',
+            content: "<h4>Zone Table de données du cours</h4>"+
+            "Cette table présente en en-tête la structure du cours (colonnes) et les indicateurs associés (lignes). Les cellules intérieures colorées correspondent aux valeurs des différents indicateurs (carte de chaleur). Les problèmes potentiels détectés sont indiqués à l’aide du symbole"+
+             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>"
+        },
+        {
+            target: '.inspector-content',
+            content: "<h4>Inspecteur</h4>"+
+            "<span>Présente les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours concerné est indiqué en haut à gauche avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.</span>"
+        },
+        {
+            target: '#task-panel',
+            content: "<h4>Tâches</h4>"+
+            "<span>Permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. </span>"
+        },
+        
+    /*    {
+            target:'#granuleSwitchTH',
+            content: "<span class='badge-tour'>5/13</span> <h4><em>Changement Granule</em></h4>"+
+            "Permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés :"+
+            "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>",          
+            position: 'right'
+        },*/
+        {
+            target:'.inspectorChosenPart',
+            content: "<h4>Problème potentiel détecté</h4>"+
+            "<span>Ce symbole indique qu'un problème potentiel pour l’indicateur (en-tête de ligne) a été détecté pour l'élément (en-tête de colonne).</span>"
+        },
+        {
+            target: '#tableConfg',
+            content: "<h4>Configuration</h4>"+
+            "Ce menu permet de:" +
+            "<ol><li>Sélectionner les indicateurs à afficher" +
+            "<li>Sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif </ol>"
+        }
+        ,
+       
+        
+        {
+            target: '#factsTab',
+            content: " <h4>Onglet <em>Problèmes</em> </h4> "+
+            "<span>Présente les problèmes potentiels détectés pour l'élément. </span>"
+        },
+        {
+            target:'#fact-div',
+            content: " <h4>Description de problèmes potentiels</h4>"+
+            "<span>Affiche une description du problème sélectionné. Des suggestions pour le résoudre sont parfois proposées et peuvent être marquées comme tâches à faire.</span>"
+        },
+        {
+            target:'#dropFactBtn',
+            content: " <h4>Bouton <em>Ce n'est pas/plus un problème</em></h4>"+
+            "<span>Ce bouton permet d’arrêter l'affichage de ce problème (soit le problème n'en est pas un (faux positif), soit des actions pour le résoudre ont déjà été entreprises).</span>"
+        },
+        {
+            target:'#createFactTaskBtn',
+            content: " <h4>Bouton <em>Créer une tâche</em></h4>"+            
+            "<span>Ce bouton planifie une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.</span>"
+        },
+        {
+            target: '#statsTab',
+            content: " <h4>Onglet <em>Statistiques</em></h4>"+
+            "<span>Présente quelques statistiques sur l'élément sélectionné. </span>"
+        },
+        {
+            target: '#factChartPanel',
+            content: " <h4>Graphiques</h4>"+
+            "<span>Présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.</span>"
+        },
+         
+        {
+            target: '#tasks-table',
+            content: " <h4>Liste de <em>Tâches</em></h4>"+
+            "<span>Les tâches planifiées sont affichées sur cette table. Un groupe de boutons permet de (gauche à droite)</span><br/>"+
+            "<ul>"+
+            "<li><span class='glyphicon glyphicon-pencil'></span> Modifier l'action planifiée"+
+            "<li><span class='glyphicon glyphicon-ok'></span> Marquer l'action comme étant faite"+
+            "<li><span class='glyphicon glyphicon-trash'></span> Supprimer l'action"+
+            "</ul>"
+        },
+        {
+            target: '#contact_us',
+            content: "<em>La visite guidée est terminée. Merci de l'avoir suivie!</em> <b>N'hésitez pas à nous contacter.</b>"
+        }
+       
+        ],
+};
 
-    $scope.tour.ChangeEvent = function (targetElement, scope) {
-        console.log("Change Event called");
-        console.log(targetElement);  //The target element
-        console.log(this);  //The IntroJS object
-    };
-
-    $scope.tour.BeforeChangeEvent = function (targetElement, scope) {
-        console.log("Before Change Event called");
-        console.log(targetElement);
-    };
-
-    $scope.tour.AfterChangeEvent = function (targetElement, scope) {
-        console.log("After Change Event called");
-        console.log(targetElement);
-    };
- $scope.startGuidedTour = function(){
+$scope.startGuidedTour = function(){
     //goHome(); 
     setTimeout(function() {     
     selectTab('facts'); 
     $scope.tabSelect = 'facts';
      $scope.$apply();
-      $scope.launchGuidedTour();
+     // $scope.launchGuidedTour();
+     nzTour.start($scope.nztour)
+    .then(function() {
+        console.log('Tour Finished!');
+    })
+    .catch(function() {
+        console.log('Tour Aborted!')
+    });
   }, 500);
     
      ///////////// LOG ////////////
@@ -2035,129 +2040,8 @@ $scope.tour.CompletedEvent = function (scope) {
       //////////////////////////////
     
  }
-    $scope.tour.IntroOptions = {
 
-        steps:[
-        {
-            element:'.logo',
-            intro: "<span class='badge-tour'>1/13</span> <h4>Bienvenue</h4>"+
-            "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
-            "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
-            "Vous pouvez arrêter cette visite à tout moment."+
-             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
-            position: 'bottom'
-        },
-        {
-            element:'#data-table',
-            intro: "<span class='badge-tour'>2/13</span> <h4>Zone Table de données du cours</h4>"+
-            "Cette table présente en en-tête la structure du cours (colonnes) et les indicateurs associés (lignes). Les cellules intérieures colorées correspondent aux valeurs des différents indicateurs (carte de chaleur). Les problèmes potentiels détectés sont indiqués à l’aide du symbole"+
-             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>",
-            position: 'bottom'
-        },
-        {
-            element: '#inspector-container',
-            intro: "<span class='badge-tour'>3/13</span> <h4>Inspecteur</h4>"+
-            "Présente les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours concerné est indiqué en haut à gauche avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.",
-            position: 'top',
-        },
-        {
-            element: '#task-panel',
-            intro: "<span class='badge-tour'>4/13</span> <h4>Tâches</h4>"+
-            "Permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. ",
-            position: 'left',
-        },
-        
-    /*    {
-            element:'#granuleSwitchTH',
-            intro: "<span class='badge-tour'>5/13</span> <h4><em>Changement Granule</em></h4>"+
-            "Permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés :"+
-            "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>",          
-            position: 'right'
-        },*/
-        {
-            element:'.inspectorChosenPart',
-            intro: "<span class='badge-tour'>5/13</span> <h4>Problème potentiel détecté</h4>"+
-            "Ce symbole indique qu'un problème potentiel pour l’indicateur (en-tête de ligne) a été détecté pour l'élément (en-tête de colonne).",
-            position: 'bottom'
-        },
-        {
-            element: '#tableConfg',
-            intro: "<span class='badge-tour'>6/13</span> <h4>Configuration</h4>"+
-            "Ce menu permet de:" +
-            "<ol><li>Sélectionner les indicateurs à afficher" +
-            "<li>Sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif </ol>",
-            position: 'bottom',
-        }
-        ,
-       
-        
-        {
-            element: '#factsTab',
-            intro: "<span class='badge-tour'>7/13</span> <h4>Onglet <em>Problèmes</em> </h4> "+
-            "Présente les problèmes potentiels détectés pour l'élément.  ",
-            position: 'bottom',
-        },
-        {
-            element:'#fact-div',
-            intro: "<span class='badge-tour'>8/13</span> <h4>Description de problèmes potentiels</h4>"+
-            "Affiche une description du problème sélectionné. Des suggestions pour le résoudre sont parfois proposées et peuvent être marquées comme tâches à faire.",
-            position: 'top',
-        },
-        {
-            element:'#dropFactBtn',
-            intro: "<span class='badge-tour'>9/13</span> <h4>Bouton <em>Ce n'est pas/plus un problème</em></h4>"+
-            "Ce bouton permet d’arrêter l'affichage de ce problème (soit le problème n'en est pas un (faux positif), soit des actions pour le résoudre ont déjà été entreprises).",
-            position: 'top',
-        },
-        {
-            element:'#createFactTaskBtn',
-            intro: "<span class='badge-tour'>10/13</span> <h4>Bouton <em>Créer une tâche</em></h4>"+            
-            "Ce bouton planifie une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.",
-            position: 'top',
-        },
-        {
-            element: '#statsTab',
-            intro: "<span class='badge-tour'>11/13</span> <h4>Onglet <em>Statistiques</em></h4>"+
-            "Présente quelques statistiques sur l'élément sélectionné. ",
-            position: 'top',
-        },
-        {
-            element: '#factChartPanel',
-            intro: "<span class='badge-tour'>12/13</span> <h4>Graphiques</h4>"+
-            "Présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.",
-            position: 'top',
-        },
-         
-        {
-            element: '#tasks-table',
-            intro: "<span class='badge-tour'>13/13</span> <h4>Liste de <em>Tâches</em></h4>"+
-            "Les tâches planifiées sont affichées sur cette table. Un groupe de boutons permet de (gauche à droite)<br/>"+
-            "<ul>"+
-            "<li><span class='glyphicon glyphicon-pencil'></span> Modifier l'action planifiée"+
-            "<li><span class='glyphicon glyphicon-ok'></span> Marquer l'action comme étant faite"+
-            "<li><span class='glyphicon glyphicon-trash'></span> Supprimer l'action"+
-            "</ul>"
-            ,
-            position: 'left',
-        },
-        {
-            element: '#contact_us',
-            intro: "La visite guidée est terminée. Merci de l'avoir suivie! N'hésitez pas à nous contacter.",
-            position: 'bottom',
-        }
-       
-        ],
-        showStepNumbers: false,
-        exitOnOverlayClick: true,
-        exitOnEsc:true,
-        nextLabel: '<strong>Suiv.</strong>',
-        prevLabel: '<span style="color:green">Prec.</span>',
-        skipLabel: 'Fermer',
-        doneLabel: 'Fermer'
-    };
-
-    $scope.tour.ShouldAutoStart = false;
-    /***************** END TOUR ********************/
+    /******************END TOUR****************************/
 
 var computeGranuleData = function(granularity, element, indicator, fact, tab){
 if(typeof tab=='undefined') tab='facts'

@@ -51,7 +51,10 @@ Courses.register(function(app, auth, database) {
 Courses.aggregateAsset('js',"../lib/intro.js/minified/intro.min.js");
 Courses.aggregateAsset('css',"../lib/intro.js/minified/introjs.min.css");
  
-Courses.aggregateAsset('js',"../lib/angular-intro.js/build/angular-intro.min.js");
+
+
+Courses.aggregateAsset('js',"../lib/nz-tour/dist/nz-tour.min.js");
+Courses.aggregateAsset('css',"../lib/nz-tour/dist/nz-tour.min.css");
 
 Courses.aggregateAsset('js',"../lib/v-accordion/dist/v-accordion.js");
 Courses.aggregateAsset('css',"../lib/v-accordion/dist/v-accordion.css");
@@ -71,7 +74,7 @@ Courses.aggregateAsset('css',"../lib/v-accordion/dist/v-accordion.css");
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
   //Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','ngAnimate']);
-  Courses.angularDependencies(['ngSanitize','xeditable','perfect_scrollbar','selector','angular-intro','ngFitText','ngDialog','vAccordion','ngAnimate']);
+  Courses.angularDependencies(['ngSanitize','xeditable','perfect_scrollbar','selector','nzTour','ngFitText','ngDialog','vAccordion','ngAnimate']);
 
 /*
 	Courses.menus.add({
