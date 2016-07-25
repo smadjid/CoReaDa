@@ -1196,7 +1196,7 @@ a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
 }
 .course_title_top, .course_title_top:focus{
   height: 0 !important;
-    padding: 15px 5px;
+    padding: 15px 25px;
     font-size: 16px;
     float: left;
     font-family: 'Halflings';    
@@ -3171,8 +3171,8 @@ li.disabled, li[disabled]{
 
 
 .bs-callout {
-    padding: 20px;
-    margin: 20px 0;
+    padding: 10px;
+    margin: 15px 0;
     border: 1px solid #eee;
     border-left-width: 5px;
     border-radius: 3px;
@@ -3186,10 +3186,10 @@ li.disabled, li[disabled]{
 
 .feedbackbox{
 
-  background-color: #f2f2f2;
+  background-color: rgba(242, 242, 242, 0.42);
     border: 1px solid #ccc;
     padding: 20px;
-    top: 20px;
+    top: 15px;
     
     -webkit-box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
     box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
