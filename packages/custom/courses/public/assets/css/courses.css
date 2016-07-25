@@ -1230,7 +1230,19 @@ color: rgba(255, 255, 255, 0.74);
 color: white; 
 }
 
-
+nz-tour #nzTour-close {
+  background:red!important;
+  
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+}
+nz-tour #nzTour-length {
+    background: #AFACAC;
+}
+nz-tour #nzTour-step {
+    background: rgba(0, 0, 0, 0.82);
+}
 
 .badge-tour {
     display: inline-block;
@@ -1274,12 +1286,12 @@ color: white;
   width:570px;
   height:69px;
   margin:auto;
-  z-index: 99999;
+  z-index: 9999;
 }
 
 #floatingCirclesG{
   position:absolute;
-  z-index: 99999;
+  z-index: 9999;
    top:25%;
     left:40%;
   width:272px;

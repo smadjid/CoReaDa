@@ -432,81 +432,6 @@ $scope.selectedIndicators=[
 
 
 
-
- $scope.findOne = function() {
-   $scope.dataLoading = true;
-  $scope.pageLoaded = false;
-    
-    $scope.about();
-  
-      Courses.get({
-        courseId: $stateParams.courseId
-      }, function(course) {
-     
-        $scope.course = course;
-        $scope.chartType = 'actions';
-        $scope.selectedElement = course;
-
-
-        $scope.completeCourseParts();
-            $scope.context = {
-              'type':'course',      
-              'route':$scope.course._id,
-              'id':0,
-              '_id':$scope.course._id,
-              'title':$scope.course.title,
-              'Todos':$scope.course.todos,
-              'taskText':'(nouvelle tâche)',
-              'indicator':'actions',
-              'statsURL':"#",
-              'Tasks' : computeAllTasks(),
-              'd3':ComputeGlobalVisuData()
-              
-            };
-          /**********LOG*********/
-          //console.log(course.logs)
-          /**********************/
-
-    goHome();
-    computeCourseStats();
-     $scope.context.mainstats = $scope.course.mainstats;
-    
-    $scope.tableData = $scope.course;
-
-
-
-     
-    /********  Update on @ change ****************/
-    /* URL#
-    csid : course ID
-    ptId: tome IS
-    chapid : chapId
-    secid : section id
-    factid : fact id
-    indic : indicator title
-
-
-
-    */
-$(window).bind('hashchange',function(e){
-    
-   loadContext();
-  
-});
-
-$('.editable-text').on('shown', function (e, editable) {
-        if (arguments.length != 2) return
-        if (!editable.input.$input.closest('.control-group').find('.editable-input >textarea').length > 0 || !editable.options.clear || editable.input.$input.closest('.control-group:has(".btn-clear")').length > 0) return
-        
-        editable.input.$input.closest('.control-group').find('.editable-buttons').append('<br><button class="btn btn-clear"><i class="icon-trash"></i></button>');
-    });
-
-
-
-/////TODO:
-
-
-
 $scope.setSectionDisplay = function(value){ 
   $scope.sectionDisplay = value;
 window.setTimeout(function() {
@@ -543,69 +468,8 @@ $scope.toggleSectionDisplay = function(){
   $scope.currentFact = 0;
   
   
-  
-  
-  
 
 }
-
-$scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
- $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
-  function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
-
-
-});
-
-$scope.$watch('allIndicatorSelectorShow', function(newValue, oldValue) {  
- 
-$scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
-
-});
-
-
-$scope.$watch('tabSelect', function(newValue, oldValue) {	
-  //console.log($scope.currentFact)
- // selectTab(newValue)
-
- var components = parseURL(window.location.hash);
-
-   ///////////// LOG ////////////
-    if(components!=null)  saveLog({
-            'name':'selectTab',
-            'elementId':components._id,
-            'params':[
-             {'paramName':'url','paramValue':window.location.hash}] 
-          });
-      //////////////////////////////
-   if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
-if(components == null)    
-      loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
-else
-    if(!components.hasOwnProperty('factid'))
-      loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
-    
- 
-
-    window.setTimeout(function() {
-      resetPath();
-      $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent()
-      .addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-    }, 0); 
-   }
-   else{
-    resetPath();  
-    window.setTimeout(function() { 
-        loadURL($scope.currentElement.route+'&indicator='+$scope.context.indicator);
-     }, 0); 
-    
-    
-  }
-
-}  );
-
-
-
-
 $scope.getGraphTitle = function(code){
   switch(code) {
     case "actions":
@@ -635,40 +499,7 @@ $scope.getGraphTitle = function(code){
 }
 
 }
-
-
-
-    if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important" ></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' ) +' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
-      
-        /*reloadURL(); return;
-       window.setTimeout(function() {
-           loadContext(); 
-          $('table').show();
-          reloadURL(); 
-          $scope.$apply();
-        }, 0);
-
-*/
-       
-
-
-
- setTimeout(function() {     
-    selectTab('facts'); 
-    $scope.tabSelect = 'facts';
-    $scope.dataLoading = false;
-    $scope.pageLoaded = true;
-     $scope.$apply();
-    //alert('hh')
-  }, 500);
-
  
-
-    
-      });
-
-    };
 
 
 
@@ -2380,17 +2211,6 @@ $scope.triggerClick = function($event){
   
  }
 
- $scope.triggerHover = function($event){ 
-  var url ="#"
-//if ($event!==null)  url = $($event.currentTarget).attr('data-path');  
-  //  $scope.hoverElements(url); 
- }
-
- $scope.$on("hover", function (e, msg) {
-//$scope.hoverElements(msg)        
-      });
-
-
 
 var filterTasks = function(element, indicator, task){ 
 
@@ -2930,8 +2750,8 @@ $scope.markTaskDone = function (route, index) {
 }
 $scope.deleteTask = function (route, index) {
 swal({
-      title: "Supprimer la tâche?", 
-      text: "Êtes vous sur de vouloir suppprimer cette tâche?", 
+      title: "Supprimer la tâche ?", 
+      text: "Êtes vous sur de vouloir suppprimer cette tâche ?", 
       type: "warning",
       showCancelButton: true,
       closeOnConfirm: false,
@@ -2962,8 +2782,8 @@ swal({
 $scope.dropFact = function () {
   var fact = $scope.inspectorFacts.Facts[$scope.currentFact];
 swal({
-      title: "Marquer le problème comme résolu?", 
-      text: "Êtes vous sur de vouloir marquer ce problème comme résolu et le supprimer des problèmes potentiels?", 
+      title: "Marquer le problème comme résolu ?", 
+      text: "Êtes vous sur de vouloir marquer ce problème comme résolu et le supprimer des problèmes potentiels ?", 
       type: "warning",
       showCancelButton: true,
       closeOnConfirm: false,
@@ -3260,11 +3080,153 @@ chartData.push({'part':$scope.course._id,
 return chartData;
 
 }
+$scope.findOne = function() {
+   $scope.dataLoading = true;
+  $scope.pageLoaded = false;
+    
+    
+  
+      Courses.get({
+        courseId: $stateParams.courseId
+      }).$promise.then(function(course) {
+$scope.about();
+if (course){
+     
+        $scope.course = course;
+        $scope.chartType = 'actions';
+        $scope.selectedElement = course;
+
+
+        $scope.completeCourseParts();
+            $scope.context = {
+              'type':'course',      
+              'route':$scope.course._id,
+              'id':0,
+              '_id':$scope.course._id,
+              'title':$scope.course.title,
+              'Todos':$scope.course.todos,
+              'taskText':'(nouvelle tâche)',
+              'indicator':'actions',
+              'statsURL':"#",
+              'Tasks' : computeAllTasks(),
+              'd3':ComputeGlobalVisuData()
+              
+            };
+          /**********LOG*********/
+          //console.log(course.logs)
+          /**********************/
+
+    
+    computeCourseStats();
+     $scope.context.mainstats = $scope.course.mainstats;
+    
+    $scope.tableData = $scope.course;
+$(window).bind('hashchange',function(e){
+    
+   loadContext();
+  
+});
+
+goHome();
+
+$('.editable-text').on('shown', function (e, editable) {
+        if (arguments.length != 2) return
+        if (!editable.input.$input.closest('.control-group').find('.editable-input >textarea').length > 0 || !editable.options.clear || editable.input.$input.closest('.control-group:has(".btn-clear")').length > 0) return
+        
+        editable.input.$input.closest('.control-group').find('.editable-buttons').append('<br><button class="btn btn-clear"><i class="icon-trash"></i></button>');
+    });
+
+
+
+$scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
+ $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
+  function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
+
+
+});
+
+$scope.$watch('allIndicatorSelectorShow', function(newValue, oldValue) {  
+ 
+$scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
+
+});
+
+
+$scope.$watch('tabSelect', function(newValue, oldValue) { 
+ var components = parseURL(window.location.hash);
+
+   ///////////// LOG ////////////
+    if(components!=null)  saveLog({
+            'name':'selectTab',
+            'elementId':components._id,
+            'params':[
+             {'paramName':'url','paramValue':window.location.hash}] 
+          });
+      //////////////////////////////
+   if((newValue == 'facts')&($scope.inspectorFacts.Facts.length>0)){ 
+if(components == null)    
+      loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
+else
+    if(!components.hasOwnProperty('factid'))
+      loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
+    
+ 
+
+    window.setTimeout(function() {
+      resetPath();
+      $(".fact[data-fact-id='"+$scope.inspectorFacts.Facts[$scope.currentFact]._id+"']").parent()
+      .addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
+    }, 0); 
+   }
+   else{
+    resetPath();  
+    window.setTimeout(function() { 
+        loadURL($scope.currentElement.route+'&indicator='+$scope.context.indicator);
+     }, 0); 
+    
+    
+  }
+
+}  );
+    if($('.course_title_top').length<1)
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important" ></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' ) +' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
+   
+ setTimeout(function() {     
+    selectTab('facts'); 
+    $scope.tabSelect = 'facts';
+    $scope.dataLoading = false;
+    $scope.pageLoaded = true;
+     $scope.$apply();
+  }, 500);
+
+ 
+}
+else alert('no')
+    
+      })
+      .catch(function(err){
+
+        swal("Oops", "", "error");
+        swal({
+      title: "OOps !", 
+      text: "Une erreur interne du serveur est survenue. Le cours que vous essayez de visiter existe-t-il vraiment ? Vous allez être redirigé vers la page d'accueil CoReaDa", 
+      type: "error",
+      showCancelButton: false
+    }, function() { 
+      window.location.href = window.location.origin
+    });
+        //
+
+
+});
+
+      ///////////END GET
+
+    };
 
 
 
   // end
-   
   }
 ]);
 
