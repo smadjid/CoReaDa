@@ -1,6 +1,15 @@
 <div class="" data-ng-controller="HomeController" >
 
-
+<div ng-show="dataLoading" id="floatingCirclesG">
+<div class="f_circleG" id="frotateG_01"></div>
+  <div class="f_circleG" id="frotateG_02"></div>
+  <div class="f_circleG" id="frotateG_03"></div>
+  <div class="f_circleG" id="frotateG_04"></div>
+  <div class="f_circleG" id="frotateG_05"></div>
+  <div class="f_circleG" id="frotateG_06"></div>
+  <div class="f_circleG" id="frotateG_07"></div>
+  <div class="f_circleG" id="frotateG_08"></div>
+</div>
 
 
 
@@ -15,7 +24,7 @@
  
    <v-pane>
     <v-pane-header>
-      <h4><i>Qu'est-ce que CoReaDa ?</i></h4>
+      <h4><i>Présentation du projet CoReaDa</i></h4>
     </v-pane-header>
     <v-pane-content>
     <b>CoReaDa</b> est un acronyme pour <i><b>Co</b>urse <b>Rea</b>ding <b>Da</b>shboard</i>, littéralement <i>Tableau de bord de lecture de cours</i>. Il fait partie d'un projet ayant pour objectif d'utiliser les traces de lecture pour assister les auteurs des cours en ligne lors de la révision de leurs contenus. Le tableau de bord présente des données sur la lecture du cours, montre de potentiels problèmes de lecture et suggère des actions appropriées. 
@@ -25,98 +34,48 @@
 
     <v-pane>
     <v-pane-header>
-      <h4><i>Comment est construit un tableau de bord CoReaDa?</i></h4>
+      <h4><i>Processus de construction d'un tableau de bord CoReaDa?</i></h4>
     </v-pane-header>
     <v-pane-content>
-    <table><tr>
-    <td width="50%"  style="padding:0">Le processus est organisé en 3 étapes principales:
+    <span   >Le processus est organisé en 3 étapes principales:</span>
+      <img src="/courses/assets/img/about.png" width="100%" >
+  
     <ol>
     <li>Traçage des lecteurs et collecte des données. Les logs de traces ainsi récupérés sont sauvegardés dans une base de données dédiées.
     <li>Traitement de données. Différents traitement sont réalisés sur les traces sauvegardées afin de calculer différents indicateurs de lecture. Ces traitements permettent par ailleurs d'inférer d'éventuels problèmes de lecture
     <li>Génération de visualisations. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour envisager de réaliser de modifications à même de résoudre les problèmes détéctés.
-    </li>
 
-    </td>
-    <td width="50%" style="padding:0">  <img src="/courses/assets/img/about.png" width="100%" ></td>
-    </tr></table>
-   
+  </ol>
    
     </v-pane-content>
   </v-pane>
 
   <v-pane>
     <v-pane-header>
-      <h4><i>Quels sont les gens derrière ce projet ?</i></h4>
+      <h4><i>Equipe du projet et contact</i></h4>
     </v-pane-header>
     <v-pane-content>
+<h4>Les gens derrière ce projet</h4> 
    <ul>
-   <li><b>Madjid Sadallah</b> : ...
-   <li><b>Benoit Encelle</b> : ...
-   <li><b>Yannick Prié</b> : ...
+   <li><b>Madjid Sadallah</b> : doctorant algérien, CERIST, Alger.
+   <li><b>Benoit Encelle</b> : docteur en informatique, LIRIS, Lyon. 
+   <li><b>Yannick Prié</b> : professeur en informatique, LINA, Nantes.
    </ul>
-   
-    </v-pane-content>
-  </v-pane>
-
-  <v-pane>
-    <v-pane-header>
-      <h4><i>** Quelques concepts clés</i></h4>
-    </v-pane-header>
-    <v-pane-content>
-    <ul>
-    <li><u>Trace de lecture</u> : Une trace de lecture d'un utilisateur représente l'ensemble de ses données de navigation au sein du cours. 
-    <li><u>Analyse de traces</u> : 
-    Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.
-    <li><u>Indicateur</u> : Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.
-    <li><u>Problèmes de lecture</u> : Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.
-    <li><u>Suggestion de reconception</u> :
-    </ul>
-    
-    </v-pane-content>
-  </v-pane>
-
   
+  <h4>Contact</h4>
+   <p style=' '>Si vous désirez avoir plus d'information sur ce projet, si vous avez des suggestions ou si vous voulez rapporter un bug ou un problème dans l'interface, vous pouvez :</p>
+<ul  style='padding-left:10%'>
+    <li>Nous anvoyer un mail: <a href='mailto:coreada.project@gmail.com'>coreada.project@gmail.com</a>
+    <li>Envoyer un mail à la personne de contact du projet: <a href='mailto:madjid.sadallah@gmail.com'>madjid.sadallah@gmail.com</a>
+    <li>Remplir le formulaire ci-dessous
+</ul>
+<br/>
 
-   
+                       
 
 
-  
-
- 
-
-</v-accordion>
-
-  </div>
-  <div class="col-md-12 bs-callout" style="background-color:#F5F5F0">
-  <h3>Cours à analyser</h3>
-  <form   id="coursecodeform" name="coursecodeform" ng-submit="courseCoder(coursecodeform)" style="width:100%">
-  <div class="form-group" >
-    <input type="text" class="form-control" placeholder="Merci d'introduire le code d'accès du cours à afficher" ng-model="courseCode" style="width:85%; display:inline-block; margin-right:10px" required>
-    <button id="loadCourseBtn" type="submit" class="btn-action" >Charger</button>
-  </div>
-  
-</form>
-  
-  <ul class='course_li'>
-    <li data-ng-repeat="course in courses">
-       <h4><a data-ng-href="/courses/{{course._id}}"><strong>{{course.title}}</strong></a></h4>
-    
-      <ul>
-        <li>Analyse créée le : {{course.created | date:'medium'}}
-        <li>Données de lecture : du {{course.ob_begin}} au {{course.ob_end}}
-      <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
-        <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b>
-        <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b>
-      </ul>
-    </li>
-  </ul>
-  </div>
-  </div>
-   <div class="col-md-5 feedbackbox" id="box">
-                      <h3>Nous envoyer un commentaire</h3> <hr/> 
-                           
 <form id="contactform" ng-submit="sendFeedback(contactform)" name="contactform" method="post"   class="form-horizontal" role="form">
-
+<div class="feedbackbox" id="box">
 
                         <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
                             <label for="inputName" class="col-lg-2 control-label">Nom</label>
@@ -151,24 +110,67 @@
                         </div>
                     </form>
 
-                              
-                <!--                <p ng-class="result" style="padding: 15px; margin: 0;">{{ resultMessage }}</p>-->
                     </div>
 
+   
+
+</v-pane-content>
+  
+
+   </v-pane>
+
+  <v-pane>
+    <v-pane-header>
+      <h4><i>Quelques concepts clés</i></h4>
+    </v-pane-header>
+    <v-pane-content>
+    <ul>
+    <li><u>Trace de lecture</u> : Une trace de lecture d'un utilisateur représente l'ensemble de ses données de navigation au sein du cours. 
+    <li><u>Analyse de traces</u> : 
+    Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.
+    <li><u>Indicateur</u> : Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.
+    <li><u>Problèmes de lecture</u> : Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.
+    <li><u>Suggestion de reconception</u> : une suggestion de reconception est une action de modification du contenu de cours de telle manière à résoudre un problème éventuel détecté.
+    </ul>
+    
+    </v-pane-content>
+  </v-pane>
+
+
+</v-accordion>
+
+  </div>
+  
+  </div>
+   
+  <div class="col-md-5 feedbackbox" id="box">
+  <h3>Code de votre cours</h3>
+  <form   id="coursecodeform" name="coursecodeform" ng-submit="courseCoder(coursecodeform)" style="width:100%">
+  <div class="form-group" >
+    <input type="text" class="form-control" placeholder="Code d'accès du cours à afficher" ng-model="courseCode" style="width:70%; display:inline-block" required>
+    <button id="loadCourseBtn" type="submit" class="btn-action pull-right" >Charger</button>
+  </div>
+  
+</form>
+  
+  <ul class='course_li'>
+    <li data-ng-repeat="course in courses">
+       <h4><a data-ng-href="/courses/{{course._id}}"><strong>{{course.title}}</strong></a></h4>
+    
+      <ul>
+        <li>Analyse créée le : {{course.created | date:'medium'}}
+        <li>Données de lecture : du {{course.ob_begin}} au {{course.ob_end}}
+      <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
+        <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b>
+        <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b>
+      </ul>
+    </li>
+  </ul>                    
 
 
 
  </div>
-                    
 
-<br/>
-<div  style="padding-left:30px">
-
-  
-  <br/>
-<!--  <p class="alert alert-warning">You must be logged in to use this work in progress tool</p>-->
-  <br/>
-</div>
 
 </div>
 

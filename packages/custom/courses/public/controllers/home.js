@@ -14,16 +14,19 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
     $scope.courseCoder = function(coursecodeform){      
       $scope.courses = []
         if (coursecodeform.$valid) {
-          $('#loadCourseBtn').text('Chargement en cours')
+          $scope.dataLoading = true;
+          $('#loadCourseBtn').text('Chargement ...')
         
           $http.get('/api/find/'+$scope.courseCode)
           .success(function(data){
               $scope.courses = data;
-              $('#loadCourseBtn').text('Charger')
+              $('#loadCourseBtn').text('Charger');
+              $scope.dataLoading = false;
             })   
           .error(function(data) {             
               swal("Oops", "Aucun cours trouvé pour ce code", "error");   
-              $('#loadCourseBtn').text('Charger')           
+              $('#loadCourseBtn').text('Charger')           ;
+              $scope.dataLoading = false;
             }); 
         };
 
