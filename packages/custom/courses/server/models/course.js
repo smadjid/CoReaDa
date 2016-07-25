@@ -321,6 +321,10 @@ var CourseSchema = new Schema({
     type: Number,
     default: 0
   },
+  sectionsAvailable:{
+    type: Boolean, 
+    default: false
+  }, 
 
 
 

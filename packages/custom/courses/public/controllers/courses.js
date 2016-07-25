@@ -446,6 +446,8 @@ $scope.selectedIndicators=[
         $scope.course = course;
         $scope.chartType = 'actions';
         $scope.selectedElement = course;
+
+        console.log(course)
   
         $scope.completeCourseParts();
             $scope.context = {

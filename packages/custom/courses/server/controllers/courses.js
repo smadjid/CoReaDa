@@ -238,7 +238,12 @@ module.exports = function(Courses) {
 
 
         /************ COURSE *****************/
+
+        var sectionsAvailable = false;
+        var sectionsAvailableData = subsetByField(coursestats,'property','sectionsAvailable');
         
+        
+        if(sectionsAvailableData.length>0) sectionsAvailable = sectionsAvailableData[0].value
         var course = new Course( {
             title : courseData.title,
             url:courseData.url,
@@ -246,6 +251,7 @@ module.exports = function(Courses) {
             courseCode:courseCode,
             ob_begin:subsetByField(coursestats,'property','ob_begin')[0].value ,
             ob_end:subsetByField(coursestats,'property','ob_end')[0].value ,
+            sectionsAvailable: sectionsAvailable,
             nbtasks : 0,
             nbfacts : jsonFacts.length,
             parts:courseParts,
@@ -344,7 +350,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
                 var result = [];
                 for (var i = 0; i< courses.length; i++){   
-                 //console.log(Date.now());      ;
+                 
                 var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
@@ -378,7 +384,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
                 var result = [];
                 for (var i = 0; i< courses.length; i++){   
-                 //console.log(Date.now());      ;
+                 
                 var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
