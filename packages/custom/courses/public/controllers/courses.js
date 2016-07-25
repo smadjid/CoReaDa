@@ -447,8 +447,7 @@ $scope.selectedIndicators=[
         $scope.chartType = 'actions';
         $scope.selectedElement = course;
 
-        console.log(course)
-  
+
         $scope.completeCourseParts();
             $scope.context = {
               'type':'course',      
@@ -640,7 +639,7 @@ $scope.getGraphTitle = function(code){
 
 
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' ) +' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important" ></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' ) +' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
       
         /*reloadURL(); return;
        window.setTimeout(function() {
@@ -1891,7 +1890,7 @@ if(facts.length>0)
     },
     steps: [
         {
-            target:'.logo',
+            target:'.navbar-fixed-top',
             content: "<h4>Bienvenue</h4>"+
             "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
             "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
@@ -1980,7 +1979,7 @@ if(facts.length>0)
         },
         {
             target: '#contact_us',
-            content: "<em>La visite guidée est terminée. Merci de l'avoir suivie!</em> <b>N'hésitez pas à nous contacter.</b>"
+            content: "<em>La visite guidée est terminée. Merci de l'avoir suivie !</em> <br> <strong>N'hésitez pas à nous <a href='mailto:coreada.project@gmail.com' title='Cliquer ici pour nous envoyer un mail'>contacter</a>.</strong>"
         }
        
         ],
@@ -2290,7 +2289,7 @@ var loadContext = function(){
         
         if($('.course_title_top').length<1){
           
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'yyyy-MM-dd' )+' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'yyyy-MM-dd' )+' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
                 }
                 
 if(components != null)

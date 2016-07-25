@@ -38,7 +38,7 @@
 /* Top Navigation */
 .navbar-brand{
   height:0!important;
-  padding: 10px!important;
+  
 }
 .top-nav {
     padding: 0 15px;
@@ -1195,34 +1195,41 @@ a, a:hover, a:active, a:focus, .table a:not(.btn), .table a:not(.btn){
 
 }
 .course_title_top, .course_title_top:focus{
-  font-size: 17px;
-float: left;
-    padding: 10px 12px;
-
-    font-family: 'Halflings';
-    
+  height: 0 !important;
+    padding: 15px 5px;
+    font-size: 16px;
+    float: left;
+    font-family: 'Halflings';    
     -webkit-font-smoothing: antialiased;
     color:rgb(207, 210, 218);
+
 }
 .course_title_top:hover, .course_title_top:active{
  color:white;
 }
 
-
-.course_tour_top, .course_tour_top:focus{
-   font-size: 17px;
-float: left;
-    padding: 10px 12px;
-    margin-left: 30px;
-
+.tourStarter{
+color: rgba(255, 255, 255, 0.74);
+    position: fixed;
+    top: 0;
+    right: 15px;
+    z-index: 1400;
+    /* font-weight: normal; */
+    padding: 15px 5px;
+    font-size: 14px;
     font-family: 'Halflings';
-    
+
+     height: 0 !important;
     -webkit-font-smoothing: antialiased;
-    color:rgb(207, 210, 218);
 }
-.course_tour_top:hover{
- color:white;
+.tourStarter span{
+  margin:0;
+  padding:0;
 }
+.tourStarter span:hover{
+color: white; 
+}
+
 
 
 .badge-tour {
@@ -3082,20 +3089,7 @@ animation: pulseBars 3s linear ;
 .introjs-showElement > td { z-index: 9999999 !important; }
 
 
-.tourStarter{
-color: rgba(255, 255, 255, 0.74);
-    position: fixed;
-    top: 0px;
-    right: 2%;
-    z-index: 1400;
-    /* font-weight: normal; */
-    padding: 10px 12px;
-    font-size: 17px;
-    font-family: 'Halflings';
-}
-.tourStarter span:hover{
-color: white; 
-}
+
 
 
 .container-nginclude{
