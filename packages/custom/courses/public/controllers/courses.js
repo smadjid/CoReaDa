@@ -1725,7 +1725,8 @@ if(facts.length>0)
             content: "<img width:30 src='/courses/assets/img/logo.png'  />"+
             "<span>Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
             "Cette visite a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
-            "Vous pouvez arrêter cette visite à tout moment.</span>"
+            "<br/>** Vous pouvez utiliser aussi les flèches de direction de votre clavier pour avancer ou reculer"+
+            "<br/>** Vous pouvez arrêter cette visite à tout moment en la fermant ou en appuyant sur le bouton <i>Echap</i> de votre clavier.</span>"
         },
         {
             target:'#data-table',
@@ -1744,13 +1745,12 @@ if(facts.length>0)
             "<span>Permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. </span>"
         },
         
-    /*    {
+        {
             target:'#granuleSwitchTH',
-            content: "<span class='badge-tour'>5/13</span> <h4><em>Changement Granule</em></h4>"+
+            content: "<h4><em>Changement Granule</em></h4>"+
             "Permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés :"+
-            "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>",          
-            position: 'right'
-        },*/
+            "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>"
+        },
         {
             target:'.inspectorChosenPart',
             content: "<h4>Problème potentiel détecté</h4>"+
