@@ -2120,7 +2120,7 @@ var loadContext = function(){
         
         if($('.course_title_top').length<1){
           
-                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' )+' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
+                $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important"></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.ob_begin+' au '+$scope.course.ob_end+')</i>  </a>  <span class="course_tour_top pull-right"  role="button"></span>');
                 }
                 
 if(components != null)
@@ -3091,8 +3091,10 @@ $scope.findOne = function() {
       }).$promise.then(function(course) {
 $scope.about();
 if (course){
+  
      
         $scope.course = course;
+
         $scope.chartType = 'actions';
         $scope.selectedElement = course;
 
@@ -3128,6 +3130,12 @@ $(window).bind('hashchange',function(e){
 });
 
 goHome();
+// alert($scope.cours.ob_begin)
+        var a = $filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' );
+        $scope.course.ob_begin = a;
+        a=$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' );
+        $scope.course.ob_end = a;
+        //$scope.cours.ob_end = $filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' );
 
 $('.editable-text').on('shown', function (e, editable) {
         if (arguments.length != 2) return
@@ -3189,7 +3197,7 @@ else
 
 }  );
     if($('.course_title_top').length<1)
-      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important" ></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' ) +' au '+$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' )+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
+      $('.navbar-brand').after('<a role ="button" href ="#" ng-click ="goHome(); resetPath();" class ="course_title_top"> <span class ="glyphicon glyphicon-book" style="top:2.5px!important" ></span>  <em><b>'+$scope.course.title+'</b></em>  <i>(données du '+$scope.course.ob_begin +' au '+$scope.course.ob_end+')</i>  </a>   <span class="course_tour_top pull-right"  role="button"></span>');
    
  setTimeout(function() {     
     selectTab('facts'); 
