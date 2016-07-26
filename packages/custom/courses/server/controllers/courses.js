@@ -389,8 +389,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     '_id':courses[i]._id,
                     'title':courses[i].title,
                     'nbfacts':courses[i].nbfacts,
-                    'ob_begin':new Date(courses[i].ob_begin),
-                    'ob_end':new Date(courses[i].ob_end),
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated
@@ -422,8 +422,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     '_id':_course._id,
                     'title':_course.title,
                     'nbfacts':_course.nbfacts,
-                    'ob_begin':_course.ob_begin,
-                    'ob_end':_course.ob_end,
+                    'ob_begin':new Date(Date.parse(_course.ob_begin)),
+                    'ob_end':new Date(Date.parse(_course.ob_end)),
                     'nbtasks':_course.nbtasks,
                     'created':_course.created,
                     'updated':_course.updated
