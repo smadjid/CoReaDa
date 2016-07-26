@@ -613,6 +613,15 @@ a.list-warning-item:hover {
         opacity: 0.6;
         z-index:1000;
       }
+.indexScroller {    
+  
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    max-height:  60vh;
+    margin-bottom:10px!important;
+
+}
 .tableScroller {    
     overflow-y: hidden;
     overflow-x: hidden;

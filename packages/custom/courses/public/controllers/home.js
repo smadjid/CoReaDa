@@ -67,8 +67,6 @@ $scope.result = 'hidden'
 
 
       $scope.sendFeedback = function(facteval) {
-
-
         $scope.submitted = true;
         $scope.submitButtonDisabled = true;
         var feedback ={
@@ -97,10 +95,9 @@ $scope.result = 'hidden'
                     $scope.resultMessage = data.message;
                     $scope.result='bg-danger';
             }); 
-            
-            
-        
     }
+
+    $('.indexScroller').scroll();
 
    
   }

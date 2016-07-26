@@ -18,16 +18,16 @@
  
  <h1 style="padding-left:15px">Bienvenue sur <img src="/courses/assets/img/logo.png"  />  - the <i>Course Reading Dashboard</i></h1>
  <div class="col-md-7">
-  <div class="bs-callout"  id="box">
- 
- <v-accordion class="vAccordion--default" style=" padding: 5px 20px;   ">
+  <div class="bs-callout"  id="vAccordionBox"  >
+  <perfect-scrollbar class="indexScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"> 
+ <v-accordion class="vAccordion--default" style=" padding: 5px 20px; " onexpand="expandCallback(index, id)">
  
    <v-pane>
     <v-pane-header>
       <h4><i>Présentation du projet CoReaDa</i></h4>
     </v-pane-header>
     <v-pane-content>
-    <b>CoReaDa</b> est un acronyme pour <i><b>Co</b>urse <b>Rea</b>ding <b>Da</b>shboard</i>, littéralement <i>Tableau de bord de lecture de cours</i>. Il fait partie d'un projet ayant pour objectif d'utiliser les traces de lecture pour assister les auteurs des cours en ligne lors de la révision de leurs contenus. Le tableau de bord présente des données sur la lecture du cours, montre de potentiels problèmes de lecture et suggère des actions appropriées. 
+    <b>CoReaDa</b> est un acronyme pour <i><b>Co</b>urse <b>Rea</b>ding <b>Da</b>shboard</i>, littéralement <i>Tableau de bord de lecture de cours</i>. Il désigne un projet de tableau de bord dont l'objectif est  d'utiliser les traces de lecture sur les cours en ligne pour assister leurs auteurs dans leurs tâches de révision de contenus. En plus de présenter différentes statistiques de lecture, il montre de potentiels problèmes observés pour lesquelles il suggère un certain nombre d'actions appropriées. 
       
     </v-pane-content>
   </v-pane>
@@ -37,13 +37,13 @@
       <h4><i>Processus de construction d'un tableau de bord CoReaDa?</i></h4>
     </v-pane-header>
     <v-pane-content>
-    <span   >Le processus est organisé en 3 étapes principales:</span>
-      <img src="/courses/assets/img/about.png" width="100%" >
+    <span>La construction du tableau de bord d'un cours resulte du processus illustré sur la figure suivante:</span>
+      <img src="/courses/assets/img/about.png" width="80%" style="padding:10px; padding-left:8%">
   
     <ol>
-    <li>Traçage des lecteurs et collecte des données. Les logs de traces ainsi récupérés sont sauvegardés dans une base de données dédiées.
-    <li>Traitement de données. Différents traitement sont réalisés sur les traces sauvegardées afin de calculer différents indicateurs de lecture. Ces traitements permettent par ailleurs d'inférer d'éventuels problèmes de lecture
-    <li>Génération de visualisations. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour envisager de réaliser de modifications à même de résoudre les problèmes détéctés.
+    <li><em>Traçage des lecteurs et collecte des données</em>. Les logs ainsi récupérés sont sauvegardés dans une base de données.
+    <li><em>Traitement de données</em>. Les traces enregsitrées subissent un ensemble de traitements pour calculer différents indicateurs de lecture et de détecter d'éventuels problèmes de lecture.
+    <li><em>Génération de visualisations</em>. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour réaliser de modifications sur le contenu de son cours.
 
   </ol>
    
@@ -138,7 +138,7 @@
 
 
 </v-accordion>
-
+ </perfect-scrollbar> 
   </div>
   
   </div>
