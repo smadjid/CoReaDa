@@ -20,7 +20,7 @@
  <div class="col-md-7">
   <div class="bs-callout"  id="vAccordionBox"  >
   <perfect-scrollbar class="indexScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"> 
- <v-accordion class="vAccordion--default" style=" padding: 5px 20px; " onexpand="expandCallback(index, id)">
+ <v-accordion class="vAccordion--default" style=" padding: 5px 20px; ">
  
    <v-pane>
     <v-pane-header>
@@ -50,7 +50,7 @@
     </v-pane-content>
   </v-pane>
 
-  <v-pane>
+  <v-pane id='contactPane'>
     <v-pane-header>
       <h4><i>Equipe du projet et contact</i></h4>
     </v-pane-header>
@@ -152,6 +152,7 @@
   </div>
   
 </form>
+  <em ng-show="!(courses.length)">Le code d'accès d'un cours est un identifiant unique qui permet d'afficher dans cet espace des données sur le cours ainsi qu'un lien d'accès à son tableau de bord. Si vous avez oublié le code de votre cours, veuillez nous contacter à l'adresse <a href="coreada.project@gmail.com">coreada.project@gmail.com</a> ou d'utiliser le formulaire de contact présent à gauche (section "Équipe du projet et contact")</a></em>
   
   <ul class='course_li'>
     <li data-ng-repeat="course in courses">

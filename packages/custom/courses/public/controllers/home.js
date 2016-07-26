@@ -64,6 +64,13 @@ $scope.result = 'hidden'
     $scope.submitted = false; //used so that form errors are shown only after the form has been submitted
 
     
+$scope.expandCallback = function (index, id) {
+  $scope.accordion.expand(3)
+  window.setTimeout(function() {    
+    $('.indexScroller').scroll();
+   }, 0);
+
+};
 
 
       $scope.sendFeedback = function(facteval) {
