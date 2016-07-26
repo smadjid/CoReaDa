@@ -389,8 +389,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     '_id':courses[i]._id,
                     'title':courses[i].title,
                     'nbfacts':courses[i].nbfacts,
-                    'ob_begin':courses[i].ob_begin,
-                    'ob_end':courses[i].ob_end,
+                    'ob_begin':new Date(courses[i].ob_begin),
+                    'ob_end':new Date(courses[i].ob_end),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated
