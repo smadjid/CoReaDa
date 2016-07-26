@@ -1722,17 +1722,16 @@ if(facts.length>0)
     steps: [
         {
             target:'.navbar-fixed-top',
-            content: "<h4>Bienvenue</h4>"+
-            "Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
-            "Cette visite guide a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
-            "Vous pouvez arrêter cette visite à tout moment."+
-             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>"
+            content: "<img width:30 src='/courses/assets/img/logo.png'  />"+
+            "<span>Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
+            "Cette visite a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
+            "Vous pouvez arrêter cette visite à tout moment.</span>"
         },
         {
             target:'#data-table',
             content: "<h4>Zone Table de données du cours</h4>"+
-            "Cette table présente en en-tête la structure du cours (colonnes) et les indicateurs associés (lignes). Les cellules intérieures colorées correspondent aux valeurs des différents indicateurs (carte de chaleur). Les problèmes potentiels détectés sont indiqués à l’aide du symbole"+
-             "<span class='fact fa fa-exclamation-circle' role='button' style='padding:0;color:#FFEB3B;'></span>"
+            "<span>Cette table présente en en-tête la structure du cours (colonnes) et les indicateurs associés (lignes). Les cellules intérieures colorées correspondent aux valeurs des différents indicateurs (carte de chaleur). Les problèmes potentiels détectés sont indiqués à l’aide du symbole  </span>"+
+             "<img  width='25'  src='/courses/assets/img/fact.png'>"
         },
         {
             target: '.inspector-content',
@@ -1810,7 +1809,8 @@ if(facts.length>0)
         },
         {
             target: '#contact_us',
-            content: "<em>La visite guidée est terminée. Merci de l'avoir suivie !</em> <br> <strong>N'hésitez pas à nous <a href='mailto:coreada.project@gmail.com' title='Cliquer ici pour nous envoyer un mail'>contacter</a>.</strong>"
+            content:"<em>La visite guidée est terminée. Merci de l'avoir suivie !</em> <br> <strong>N'hésitez pas à nous <a href='mailto:coreada.project@gmail.com' title='Cliquer ici pour nous envoyer un mail'>contacter</a>.</strong>"+
+             "<img width:30 src='/courses/assets/img/logo.png'  />"
         }
        
         ],
