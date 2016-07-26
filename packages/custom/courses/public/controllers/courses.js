@@ -61,7 +61,7 @@ $scope.signalFact = function(){
 
       ///////////// LOG ////////////
       saveLog({
-            'name':'feedback'
+            'name':'sendFeedback'
           });
       //////////////////////////////
 }
@@ -87,7 +87,7 @@ $scope.signalFact = function(){
 
       ///////////// LOG ////////////
       saveLog({
-            'name':'feedback'
+            'name':'about'
           });
       //////////////////////////////
     };
@@ -143,7 +143,7 @@ $scope.signalFact = function(){
 
       ///////////// LOG ////////////
       saveLog({
-            'name':'feedback'
+            'name':'sendmail'
           });
       //////////////////////////////
     };
@@ -467,7 +467,11 @@ $scope.toggleSectionDisplay = function(){
 
   $scope.currentFact = 0;
   
-  
+   ///////////// LOG ////////////
+      saveLog({
+            'name':'toggleSectionDisplay'
+          });
+      //////////////////////////////
 
 }
 $scope.getGraphTitle = function(code){
@@ -1832,11 +1836,10 @@ $scope.startGuidedTour = function(){
     });
   }, 500);
     
-     ///////////// LOG ////////////
+    
+        ///////////// LOG ////////////
       saveLog({
-            'name':'startTour',
-            'elementId':$scope.course._id,
-            'params':[] 
+            'name':'startTour'
           });
       //////////////////////////////
     
