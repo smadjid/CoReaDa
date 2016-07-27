@@ -128,7 +128,7 @@ $scope.expandCallback = function (index, id) {
             }); 
     }
 
-    //$scope.getLogs();
+    $scope.getLogs();
    
   }
 ]);
