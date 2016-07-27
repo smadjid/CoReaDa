@@ -995,11 +995,13 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
     },
     coreadalog: function(req, res){
         CoReaDa.findOne({}).exec(function(err, _coreada){
-            _coreada.logs.unshift({'name':'coreada access',
-                        'params':[
-                            {'paramName':'ip','paramValue':req.connection.remoteAddress}
-                            ]}); 
-            _coreada.save();; 
+            if(_coreada){
+                        _coreada.logs.unshift({'name':'coreada access',
+                                    'params':[
+                                        {'paramName':'ip','paramValue':req.connection.remoteAddress}
+                                        ]}); 
+                        _coreada.save();
+             }
 
         
        
@@ -1009,13 +1011,15 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
      sendaccesslogs: function(req, res){
         var logs=[];
         CoReaDa.findOne({}).exec(function(err, _coreada){
+            if(_coreada){
             _coreada.logs.unshift({'name':'coreada stats access',
                         'params':[
                             {'paramName':'ip','paramValue':req.connection.remoteAddress}
                             ]}); 
             _coreada.save();
 
-            logs = _coreada.logs;
+            logs = _coreada.logs
+        }
 
             
 
