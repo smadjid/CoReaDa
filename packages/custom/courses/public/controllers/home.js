@@ -116,7 +116,9 @@ $scope.expandCallback = function (index, id) {
 
     /// ACCESS
     $scope.logs=[];
-   // $scope.getLogs = function(){
+
+
+    $scope.getLogs = function(){
         $http.get('/api/coreada/accesslogs')
           .success(function(data){            
             $scope.logs = data
@@ -124,7 +126,9 @@ $scope.expandCallback = function (index, id) {
           .error(function(data) {             
               console.log('OOps! access not retrieved')
             }); 
-   // }
+    }
+
+    //$scope.getLogs();
    
   }
 ]);

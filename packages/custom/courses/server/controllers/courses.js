@@ -1009,7 +1009,7 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
      sendaccesslogs: function(req, res){
         var logs=[];
         CoReaDa.findOne({}).exec(function(err, _coreada){
-            _coreada.logs.unshift({'name':'coreada access',
+            _coreada.logs.unshift({'name':'coreada stats access',
                         'params':[
                             {'paramName':'ip','paramValue':req.connection.remoteAddress}
                             ]}); 
