@@ -1,0 +1,39 @@
+<div class="" data-ng-controller="HomeController" >
+ <h1 style="    margin-left: 20px;">Log des accès à la plateforme CoReaDa</h1>
+
+
+<table class="table table-bordered"  style="margin-left:50px; width:70%">
+     <thead>
+        <tr class='tomes-header'>
+        <th >    <b>IP</b>   </th>         
+        <th >    <b>Date</b>   </th>         
+        <th >    <b>Type</b>   </th>         
+        <th >    <b>Paramètres</b>   </th>                      
+        </tr>
+
+        
+        
+    </thead>
+    <tbody>
+       
+        
+       <tr ng-repeat="log in logs">
+    		<td>{{ (log.params| filter:{'paramName':'ip'})[0].paramValue }}</td>
+    		<td>{{ log.date }}</td>
+    		<td>{{ log.name }}</td>
+    		<td>
+    			 <ul>
+    			 	<li ng-repeat=" param in log.params" >        
+    			 	<b>{{param.paramName}}</b> :   {{param.paramValue}}  </li>    
+    			 </ul>
+    		</td>
+  		</tr>
+        
+
+        
+    
+    </tbody>
+  
+</table>
+
+</div>

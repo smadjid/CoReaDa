@@ -376,7 +376,6 @@ transporter.sendMail(mailOptions, function(error, info){
         find: function(req, res) {
             // coreada.logs.unshift({'name':'find course','elementId':req.params.courseCode,'params':[{'paramName':'ip','paramValue':req.connection.remoteAddress}]}); 
             CoReaDa.findOne({}).exec(function(err, _coreada){
-                console.log(_coreada)
                        _coreada.logs.unshift({'name':'find course',
                         'params':[
                             {'paramName':'ip','paramValue':req.connection.remoteAddress},
@@ -997,6 +996,24 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
        
     });
          return res.status(200).json('log saved');
+    },
+     sendaccesslogs: function(req, res){
+        var logs=[];
+        CoReaDa.findOne({}).exec(function(err, _coreada){
+            _coreada.logs.unshift({'name':'coreada access',
+                        'params':[
+                            {'paramName':'ip','paramValue':req.connection.remoteAddress}
+                            ]}); 
+            _coreada.save();
+
+            logs = _coreada.logs;
+
+            
+
+         return res.status(200).json(logs);
+       
+    });
+
     }
     };
 }

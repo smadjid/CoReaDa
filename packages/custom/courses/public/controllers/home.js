@@ -90,7 +90,7 @@ $scope.expandCallback = function (index, id) {
           'inputSubject':$scope.feedbackFormData.inputSubject,
           'inputMessage':$scope.feedbackFormData.inputMessage
         }
-        console.log(feedback);
+        
       //  return;
         
           $http.post('/api/feedback',{'feedback':feedback})
@@ -114,6 +114,17 @@ $scope.expandCallback = function (index, id) {
 
     $('.indexScroller').scroll();
 
+    /// ACCESS
+    $scope.logs=[];
+   // $scope.getLogs = function(){
+        $http.get('/api/coreada/accesslogs')
+          .success(function(data){            
+            $scope.logs = data
+            })   
+          .error(function(data) {             
+              console.log('OOps! access not retrieved')
+            }); 
+   // }
    
   }
 ]);
