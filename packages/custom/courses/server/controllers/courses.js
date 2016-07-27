@@ -337,7 +337,7 @@ transporter.sendMail(mailOptions, function(error, info){
                        _coreada.logs.unshift({'name':'show course',
                         'params':[
                             {'paramName':'ip','paramValue':req.connection.remoteAddress},
-                            {'paramName':'title','paramValue':req.course.title}
+                            {'paramName':'title','paramValue':req.course.title},
                             {'paramName':'course_id','paramValue':req.course._id}                            
                             ]}); 
                        _coreada.save();
