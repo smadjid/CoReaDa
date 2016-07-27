@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Course = mongoose.model('Course'),
+    CoReaDa = mongoose.model('CoReaDa'),
     config = require('meanio').loadConfig(),
     _ = require('lodash'),
     nodemailer = require('nodemailer'),
@@ -13,7 +14,7 @@ var mongoose = require('mongoose'),
 module.exports = function(Courses) {
     var analyzeCourse = function(courseCode){
         var courseHome="coursesdata/"+courseCode;
-    console.log(courseHome);
+    
     
     var fs = require("fs");      
 
@@ -282,7 +283,7 @@ console.log("\n *FINISHED SEEDING* "+courseData.title+" \n");
 }
 
 
-    return {
+    return {        
         /**
          * Find course by id
          */
@@ -373,6 +374,17 @@ transporter.sendMail(mailOptions, function(error, info){
          * find a course
          */        
         find: function(req, res) {
+            // coreada.logs.unshift({'name':'find course','elementId':req.params.courseCode,'params':[{'paramName':'ip','paramValue':req.connection.remoteAddress}]}); 
+            CoReaDa.findOne({}).exec(function(err, _coreada){
+                console.log(_coreada)
+                       _coreada.logs.unshift({'name':'find course',
+                        'params':[
+                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                            {'paramName':'code','paramValue':req.params.courseCode}
+                            ]}); 
+                       _coreada.save();
+            });
+
             if(req.params.courseCode=="coreadas")
                {
                 Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
@@ -449,6 +461,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 _course.todos.unshift(req.body);  
                 _course.logs.unshift({'name':'addTodo','elementId':req.params.courseId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_course.todos[0]._id}, 
                                     {'paramName':'content','paramValue':_course.todos[0].todo}
                                 ] });               
@@ -465,6 +478,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     tome.save();                    
                    _course.logs.unshift({'name':'addTodo','elementId':req.params.tomeId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':tome.todos[0]._id}, 
                                     {'paramName':'content','paramValue':tome.todos[0].todo}
                                 ] }); 
@@ -487,6 +501,7 @@ transporter.sendMail(mailOptions, function(error, info){
                             tome.save();   
                             _course.logs.unshift({'name':'addTodo','elementId':req.params.chapterId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':chapter.todos[0]._id}, 
                                     {'paramName':'content','paramValue':chapter.todos[0].todo}
                                 ] });   
@@ -507,6 +522,7 @@ transporter.sendMail(mailOptions, function(error, info){
                             tome.save();    
                             _course.logs.unshift({'name':'addTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':fact.todos[0]._id}, 
                                     {'paramName':'content','paramValue':fact.todos[0].todo},
                                     {'paramName':'parentId','paramValue':chapter._id}
@@ -530,6 +546,7 @@ transporter.sendMail(mailOptions, function(error, info){
                                 tome.save();   
                                 _course.logs.unshift({'name':'addTodo','elementId':req.params.parttId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':part.todos[0]._id}, 
                                     {'paramName':'content','paramValue':part.todos[0].todo}
                                 ] }); 
@@ -551,6 +568,7 @@ transporter.sendMail(mailOptions, function(error, info){
                                 tome.save();    
                                 _course.logs.unshift({'name':'addTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':fact.todos[0]._id}, 
                                     {'paramName':'content','paramValue':fact.todos[0].todo},
                                     {'paramName':'parentId','paramValue':part._id}
@@ -580,6 +598,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
@@ -593,6 +612,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     var _todo = _course.todos.id(req.params.todoId);
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] });
@@ -615,6 +635,7 @@ transporter.sendMail(mailOptions, function(error, info){
                  var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_tome._id}
@@ -627,6 +648,7 @@ transporter.sendMail(mailOptions, function(error, info){
                      var _todo = _tome.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
@@ -651,6 +673,7 @@ transporter.sendMail(mailOptions, function(error, info){
                  var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
@@ -663,6 +686,7 @@ transporter.sendMail(mailOptions, function(error, info){
                      var _todo = _chapter.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
@@ -689,6 +713,7 @@ transporter.sendMail(mailOptions, function(error, info){
                  var _todo = _fact.todos.id(req.params.todoId);                
                 _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_part._id}
@@ -702,6 +727,7 @@ transporter.sendMail(mailOptions, function(error, info){
                      var _todo = _fact.todos.id(req.params.todoId);                
                     _course.logs.unshift({'name':'removeTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_part._id}
@@ -735,6 +761,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 _fact.save();
                  _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo},
@@ -751,6 +778,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.courseId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
@@ -777,6 +805,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 _fact.save();  
                 _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo},
@@ -791,6 +820,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.tomeId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
@@ -821,6 +851,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 _fact.save();     
                 _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo},
@@ -836,6 +867,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.chapterId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
@@ -867,6 +899,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 _fact.save();
                 _course.logs.unshift({'name':'editTodo','elementId':req.params.factId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo},
@@ -883,6 +916,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     _todo.save();
                     _course.logs.unshift({'name':'editTodo','elementId':req.params.partId,
                                 'params':[
+                                    {'paramName':'ip','paramValue':req.connection.remoteAddress}, 
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
@@ -934,6 +968,35 @@ transporter.sendMail(mailOptions, function(error, info){
 console.log("\n *FINISHED SEEDING* \n");
 return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded ');
 
-       }
+       },
+     ////////////////////////  
+       seedcoreada: function(req, res){
+       var coreada = new CoReaDa( {            
+            logs:[]
+        });
+
+        coreada.save(function(err){
+            if (err){
+                console.log("erreur d'écriture: "+ err)
+            }
+            else{
+                console.log("CoReaDa log init DONE");
+            }
+        });
+        return res.status(200).json('CoReaDa log init DONE');
+    },
+    coreadalog: function(req, res){
+        CoReaDa.findOne({}).exec(function(err, _coreada){
+            _coreada.logs.unshift({'name':'coreada access',
+                        'params':[
+                            {'paramName':'ip','paramValue':req.connection.remoteAddress}
+                            ]}); 
+            _coreada.save();; 
+
+        
+       
+    });
+         return res.status(200).json('log saved');
+    }
     };
 }

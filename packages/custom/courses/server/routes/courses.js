@@ -6,6 +6,10 @@ module.exports = function(Courses, app) {
 
   app.route('/api/courses')
     .get(courses.all);
+  app.route('/api/coreada/seed')
+    .get(courses.seedcoreada);
+  app.route('/api/coreada/log')
+    .get(courses.coreadalog);
   app.route('/api/courses/:courseId')
     .get(courses.show);
   app.route('/api/seed/:courseTitle')

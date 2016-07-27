@@ -4,6 +4,14 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
   'Courses', '$http',  
   function($scope,  $location,  Global, Courses,$http) {
     $scope.global = Global;
+    $http.get('/api/coreada/log')
+          .success(function(data){
+            console.log('access saved')
+            })   
+          .error(function(data) {             
+              console.log('OOps! access not saved')
+            }); 
+       
 
     if($('.course_title_top').length>0) $('.course_title_top').remove();
 
