@@ -464,6 +464,18 @@ transporter.sendMail(mailOptions, function(error, info){
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");   
             var _result = _course.todos;
+
+            CoReaDa.findOne({}).exec(function(err, _coreada){      
+                 if(_coreada){
+                        _coreada.logs.unshift({'accessType':'Course','name':'addTodo',
+                                    'params':[
+                                        {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                        {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/'+req.params.partId+'/'+req.params.factId},
+                                        {'paramName':'content','paramValue':req.body.todo}
+                                        ]}); 
+                        _coreada.save();             
+                    }
+            });
             
             if(req.params.tomeId==0){
                 _course.todos.unshift(req.body);  
@@ -600,7 +612,10 @@ transporter.sendMail(mailOptions, function(error, info){
         // delete a todo from the course
         removeCourseTodo:function(req, res) {
         Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
-            if(err) return next("Error finding the course.");   
+            if(err) return next("Error finding the course.");
+
+            
+
             if(req.params.factId != 0){
                 var _fact = _course.facts.id(req.params.factId);
                 var _todo = _fact.todos.id(req.params.todoId);                
@@ -614,6 +629,18 @@ transporter.sendMail(mailOptions, function(error, info){
 
                 _fact.todos.id(req.params.todoId).remove();               
                 _fact.save();
+
+                CoReaDa.findOne({}).exec(function(err, _coreada){      
+                 if(_coreada){
+                        _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                    'params':[
+                                        {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                        {'paramName':'elementURL','paramValue':'0/0/0/'+req.params.factId},
+                                        {'paramName':'content','paramValue':_todo.todo}
+                                        ]}); 
+                        _coreada.save();             
+                    }
+                });
             }
             else 
                 {
@@ -624,6 +651,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'todoId','paramValue':_todo._id}, 
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] });
+
+                    CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':'0/0/0/0'},
+                                            {'paramName':'content','paramValue':_todo.todo}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });
                     _course.todos.id(req.params.todoId).remove(); 
                 }              
             _course.nbtasks = _course.nbtasks - 1;
@@ -649,7 +688,19 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'parentId','paramValue':_tome._id}
                                 ] });
                 _fact.todos.id(req.params.todoId).remove();               
-                _fact.save();                
+                _fact.save();  
+
+                 CoReaDa.findOne({}).exec(function(err, _coreada){      
+                 if(_coreada){
+                        _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                    'params':[
+                                        {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                        {'paramName':'elementURL','paramValue':req.params.tomeId+'/0/0/'+req.params.factId},
+                                        {'paramName':'content','paramValue':_todo.todo}
+                                        ]}); 
+                        _coreada.save();             
+                    }
+                });              
             }
             else 
                 {
@@ -661,7 +712,19 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
                                 ] });
-                    _tome.todos.id(req.params.todoId).remove();     
+                    _tome.todos.id(req.params.todoId).remove();    
+
+                     CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/0/0/0'},
+                                            {'paramName':'content','paramValue':_todo.todo}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });  
                 }          
             _tome.save();
             _course.nbtasks = _course.nbtasks - 1;
@@ -686,6 +749,17 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
                                 ] });
+                 CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/0/'+req.params.factId},
+                                            {'paramName':'content','paramValue':_todo.todo}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });  
                 _fact.todos.id(req.params.todoId).remove();               
                 _fact.save();                
             }
@@ -700,6 +774,17 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'parentId','paramValue':_chapter._id}
                                 ] });
                     _chapter.todos.id(req.params.todoId).remove();
+                    CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/0/0'},
+                                            {'paramName':'content','paramValue':_todo.todo}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });
                 }               
             _chapter.save();
             _tome.save();
@@ -728,6 +813,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                 ] });
                 _fact.todos.id(req.params.todoId).remove();               
                 _fact.save();
+
+                CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/'+req.params.partId+'/'+req.params.factId},
+                                            {'paramName':'content','paramValue':_todo.todo}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });
                 
             }
             else 
@@ -741,6 +838,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'parentId','paramValue':_part._id}
                                 ] });
                     _part.todos.id(req.params.todoId).remove();
+
+                    CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'removeTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/'+req.params.partId+'/0'},
+                                            {'paramName':'content','paramValue':_todo.todo}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });
                 }               
             _part.save();
             _chapter.save();
@@ -775,6 +884,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_course._id}
                                 ] });
+                 CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':'0/0/0/'+req.params.factId},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });
             }
             else 
                 {
@@ -791,7 +912,19 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] });
-                }               
+                } 
+            CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':'0/0/0/0'},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });              
             _course.update=Date.now();
             _course.save();
             res.json(_todo);
@@ -818,7 +951,19 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_tome._id}
-                                ] });              
+                                ] });   
+                CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/0/0/'+req.params.factId},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });           
             }
             else 
                 {
@@ -833,6 +978,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] }); 
+                    CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/0/0/0'},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    }); 
 
                 }
             _tome.save();
@@ -864,7 +1021,19 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_chapter._id}
-                                ] });            
+                                ] });       
+                CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/0/'+req.params.factId},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });      
             }
             else 
                 {
@@ -880,6 +1049,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] }); 
+                    CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/0/0'},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });  
 
                 }
             _chapter.save();
@@ -913,6 +1094,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'content','paramValue':_todo.todo},
                                     {'paramName':'parentId','paramValue':_part._id}
                                 ] }); 
+                CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/'+req.params.partId+'/'+req.params.factId},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });  
                 
             }
             else 
@@ -929,6 +1122,18 @@ transporter.sendMail(mailOptions, function(error, info){
                                     {'paramName':'oldcontent','paramValue':old},
                                     {'paramName':'content','paramValue':_todo.todo}
                                 ] }); 
+                    CoReaDa.findOne({}).exec(function(err, _coreada){      
+                     if(_coreada){
+                            _coreada.logs.unshift({'accessType':'Course','name':'editTodo',
+                                        'params':[
+                                            {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                            {'paramName':'elementURL','paramValue':req.params.tomeId+'/'+req.params.chapterId+'/'+req.params.partId+'/0'},
+                                            {'paramName':'content','paramValue':_todo.todo},
+                                            {'paramName':'oldcontent','paramValue':old}
+                                            ]}); 
+                            _coreada.save();             
+                        }
+                    });
                 }               
             _part.save();
             _chapter.save();
@@ -1002,10 +1207,7 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
                                         ]}); 
                         _coreada.save();
              }
-
-        
-       
-    });
+         });
          return res.status(200).json('log saved');
     },
      sendaccesslogs: function(req, res){

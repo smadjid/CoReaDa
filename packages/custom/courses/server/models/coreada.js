@@ -20,7 +20,11 @@ var ActionParamsSchema = new Schema({
   }
 });
 
-var LogRecordSchema = new Schema({    
+var LogRecordSchema = new Schema({  
+  accessType:{
+    type:String,
+    default: 'CoReaDa'
+  },  
   date: {
     type: Date,
     default: Date.now
@@ -29,6 +33,11 @@ var LogRecordSchema = new Schema({
     type:String,
     required: true
   },
+   courseId:{
+    type:String,
+    default: null
+  },
+  
   params:[ActionParamsSchema]
 });
 
