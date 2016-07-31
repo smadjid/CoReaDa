@@ -1229,6 +1229,40 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
        
     });
 
-    }
+    },
+     resetlogs: function(req, res){        
+        CoReaDa.findOne({}).exec(function(err, _coreada){
+            var logs = [];
+            if(_coreada){
+                if(req.body.code=="resyd2008"){
+                    _coreada.logs.unshift({'name':'coreada save history - OK',
+                            'params':[
+                                {'paramName':'ip','paramValue':req.connection.remoteAddress}
+                                ]}); 
+                    _coreada.archives.concat(_coreada.logs);
+                    _coreada.logs = [];
+                    
+                    _coreada.save();
+
+                    logs = _coreada.logs;
+                    return res.status(200).json(logs);
+                }
+                else{
+                    _coreada.logs.unshift({'name':'coreada save history - ERROR',
+                            'params':[
+                                {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                {'paramName':'code','paramValue':req.body.code}
+                                ]}); 
+                    _coreada.save();
+                    return res.status(501).type('application/json').json({error:'Error: code incorrect'});
+
+                }
+
+            }
+             
+       
+        });
+
+      }
     };
 }

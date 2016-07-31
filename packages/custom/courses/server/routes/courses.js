@@ -10,8 +10,11 @@ module.exports = function(Courses, app) {
     .get(courses.seedcoreada);
   app.route('/api/coreada/log')
     .get(courses.coreadalog);
-    app.route('/api/coreada/accesslogs')
+  app.route('/api/coreada/accesslogs')
     .get(courses.sendaccesslogs);
+  app.route('/api/coreada/resetlogs')
+    .post(courses.resetlogs);
+
 
   app.route('/api/courses/:courseId')
     .get(courses.show);

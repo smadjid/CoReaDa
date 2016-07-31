@@ -46,7 +46,8 @@ var LogRecordSchema = new Schema({
  * Course Schema
  */
 var CoReaDaSchema = new Schema({  
-  logs:[LogRecordSchema]
+  logs:[LogRecordSchema],
+  archives:[LogRecordSchema]
 });
 
 

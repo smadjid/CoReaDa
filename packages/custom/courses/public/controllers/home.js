@@ -127,6 +127,33 @@ $scope.expandCallback = function (index, id) {
               console.log('OOps! access not retrieved')
             }); 
     }
+    $scope.resetLogs= function(){
+      // var code = prompt("Code d'accès administrateur", "");
+        swal({   title: "An input!",   text: "Write something interesting:",   
+          type: "input",   
+      inputType: "password",
+          showCancelButton: true,   
+          closeOnConfirm: false,   
+          animation: "slide-from-top",   
+          inputPlaceholder: "Write something" }, 
+          function(inputValue){   if (inputValue === false) return false;      
+            if (inputValue === "") {     swal.showInputError("Merci d'indiquer le code administrateur!");     return false   }      
+
+            $http.post('/api/coreada/resetlogs',{'code':inputValue})
+          .success(function(data){            
+            $scope.logs = data;
+             swal("DONE!", "La tableau a été archivée");
+            })   
+          .error(function(data) {             
+              
+              swal("Oops!", "Code incorrect. Ceci va être reporté à l'administrateur");
+            }); 
+
+
+           });
+             
+        
+    }
 
     $scope.getLogs();
    
