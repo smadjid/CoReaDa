@@ -320,7 +320,7 @@ var mailOptions = {
 // send mail with defined transport object
 transporter.sendMail(mailOptions, function(error, info){
     if(error){
-        return res.status(501).type('application/json').json({error:'Error: ' + error});
+        return res.status(500).type('application/json').json({error:'Error: ' + error});
     }
     return res.status(200).type('application/json').json({message:'Message envoyé. Merci! ' /*+ info.response*/});
 });
@@ -1254,7 +1254,7 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
                                 {'paramName':'code','paramValue':req.body.code}
                                 ]}); 
                     _coreada.save();
-                    return res.status(501).type('application/json').json({error:'Error: code incorrect'});
+                    return res.status(500).type('application/json').json({error:'Error: code incorrect'});
 
                 }
 

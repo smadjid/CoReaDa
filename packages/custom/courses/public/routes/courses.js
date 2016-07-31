@@ -44,9 +44,9 @@ angular.module('mean.courses').config(['$stateProvider',
           denyState: 'auth.login'
         }
       })
-      .state('stats', {
-        url: '/stats',
-        templateUrl: '/courses/views/access.html',
+      .state('logs', {
+        url: '/logs',
+        templateUrl: '/courses/views/logs.html',
         requiredCircles : {
           circles: ['anonymous'],
           denyState: 'auth.login'
