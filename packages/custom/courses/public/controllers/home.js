@@ -129,7 +129,7 @@ $scope.expandCallback = function (index, id) {
     }
     $scope.resetLogs= function(){
       // var code = prompt("Code d'accès administrateur", "");
-        swal({   title: "An input!",   text: "Write something interesting:",   
+        swal({   title: "Code d'accès!",   text: "Cette action requiert des provilèges d'administration. Merci d'indiquer le code admin",   
           type: "input",   
       inputType: "password",
           showCancelButton: true,   
@@ -142,7 +142,7 @@ $scope.expandCallback = function (index, id) {
             $http.post('/api/coreada/resetlogs',{'code':inputValue})
           .success(function(data){            
             $scope.logs = data;
-             swal("DONE!", "La tableau a été archivée");
+             swal("DONE!", "La table a été archivée");
             })   
           .error(function(data) {             
               
