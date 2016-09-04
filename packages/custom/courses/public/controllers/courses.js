@@ -224,13 +224,8 @@ setTimeout(function() {
 
 
   $scope.setPage = function(n) {
-    //if($scope.inspectorFacts.Facts.length<1) return;
-  //console.log( $scope.currentFact+' and '+n)
-
+    
   $scope.currentFact = n;
-
-  //alert(n)
-
   var components = parseURL(window.location.hash)
   if(components == null)    
    		loadURL($scope.inspectorFacts.Facts[n].route);
@@ -238,10 +233,6 @@ setTimeout(function() {
  if(components.hasOwnProperty('factid')) 
     if(components.factid != $scope.inspectorFacts.Facts[n]._id)
       loadURL($scope.inspectorFacts.Facts[n].route);
-
-    //$scope.context.statsURL = $scope.inspectorFacts.Facts[n].partRoute;
-    //$scope.context.indicator = $scope.inspectorFacts.Facts[n].classof;
-    
 
      window.setTimeout(function() {
         resetPath();
@@ -512,10 +503,6 @@ $scope.completeCourseParts = function(){
   var courseParts = [], courseChapters = [];
   var base_url = "https://openclassrooms.com/courses";
   $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value;
-
-  //$scope.course.url = base_url+'/'+$scope.course.url;
-  //console.log($scope.course)
- // var course_route = $.param({'csid':course._id})
 
   
   angular.forEach($scope.course.tomes, function(tome) {
@@ -2248,9 +2235,6 @@ selection.selected ='selectedTask';
     $scope.inspectorStats.indicatorCode = fact.issueCode;
 
 
-  //console.log(fact.issueCode)
-
-
   
  }
 
@@ -2777,8 +2761,7 @@ swal({
       }
     $scope.inspectorFacts.Facts = $scope.ChaptersFacts;
   }
-     console.log($scope.inspectorFacts.Facts.length)
-    
+     
            swal({   title: "Problème marqué comme résolu!",   
             text: "Succès", 
              animation: "slide-from-top",
