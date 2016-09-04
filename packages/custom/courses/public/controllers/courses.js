@@ -1200,21 +1200,6 @@ angular.forEach($scope.course.tomes, function(tome) {
 }
 
 
-var computeSubFacts = function(element, indicator){return[];   
-var issuesCode =[] ;
-var type = (element.elementType=='chapitre')?'chapter':'part'
-var f = $.grep($scope.selectedIndicators, function(e){ return  e.code ==indicator});
-angular.forEach(f, function(ind) {issuesCode.push(ind.issueCode) })
- 
-  var facts  = $.grep(element.facts, function(e){return ($.inArray(e.issueCode, issuesCode)>-1)}); 
-  angular.forEach(facts, function(ind){ind.partId=element.id, ind.partType=type, ind.factRoute=element.route+','+ind._id});
-  return facts
-
-}
-
-
-
-
 
 var goHome = function(){ 
 
@@ -1305,36 +1290,42 @@ var updateMainFacts = function(){
 //////////////// CHAPTERS
 
   var allFacts=[]; 
+ // console.log($scope.indicatorsSelectionModel)
   angular.forEach($scope.course.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter){
 
       angular.forEach(chapter.facts, function(f){
         f.parentTitle='Chapitre \"'+chapter.title+' \" '
          var indicator=f.issueCode
-          var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
+          var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );          
           f.mainFact=false;
-          if(maxV.length>0) {          
+          if(maxV.length>0) {   
+
+            if($scope.indicatorsSelectionModel.indexOf(maxV[0].value)>=0){  
               maxV=maxV[0].chapterValue;
-                  if(f.delta>maxV) {
-                    f.mainFact=true;
-                    $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.delta;
-                    $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
-                  }
-                }
-           
-          allFacts.push(f)
+              if(f.delta>maxV) {
+                f.mainFact=true;
+                $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterValue = f.delta;
+                $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].chapterFactId = f._id
+              }
+              allFacts.push(f)
+            }
+                       
+                      
+          }
 
       })
     })
   })
 
-  var mainFacts=[];
+  var mainFacts=[]; 
   $scope.indicatorsHeader.forEach(function(ind){
+    if($scope.indicatorsSelectionModel.indexOf(ind.value)>=0){
+      if(ind.chapterFactId!=null){
+        var fact = allFacts.filter(function(e){return (e._id==ind.chapterFactId)})[0];
+        mainFacts.push(fact);
 
-    if(ind.chapterFactId!=null){
-      var fact = allFacts.filter(function(e){return (e._id==ind.chapterFactId)})[0];
-      mainFacts.push(fact);
-
+      }      
     }
   }) 
 
@@ -1355,8 +1346,9 @@ angular.forEach($scope.course.tomes, function(tome) {
           var indicator=f.issueCode
         var maxV = $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} );
         f.mainFact=false;
-        if(maxV.length>0) {          
-            maxV=maxV[0].sectionValue;
+        if(maxV.length>0) {  
+        if($scope.indicatorsSelectionModel.indexOf(maxV[0].value)>=0){         
+            maxV=maxV[0].sectionValue;            
                 if(f.delta>maxV) {
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionValue = f.delta;
                   $scope.indicatorsHeader.filter(function(e){ return ((e.issueCode === f.issueCode))} )[0].sectionFactId = f._id
@@ -1365,6 +1357,7 @@ angular.forEach($scope.course.tomes, function(tome) {
               }
          
         allFacts.push(f)
+      }
 
       })
       })
@@ -1373,10 +1366,11 @@ angular.forEach($scope.course.tomes, function(tome) {
 
  mainFacts=[];
   $scope.indicatorsHeader.forEach(function(ind){
-
+  if($scope.indicatorsSelectionModel.indexOf(ind.value)>=0){
     if(ind.sectionFactId!=null){
       mainFacts.push(allFacts.filter(function(e){return (e._id==ind.sectionFactId)})[0])
     }
+  }
   }) 
 
  $scope.MainSectionsFacts = mainFacts;
@@ -1481,46 +1475,6 @@ $scope.factTitleDisplay=true;
   var times =[], users =[], rss =[], reread =[], stops =[];
 
 
- 
-
-/*
-  if(indicator!=null) {
-    $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)}); 
-  $scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
-}
-  var facts = mainIssues.filter(function(e){return (e.tome==tome._id)});
-if(facts.length>0)
-  {
-   
-     $scope.inspectorFacts = {
-    'id':facts[0].partId,
-    'type':facts[0].partType,
-    'indicatorCode':facts[0].issueCode,
-    'Facts':$.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)}) 
-    }
-
-    
-    if(indicator!=null) $scope.inspectorFacts.Facts = 
-      $scope.inspectorFacts.Facts.filter(function(e){return (e.classof==indicator)});
-
-    
-    if(fact!=null)
-     $scope.inspectorFacts.Facts = $scope.inspectorFacts.Facts.filter(function(e){return (e.classof==fact)})
-  }
-    else $scope.inspectorFacts={'Facts':[]}
-  
-
-
- if(($scope.inspectorFacts.Facts.length>0) & (tab=='facts')) 
-     {
-      $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      
-    var fact = $scope.inspectorFacts.Facts[0];
-    $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-    }
-  else
-      
-*/
 return;
 }
 
@@ -1864,6 +1818,9 @@ switch(granularity){
     break
 
   }
+$scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(f){ 
+              return $scope.indicatorsSelectionModel.indexOf(f.name)>=0
+            });
 
 
 
@@ -3152,6 +3109,25 @@ $('.editable-text').on('shown', function (e, editable) {
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
   function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
+ updateMainFacts();
+ if($scope.sectionDisplay){
+    if($scope.allFactsDisplay){
+      $scope.SectionsFacts = $scope.AllSectionsFacts;
+    }
+      else{
+        $scope.SectionsFacts = $scope.MainSectionsFacts;
+      }
+    $scope.inspectorFacts.Facts = $scope.SectionsFacts;
+  }
+  else{
+     if($scope.allFactsDisplay){
+      $scope.ChaptersFacts = $scope.AllChaptersFacts;
+     }
+      else{
+        $scope.ChaptersFacts = $scope.MainChaptersFacts;
+      }
+    $scope.inspectorFacts.Facts = $scope.ChaptersFacts;
+  }
 
 
 });
