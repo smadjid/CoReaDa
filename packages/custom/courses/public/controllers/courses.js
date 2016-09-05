@@ -1277,7 +1277,6 @@ var updateMainFacts = function(){
 //////////////// CHAPTERS
 
   var allFacts=[]; 
- // console.log($scope.indicatorsSelectionModel)
   angular.forEach($scope.course.tomes, function(tome) {
     angular.forEach(tome.chapters, function(chapter){
 
@@ -1805,11 +1804,10 @@ switch(granularity){
     break
 
   }
-$scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(f){ 
-              return $scope.indicatorsSelectionModel.indexOf(f.name)>=0
-            });
-
-
+if($scope.inspectorStats.Indicators!=undefined){
+  var nd = $scope.inspectorStats.Indicators.filter(function(f){ return $scope.indicatorsSelectionModel.indexOf(f.name)>=0});
+  $scope.inspectorStats.Indicators =  nd
+}
 
 }
 
@@ -1873,7 +1871,7 @@ var loadContext = function(){
   var left = $('.data-table').offset().left;
 
    var url = location.hash.slice(1);
-   ////alert(url)
+   
  
    var element = resolveRoute(url);
 
@@ -1976,7 +1974,6 @@ var loadContext = function(){
         }
         else
         if((indicator =="ALL")&($scope.context.indicator =="ALL")){
-          //alert(indicator+' '+$scope.context.indicator)
           computeGranuleData('chapter', chap, null, null,tab);
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];   
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
@@ -1995,7 +1992,7 @@ var loadContext = function(){
           partElt = $('.chapter_index[data-part ='+chap.id+']')[0];
           $scope.context.taskText ='(nouvelle tâche pour ce chapitre)';
           $scope.context.taskPanelMiniTitle='Chapitre: '+chap.title;
-          $scope.inspectorDisplaySrc='inspector' ;//alert(indicator)
+          $scope.inspectorDisplaySrc='inspector' ;
 
          
 
@@ -2523,7 +2520,7 @@ var index = $(partElt).index() + 1;
   $('#divOverlay').delay(200).slideDown('fast');
 
   if(indicator=='ALL'){
-//console.log('indicator all')
+
   }
   else{
     url =route+'&indicator='+indicator; 
@@ -3073,7 +3070,7 @@ $(window).bind('hashchange',function(e){
 });
 
 goHome();
-// alert($scope.cours.ob_begin)
+
         var a = $filter('date')(new Date($scope.course.ob_begin), 'dd-MM-yyyy' );
         $scope.course.ob_begin = a;
         a=$filter('date')(new Date($scope.course.ob_end), 'dd-MM-yyyy' );
@@ -3090,8 +3087,11 @@ $('.editable-text').on('shown', function (e, editable) {
 
 
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {  
+
+  if(angular.equals(newValue,oldValue)) return
+    
  $scope.selectedIndicators =  $.grep($scope.indicatorsHeader, 
-  function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)});
+  function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
  updateMainFacts();
  if($scope.sectionDisplay){
     if($scope.allFactsDisplay){
@@ -3111,6 +3111,8 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
       }
     $scope.inspectorFacts.Facts = $scope.ChaptersFacts;
   }
+
+  
 
 
 });
@@ -3171,7 +3173,7 @@ else
 
  
 }
-else alert('no')
+
     
       })
       .catch(function(err){
