@@ -41,9 +41,9 @@
       <img src="/courses/assets/img/about.png" width="80%" style="padding:10px; padding-left:8%">
   
     <ol>
-    <li><em>Traçage des lecteurs et collecte des données</em>. Les logs ainsi récupérés sont sauvegardés dans une base de données.
-    <li><em>Traitement de données</em>. Les traces enregsitrées subissent un ensemble de traitements pour calculer différents indicateurs de lecture et de détecter d'éventuels problèmes de lecture.
-    <li><em>Génération de visualisations</em>. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour réaliser de modifications sur le contenu de son cours.
+    <li><em>Traçage des lecteurs et collecte des données</em>. Les logs ainsi récupérés sont sauvegardés dans une base de données.</li>
+    <li><em>Traitement de données</em>. Les traces enregsitrées subissent un ensemble de traitements pour calculer différents indicateurs de lecture et de détecter d'éventuels problèmes de lecture.</li>
+    <li><em>Génération de visualisations</em>. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour réaliser de modifications sur le contenu de son cours.</li>
 
   </ol>
    
@@ -57,17 +57,17 @@
     <v-pane-content>
 <h4>Les gens derrière ce projet</h4> 
    <ul>
-   <li><b><a target="_blank" href="https://bit.ly/smadjid">Madjid Sadallah</a></b> : doctorant algérien, CERIST, Alger.
-   <li><b><a target="_blank" href="https://liris.cnrs.fr/~bencelle/wiki/doku.php">Benoît Encelle</a></b> : docteur en informatique, LIRIS, Université Lyon1. 
-   <li><b><a target="_blank" href="http://yannickprie.net">Yannick Prié</a></b> : professeur en informatique, LINA, Université de Nantes.
+   <li><b><a target="_blank" href="https://bit.ly/smadjid">Madjid Sadallah</a></b> : doctorant algérien, CERIST, Alger.</li>
+   <li><b><a target="_blank" href="https://liris.cnrs.fr/~bencelle/wiki/doku.php">Benoît Encelle</a></b> : docteur en informatique, LIRIS, Université Lyon1. </li>
+   <li><b><a target="_blank" href="http://yannickprie.net">Yannick Prié</a></b> : professeur en informatique, LINA, Université de Nantes.</li>
    </ul>
   <br/>
   <h4>Contact</h4>
    <p style=' '>Si vous désirez avoir plus d'information sur ce projet, si vous avez des suggestions ou si vous voulez rapporter un bug ou un problème dans l'interface, vous pouvez :</p>
 <ul  style='padding-left:10%'>
-    <li>Nous envoyer un mail: <a href='mailto:coreada.project@gmail.com'>coreada.project@gmail.com</a>
-    <li>Envoyer un mail à la personne de contact du projet: <a href='mailto:madjid.sadallah@gmail.com'>madjid.sadallah@gmail.com</a>
-    <li>Remplir le formulaire ci-dessous
+    <li>Nous envoyer un mail: <a href='mailto:coreada.project@gmail.com'>coreada.project@gmail.com</a></li>
+    <li>Envoyer un mail à la personne de contact du projet: <a href='mailto:madjid.sadallah@gmail.com'>madjid.sadallah@gmail.com</a></li>
+    <li>Remplir le formulaire ci-dessous</li>
 </ul>
 
 
@@ -108,10 +108,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
-
-                    </div>
-
+</div></form>
    
 
 </v-pane-content>
@@ -125,12 +122,12 @@
     </v-pane-header>
     <v-pane-content>
     <ul>
-    <li><u>Trace de lecture</u> : Une trace de lecture d'un utilisateur représente l'ensemble de ses données de navigation au sein du cours. 
+    <li><u>Trace de lecture</u> : Une trace de lecture d'un utilisateur représente l'ensemble de ses données de navigation au sein du cours. </li>
     <li><u>Analyse de traces</u> : 
-    Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.
-    <li><u>Indicateur</u> : Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.
-    <li><u>Problèmes de lecture</u> : Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.
-    <li><u>Suggestion de reconception</u> : une suggestion de reconception est une action de modification du contenu de cours de telle manière à résoudre un problème éventuel détecté.
+    Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.</li>
+    <li><u>Indicateur</u> : Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.</li>
+    <li><u>Problèmes de lecture</u> : Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.</li>
+    <li><u>Suggestion de reconception</u> : une suggestion de reconception est une action de modification du contenu de cours de telle manière à résoudre un problème éventuel détecté.</li>
     </ul>
     
     </v-pane-content>
@@ -160,19 +157,21 @@
     
       <ul>
 
-        <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}
-        <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}
+        <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}</li>
+        <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}</li>
       <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
-        <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b>
-        <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b>
+        <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b></li>
+        <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b></li>
       </ul>
     </li>
   </ul>                    
+ </div></div></div>
 
-
-
- </div>
-
+<div class="row alert alert-danger" role="alert" style="width:90%; margin-left:5%; margin-top:30px">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <strong>Attention ! </strong>
+  CoReaDa a été testé avec des versions récentes des navigateurs <em>Chrome</em>, <em>Chromium</em>, <em>Firefox</em> et <em>Opera</em> sous <em>Microsoft Windows</em> et <em>Linux</em>. Pour les autres navigateurs ou les versions antérieures à la version en cours de navigateurs ci-dessus indiqués,  certains éléments peuvent ne pas fonctionner correctement, provoquer des présentations mal organisées et la disparition de certaines fonctionnalités. 
+</div>
 <footer class="footer" style="height:60px">
       <div class="container" style="text-align:right;padding-bottom:5px">
       <a href="http://www.cerist.dz" target="_blank"><img src="http://www.cerist.dz/templates/tpl_theme14/images/logo.png" alt="CERIST" title="CERIST, Alger" height="60" style='margin-right:15px'></a>
