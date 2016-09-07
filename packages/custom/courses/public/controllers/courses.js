@@ -1212,6 +1212,7 @@ $scope.taskContexter = function(task,$event) {
 };
 
 var saveLog = function(params) {
+  if ($scope.course._id != undefined) 
         return $http.post('/api/courses/log/'+$scope.course._id,params);
       };
 
