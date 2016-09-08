@@ -1665,7 +1665,7 @@ if(facts.length>0)
         dark: false // Dark mode (Works great with `mask.visible = false`)
     },
     steps: [
-        {
+       {
             target:'.navbar-fixed-top',
             content: "<img width:30 src='/courses/assets/img/logo.png'  />"+
             "<span>Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
@@ -1682,7 +1682,7 @@ if(facts.length>0)
         {
             target: '.inspector-content',
             content: "<h4>Inspecteur</h4>"+
-            "<span>Présente les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. L'élément du cours concerné est indiqué en haut à gauche avec possibilité de naviguer vers la plateforme OpenClassrooms pour le voir dans son contexte.</span>"
+            "<span>Présente les indicateurs calculés sous deux angles: problèmes potentiels et statistiques. </span>"
         },
         {
             target: '#task-panel',
@@ -1732,15 +1732,48 @@ if(facts.length>0)
             "<span>Ce bouton planifie une action permettant sa résolution dans la <b>Zone de Tâches</b>. Le système ajoute alors la suggestion comme action à réaliser, avec la possibilité de la modifier.</span>"
         },
         {
-            target: '#statsTab',
-            content: " <h4>Onglet <em>Statistiques</em></h4>"+
-            "<span>Présente quelques statistiques sur l'élément sélectionné. </span>"
-        },
-        {
             target: '#factChartPanel',
             content: " <h4>Graphiques</h4>"+
             "<span>Présente les graphiques illustrant le problème ou la statistique sélectionnée sur le partie gauche de l'inspecteur. L'élément sélectionné est doté d'une bordure épaisse et colorée.</span>"
         },
+        {
+            target: '#statsTab',
+            content: " <h4>Onglet <em>Statistiques</em></h4>"+
+            "<span>Présente quelques statistiques sur l'élément sélectionné. </span>",
+            before: function() {
+                    var d = $q.defer(); 
+                    $scope.tabSelect = 'stats';
+                    d.resolve();
+                    return d.promise;
+                }
+        },
+        {
+            target: '#titleBar',
+            content: " <h4>Barre de titre</h4>"+
+            "<span>.</span>"
+        },
+        {
+            target: '#gotoOC',
+            content: " <h4>Bouton <em>Visiter sur OpenClassrooms</em></h4>"+
+            "<span>Ce bouton permet d'ouvrir le site OpenClassrooms dans un nouvel onglet (ou une nouvelle fenêtre), sur la page du cours contenant l'élément concerné pour le voir dans son contexte </span>"
+        },
+        {
+            target: '.componentInfo',
+            content: " <h4>Une statistique</h4>"+
+            "<span>Sur l'onglet <em>Statistiques</em>, chaque ligne représente une statistique relative à un indicateur pour l'élément sélectionné</span>"
+        },
+        {
+            target: '.factImg:visible',
+            content: " <h4>Cette icône accompagnant la statistique indique qu'un problème potentiel a été détecté. Cliquer sur licône permet de voir ce problème</h4>"+
+            "<span> .</span>"
+        },
+        {
+            target: '#chartPanel',
+            content: " <h4>Graphiques</h4>"+
+            "<span>Présente les graphiques illustrant les valeurs de la statistique sélectionnée.</span>"
+        },
+
+        
          
         {
             target: '#tasks-table',

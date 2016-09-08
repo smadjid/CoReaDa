@@ -87,7 +87,7 @@ if(elementType!=='part')
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
-            .attr("transform", "rotate(-25)" );
+            .attr("transform", "rotate(-35)" );
               
           //Y axis
           svgElt.append("g")

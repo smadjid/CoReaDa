@@ -90,6 +90,7 @@
         </div>
 
         <div class="col-lg-12" style=" padding:12px; width:100%; font-size: 16px;   padding-top:5px">
+        <span id="titleBar">
           <span  class="glyphicon glyphicon-home"  aria-hidden="true " "> </span> 
             <a style="font-size: 14px"  role='button' ng-click='loadURL("#")'>{{course.title }}</a>
           
@@ -106,9 +107,10 @@
           <span class="glyphicon glyphicon-menu-right"></span>
               <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.section.route)'>{{inspectorStats.breadcrumbsData.section.title }}</a>
           </span>          
-            
-             <a title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></a> 
-</div>
+          </span>
+             <a id="gotoOC" title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></a> 
+    </div>
+
            
 
           <div class="col-lg-6 container-nginclude"    ng-include src="'courses/views/stats.html'" style="height:90%;padding:0;margin:0"> </div>

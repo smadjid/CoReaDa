@@ -316,7 +316,7 @@ border-color: RoyalBlue!important;
 }
 
 th {
-  background: steelblue;
+  background-color: #386890;
   vertical-align: middle;
   font-weight: lighter;  
   color: white;
@@ -870,8 +870,15 @@ table {
   }
 
   .table > thead > tr > th span{
- font-size: 1vw;
+ font-size: .85vw;
   }
+.indicators-header b{
+  font-size: .88vw;
+}
+
+.indicators-header {
+  background-color: steelblue;
+}
 
 .container-fluid {
     margin-right: 1px;
@@ -1552,7 +1559,7 @@ marker#arrow {
   cursor: pointer;
 }
 .barChart text {
-  font: 10px sans-serif;
+  font: 9px sans-serif;
   pointer-events: none;
  
 }
