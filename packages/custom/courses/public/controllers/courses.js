@@ -496,7 +496,11 @@ $scope.getGraphTitle = function(code){
 }
  
 
-
+$scope.zoomGraph = function(){
+   ngDialog.open({ template: 'courses/views/zoom-graph.html', className: 'ngdialog-theme-default', width: '85%', scope:$scope
+        
+      });
+}
 
  
 $scope.completeCourseParts = function(){ 
