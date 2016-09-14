@@ -215,14 +215,14 @@ if(typeof dataMediane !='undefined')
 
 legend.append("text")
     .attr("x", width )
-    .attr("y", 0)
-    .attr("dy", ".35em")
+    .attr("y", '.7em')
+    .attr("dy", ".4em")
     .style("text-anchor", "end")
     .text(function (d) {return d.text;});
 
 legend.append("rect")
     .attr("x", width - 80)
-    .attr("y", 0)
+    .attr("y", '.7em')
     .attr("width", 30)
     .attr("height", 3)    
     .style("fill", function (d) {return d.color;});
