@@ -1672,9 +1672,9 @@ if(facts.length>0)
        {
             target:'.navbar-fixed-top',
             content: "<img width:30 src='/courses/assets/img/logo.png'  />"+
-            "<span>Bienvenu sur CoReaDa, un tableau de bord qui permet de présenter des résultats issus de l'analyse des usages des lecteurs sur les cours d'OpenClassrooms."+
-            "Cette visite a pour objectif de vous permettre d'avoir connaissance des principaux éléments de l'interface. Les boutons suivant/précédent permettent de naviguer dans la présentation."+
-            "<br/>** Vous pouvez utiliser aussi les flèches de direction de votre clavier pour avancer ou reculer"+
+            "<span><b>Bienvenue sur la visite guidée du tableau de bord CoReaDa.</b>"+
+            "<br/>** Cette visite vous permettra de découvrir les éléments principaux de l'interface. "+
+            "<br/>** Les boutons suivant/précédent permettent de naviguer dans la présentation. Vous pouvez utiliser aussi les flèches de direction de votre clavier."+
             "<br/>** Vous pouvez arrêter cette visite à tout moment en la fermant ou en appuyant sur le bouton <i>Echap</i> de votre clavier.</span>"
         },
         {
