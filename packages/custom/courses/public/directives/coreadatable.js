@@ -272,7 +272,7 @@ var maxChapRoute="#";
       $(td)    
       .prop('onclick',null).off('click')
       .empty()  
-      .on("click", function(d) { 
+      .on("click", function(d) {   
              ///////////// LOG ////////////
                 saveLog({
                 'name':'factCellClick',
@@ -281,9 +281,9 @@ var maxChapRoute="#";
                  {'paramName':'url','paramValue':fact.route}] 
                 });
             //////////////////////////////
-             //      window.location.hash = fact.route;
+                   window.location.hash = fact.route;
                 })
-      .append("<img data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact'' width='25' role='button' src='/courses/assets/img/fact.png' ng-click='window.location.hash ="+ fact.route+"'></img>");
+      .append("<img data-fact-id="+fact._id+" parent-path="+chapter.route+"  class='fact chapter-fact'' width='25' role='button' src='/courses/assets/img/fact.png' ></img>");
       
 
     }

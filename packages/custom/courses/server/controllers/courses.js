@@ -15,7 +15,7 @@ module.exports = function(Courses) {
     var analyzeCourse = function(courseCode){
         var courseHome="coursesdata/"+courseCode;
     
-    
+    console.log(courseCode)
     var fs = require("fs");      
 
         
