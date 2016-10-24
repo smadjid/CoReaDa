@@ -13,7 +13,14 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses, nzTour) {
     $scope.global = Global;
 
+$scope.transitionsDlg = function(type){
+  
+  if(type=='provenance_not_linear') $scope.transitionDisplay = 'Provenance'
+    else $scope.transitionDisplay = 'Destination'
 
+ngDialog.open({ template: 'courses/views/transitions.html', className: 'ngdialog-theme-default', width: '90%', scope:$scope});
+
+}
 $scope.signalFact = function(){
 
         ngDialog.open({ template: 'courses/views/facts-signal.html', className: 'ngdialog-theme-default', width: '50%',
@@ -246,14 +253,14 @@ var computeTwoBounderyValues = function(type, indicatorCode){
 
 if(type=='chapter'){
   $scope.courseChapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter[indicatorCode]);
+      var partData = parseFloat(chapter.indicators[indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   $scope.courseChapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part[indicatorCode]);
+      var partData = parseFloat(part.indicators[indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -274,14 +281,14 @@ var computeMinBounderyValues = function(type, indicatorCode){
 
 if(type=='chapter'){
   $scope.courseChapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter[indicatorCode]);
+      var partData = parseFloat(chapter.indicators[indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   $scope.courseChapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part[indicatorCode]);
+      var partData = parseFloat(part.indicators[indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -313,14 +320,14 @@ var computeBounderyValues = function(type, indicatorCode){
 
 if(type=='chapter'){
   $scope.courseChapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter[indicatorCode]);
+      var partData = parseFloat(chapter.indicators[indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   $scope.courseChapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part[indicatorCode]);
+      var partData = parseFloat(part.indicators[indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -360,12 +367,14 @@ else{
 
       $scope.formData ='';
       $scope.textBtnForm ='';
-      $scope.chartType = 'actions';
-      $scope.globalChartSelector = 'actions';
+      $scope.indicatorsSelectionModel=['interest','Actions_tx','speed','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx',
+'provenance_not_linear','provenance_past','provenance_future','destination_not_linear','destination_past','destination_future'];
+      $scope.chartType = $scope.indicatorsSelectionModel[0];
+      $scope.globalChartSelector = $scope.indicatorsSelectionModel[0];
       $scope.elementTypeSelector = 'part';
       $scope.sectionsAvailable = false;
       $scope.sectionDisplay = false;
-      $scope.context.statChart = false;
+      $scope.context.fatChart = false;
       $scope.taskPanelTitle = "Tâches";
       $scope.graphShow=false;
       
@@ -374,15 +383,15 @@ else{
       $scope.inspectorChart = false;
       $scope.tabSelect = "stats";
       $scope.currentFact = 0;  
-      $scope.currentElement = {'id':null, route:'#', 'type':'course'};  
+      $scope.currentElement = {'id':0, route:'#', 'type':'course'};  
       $scope.allFactsDisplay=false;
       $scope.ChaptersFacts = [];
       $scope.SectionsFacts = [];
       $scope.inspectorFacts={'Facts':[], 'type':'tome', 'selectedFact':'0'};
-      $scope.inspectorStats ={'Facts':[], 'indicatorCode':'actions', 'type':'chapter'};
+      $scope.inspectorStats ={'Facts':[], 'part_id':null,'indicatorCode':$scope.indicatorsSelectionModel[0], 'type':'chapter'};
       $scope.courseDisplay = true;
       $scope.indicatorSelectorShow = false;
-      $scope.allIndicatorSelectorShow = false;
+      $scope.allIndicatorSelectorShow = false;      
 
 
 
@@ -399,28 +408,111 @@ else{
 
 
 $scope.resetIndicators = function(){
-      $scope.indicatorsHeader=[
-        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'issueCode':'actions','category':'Indicateurs de lecture','title':'Le taux de vitesse enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'issueCode':'speed','category':'Indicateurs de lecture','title':'La vitesse de lecture observée sur le cours ou sur un de ses éléments (partie, chapitre, section) est calculée comme étant le nombre de mots lue par minute pour les lectures observée sur le cours ou sur l\'élément en question','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'issueCode':'reread','category':'Indicateurs de relecture','title':'Le taux de relecture du cours ou d\'un de ses éléments (partie, chapitre, section) est calculé comme étant le taux que représentent les lectures qui sont des relectures, par rapport à l\'ensemble des lectures enregistrées sur le cours ou sur l\'élément en question','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null},
-        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','issueCode':'stop','category':'Indicateurs d\'arrêt et reprise','title':'Le taux des arrêts définitifs de la lecture sur un élément du cours (partie, chapitre, section) est calculé comme étant le pourcentage des arrêts définitifs de la lecture ayant eu lieu sur l\'element en question par rapport à l\'ensemble des arrêts enregistrés','sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null}
+      $scope.indicatorsHeader=[      
+        {'code':'Actions_tx', 'value':'Actions_tx', 'label':'Visites', 'inspectorText':'aux visites', 
+        'issueCode':'Actions_tx','category':'Indicateurs de lecture','title':'Le taux de vitesse enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':true,'parent': null, 'level':'level0', 'details':false},
+        /*{'code':'interest', 'value':'interest', 'label':'Intérêt', 'inspectorText':'aux visites', 
+        'issueCode':'interest','category':'Indicateurs de lecture','title':'Le taux de vitesse enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent':'Actions_tx', 'level':'level1', 'details':false},*/
+        {'code':'readers_tx', 'value':'readers_tx', 'label':'Lecteurs', 'inspectorText':'aux lecteurs', 
+        'issueCode':'readers_tx','category':'Indicateurs de lecture','title':'Le taux de lecteurs du cours ayant visité un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visiteurs de l\'élément par rapport aux visiteurs du cours',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'Actions_tx', 'level':'level1', 'details':false},
+        {'code':'rs_tx', 'value':'rs_tx', 'label':'Séances', 'inspectorText':'aux séances', 
+        'issueCode':'rs_tx','category':'Indicateurs de lecture','title':'Le taux de séances de lecture contenant l\'élément sélectionné',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'Actions_tx', 'level':'level1', 'details':false},
+        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 
+        'issueCode':'speed','category':'Indicateurs de lecture','title':'La vitesse de lecture observée sur le cours ou sur un de ses éléments (partie, chapitre, section) est calculée comme étant le nombre de mots lue par minute pour les lectures observée sur le cours ou sur l\'élément en question',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'Actions_tx', 'level':'level1', 'details':false},
 
+        {'code':'rereads_tx', 'value':'rereads_tx', 'label':'Relecture','inspectorText':'à la relecture', 
+        'issueCode':'rereads_tx','category':'Indicateurs de relecture','title':'Le taux de relecture du cours ou d\'un de ses éléments (partie, chapitre, section) est calculé comme étant le taux que représentent les lectures qui sont des relectures, par rapport à l\'ensemble des lectures enregistrées sur le cours ou sur l\'élément en question',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':false,'parent':null, 'show':true, 'level':'level0', 'details':false},        
+        {'code':'rereads_seq_tx', 'value':'rereads_seq_tx', 'label':'Relectures conjointes','inspectorText':'à la relecture conjointe',
+         'issueCode':'rereads_seq_tx','category':'Indicateurs de relecture','title':'Le taux de relectures conjointes du cours ou d\'un de ses éléments (partie, chapitre, section) est calculé comme étant le taux que représentent les lectures qui sont des relectures, par rapport à l\'ensemble des lectures enregistrées sur le cours ou sur l\'élément en question',
+         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'rereads_tx', 'level':'level1', 'details':false},
+        {'code':'rereads_dec_tx', 'value':'rereads_dec_tx', 'label':'Relectures disjointes','inspectorText':'à la relecture disjointe',
+         'issueCode':'rereads_dec_tx','category':'Indicateurs de relecture','title':'Le taux de relectures disjointes du cours ou d\'un de ses éléments (partie, chapitre, section) est calculé comme étant le taux que représentent les lectures qui sont des relectures, par rapport à l\'ensemble des lectures enregistrées sur le cours ou sur l\'élément en question',
+         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'rereads_tx', 'level':'level1', 'details':false},
+   
+        {'code':'reading_not_linear', 'value':'reading_not_linear', 'label':'Linéarité','inspectorText':'...', 
+        'issueCode':'reading_not_linear','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true,'parent':null, 'show':true, 'level':'level0', 'details':false},
+        {'code':'provenance_not_linear', 'value':'provenance_not_linear', 'label':'Provenance non linéaire','inspectorText':'...', 
+        'issueCode':'provenance_not_linear','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':false,'parent':'reading_not_linear', 'level':'level1', 'details':false},
+        {'code':'provenance_past', 'value':'provenance_past', 'label':'Saut depuis l\'arrière','inspectorText':'...', 
+        'issueCode':'provenance_past','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'provenance_not_linear', 'level':'level2', 'details':false},
+        {'code':'provenance_future', 'value':'provenance_future', 'label':'Saut depuis l\'avant','inspectorText':'....', 
+        'issueCode':'provenance_future','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'provenance_not_linear', 'level':'level2', 'details':false},
+        {'code':'destination_not_linear', 'value':'destination_not_linear', 'label':'Destination non linéaire','inspectorText':'...', 
+        'issueCode':'destination_not_linear','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':false,'parent':'reading_not_linear', 'level':'level1', 'details':false},
+        {'code':'destination_past', 'value':'destination_past', 'label':'Saut vers l\'arrière','inspectorText':'...', 
+        'issueCode':'destination_past','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'destination_not_linear', 'level':'level2', 'details':false},
+        {'code':'destination_future', 'value':'destination_future', 'label':'Saut vers l\'avant','inspectorText':'....', 
+        'issueCode':'destination_future','category':'Indicateurs de navigation','title':'...',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'destination_not_linear', 'level':'level2', 'details':false},
+
+                
+        {'code':'rupture_tx', 'value':'rupture_tx', 'label':'Arrêts', 'inspectorText':'aux fin de séances de lectrue',
+        'issueCode':'rupture_tx','category':'Indicateurs d\'arrêt et reprise','title':'Le taux des fin séances de lecture sur un élément du cours (partie, chapitre, section) est calculé comme étant le pourcentage des arrêts définitifs de la lecture ayant eu lieu sur l\'element en question par rapport à l\'ensemble des arrêts enregistrés',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':true,'parent': null, 'level':'level0', 'details':false},
+        {'code':'norecovery_tx', 'value':'norecovery_tx', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue',
+        'issueCode':'norecovery_tx','category':'Indicateurs d\'arrêt et reprise','title':'Le taux des arrêts définitifs de la lecture sur un élément du cours (partie, chapitre, section) est calculé comme étant le pourcentage des arrêts définitifs de la lecture ayant eu lieu sur l\'element en question par rapport à l\'ensemble des arrêts enregistrés',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'rupture_tx', 'level':'level1', 'details':false},
+        {'code':'resume_abnormal_tx', 'value':'resume_abnormal_tx', 'label':'Reprise', 'inspectorText':'aux fin de séances de lectrue',
+        'issueCode':'resume_abnormal_tx','category':'Indicateurs d\'arrêt et reprise','title':'Le taux des fin séances de lecture sur un élément du cours (partie, chapitre, section) est calculé comme étant le pourcentage des arrêts définitifs de la lecture ayant eu lieu sur l\'element en question par rapport à l\'ensemble des arrêts enregistrés',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true,'parent': 'rupture_tx', 'level':'level1', 'details':false},        
+        {'code':'resume_past', 'value':'resume_past', 'label':'Reprise en arrière', 'inspectorText':'à la reprise en arrière de la lectrue',
+        'issueCode':'resume_past','category':'Indicateurs d\'arrêt et reprise','title':'Le taux des reprises après arrêt sur ce chapitre',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'resume_abnormal_tx', 'level':'level2', 'details':false},        
+        {'code':'resume_future', 'value':'resume_future', 'label':'Reprise en avant', 'inspectorText':'à la reprise en avant de la lectrue',
+        'issueCode':'resume_future','category':'Indicateurs d\'arrêt et reprise','title':'Le taux des reprises après arrêt sur ce chapitre',
+        'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'resume_abnormal_tx', 'level':'level2', 'details':false}
+        
       ]
       
 }
 $scope.resetIndicators();
-$scope.selectedIndicators=[
-        {'code':'actions', 'value':'actions', 'label':'Taux de visites', 'inspectorText':'aux visites', 'title':' ',
-        'issueCode':'actions','category':'Indicateurs de lecture'},
-        {'code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 'title':' ',
-        'issueCode':'speed','category':'Indicateurs de lecture'},
-        {'code':'reread', 'value':'reread', 'label':'Taux de relecture','inspectorText':'à la relecture', 'title':' ',
-        'issueCode':'reread','category':'Indicateurs de relecture'},
-        {'code':'stop', 'value':'stop', 'label':'Arrêts définitifs', 'inspectorText':'aux arrêts de la lectrue','title':' ',
-        'issueCode':'stop','category':'Indicateurs d\'arrêts et reprise'}
-      ]
-      $scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
+$scope.selectedIndicators=$scope.indicatorsHeader;
 
+var toggleChildren = function(parent){
+  parent.details = !parent.details;
+  
+  
+
+   angular.forEach($scope.indicatorsHeader, function(ch) { 
+   if(ch.parent==parent.code){
+      ch.show = !ch.show;
+     
+    
+    if((!ch.show) && (ch.details)) 
+     toggleChildren(ch);
+   }
+     
+  })
+}
+$scope.toggleChildren = function(parent,$event){
+ 
+   toggleChildren(parent);
+ 
+ 
+}
+$scope.isIndicatorVisible = function(indicator){
+
+//console.log('Ind: '+indicator+' : '+$scope.indicatorsHeader.filter(function(i){ return i.code == indicator})[0].show)
+//return false;
+var ind = $scope.indicatorsHeader.filter(function(i){ return i.code == indicator});
+if(ind.length>0)
+  return(ind[0].show)
+else 
+  return false;
+
+}
 
 
 $scope.setSectionDisplay = function(value){ 
@@ -465,13 +557,64 @@ $scope.toggleSectionDisplay = function(){
       //////////////////////////////
 
 }
+$scope.computePercentColor = function(val, indicator, range){
+  var scale = chroma.scale('OrRd').padding([0,0.25]).domain([0, 100]);
+  
+  return   scale(val).hex();
+}
+
+$scope.transitionValue = function(type,id1,id2){
+  if(id1==id2) return '';
+  val = $scope.course.navigation.filter(function(value){ return ((value.x == id1) & (value.y == id2))})[0]
+  
+  if(type=='Provenance')  
+    return(d3.round(100*val.provenance,2))
+  else
+    return(d3.round(100*val.destination,2))
+}
+$scope.getPartByIndex = function(i){
+  var found = false;
+  var result = $scope.course
+  if(i==0) return $scope.course;
+  angular.forEach($scope.course.tomes, function(tome) { 
+
+    if(tome.id==i) 
+    {  result = tome;
+        return result;}
+    
+    angular.forEach(tome.chapters, function(chapter) { 
+      
+      if(chapter.id==i) 
+      {result = chapter;
+          return result;}
+    
+      angular.forEach(chapter.parts, function(section) { 
+        if(section.id==i) 
+         { result = section;
+                 return result;}
+    
+      })
+    })
+  });
+  
+  return result;
+}
 $scope.getGraphTitle = function(code){
   switch(code) {
-    case "actions":
+    case "interest":
+        return("Taux d'intérêt estimé");
+        break;
+     case "Actions_tx":
         return('Taux de visites');
         break;
     case "Readers":
         return('Nombre de lecteurs distincts');
+        break;
+    case "readers_tx":
+        return('Taux de lecteurs');
+        break;
+    case "rs_tx":
+        return('Taux de séances de lecture');
         break;
     case "speed":
         return('Vitesse de lecture (en mots par min)');        
@@ -479,17 +622,50 @@ $scope.getGraphTitle = function(code){
     case 'mean.duration':
         return('Durée moyenne de lecture de la section(en minutes)')
         break;
-    case 'reread':
+    case 'rereads_tx':
         return('Taux de lectures qui sont des relectures');
         break;
-    case 'stop':
+    case 'rereads_seq_tx':
+        return('Taux de relectures conjointes');
+        break;
+    case 'rereads_dec_tx':
+        return('Taux de relectures disjointes');
+        break;
+    case 'norecovery_tx':
         return('Taux des arrêts définitifs de la lecture');
         break;
-    case 'provenance':
-        return('Sections de provenance (lues juste avant celle-ci)');
+    case 'resume_abnormal_tx':
+        return('Distribution des taux de reprise')
         break;
-    case 'destination':
-        return('Sections de destination (lues juste après celle-ci)');
+    case 'resume_past':
+        return('Taux de reprises en arrière de la lecture');
+        break; 
+    case 'resume_future':
+        return('Taux de reprises en avant de la lecture');
+        break;        
+    case 'rupture_tx':
+        return('Taux de fin des séances de lecture');
+        break;
+    case 'reading_not_linear':
+        return('Linéarité de la lecture');
+        break;
+    case 'provenance_not_linear':
+        return('Provenance non linéaire');
+        break;
+    case 'provenance_past':
+        return('Saut depuis l\'arrière');
+        break;
+    case 'provenance_future':
+        return('Saut depuis l\'arrière');
+        break;
+    case 'destination_not_linear':
+        return('Destination non linéaire');
+        break;
+    case 'destination_past':
+        return('Saut vers l\'avant');
+        break;
+    case 'destination_future':
+        return('Saut vers l\'avant');
         break;
 }
 
@@ -497,17 +673,14 @@ $scope.getGraphTitle = function(code){
  
 
 $scope.zoomGraph = function(){
-   ngDialog.open({ template: 'courses/views/zoom-graph.html', className: 'ngdialog-theme-default', width: '90%', scope:$scope
-        
-      });
+   ngDialog.open({ template: 'courses/views/zoom-graph.html', className: 'ngdialog-theme-default', width: '90%', scope:$scope});
 }
 
  
 $scope.completeCourseParts = function(){ 
   var courseParts = [], courseChapters = [];
-  var base_url = "https://openclassrooms.com/courses";
-  $scope.course.url = base_url+'/'+$scope.course.properties.filter(function(value){ return value.property === 'slug'})[0].value;
-
+  var globalTransitions = {'provenance':{'normal':[],'past':[],'future':[]},'destination':{'normal':[],'past':[],'future':[]}}
+  
   
   angular.forEach($scope.course.tomes, function(tome) {
     tome.parts_count = 0;
@@ -517,10 +690,11 @@ $scope.completeCourseParts = function(){
           'chapter':null,
           'section':null
         };
-    tome.url = $scope.course.url;//+'/'+tome.properties.filter(function(value){ return value.property === 'slug'})[0].value
-    angular.forEach(tome.chapters, function(chapter) { 
+    tome.url = $scope.course.url;
+    
+      var transitions = {'provenance':{'normal':[],'past':[],'future':[]},'destination':{'normal':[],'past':[],'future':[]}}
 
-      tome.indicators = [];
+    angular.forEach(tome.chapters, function(chapter) { 
       chapter.parts_count = 0;
       chapter.route =$.param({'partid':tome._id, 'chapid':chapter._id});
       chapter.fullpath = {
@@ -528,6 +702,24 @@ $scope.completeCourseParts = function(){
           'chapter':{'id':chapter._id, 'route':chapter.route, 'title':chapter.title},
           'section':null
         };
+        chapter.transitions={
+        'provenance':{
+          'normal': chapter.indicators.provenance_prev,
+          'past':chapter.indicators.provenance_past,
+          'future':chapter.indicators.provenance_future
+        },
+        'destination':{
+          'normal': chapter.indicators.destination_next,
+          'past':chapter.indicators.destination_past,
+          'future':chapter.indicators.destination_future
+        }
+      };
+      transitions.provenance.normal.push(chapter.transitions.provenance.normal);
+      transitions.provenance.past.push(chapter.transitions.provenance.past);
+      transitions.provenance.future.push(chapter.transitions.provenance.future);
+      transitions.destination.normal.push(chapter.transitions.destination.normal);
+      transitions.destination.past.push(chapter.transitions.destination.past);
+      transitions.destination.future.push(chapter.transitions.destination.future);
 
 
       chapter.url = $scope.course.url+'/'+chapter.url;
@@ -557,6 +749,18 @@ $scope.completeCourseParts = function(){
           'chapter':{'id':chapter._id, 'route':chapter.route, 'title':chapter.title},
           'section':{'id':part._id, 'route':part.route, 'title':part.title}
         };
+        part.transitions={
+        'provenance':{
+          'normal': part.indicators.provenance_prev,
+          'past':part.indicators.provenance_past,
+          'future':part.indicators.provenance_future
+        },
+        'destination':{
+          'normal': part.indicators.destination_next,
+          'past':part.indicators.destination_past,
+          'future':part.indicators.destination_future
+        }
+      }
         part.url = chapter.url+'/'+'#/id/r-'+part.part_id;
         angular.forEach(part.facts,function(fact){
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id,'sectionid':part._id, 'factid':fact._id});          
@@ -569,13 +773,48 @@ $scope.completeCourseParts = function(){
           fact.d3 ={'part':part.route, 'chapter':chapter.route,'tome':tome.route};
 
         });
-        part.indicators = [];
+        part.metrics = [];
         courseParts.push( part );
       });
-      chapter.indicators = [];
+      chapter.metrics = [];
       courseChapters.push( chapter ); 
     });
+    tome.transitions={
+        'provenance':{
+          'normal': d3.round(d3.mean(transitions.provenance.normal),4),
+          'past':d3.round(d3.mean(transitions.provenance.past),4),
+          'future':d3.round(d3.mean(transitions.provenance.future),4)
+        },
+        'destination':{
+          'normal': d3.round(d3.mean(transitions.destination.normal),4),
+          'past':d3.round(d3.mean(transitions.destination.past),4),
+          'future':d3.round(d3.mean(transitions.destination.future),4)
+        }
+      };
+
+      
+      globalTransitions.provenance.normal.push(tome.transitions.provenance.normal);
+      globalTransitions.provenance.past.push(tome.transitions.provenance.past);
+      globalTransitions.provenance.future.push(tome.transitions.provenance.future);
+      globalTransitions.destination.normal.push(tome.transitions.destination.normal);
+      globalTransitions.destination.past.push(tome.transitions.destination.past);
+      globalTransitions.destination.future.push(tome.transitions.destination.future);
+
   });
+      $scope.course.transitions={
+        'provenance':{
+          'normal': d3.round(d3.mean(globalTransitions.provenance.normal),4),
+          'past':d3.round(d3.mean(globalTransitions.provenance.past),4),
+          'future':d3.round(d3.mean(globalTransitions.provenance.future),4),
+          'not_linear':d3.round(1- d3.mean(globalTransitions.provenance.normal),4)
+        },
+        'destination':{
+          'normal': d3.round(d3.mean(globalTransitions.destination.normal),4),
+          'past':d3.round(d3.mean(globalTransitions.destination.past),4),
+          'future':d3.round(d3.mean(globalTransitions.destination.future),4),
+          'not_linear':d3.round(1- d3.mean(globalTransitions.destination.normal),4)
+        }
+      };
 
   $scope.courseParts = courseParts;
   $scope.courseChapters = courseChapters; 
@@ -583,21 +822,31 @@ $scope.completeCourseParts = function(){
   computeColours();
 
   updateMainFacts();
+
   $scope.ChaptersFacts = $scope.MainChaptersFacts;
   $scope.SectionsFacts = $scope.MainSectionsFacts;
   
 
-  
-  
- 
-
 }
+/*********** Prepare Global Transitions ********************/
 /*********** Compute colours ********************/
 var decideBoundariesScale = function(partType,indicatorCode){
   var boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
 var scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
 switch(indicatorCode) {
-    case "actions":
+    case "interest":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
+        break;
+    case "Actions_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
+        break;
+    case "readers_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
+        break;
+    case "rs_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MinValue]);
         break;
@@ -605,39 +854,77 @@ switch(indicatorCode) {
         boundaryValues = computeTwoBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MinValue, boundaryValues.MaxValue]);
         break;
-    case "reread":
+    case "rereads_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
-    case "reread":
+     chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "norecovery_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
-    case "stop":
+    case "resume_abnormal_tx":
         boundaryValues = computeBounderyValues(partType, indicatorCode);
         scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "resume_past":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;  
+    case "resume_future":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;        
+    case "rupture_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "reading_not_linear":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "provenance_not_linear":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "provenance_past":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "provenance_future":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "destination_not_linear":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "destination_past":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+  case "destination_future":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale = chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;        
+    case "rereads_seq_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale =chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
+        break;
+    case "rereads_dec_tx":
+        boundaryValues = computeBounderyValues(partType, indicatorCode);
+        scale =chroma.scale('OrRd').padding([0,0.25]).domain([boundaryValues.MedianValue, boundaryValues.MaxValue]);
         break;
 }
 return {'boundaryValues':boundaryValues,'scale':scale};
 }
 var computeIndividualIndicatorValue =  function(part,indicatorCode, boundaryValues){
-  var partData = Math.abs(boundaryValues.MedianValue - parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
-      switch(indicatorCode) {
-      case "actions":
-        partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
-        break;
-      case "speed":
-        partData = Math.abs(boundaryValues.MedianValue - 
-          parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value));
-        break;
-      case "reread":
-        partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
-        break;
-      case "stop":
-        partData = parseFloat(part.properties.filter(function(value){ return value.property == indicatorCode})[0].value);
-        break;
-      }
-    return partData;
+  if(indicatorCode=="speed")
+     return Math.abs(boundaryValues.MedianValue - parseFloat(part.indicators.speed));
+   else
+    return parseFloat(part.indicators[indicatorCode])      
+  
 }
 var computeColours =  function(){
   angular.forEach($scope.indicatorsHeader, function(indicator){
@@ -658,14 +945,14 @@ var computeColours =  function(){
         var chapIndicator={'code':indicatorClass, 
                            'delta':indicatorValue, 
                            'color':chapterScale(indicatorValue).hex()};
-        chapter.indicators.push(chapIndicator);
+        chapter.metrics.push(chapIndicator);
         
         angular.forEach(chapter.parts, function(part) {
           var indicatorValue = computeIndividualIndicatorValue(part, indicatorClass, partBoundaryValues);
          var partIndicator={'code':indicatorClass, 
                            'delta':indicatorValue, 
                            'color':partScale(indicatorValue).hex()};
-         part.indicators.push(partIndicator);
+         part.metrics.push(partIndicator);
 
         })
         
@@ -976,12 +1263,27 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'id':chapter.id,
                         'title':chapter.title,
                         'route':chapter.route,                                                
-                      //  'actions':parseInt(chapter.properties.filter(function(value){ return value.property === 'Actions_nb'})[0].value),
-                        'actions':chapter.actions,
-                        'speed':chapter.speed,
-                        'reread':chapter.reread,
-                        'stop':chapter.stop,
-                        'Readers':parseInt(chapter.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
+                        'interest':chapter.indicators.interest,
+                        'Actions_tx':chapter.indicators.Actions_tx,
+                        'readers_tx':chapter.indicators.readers_tx,
+                        'rs_tx':chapter.indicators.rs_tx,
+                        'speed':chapter.indicators.speed,
+                        'rereads_tx':chapter.indicators.rereads_tx,
+                        'rereads_seq_tx':chapter.indicators.rereads_seq_tx,
+                        'rereads_dec_tx':chapter.indicators.rereads_dec_tx,
+                        'norecovery_tx':chapter.indicators.norecovery_tx, 
+                        'resume_abnormal_tx':chapter.indicators.resume_abnormal_tx, 
+                        'resume_past':chapter.indicators.resume_past,
+                        'resume_future':chapter.indicators.resume_future,
+                        'rupture_tx':chapter.indicators.rupture_tx,
+                        'reading_not_linear':chapter.indicators.reading_not_linear,
+                        'provenance_not_linear':chapter.indicators.provenance_not_linear,
+                        'provenance_past':chapter.indicators.provenance_past,
+                        'provenance_future':chapter.indicators.provenance_future,
+                        'destination_not_linear':chapter.indicators.destination_not_linear,
+                        'destination_past':chapter.indicators.destination_past,
+                        'destination_future':chapter.indicators.destination_future,
+                        'Readers':chapter.indicators.Readers
                       });
 
       
@@ -990,11 +1292,27 @@ angular.forEach($scope.course.tomes, function(tome) {
                         'id':part.id,
                         'title':part.title+' (Sec. '+part.id+' )',
                         'route':part.route,                                                
-                        'actions':part.actions,
-                        'speed':part.speed,
-                        'reread':part.reread,
-                        'stop':part.stop,
-                        'Readers':parseInt(part.properties.filter(function(value){ return value.property === 'Readers'})[0].value)
+                        'interest':part.indicators.interest,
+                        'Actions_tx':part.indicators.Actions_tx,
+                        'readers_tx':part.indicators.readers_tx,
+                        'rs_tx':part.indicators.rs_tx,
+                        'speed':part.indicators.speed,
+                        'rereads_tx':part.indicators.rereads_tx,
+                        'rereads_seq_tx':part.indicators.rereads_seq_tx,
+                        'rereads_dec_tx':part.indicators.rereads_dec_tx,
+                        'norecovery_tx':part.indicators.norecovery_tx,
+                        'resume_abnormal_tx':part.indicators.resume_abnormal_tx, 
+                        'resume_past':part.indicators.resume_past,
+                        'resume_future':part.indicators.resume_future,
+                        'rupture_tx':part.indicators.rupture_tx,
+                        'provenance_not_linear':part.indicators.provenance_not_linear,
+                        'reading_not_linear':part.indicators.reading_not_linear,
+                        'provenance_past':part.indicators.provenance_past,
+                        'provenance_future':part.indicators.provenance_future,
+                        'destination_not_linear':part.indicators.destination_not_linear,
+                        'destination_past':part.indicators.destination_past,
+                        'destination_future':part.indicators.destination_future,
+                        'Readers':parseInt(part.indicators.Readers)
                       });
           
                 
@@ -1003,56 +1321,142 @@ angular.forEach($scope.course.tomes, function(tome) {
   })
 })
 
-partsData = partsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
-var actions = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.interest, y.interest);})
+var interest = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.Actions_tx, y.Actions_tx);})
+var Actions_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.readers_tx, y.readers_tx);})
+var readers_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.rs_tx, y.rs_tx);})
+var rs_tx = partsData.slice(0,3);
 partsData = partsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
 var Readers = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
-var stop = partsData.slice(0,3);
-partsData = partsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
-var reread = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
+var norecovery_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.resume_abnormal_tx, y.resume_abnormal_tx); })
+var resume_abnormal_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.resume_past, y.resume_past); })
+var resume_past = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.resume_future, y.resume_future); })
+var resume_future = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.rupture_tx, y.rupture_tx); })
+var rupture_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.reading_not_linear, y.reading_not_linear); })
+var reading_not_linear = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.provenance_not_linear, y.provenance_not_linear); })
+var provenance_not_linear = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.provenance_past, y.provenance_past); })
+var provenance_past = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.provenance_future, y.provenance_future); })
+var provenance_future = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.destination_not_linear, y.destination_not_linear); })
+var destination_not_linear = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.destination_past, y.destination_past); })
+var destination_past = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.destination_future, y.destination_future); })
+var destination_future = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.rereads_tx, y.rereads_tx); })
+var rereads_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.rereads_seq_tx, y.rereads_seq_tx); })
+var rereads_seq_tx = partsData.slice(0,3);
+partsData = partsData.sort(function(x, y){   return d3.descending(x.rereads_dec_tx, y.rereads_dec_tx); })
+var rereads_dec_tx = partsData.slice(0,3);
 
 
 var topSections={
-        'actions':actions[0],
+        'interest':interest[0],
+        'Actions_tx':Actions_tx[0],
+        'readers_tx':readers_tx[0],
+        'rs_tx':rs_tx[0],
         'Readers':Readers[0],
-        'stop':stop[0],
-        'reread':reread[0]
+        'resume_abnormal_tx':resume_abnormal_tx[0],
+        'norecovery_tx':norecovery_tx[0],
+        'resume_past':resume_past[0],
+        'resume_future':resume_future[0],
+        'rupture_tx':rupture_tx[0],
+        'rereads_tx':rereads_tx[0],
+        'rereads_seq_tx':rereads_seq_tx[0],
+        'rereads_dec_tx':rereads_dec_tx[0],
+        'provenance_not_linear':provenance_not_linear[0],
+        'reading_not_linear':reading_not_linear[0],
+        'provenance_past':provenance_past[0],
+        'provenance_future':provenance_future[0],
+        'destination_not_linear':destination_not_linear[0],
+        'destination_past':destination_past[0],
+        'destination_future':destination_future[0]
       }
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.actions, y.actions);})
-actions = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.norecovery_tx, y.norecovery_tx); })
+var norecovery_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.resume_abnormal_tx, y.resume_abnormal_tx); })
+var resume_abnormal_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.resume_past, y.resume_past); })
+var resume_past = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.resume_future, y.resume_future); })
+var resume_future = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rupture_tx, y.rupture_tx); })
+var rupture_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.reading_not_linear, y.reading_not_linear); })
+var reading_not_linear = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.provenance_not_linear, y.provenance_not_linear); })
+var provenance_not_linear = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.provenance_past, y.provenance_past); })
+var provenance_past = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.provenance_future, y.provenance_future); })
+var provenance_future = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.destination_not_linear, y.destination_not_linear); })
+var destination_not_linear = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.destination_past, y.destination_past); })
+var destination_past = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.destination_future, y.destination_future); })
+var destination_future = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rereads_tx, y.rereads_tx); })
+var rereads_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rereads_seq_tx, y.rereads_seq_tx); })
+var rereads_seq_tx = chapsData.slice(0,3);
+chapsData = chapsData.sort(function(x, y){   return d3.descending(x.rereads_dec_tx, y.rereads_dec_tx); })
+var rereads_dec_tx = chapsData.slice(0,3);
 
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.Readers, y.Readers);})
-Readers = chapsData.slice(0,3);
-
-
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.stop, y.stop); })
- stop = chapsData.slice(0,3); 
- var mean_chap_stops = d3.mean(chapsData, function(d) { return parseInt(d.stop); }); 
- 
-
-chapsData = chapsData.sort(function(x, y){   return d3.descending(x.reread, y.reread); })
- reread = chapsData.slice(0,3);
 
 var topChaps={
-        'actions':actions[0],
+        'Actions_tx':Actions_tx[0],
+        'interest':interest[0],
+        'readers_tx':readers_tx[0],
+        'rs_tx':rs_tx[0],
         'Readers':Readers[0],
-        'stop':stop[0],
-        'reread':reread[0]
+        'resume_abnormal_tx':resume_abnormal_tx[0],
+        'norecovery_tx':norecovery_tx[0],
+        'resume_past':resume_past[0],
+        'resume_future':resume_future[0],
+        'rupture_tx':rupture_tx[0],
+        'rereads_tx':rereads_tx[0],
+        'rereads_seq_tx':rereads_seq_tx[0],
+        'rereads_dec_tx':rereads_dec_tx[0],
+        'reading_not_linear':reading_not_linear[0],
+        'provenance_not_linear':provenance_not_linear[0],
+        'provenance_past':provenance_past[0],
+        'provenance_future':provenance_future[0],
+        'destination_not_linear':destination_not_linear[0],
+        'destination_past':destination_past[0],
+        'destination_future':destination_future[0]
       }
       
  var result = {
-      'actions':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nactions'})[0].value),
-      'nusers':parseInt($scope.course.stats.filter(function(value){ return value.property === 'nusers'})[0].value),    
-      'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
-      'mean_chap_speed':Math.round(d3.mean(chapsData, function(d) { return parseInt(d.speed); }),0),
-      'mean_chap_stop':Math.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.stop); }),1)+'%',
-      'mean_chap_reread': Math.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.reread); }),1)+'%',
+      'actions':$scope.course.indicators.nactions,
+      'nusers':$scope.course.indicators.nusers,    
+      //'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
+      'mean_chap_speed':d3.round(d3.mean(chapsData, function(d) { return parseInt(d.speed); }),0),
+      'mean_chap_norecovery_tx':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.norecovery_tx); }),1)+'%',
+      'mean_chap_reread': d3.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.rereads_tx); }),1)+'%',
+      'mean_chap_rereads_seq_tx': d3.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.rereads_seq_tx); }),1)+'%',
+      'mean_chap_rereads_dec_tx': d3.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.rereads_dec_tx); }),1)+'%',
+      'mean_chap_resume_past':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.resume_past); }),1)+'%',
+      'mean_chap_resume_future':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.resume_future); }),1)+'%',
 
-      'mean_sec_speed':Math.round(d3.mean(partsData, function(d) { return parseInt(d.speed); }),0),
-      'mean_sec_stop':Math.round(100* d3.mean(partsData, function(d) { return parseFloat(d.stop); }),1)+'%',
-      'mean_sec_reread': Math.round(100 * d3.mean(partsData, function(d) { return parseFloat(d.reread); }),1)+'%',
+      'mean_sec_speed':d3.round(d3.mean(partsData, function(d) { return parseInt(d.speed); }),0),
+      'mean_sec_norecovery_tx':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.norecovery_tx); }),1)+'%',
+      'mean_sec_rupture_tx':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.rupture_tx); }),1)+'%',
+      'mean_sec_reread': d3.round(100 * d3.mean(partsData, function(d) { return parseFloat(d.rereads_tx); }),1)+'%',
       
       //'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
       //'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
@@ -1068,7 +1472,9 @@ var topChaps={
 
 var computeComponentStats = function(element,bySection){ 
 
-var componentData ={'actions':[], 'speed':[], 'stop':[], 'reread':[] }
+var componentData ={'interest':[],'Actions_tx':[],'readers_tx':[],'rs_tx':[],'speed':[],'rupture_tx':[], 'norecovery_tx':[],
+'resume_past':[],'resume_future':[], 'rereads_tx':[],'rereads_seq_tx':[],'rereads_dec_tx':[],'reading_not_linear':[],
+'resume_abnormal_tx':[],'provenance_not_linear':[],'provenance_past':[],'provenance_future':[],'destination_not_linear':[],'destination_past':[],'destination_future':[] }
 
 var data=[];
 var ids=[]
@@ -1108,19 +1514,47 @@ else
   return;
 
     angular.forEach(data, function(elt){
-      componentData.actions.push(elt.actions);
-      componentData.speed.push(elt.speed);
-      componentData.stop.push(elt.stop);
-      componentData.reread.push(elt.reread);
+      componentData.Actions_tx.push(elt.indicators.Actions_tx);
+      componentData.interest.push(elt.indicators.interest);
+      componentData.readers_tx.push(elt.indicators.readers_tx);
+      componentData.rs_tx.push(elt.indicators.rs_tx);
+      componentData.speed.push(elt.indicators.speed);
+      componentData.rupture_tx.push(elt.indicators.rupture_tx);
+      componentData.norecovery_tx.push(elt.indicators.norecovery_tx);
+      componentData.resume_abnormal_tx.push(elt.indicators.resume_abnormal_tx);
+      componentData.resume_past.push(elt.indicators.resume_past);      
+      componentData.resume_future.push(elt.indicators.resume_future);      
+      componentData.rereads_tx.push(elt.indicators.rereads_tx);
+      componentData.rereads_seq_tx.push(elt.indicators.rereads_seq_tx);
+      componentData.rereads_dec_tx.push(elt.indicators.rereads_dec_tx);
+      componentData.provenance_not_linear.push(elt.indicators.provenance_not_linear);
+      componentData.reading_not_linear.push(elt.indicators.reading_not_linear);
+      componentData.destination_not_linear.push(elt.indicators.destination_not_linear);
       ids.push(elt.id);
     });
 
 
 var topData={
-        'actions':d3.mean(componentData.actions ),
+        'interest': d3.mean(componentData.interest ),
+        'Actions_tx':d3.mean(componentData.Actions_tx ),
+        'readers_tx':d3.mean(componentData.readers_tx ),
+        'rs_tx':d3.mean(componentData.rs_tx ),
         'speed':d3.mean(componentData.speed ),
-        'stop':d3.mean(componentData.stop ),
-        'reread':d3.mean( componentData.reread),
+        'rupture_tx':d3.mean(componentData.rupture_tx ),        
+        'norecovery_tx':d3.mean(componentData.norecovery_tx ),
+        'resume_abnormal_tx':d3.mean(componentData.resume_abnormal_tx ),
+        'resume_past':d3.mean(componentData.resume_past),
+        'resume_future':d3.mean(componentData.resume_future),
+        'rereads_tx':d3.mean( componentData.rereads_tx),
+        'rereads_seq_tx':d3.mean( componentData.rereads_seq_tx),
+        'rereads_dec_tx':d3.mean( componentData.rereads_dec_tx),
+        'reading_not_linear':d3.mean( componentData.reading_not_linear),
+        'provenance_not_linear':d3.mean( componentData.provenance_not_linear),
+        'provenance_past':d3.mean( componentData.provenance_past),
+        'provenance_future':d3.mean( componentData.provenance_future),
+        'destination_not_linear':d3.mean( componentData.destination_not_linear),
+        'destination_past':d3.mean( componentData.destination_past),
+        'destination_future':d3.mean( componentData.destination_future),
         'ids':ids
       } 
 
@@ -1413,7 +1847,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
   var mainIssues = [];
   var  mainStats = computeComponentStats(tome, $scope.sectionDisplay);
   
-   //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+   //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
    var code=$scope.inspectorStats.indicatorCode;
    if($scope.sectionDisplay){ 
        mainIssues = $scope.SectionsFacts;
@@ -1421,20 +1855,29 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
       $scope.factTitleDisplay=true;
        $scope.inspectorStats = {'type':'part',
                    'id':mainStats.ids,
+                   'part_id':tome.part_id,
                    'mairoute':tome.route,
                    'breadcrumbsData': tome.fullpath,
                    'typeTxt': 'cette partie',
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
+                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
                       'comment':'est le taux moyen de visite des sections de cette partie'} ,
-                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
-                      'comment':'est la vitesse moyenne de lecture des sections de cette partie'},                      
-                    {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
+                    {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
+                      'comment':'est le taux moyen de lecteurs des sections de cette partie'} ,
+                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,2)+'%',
+                      'comment':'est le taux moyen des séances de lecture contenant les sections de cette partie'} ,
+                      {'name':'speed','value':   d3.round(mainStats.speed)+' mots par minutes',
+                      'comment':'est la vitesse moyenne de lecture des sections de cette partie'},  
+
+                    {'name':'rereads_tx','value':  d3.round(100*mainStats.rereads_tx)+'%',
                       'comment':'est le taux moyen de relecture des sections de cette partie'},
-                   {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
-                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de cette partie'} 
+
+                   {'name':'norecovery_tx', 'value':  d3.round(100*mainStats.norecovery_tx)+'%',
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de cette partie'} ,
+                    {'name':'resume_past', 'value':  d3.round(100*mainStats.resume_past)+'%',
+                      'comment':'est le taux moyen des arrêts avec retour en arrière de la lecture sur les sections de cette partie'} 
                       ]    
                     
                   };
@@ -1443,27 +1886,57 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
     mainIssues = $scope.ChaptersFacts;
     $scope.inspectorStats = {'type':'chapter',
                    'id':mainStats.ids,
+                   'part_id':tome.part_id,
                    'mairoute':tome.route,
                    'breadcrumbsData': tome.fullpath,
                    'typeTxt': 'cette partie',
                    'indicatorTxt': 'tous les indicateurs',
                     'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
+                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
                       'comment':'est le taux moyen de visite des chapitres de cette partie'},
-                      {'name':'speed','value':   Math.round(mainStats.speed)+' mots par minutes',
+                    {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
+                      'comment':'est le taux moyen de lecteurs des chapitres de cette partie'} ,
+                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,2)+'%',
+                      'comment':'est le taux moyen des séances de lecture contenant les chapitres de cette partie'} ,
+                      {'name':'speed','value':   d3.round(mainStats.speed)+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'},
-                    {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
+
+                    {'name':'provenance_not_linear','value':   d3.round(100 * (1-tome.transitions.provenance.normal))+'%',
+                      'comment':'est le taux moyen des provenances non linéaires des chapitres de la partie'},
+                    {'name':'provenance_past','value':   d3.round(100 * tome.transitions.provenance.past)+'%',
+                      'comment':'est le taux moyen des arrivées vers les chapitres de cette partie et provenant des chapitres plus en arrière'},
+                    {'name':'provenance_future','value':   d3.round(100 * tome.transitions.provenance.future)+'%',
+                      'comment':'est le taux moyen des arrivées vers les chapitres de cette partie et provenant des chapitres plus en avant'},
+                    {'name':'destination_not_linear','value':   d3.round(100 * (1-tome.transitions.destination.normal))+'%',
+                      'comment':'est le taux moyen des destinations depuis les chapitres de cette partie vers des chapitres autres que ceux qui suivent directement'},
+                    {'name':'destination_past','value':   d3.round(100 * tome.transitions.destination.past)+'%',
+                      'comment':'est le taux moyen des départ depuis les chapitres de cette partie vers des chapitres plus en arrière'},
+                    {'name':'destination_future','value':   d3.round(100 * tome.transitions.destination.future)+'%',
+                      'comment':'est le taux moyen des départ depuis les chapitres de cette partie vers des chapitres plus en avant'},
+
+                    {'name':'rereads_tx','value':  d3.round(100*mainStats.rereads_tx)+'%',
                       'comment':'est le taux moyen de relecture des chapitres de cette partie'},
-                   {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
-                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  
+                    {'name':'rereads_seq_tx','value':  d3.round(100*mainStats.rereads_seq_tx)+'%',
+                      'comment':'est le taux moyen des relectures des chapitres de cette partie et qui ont lieu  se font au sein des mêmes séances de lecture'},
+                    {'name':'rereads_dec_tx','value':  d3.round(100*mainStats.rereads_dec_tx)+'%',
+                      'comment':'est le taux moyen des relectures des chapitres de cette partie et qui ont lieu  se font dans des séances de lecture distinctes'},
+                    {'name':'rupture_tx', 'value':  d3.round(100*mainStats.rupture_tx)+'%',
+                      'comment':'est le taux moyen des fins de sances de lecture ayant lieu sur les chapitres de cette partie'}  ,
+                   {'name':'norecovery_tx', 'value':  d3.round(100*mainStats.norecovery_tx)+'%',
+                      'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  ,
+                    {'name':'resume_past', 'value':  d3.round(100*mainStats.resume_past)+'%',
+                      'comment':'est le taux moyen des arrêts sur les chapitres de cette partie suivis de retour en arrière lors de la reprise de la lecture'} ,
+                    {'name':'resume_future', 'value':  d3.round(100*mainStats.resume_future)+'%',
+                      'comment':'est le taux moyen des arrêts sur les chapitres de cette partie suivis de sauts importants en avantlors de la reprise de la lecture'} 
                       ]    
                     
                   };
+                  
   }
   
 $scope.factTitleDisplay=true;
-  var times =[], users =[], rss =[], reread =[], stops =[];
+  var times =[], users =[], rss =[], rereads_tx =[], norecovery_txs =[];
 
 
 return;
@@ -1472,7 +1945,7 @@ return;
 var inspectorChapterData = function(chapter, indicator, fact, tab){ 
   
   var mainIssues = [], mainStats = [];
-  //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
   var code=$scope.inspectorStats.indicatorCode;
   if($scope.sectionDisplay) {
   	
@@ -1482,18 +1955,23 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
        $scope.inspectorStats = {'type':'section',
                    //'id':mainStats.ids,
                    'mainroute':chapter.route,
+                   'part_id':chapter.part_id,
                    'typeTxt': 'ce chapitre',
                    'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'actions','value':  Math.round(100*mainStats.actions,2)+'%',
+                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
                       'comment':'est le taux moyen de visite des sections de ce chapitre'},
+                      {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
+                      'comment':'est le taux moyen des lecteurs de ce chapitre'} ,
+                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,2)+'%',
+                      'comment':'est le taux moyen des séances de lecture contenant ce chapitre'} ,
                     {'name':'speed','value':   mainStats.speed+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des sections de ce chapitre'},
-                    {'name':'reread','value':  Math.round(100*mainStats.reread)+'%',
+                    {'name':'rereads_tx','value':  d3.round(100*mainStats.rereads_tx)+'%',
                       'comment':'est le taux moyen de relecture des sections de ce chapitre'},
-                    {'name':'stop', 'value':  Math.round(100*mainStats.stop)+'%',
+                    {'name':'norecovery_tx', 'value':  d3.round(100*mainStats.norecovery_tx)+'%',
                       'comment':'est le taux moyen des arrêts définitfs de la lecture sur les sections de ce chapitre'}  
                       ]    
                     
@@ -1504,35 +1982,93 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
     $scope.factTitleDisplay=false;
     $scope.inspectorStats = {'type':'chapter',
                    'id':chapter.id,
+                   'part_id':chapter.part_id,
                    'mairoute':chapter.route,
                    'typeTxt': 'ce chapitre',
                    'breadcrumbsData': chapter.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'actions','value':Math.round(100*chapter.actions,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.nbactions+' actions)',
-                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'actions')}).length > 0)?
-						chapter.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
-                      {'name':'speed','value':chapter.speed+' mots par minute',
+                    {'name':'Actions_tx','value':d3.round(100*chapter.indicators.Actions_tx,2)+'%',
+                      'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.indicators.nbactions+' actions)',
+                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'Actions_tx')}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'Actions_tx'})[0].route:null},
+
+                   {'name':'readers_tx','value':d3.round(100*chapter.indicators.readers_tx,2)+'%',
+                      'comment':' des lecteurs du cours ont visité ce chapitre',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'rs_tx')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'rs_tx'})[0].route:null},
+            {'name':'rs_tx','value':d3.round(100*chapter.indicators.rs_tx,2)+'%',
+                      'comment':' des séances de lecture contiennent ce chapitre',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'rs_tx')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'rs_tx'})[0].route:null},
+
+                      {'name':'speed','value':chapter.indicators.speed+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur ce chapitre',
-                       //'isFact':(chapter.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'speed')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null},
-                    {'name':'reread','value':Math.round(100*chapter.reread,2)+'%',
+
+                    {'name':'rereads_tx','value':d3.round(100*chapter.indicators.rereads_tx,2)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures',
-                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'reread')}).length > 0)?
-						chapter.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
-                    {'name':'stop','value':Math.round(100*chapter.stop,2)+'%',
+                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_tx')}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'rereads_tx'})[0].route:null},
+                    {'name':'rereads_seq_tx','value':d3.round(100*chapter.indicators.rereads_seq_tx,2)+'%',
+                      'comment':'des relectures de ce chapitre se font au cours des mêmes séances de lecture',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_seq_tx')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'rereads_tx'})[0].route:null},
+                    {'name':'rereads_dec_tx','value':d3.round(100*chapter.indicators.rereads_tx,2)+'%',
+                      'comment':'des relectures de ce chapitre se font dans des séances de lecture distinctes',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_dec_tx')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'rereads_dec_tx'})[0].route:null},
+
+                    {'name':'provenance_not_linear','value':d3.round(100*chapter.indicators.provenance_not_linear,2)+'%',
+                      'comment':'des chapitres lus avant celui-ci se situent loin du chapitre qui précède ce dernier (provenance non linéaire)',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_not_linear')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'provenance_not_linear'})[0].route:null},
+                    {'name':'provenance_past','value':d3.round(100*chapter.indicators.provenance_past,2)+'%',
+                      'comment':'des chapitres lus avant celui-ci se situent avant ce chapitre et celui qui le précède',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_past')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'provenance_past'})[0].route:null},
+                    {'name':'provenance_future','value':d3.round(100*chapter.indicators.provenance_future,2)+'%',
+                      'comment':'des chapitres lus avant celui-ci se situent après ce chapitre',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_future')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'provenance_future'})[0].route:null},
+                    {'name':'destination_not_linear','value':d3.round(100*chapter.indicators.destination_not_linear,2)+'%',
+                      'comment':'des chapitres lus après celui-ci se situent loin du chapitre qui suit ce dernier (destination non linéaire)',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'destination_not_linear')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'destination_not_linear'})[0].route:null},
+                    {'name':'destination_past','value':d3.round(100*chapter.indicators.destination_past,2)+'%',
+                      'comment':'des chapitres lus après celui-ci se situent avant ce chapitre (retour en arrière)',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'destination_past')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'destination_past'})[0].route:null},
+                    {'name':'destination_future','value':d3.round(100*chapter.indicators.destination_future,2)+'%',
+                      'comment':'des chapitres lus après celui-ci se situent bien après ce chapitre et celui qui le suit (avance importante)',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'destination_future')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'destination_future'})[0].route:null},
+
+
+                    {'name':'norecovery_tx','value':d3.round(100*chapter.indicators.norecovery_tx,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre',
-                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'stop')}).length > 0)?
-						chapter.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null}
+                  	   'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'norecovery_tx')}).length > 0)?
+						chapter.facts.filter(function(f){ return f.classof === 'norecovery_tx'})[0].route:null},
+                    {'name':'rupture_tx','value':d3.round(100*chapter.indicators.rupture_tx,2)+'%',
+                      'comment':'des fins de séances de lecture se passent sur ce chapitre',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rupture_tx')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'rupture_tx'})[0].route:null},
+                    {'name':'resume_past','value':d3.round(100*chapter.indicators.resume_past,2)+'%',
+                      'comment':'des reprises de lecture après un fin de séance sur ce chapitre se passent sur des chapitres en arrière, situés avant ce dernier dans la structure du cours',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'resume_past')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'resume_past'})[0].route:null},
+                    {'name':'resume_future','value':d3.round(100*chapter.indicators.resume_future,2)+'%',
+                      'comment':'des reprises de lecture après un fin de séance sur ce chapitre se passent sur des chapitres plus en avant, situés après ce dernier et celui qui suit dans la structure du cours',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'resume_future')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'resume_future'})[0].route:null}
                       ]    
                     
                   };
-  }
+  } 
 
-  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:$scope.indicatorsSelectionModel[0];
   
 /*
 if(indicator!=null) {
@@ -1575,69 +2111,36 @@ if(facts.length>0)
 var inspectorSectionData = function(section, indicator, fact, tab){  
   $scope.factTitleDisplay=false;
  var mainIssues = $scope.SectionsFacts;
-  //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'actions';
+  //var code= (tab=='stats')?$scope.inspectorStats.indicatorCode:'Actions_tx';
   var code=$scope.inspectorStats.indicatorCode;
     $scope.inspectorStats = {'type':'part',
                    'id':section.id,
+                   'part_id':section.part_id,
                    'mairoute':section.route,
                    'typeTxt': 'cette section',
                    'breadcrumbsData': section.fullpath,
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'actions','value':Math.round(100*section.actions,2)+'%',
-                      'comment':' des visites sur le cours ont été observées sur cette section('+section.nbactions+' actions)',
-                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id &f.classof === 'actions')}).length > 0)?
-            section.facts.filter(function(f){ return f.classof === 'actions'})[0].route:null},
-                      {'name':'speed','value':section.speed+' mots par minute',
+                    {'name':'Actions_tx','value':d3.round(100*section.indicators.Actions_tx,2)+'%',
+                      'comment':' des visites sur le cours ont été observées sur cette section('+section.indicators.nbactions+' actions)',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id &f.classof === 'Actions_tx')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'Actions_tx'})[0].route:null},
+                      {'name':'speed','value':section.indicators.speed+' mots par minute',
                       'comment':'est la vitesse moyenne de lecture sur cette section',
-                       //'isFact':(section.facts.filter(function(f){ return f.classof === 'speed'}).length > 0)?
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'speed')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null},
-                    {'name':'reread','value':Math.round(100*section.reread,2)+'%',
+                    {'name':'rereads_tx','value':d3.round(100*section.indicators.rereads_tx,2)+'%',
                       'comment':'des lectures de cette section sont des relectures',
-                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'reread')}).length > 0)?
-            section.facts.filter(function(f){ return f.classof === 'reread'})[0].route:null},
-                    {'name':'stop','value':Math.round(100*section.stop,2)+'%',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'rereads_tx')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'rereads_tx'})[0].route:null},
+                    {'name':'norecovery_tx','value':d3.round(100*section.indicators.norecovery_tx,2)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur cette section',
-                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'stop')}).length > 0)?
-            section.facts.filter(function(f){ return f.classof === 'stop'})[0].route:null}
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'norecovery_tx')}).length > 0)?
+            section.facts.filter(function(f){ return f.classof === 'norecovery_tx'})[0].route:null}
                       ]       
                     
                   };
-/*
-if(indicator!=null) {
-  $scope.inspectorStats.Indicators = $scope.inspectorStats.Indicators.filter(function(e){return (e.name==indicator)});
-$scope.inspectorStats.indicatorTxt="l'indicateur selectionné"
-}
-  
-var facts = mainIssues.filter(function(e){return (e.section==section._id)});
-if(facts.length>0)
-  {
-     $scope.inspectorFacts = {
-    'id':facts[0].partId,
-    'type':facts[0].partType,
-    'indicatorCode':facts[0].issueCode,
-    'Facts':$.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)}) 
-  }
-
-    
-    if(indicator!=null) $scope.inspectorFacts.Facts = $scope.inspectorFacts.Facts.filter(function(e){return (e.classof==indicator)});
-    if(fact!=null)
-    $scope.inspectorFacts.Facts = $scope.inspectorFacts.Facts.filter(function(e){return (e.classof==fact)})
-  }
-    else $scope.inspectorFacts={'Facts':[]}
-
-
- if(( $scope.inspectorFacts.Facts.length>0) & (tab=='facts')) 
-    {
-      $('.inspectorChosenPart').removeClass('inspectorChosenPart');
-      
-    var fact = $scope.inspectorFacts.Facts[0];
-    $(".fact[data-fact-id='"+fact._id+"']").parent().addClass('inspectorChosenPart').fadeIn(100).fadeOut(100).fadeIn(200).focus().select();
-    }
-  else
-      */
 }
 
 
@@ -1850,7 +2353,7 @@ if($scope.inspectorStats.Indicators!=undefined){
 }
 
 var factSelector = function(currentElt){
-  if($scope.context.indicator == "ALL") $scope.context.indicator == "actions";
+  if($scope.context.indicator == "ALL") $scope.context.indicator = $scope.indicatorsSelectionModel[0];
   
    var facts = $.grep($scope.inspectorFacts.Facts, function(e){ return  e.classof == $scope.context.indicator});
    if(facts==null) return;
@@ -1953,13 +2456,15 @@ var loadContext = function(){
     task = components.hasOwnProperty('taskid')?   $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
     indicator = components.hasOwnProperty('indicator')? 
                             components.indicator:indicator;
+    
      
      
       $scope.context.indicator = components.hasOwnProperty('indicator')? components.indicator:$scope.context.indicator;      
             $scope.context.statsURL=path;
 
              if(indicator == "ALL") indicator = $scope.context.indicator;
-
+$scope.inspectorStats.indicatorCode = indicator;
+   
   }
   
 
@@ -1984,7 +2489,7 @@ var loadContext = function(){
       $scope.context.taskText ='(nouvelle tâche pour cette partie)'; 
       $scope.context.taskPanelMiniTitle='Partie: '+tome.title;
       selectTome(partElt, task);
-      $scope.currentElement = tome.id;
+      
       $scope.currentElement = {'id': tome.id, route:tome.route, 'type':'chapter'};  
       factSelector(tome);
     }
@@ -2241,7 +2746,6 @@ selection.selected ='selectedTask';
 
  var selectFact = function(url, task,fact, indicator) {
   
-  //url =url+'&indicator='+indicator; 
   $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   $scope.context.route = url;     
   var element = resolveRoute(url);
@@ -2249,11 +2753,7 @@ selection.selected ='selectedTask';
       
  
      $scope.context.inspector_title = element.title;
-     $scope.courseDisplay = false;     
-     
-
-  
-  
+     $scope.courseDisplay = false;  
  
 
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
@@ -2301,10 +2801,6 @@ var selectIndictor = function(indicator){
 }
 
 
-var highlightTome = function(index){  
-  
-
-}
 
 $scope.hoverChapter = function(route){ 
   if(route==null) return;
@@ -2330,11 +2826,7 @@ $scope.hoverChapter = function(route){
 
   }, 0);
 }
-var highlightChapter = function(index, route, indicator){  
-  
-  
 
-}
 $scope.hoverSection = function(route){ 
 ;
   if(route==null) return;
@@ -2360,10 +2852,6 @@ $scope.hoverSection = function(route){
 
   }, 0);
 }
-var highlightPart = function(index, route, indicator){  
-  
-}
-
 
 
 var selectSection = function(partElt, task, indicator){   
@@ -2590,7 +3078,6 @@ else{
 }
 
 
-    
 
     $scope.inspectorDisplaySrc='component'
  
@@ -2866,10 +3353,28 @@ var dropFactLocally = function(route){
 var ComputeGlobalVisuData = function(){ 
   var visuData = []
   
-   visuData.push({type:'actions',data:factChart(-1,'actions')});  
-   visuData.push({type:'stop',data:factChart(-1,'stop')});
+   visuData.push({type:'interest',data:factChart(-1,'interest')});  
+   visuData.push({type:'Actions_tx',data:factChart(-1,'Actions_tx')});  
+   visuData.push({type:'readers_tx',data:factChart(-1,'readers_tx')});  
+   visuData.push({type:'rs_tx',data:factChart(-1,'rs_tx')});  
+   visuData.push({type:'rupture_tx',data:factChart(-1,'rupture_tx')});
+   visuData.push({type:'norecovery_tx',data:factChart(-1,'norecovery_tx')});
+   visuData.push({type:'resume_abnormal_tx',data:factChart(-1,'resume_abnormal_tx')});
+   visuData.push({type:'resume_past',data:factChart(-1,'resume_past')});   
+   visuData.push({type:'resume_future',data:factChart(-1,'resume_future')});   
    visuData.push({type:'speed',data:factChart(-1,'speed')});  
-   visuData.push({type:'reread',data:factChart(-1,'reread')});  
+   visuData.push({type:'rereads_tx',data:factChart(-1,'rereads_tx')});  
+   visuData.push({type:'rereads_seq_tx',data:factChart(-1,'rereads_seq_tx')});  
+   visuData.push({type:'rereads_dec_tx',data:factChart(-1,'rereads_dec_tx')});  
+   visuData.push({type:'reading_not_linear',data:factChart(-1,'reading_not_linear')});  
+   visuData.push({type:'provenance_not_linear',data:factChart(-1,'provenance_not_linear')});  
+   visuData.push({type:'provenance_past',data:factChart(-1,'provenance_past')});  
+   visuData.push({type:'provenance_future',data:factChart(-1,'provenance_future')});  
+   visuData.push({type:'destination_not_linear',data:factChart(-1,'destination_not_linear')});
+   visuData.push({type:'destination_past',data:factChart(-1,'destination_past')});
+   visuData.push({type:'destination_future',data:factChart(-1,'destination_future')});
+   
+
   // visuData.push({type:'Readers',data:factChart(-1,'Readers')});  
    
   // visuData.push({type:'Readers_tx',data:factChart(-1,'Readers_tx')});  
@@ -2927,86 +3432,7 @@ var median = function(numbers) {
     }
     return median;
 }
-var globalTransitionsProvenance = function(classe){
-  var chartData = [];
-  var dd = [];
-  
-   angular.forEach($scope.course.tomes, function(tome){
-    var d = tome.properties.filter(function(value){ 
-              return value.property.split('_')[0] ===classe    
-            });
-          d.part =tome.id;
-          dd =dd.concat(d);
-          chartData =chartData.concat({'part':tome.id,'type':classe, elementType:'tome', 'transitions':d})
 
-          angular.forEach(tome.chapters, function(chapter){
-            var d = chapter.properties.filter(function(value){ 
-              return value.property.split('_')[0] ===classe    
-            });
-          d.part =chapter.id; dd =dd.concat(d);
-          chartData =chartData.concat({'part':chapter.id,'type':classe, elementType:'chapter', 'transitions':d})
-
-        angular.forEach(chapter.parts, function(part){
-          var d = part.properties.filter(function(value){ 
-              return value.property.split('_')[0] ===classe    
-            });
-          d.part =part.id; dd =dd.concat(d);
-          chartData =chartData.concat({'part':part.id,'type':classe, elementType:'part', 'transitions':d})
-         
-        })
-      })
-    });
-  
-  
-var identity = mean(($.grep(chartData, function(e){ return  e.property === classe+"_identity" }))
-  .map(function(d) { return parseInt(d.value); }));
-var precedent = mean(($.grep(chartData, function(e){ return  e.property === classe+"_precedent" }))
-      .map(function(d) { return parseInt(d.value); }));
-var next_p = mean(($.grep(chartData, function(e){ return  e.property === classe+"_next_p" }))
-      .map(function(d) { return parseInt(d.value); }));
-var shifted_past = mean(($.grep(chartData, function(e){ return  e.property === classe+"_shifted_past" }))
-      .map(function(d) { return parseInt(d.value); }));
-var shifted_next = mean(($.grep(chartData, function(e){ return  e.property === classe+"_shifted_next" }))
-      .map(function(d) { return parseInt(d.value); }));
-var somme = identity + precedent + next_p + shifted_past + shifted_next;
-var glob =[
-      { "property":"identity", value: identity * 100 / somme},
-      { "property":"precedent", value: precedent * 100 / somme},
-      { "property":"next_p", value: next_p * 100 / somme},
-      { "property":"shifted_past", value: shifted_past * 100 / somme},
-      { "property":"shifted_next", value: shifted_next * 100 / somme}]
-
-chartData =chartData.concat({'part':0,'type':classe, 'transitions':glob})
-
-var identity = dd.filter(function(value){ return  value.property === classe+'_identity'});
-identity =mean(identity.map(function(o){return parseInt(o.value);}));
-var precedent = dd.filter(function(value){ return  value.property === classe+'_precedent'});
-precedent =mean(precedent.map(function(o){return parseInt(o.value);}));
-var next_p = dd.filter(function(value){ return  value.property === classe+'_next_p'});
-next_p =mean(next_p.map(function(o){return parseInt(o.value);}));
-var shifted_past = dd.filter(function(value){ return  value.property === classe+'_shifted_past'});
-shifted_past =mean(shifted_past.map(function(o){return parseInt(o.value);}));
-var shifted_next = dd.filter(function(value){ return  value.property === classe+'_shifted_next'});
-shifted_next =mean(shifted_next.map(function(o){return parseInt(o.value);}));
-
-
-
-chartData =chartData.concat({'part':0,'type':classe, elementType:'course', 
-  'transitions':[
-              {'property':classe+'_identity', 'value':identity },
-              {'property':classe+'_precedent', 'value':precedent },
-              {'property':classe+'_next_p', 'value':next_p },
-              {'property':classe+'_shifted_past', 'value':shifted_past },
-              {'property':classe+'_shifted_next', 'value':shifted_next }
-  ]  
-})
-
-
-
-
-return chartData
-
-}
 var factChart = function(factedPartID, issueCode){
   if(typeof $scope.course =='undefined') return;
     
@@ -3017,10 +3443,12 @@ var factChart = function(factedPartID, issueCode){
    
    var cpt = 0;
 
-chartData.push({'part':$scope.course._id,
+chartData.push({'part':0,
             'title':$scope.course.title,
              'elementType':'course',
             'route':$scope.course.route,
+            'transitions':$scope.course.transitions,
+            'indicators':$scope.course.indicators,
             'value': $scope.course[issueCode],
             'color':'grey'
           })
@@ -3030,6 +3458,8 @@ chartData.push({'part':$scope.course._id,
             'title':tome.title,
              'elementType':'tome',
             'route':tome.route,
+            'transitions':tome.transitions,
+            'indicators':tome.indicators,
             'value': tome[issueCode],
             'color':parseInt(factedPartID) ===parseInt(tome.id)?'#45348A':'grey'
           })
@@ -3038,18 +3468,20 @@ chartData.push({'part':$scope.course._id,
             'title':chapter.title,
              'elementType':'chapter',
             'route':chapter.route,
-            'value': chapter[issueCode],
+            'value': chapter.indicators[issueCode],
             'color':parseInt(factedPartID) ===parseInt(chapter.id)?'#45348A':'grey',
-            'indicators':chapter.indicators
+            'indicators':chapter.indicators,
+            'transitions':chapter.transitions
           })
         angular.forEach(chapter.parts, function(part){
           chartData.push({'part':part.id,
             'title':part.title,
              'elementType':'part',
             'route':part.route,
-            'value': part[issueCode],
+            'value': part.indicators[issueCode],
             'color':parseInt(factedPartID) ===parseInt(part.id)?'#45348A':'grey',
-            'indicators':part.indicators
+            'indicators':part.indicators,
+            'transitions':part.transitions
           })
         })
       })
@@ -3073,7 +3505,7 @@ if (course){
      
         $scope.course = course;
 
-        $scope.chartType = 'actions';
+        $scope.chartType = $scope.indicatorsSelectionModel[0];
         $scope.selectedElement = course;
 
 
@@ -3086,7 +3518,7 @@ if (course){
               'title':$scope.course.title,
               'Todos':$scope.course.todos,
               'taskText':'(nouvelle tâche)',
-              'indicator':'actions',
+              'indicator':$scope.indicatorsSelectionModel[0],
               'statsURL':"#",
               'Tasks' : computeAllTasks(),
               'd3':ComputeGlobalVisuData()
@@ -3156,10 +3588,13 @@ $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {
 });
 
 $scope.$watch('allIndicatorSelectorShow', function(newValue, oldValue) {  
- 
-$scope.indicatorsSelectionModel=['actions','speed','reread','stop'];
+$scope.indicatorsSelectionModel=['Actions_tx','speed','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx',
+'provenance_not_linear','provenance_past','provenance_future','destination_not_linear','destination_past','destination_future']; 
+
 
 });
+
+
 
 
 $scope.$watch('tabSelect', function(newValue, oldValue) { 

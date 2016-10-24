@@ -100,6 +100,26 @@ var FactSchema = new Schema({
 });
 
 /**
+ * Navigation Schema
+ */
+var NavigationSchema = new Schema({
+  x: {
+    type: String,
+    trim: true
+  },
+  y: {
+    type: String,
+    trim: true
+  },
+  provenance: {
+    type: Number
+  },
+  destination: {
+    type: Number
+  }
+
+ });
+/**
  * Description Schema
  */
 var DescriptionSchema = new Schema({
@@ -112,7 +132,6 @@ var DescriptionSchema = new Schema({
   }
 
  });
-
 /**
  * RS Schema
  */
@@ -125,6 +144,189 @@ var RSSchema = new Schema({
   }
 
  });
+/**
+  * Course Indicators Schema
+  */
+  var CourseIndicatorsSchema = new Schema({
+    nactions: {
+      type: Number,
+      default: 0
+    },
+    nusers: {
+      type: Number,
+      default: 0
+    },
+    nRS: {
+      type: Number,
+      default: 0
+    },
+    provenance_not_linear:{
+    type: Number,
+    default: 0
+  },
+  provenance_past:{
+    type: Number,
+    default: 0
+  },
+  provenance_prev:{
+    type: Number,
+    default: 0
+  },
+  provenance_future:{
+    type: Number,
+    default: 0
+  },
+  destination_next:{
+    type: Number,
+    default: 0
+  },
+  destination_not_linear:{
+    type: Number,
+    default: 0
+  },
+  destination_past:{
+    type: Number,
+    default: 0
+  },
+  destination_future:{
+    type: Number,
+    default: 0
+  },
+  rereads_tx: {
+    type: Number,
+    default: 0
+  },
+  rereads_seq_tx: {
+    type: Number,
+    default: 0
+  },
+  rereads_seq_globratio: {
+    type: Number,
+    default: 0
+  },
+  
+  rereads_dec_tx: {
+    type: Number,
+    default: 0
+  },
+  rereads_dec_globratio: {
+    type: Number,
+    default: 0
+  }
+  })
+
+/**
+  * Part Indicators Schema
+  */
+  var IndicatorsSchema = new Schema({
+  interest: {
+    type: Number,
+    default: 0
+  },
+  Actions_tx: {
+    type: Number,
+    default: 0
+  },
+  readers_tx: {
+    type: Number,
+    default: 0
+  },
+  rs_tx: {
+    type: Number,
+    default: 0
+  },
+
+  nbactions: {
+    type: Number,
+    default: 0
+  },
+  Readers: {
+    type: Number,
+    default: 0
+  },
+  
+  norecovery_tx: {
+    type: Number,
+    default: 0
+  },
+  resume_abnormal_tx: {
+    type: Number,
+    default: 0
+  },
+  resume_past: {
+    type: Number,
+    default: 0
+  },
+  resume_future: {
+    type: Number,
+    default: 0
+  },
+  rupture_tx: {
+    type: Number,
+    default: 0
+  },
+  reading_not_linear:{
+    type: Number,
+    default: 0
+  },
+  provenance_not_linear:{
+    type: Number,
+    default: 0
+  },
+  provenance_past:{
+    type: Number,
+    default: 0
+  },
+  provenance_prev:{
+    type: Number,
+    default: 0
+  },
+  provenance_future:{
+    type: Number,
+    default: 0
+  },
+  destination_next:{
+    type: Number,
+    default: 0
+  },
+  destination_not_linear:{
+    type: Number,
+    default: 0
+  },
+  destination_past:{
+    type: Number,
+    default: 0
+  },
+  destination_future:{
+    type: Number,
+    default: 0
+  },
+ speed: {
+    type: Number,
+    default: 0
+  },
+  rereads_tx: {
+    type: Number,
+    default: 0
+  },
+  rereads_seq_tx: {
+    type: Number,
+    default: 0
+  },
+  rereads_seq_globratio: {
+    type: Number,
+    default: 0
+  },
+  
+  rereads_dec_tx: {
+    type: Number,
+    default: 0
+  },
+  rereads_dec_globratio: {
+    type: Number,
+    default: 0
+  },
+  })
 
 /**
  * Part Schema
@@ -155,23 +357,7 @@ var PartSchema = new Schema({
     type: String
   },
 
-  actions: {
-    type: Number
-  },
-  nbactions: {
-    type: Number
-  },
-  reread: {
-    type: Number
-  },
-  stop: {
-    type: Number
-  },
-  speed: {
-    type: Number
-  },
-
-  properties: [DescriptionSchema],
+  indicators:IndicatorsSchema,
   todos: [TodoSchema],
   facts: [FactSchema]
 });
@@ -195,24 +381,8 @@ var ChapterSchema = new Schema({
     type:String
   },
 
-  actions: {
-    type: Number
-  },
-  nbactions: {
-    type: Number
-  },
-  reread: {
-    type: Number
-  },
-  stop: {
-    type: Number
-  },
-  speed: {
-    type: Number
-  },
-
+  indicators : IndicatorsSchema,
   parts: [PartSchema],
-  properties: [DescriptionSchema],
   todos: [TodoSchema],
   facts: [FactSchema]
 });
@@ -242,7 +412,8 @@ var TomeSchema = new Schema({
   todos: [TodoSchema],
   old_todos: [TodoSchema],
   facts: [FactSchema],
-  old_facts: [FactSchema]
+  old_facts: [FactSchema],
+  indicators:IndicatorsSchema
 });
 
 /**
@@ -275,7 +446,7 @@ var LogRecordSchema = new Schema({
 /**
  * Course Schema
  */
-var CourseSchema = new Schema({
+var NewCourseSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
@@ -317,6 +488,7 @@ var CourseSchema = new Schema({
     type: Number,
     default: 0
   },
+  
   nbtasks: {
     type: Number,
     default: 0
@@ -325,19 +497,18 @@ var CourseSchema = new Schema({
     type: Boolean, 
     default: false
   }, 
-
-
-
   elementType:{
     type:String
   },
-  properties: [DescriptionSchema],
+  //properties: [DescriptionSchema],
+  indicators:CourseIndicatorsSchema,
+  navigation:[NavigationSchema],
   parts: [PartSchema],
   tomes: [TomeSchema],
   facts: [FactSchema],
   todos: [TodoSchema],
-  rs:[RSSchema],
-  stats:[DescriptionSchema],
+  //rs:[RSSchema],
+  //stats:[DescriptionSchema],
   logs:[LogRecordSchema]
 });
 
@@ -347,10 +518,10 @@ var CourseSchema = new Schema({
 /**
  * Statics
  */
-CourseSchema.statics.load = function(id, cb) {
+NewCourseSchema.statics.load = function(id, cb) {
   this.findOne({
     _id: id
   }).populate('user', 'name username').exec(cb);
 };
 
-mongoose.model('Course', CourseSchema);
+mongoose.model('NewCourse', NewCourseSchema);

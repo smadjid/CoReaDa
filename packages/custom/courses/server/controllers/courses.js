@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Course = mongoose.model('Course'),
+    Course = mongoose.model('NewCourse'),
     CoReaDa = mongoose.model('CoReaDa'),
     config = require('meanio').loadConfig(),
     _ = require('lodash'),
@@ -12,23 +12,24 @@ var mongoose = require('mongoose'),
     transporter = nodemailer.createTransport('smtps://coreada.project%40gmail.com:madjid1980@smtp.gmail.com');
 
 module.exports = function(Courses) {
+    var base_url = "https://openclassrooms.com/courses";
     var analyzeCourse = function(courseCode){
         var courseHome="coursesdata/"+courseCode;
     
-    console.log(courseCode)
+    
     var fs = require("fs");      
 
         
         var facts = fs.readFileSync(courseHome+"/facts.json");
         var jsonFacts = JSON.parse(facts);
 
-        var coursedata = fs.readFileSync(courseHome+"/stats.json");
-        var coursestats = JSON.parse(coursedata);
+        //var coursedata = fs.readFileSync(courseHome+"/stats.json");
+        //var coursestats = JSON.parse(coursedata);
 
-        //var coursersdata = fs.readFileSync(courseHome+"/rs.json");
-        //var coursers = JSON.parse(coursersdata);
+        var coursenavigation = fs.readFileSync(courseHome+"/navigation.json");
+        var navigation = JSON.parse(coursenavigation);
 
-        var partsdata = fs.readFileSync(courseHome+"/structure.json");
+        var partsdata = fs.readFileSync(courseHome+"/data.json");
         var jsonPartsdata = JSON.parse(partsdata);
 
         //var course_title = jsoncourseName[0].title;
@@ -61,7 +62,8 @@ module.exports = function(Courses) {
             return objectArray;
         }
 
-        var computePart = function(p, part_data, part_facts){         
+        
+        var computePart = function(p, part_data, part_facts){          
         
         var part = {
                 'id':part_data[0]['id'],
@@ -71,13 +73,10 @@ module.exports = function(Courses) {
                 'properties':[],
                 'url':'',
                 'facts':[],
-                'actions':0.0,
-                'nbactions':0,
-                'reread':0.0,
-                'stop':0.0,
-                'speed':0
-            };
+                'indicators':{}
             
+            };
+             
 
             for (var i = 0, l = part_data.length; i < l; i++){
                 var prop ={
@@ -86,14 +85,15 @@ module.exports = function(Courses) {
                 } 
                 if(prop.property==='mean.duration') prop.value = parseInt(prop.value/60)
                 part.properties.push(prop);
-                if(part_data[i]['variable']=='part_id') 
-                    part.part_id=part_data[i]['value']
-                else
+                
+                    if(part_data[i]['variable']=='part_id') 
+                        part.part_id=part_data[i]['value']
+                    else
                     if(part_data[i]['variable']=='title') 
                         part.title=part_data[i]['value']
                     else
                         if(part_data[i]['variable']=='slug') 
-                        part.url=part_data[i]['value']
+                        {part.slug=part_data[i]['value'];part.url=part_data[i]['value'];}
                         else
                         if(part_data[i]['variable']=='type')
                             part.type=part_data[i]['value']
@@ -102,19 +102,104 @@ module.exports = function(Courses) {
                                 part.parent_id=part_data[i]['value']
                             else
                             if(part_data[i]['variable']=='speed')
-                                part.speed=parseInt(part_data[i]['value'])
+                                part.indicators.speed=parseInt(part_data[i]['value'])
                             else
-                            if(part_data[i]['variable']=='actions')
-                                part.actions=parseFloat(part_data[i]['value'])
+                                if(part_data[i]['variable']=='Readers') 
+                                    part.indicators.Readers=part_data[i]['value']
+                                else
+                                    if(part_data[i]['variable']=='destination_next') 
+                                        part.indicators.destination_next=part_data[i]['value']
+                                    else
+                                         if(part_data[i]['variable']=='provenance_prev') 
+                                            part.indicators.provenance_prev=part_data[i]['value']
+                                        else
+                            if(part_data[i]['variable']=='interest')
+                                part.indicators.interest=parseFloat(part_data[i]['value'])
                             else
-                            if(part_data[i]['variable']=='reread')
-                                part.reread=parseFloat(part_data[i]['value'])
+                            if(part_data[i]['variable']=='Actions_tx')
+                                part.indicators.Actions_tx=parseFloat(part_data[i]['value'])
                             else
-                            if(part_data[i]['variable']=='stop')
-                                part.stop=parseFloat(part_data[i]['value'])
+                            if(part_data[i]['variable']=='readers_tx')
+                                part.indicators.readers_tx=parseFloat(part_data[i]['value'])
+                            else
+                            if(part_data[i]['variable']=='rs_tx')
+                                part.indicators.rs_tx=parseFloat(part_data[i]['value'])
+                            else
+                            if(part_data[i]['variable']=='rereads_tx')
+                                part.indicators.rereads_tx=parseFloat(part_data[i]['value'])
+                            else
+                            if(part_data[i]['variable']=='norecovery_tx')
+                                part.indicators.norecovery_tx=parseFloat(part_data[i]['value'])
+                            else
+                                if(part_data[i]['variable']=='resume_past')
+                                    part.indicators.resume_past=parseFloat(part_data[i]['value'])                            
+                                else
+                                if(part_data[i]['variable']=='resume_abnormal_tx')
+                                    part.indicators.resume_abnormal_tx=parseFloat(part_data[i]['value'])
+                             else
+                                if(part_data[i]['variable']=='resume_future')
+                                    part.indicators.resume_future=parseFloat(part_data[i]['value'])                            
                              else
                             if(part_data[i]['variable']=='Actions_nb')
-                                part.nbactions=parseInt(part_data[i]['value'])
+                                part.indicators.nbactions=parseInt(part_data[i]['value'])
+                            else
+                                if(part_data[i]['variable']=='rereads_seq_tx')
+                                    part.indicators.rereads_seq_tx=parseFloat(part_data[i]['value'])
+                                 else
+                                if(part_data[i]['variable']=='rereads_seq_globratio')
+                                    part.indicators.rereads_seq_globratio=parseFloat(part_data[i]['value'])
+                                else
+                                if(part_data[i]['variable']=='rereads_dec_tx')
+                                    part.indicators.rereads_dec_tx=parseFloat(part_data[i]['value'])
+                                else
+                                    if(part_data[i]['variable']=='rereads_dec_globaratio')
+                                        part.indicators.rereads_dec_globaratio=parseFloat(part_data[i]['value'])
+                                    else
+                                    if(part_data[i]['variable']=='rupture_tx')
+                                        part.indicators.rupture_tx=parseFloat(part_data[i]['value'])
+                                    else 
+                                        
+                                        if(part_data[i]['variable']=='provenance_past')
+                                            part.indicators.provenance_past=parseFloat(part_data[i]['value'])                                
+                                        else 
+                                        if(part_data[i]['variable']=='provenance_future')
+                                            part.indicators.provenance_future=parseFloat(part_data[i]['value'])                                
+                                        else
+                                            
+                                            if(part_data[i]['variable']=='destination_past')
+                                                part.indicators.destination_past=parseFloat(part_data[i]['value'])                                
+                                            else
+                                            if(part_data[i]['variable']=='destination_future')
+                                                part.indicators.destination_future=parseFloat(part_data[i]['value'])                                
+                                            else
+                                            if(part_data[i]['variable']=='destination_not_linear')
+                                                part.indicators.destination_not_linear=parseFloat(part_data[i]['value'])                                
+                                            else
+                                            if(part_data[i]['variable']=='provenance_not_linear')
+                                                part.indicators.provenance_not_linear=parseFloat(part_data[i]['value'])                                
+                                            else
+                                                if(part_data[i]['variable']=='reading_not_linear')
+                                                part.indicators.reading_not_linear=parseFloat(part_data[i]['value'])                                
+                                            else
+                                            if(part_data[i]['variable']=='tome_index')
+                                                part.tome_index=parseInt(part_data[i]['value'])   
+                                            else
+                                                 if(part_data[i]['variable']=='nactions') 
+                                                    part.nactions=part_data[i]['value']
+                                                else
+                                                    if(part_data[i]['variable']=='nusers') 
+                                                        part.nusers=part_data[i]['value']
+                                                    else
+                                                        if(part_data[i]['variable']=='nRS') 
+                                                            part.nRS=part_data[i]['value']
+                                                        else
+                                                            if(part_data[i]['variable']=='ob_begin')
+                                                                part.ob_begin=part_data[i]['value']
+                                                            else
+                                                                if(part_data[i]['variable']=='ob_end')
+                                                                    part.ob_end=part_data[i]['value']
+
+                            
             };
 
             for (var i = 0, l = part_facts.length; i < l; i++){              
@@ -134,15 +219,34 @@ module.exports = function(Courses) {
 
                 part.facts.push(fact);
             };
-        if(part.type==='course') {           
-            
+        if(part.type==='course') {             
+
             courseData.title = part.title;
-            courseData.url = part.slug;
+            courseData.url = base_url+'/'+part.slug;
             courseData.properties = part.properties; 
+            courseData.nactions = part.nactions;
+            courseData.nusers = part.nusers;
+            courseData.nRS = part.nRS;
+            courseData.ob_begin = part.ob_begin;
+            courseData.ob_end = part.ob_end;
+            courseData.provenance_not_linear = part.provenance_not_linear;
+            courseData.provenance_past = part.provenance_past ;
+            courseData.provenance_prev = part.provenance_prev;
+            courseData.provenance_future = part.provenance_future;
+            courseData.destination_next = part.destination_next;
+            courseData.destination_not_linear = part.destination_not_linear;
+            courseData.destination_past = part.destination_past;
+            courseData.destination_future = part.destination_future;    
+            courseData.rereads_tx  = part.indicators.rereads_tx;
+            courseData.rereads_seq_tx = part.indicators.rereads_seq_tx;
+            courseData.rereads_seq_globratio = part.indicators.rereads_seq_globratio;
+            courseData.rereads_dec_tx = part.indicators.rereads_dec_tx;
+            courseData.rereads_dec_globratio = part.indicators.rereads_dec_globratio ;
             
         };
         if(part.type==='partie') {
             var tome = part;
+           
             tome.elementType = 'partie';
             tome.chapters = []
             courseTomes.push(tome); 
@@ -160,9 +264,6 @@ module.exports = function(Courses) {
         }
        else if(part.type==='section') 
         courseParts.push(part);
-
-
-
       
        }
        
@@ -183,8 +284,6 @@ module.exports = function(Courses) {
                 }
 
           
-            
- 
             computePart(i, partProps, partFacts);
             
       
@@ -236,30 +335,53 @@ module.exports = function(Courses) {
 
 
        
-
+ courseTomes.sort(function(a, b){return a.tome_index-b.tome_index}); 
+ 
 
         /************ COURSE *****************/
 
         var sectionsAvailable = false;
-        var sectionsAvailableData = subsetByField(coursestats,'property','sectionsAvailable');
+        //var sectionsAvailableData = subsetByField(coursestats,'property','sectionsAvailable');        
         
-        
-        if(sectionsAvailableData.length>0) sectionsAvailable = sectionsAvailableData[0].value
+        //if(sectionsAvailableData.length>0) 
+          //  sectionsAvailable = sectionsAvailableData[0].value;
+
+        var cIndicators = {
+            nactions : courseData.nactions,
+            nusers : courseData.nusers,
+            nRS : courseData.nRS,
+            provenance_not_linear : courseData.provenance_not_linear ,
+            provenance_past  : courseData.provenance_past ,
+            provenance_prev : courseData.provenance_prev ,
+            provenance_future : courseData.provenance_future ,
+            destination_next : courseData.destination_next ,
+            destination_not_linear : courseData.destination_not_linear ,
+            destination_past : courseData.destination_past ,
+            destination_future : courseData.destination_future,
+            rereads_tx  : courseData.rereads_tx,
+            rereads_seq_tx : courseData.rereads_seq_tx,
+            rereads_seq_globratio : courseData.rereads_seq_globratio,
+            rereads_dec_tx : courseData.rereads_dec_tx,
+            rereads_dec_globratio : courseData.rereads_dec_globratio
+        };
+        console.log(cIndicators);
         var course = new Course( {
             title : courseData.title,
             url:courseData.url,
             version : 1.0,
-            courseCode:courseCode,
-            ob_begin:subsetByField(coursestats,'property','ob_begin')[0].value ,
-            ob_end:subsetByField(coursestats,'property','ob_end')[0].value ,
+            courseCode:courseCode,            
+            ob_begin:courseData.ob_begin,
+            ob_end:courseData.ob_end,
             sectionsAvailable: sectionsAvailable,
             nbtasks : 0,
             nbfacts : jsonFacts.length,
             parts:courseParts,
-            properties:courseData.properties,//jsonCoursedata,
-            stats:coursestats,
+           // properties:courseData.properties,//jsonCoursedata,
+           // stats:coursestats,
           //  rs:coursers,
             tomes:courseTomes,
+            navigation:navigation,
+            indicators:cIndicators,
             elementType:'course',
             content:'course content',
             user:"565d54d764d8ea197d1b6ccc",
@@ -436,7 +558,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     });
                 }
             //res.json(req.course);
-                console.log(_course.title)
+                
                 var result = [];
                 var course={
                     '_id':_course._id,
@@ -1167,7 +1289,7 @@ transporter.sendMail(mailOptions, function(error, info){
 
        
         for (var i = 0; i < allF.length ; i++){
-             console.log('Cours ',i,'/',allF.length,' : ',allF[i]);            
+             
             analyzeCourse(allF[i]);
 
         }

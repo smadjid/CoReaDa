@@ -5,14 +5,16 @@ angular.module('mean.courses')
       restrict: 'E',
       scope: {
         data: '=',
-        d3opts: '='
+        d3opts: '=',
+        indicatorCode:'=',
+        onTransitions:'&'
       },
       link: function (scope, element) {   
       
 
 var inspectorCharts = function(scope, element){  
-        var margin = {top: 15, right: 00, bottom: 80, left: 40},
-          width = 530 - margin.left - margin.right,
+       var margin = {top: 15, right: 00, bottom: 80, left: 40},
+          width = width = $(element[0]).parent().width() - margin.left - margin.right,
           height = 270 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
@@ -21,15 +23,15 @@ var inspectorCharts = function(scope, element){
 var saveLog = function(params) {
         return $http.post('/api/courses/log/'+scope.d3opts.courseId,params);
       };
+d3.select(element[0]).selectAll("*").remove();
+
 scope.inspectorRenderBars = function(globalData, classe) { 
-if(typeof classe =='undefined') 
-  {//console.log("typeof classes =='undefined'")
-//console.log(scope.d3opts)
-        return;}
+if(typeof classe =='undefined')        return;
 
 //TODO : this is just a hack part section
 var elementType = scope.d3opts.elementType;
 var elementId = Array.isArray(scope.d3opts.elementId)?scope.d3opts.elementId: [scope.d3opts.elementId];
+
 
 
 if(elementType=='section') elementType='part';
@@ -47,7 +49,8 @@ if(elementType=='section') elementType='part';
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
-
+//console.log(classe)
+//console.log(globalData)
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
           data = data.filter(function(e){ return e.elementType == elementType });
         var xAxis = d3.svg.axis()
@@ -114,11 +117,11 @@ if(elementType!=='part')
               )
             .attr('fill', function(d) {
                     var c = '#008cba';
-                    var ind = d.indicators;
+                    var ind = d.metrics;
                     if(typeof ind !="undefined"){
                                   ind = ind.filter(function(e){ return e.code == classe })
                                   if(ind.length>0) c = ind[0].color
-                                    else               console.log(d.indicators)
+                                    else               console.log(d.metrics)
                   }
                   return c; 
               })
@@ -192,19 +195,6 @@ if(typeof dataMediane !='undefined')
                      .attr("x2", width)
                      .attr("y2", y(dataMediane))
                      .attr("class", "medianeLine");
-/* svg.append("path")
-      .datum(data)
-      .attr("class", "medianeLine")
-      .attr("d", ymedian);
-  svg.append("path")
-      .datum(data)
-      .attr("class", "meanLine")
-      .attr("d", ymean);
-  */
-
-
-
-
  var legend = svg.selectAll(".legend")
       .data([{"text":"Médiane","color":"#F39C12"}/*,{"text":"Médiane","color":"#F39C12"}*/])
       .enter().append("g")
@@ -230,81 +220,120 @@ legend.append("rect")
         };
 
 scope.inspectorRenderTransitionNodes = function(data, classe) {
-var width =  $(element[0]).parent().width() - margin.left - margin.right ; 
-  var gap = parseInt(width /6) ;
-  var radius = gap / 4;
-  var height = gap * 3;
 
-  var   graph={nodes:[], links:[]}    
-  
-  
+if(typeof classe =='undefined')        return;
+//TODO : this is just a hack part section
+d3.select(element[0]).selectAll("*").remove();
+
+var elementType = scope.d3opts.elementType;
+
+var elementID = scope.d3opts.currentId;
+if(scope.d3opts.currentId==null)
+  elementID = 0;
+if(elementType=='section') elementType='part';
   d3.select(element[0]).selectAll("*").remove();
 
-  svg = d3.select(element[0])
+ var margin = {top: 15, right: 00, bottom: 80, left: 40},
+          width = 530 - margin.left - margin.right,
+          height = 270 - margin.top - margin.bottom;
+  var svg = d3.select(element[0])
           .append("svg")          
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom)
           .attr('class','nodeChart');
+          
 
-  var elementID = parseInt(scope.d3opts.elementId);
-  var elementIDTxt = (elementType=='chapter')? 'S':'S';
+      
+
+  var gap = parseInt(width /4) ;
+  var radius = gap / 3;
+  var height = gap * 2;
+
+  var   graph={nodes:[], links:[]}    
+  
+  
+
+
+  var elementType=scope.d3opts.elementType;
+  
+  var elementIDTxt = (scope.d3opts.elementType=='chapter')? 'Chap.':'S';
   
 
   
 
  var globalData = $.grep(data, function(e){ return e.type == classe })[0].data;
 
- globalData = globalData.filter(function(e){ return e.elementType == elementType });
- 
+ //globalData = globalData.filter(function(e){ return e.elementType == elementType });
+//
 
- globalData = globalData.filter(function(e){ return e.part == elementID })[0].transitions;
+ globalData = globalData.filter(function(e){ return e.part == elementID })[0];
+//console.log(globalData); 
+//alert(elementID)
+  var data={};
 
-  var data = {
-  'identity': parseInt(globalData.filter(function(e){ return e.property == classe+'_identity'; })[0].value),
-  'next_p': parseInt(globalData.filter(function(e){ return e.property == classe+'_next_p'; })[0].value),
-  'precedent' : parseInt(globalData.filter(function(e){ return e.property == classe+'_precedent'; })[0].value),
-  'shifted_next' : parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_next'; })[0].value),
-  'shifted_past': parseInt(globalData.filter(function(e){ return e.property == classe+'_shifted_past'; })[0].value)
+  if(classe=='provenance_not_linear')
+    data = {
+  'normal' : Math.round(parseFloat(100*globalData.transitions.provenance.normal),2),
+  'past' : Math.round(parseFloat(100*globalData.transitions.provenance.past),2),
+  'future': Math.round(parseFloat(100*globalData.transitions.provenance.future),2)
+  }  
+  else
+    data = {
+  'normal' : Math.round(parseFloat(100*globalData.transitions.destination.normal),2),
+  'past' : Math.round(parseFloat(100*globalData.transitions.destination.past),2),
+  'future': Math.round(parseFloat(100*globalData.transitions.destination.future),2)
   }  
   
    
 
-  var datum =[] ;
-  if(scope.d3opts.elementType=='part') 
-    {if(elementID==1)
-        datum = [ 
-      {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
-      {id: elementID+1,name:'next_p', value:data.next_p, color:'#008cba'}, 
-      {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
-      else
-          datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
-              {id: elementID-1,name:'precedent', value:data.precedent, color:'#008cba'}, 
-              {id: elementID,name:'identity', value:data.identity, color:'#45348A'},
-              {id: elementID+ 1,name:'next_p', value:data.next_p, color:'#008cba'}, 
-              {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
-    }
-  else
-    datum = [{id: "...", name:'shifted_past',value:data.shifted_past, color:'#008cba'}, 
-  {id: elementIDTxt+"-1",name:'precedent', value:data.precedent, color:'#008cba'}, 
-  {id: elementIDTxt,name:'identity', value:data.identity, color:'#45348A'},
-  {id: elementIDTxt+"+ 1",name:'next_p', value:data.next_p, color:'#008cba'}, 
-  {id: "...", name:'shifted_next', value:data.shifted_next, color:'#008cba'}]
-  
-  
-  
+  var datum =[] ;  
   var identity ={};
-   if(elementID==1) identity ={id:'c1', x:gap , y:height/2}
-    else identity ={id:'c3', x:gap * 3, y:height/2}
-  datum.forEach(function(c, i) {
-            c.x = gap * (i +1);
+
+  if(classe=='provenance_not_linear'){   
+  
+       if(data.past>0) datum.push({id: "...", name:'past',value:data.past, color:'#008cba', igap : 0});
+      if(data.normal>0) datum.push({id: elementIDTxt+"-1",name:'normal', value:data.normal, color:'#008cba', igap : gap});
+      datum.push({id: elementIDTxt,name:'identity', value:0, color:'#45348A', igap : 2*gap});
+      if(data.future>0) datum.push({id: "...", name:'future', value:data.future, color:'#008cba', igap : 3*gap});
+     
+    
+
+    identity ={id: elementIDTxt, x:gap * 2.5, y:height/2}
+    // if(elementID>=2) identity ={id:'c3', x:gap * 2.5, y:height/2}  
+    datum.forEach(function(c, i) {
+            c.x = c.igap + gap/2;
             c.y = height/2  ;
+            
             graph.nodes.push(c);
             var node = {id:c.id,x:c.x, y:c.y};
-            if(classe=='destination')
-              graph.links.push({source: identity, target: node, value:c.value})
-            else
-              graph.links.push({source: node, target: identity, value:c.value})
+
+            if(c.id!=elementIDTxt )                        
+                          graph.links.push({source: node, target: identity, value:c.value})
+                
         });
+}
+else{
+  
+     if(data.past>0) datum.push({id: "...", name:'past',value:data.past, color:'#008cba', igap : 0});
+      datum.push({id: elementIDTxt,name:'identity', value:0, color:'#45348A', igap : gap});
+      if(data.normal>0) datum.push({id: elementIDTxt+"+1",name:'normal', value:data.normal, color:'#008cba', igap : 2*gap});      
+      if(data.future>0) datum.push({id: "...", name:'future', value:data.future, color:'#008cba', igap : 3*gap});
+  
+     
+
+  identity ={id:elementIDTxt, x:gap * 1.5, y:height/2}
+    datum.forEach(function(c, i) {
+            c.x = c.igap + gap/2;
+            c.y = height/2  ;
+
+            graph.nodes.push(c);
+            var node = {id:c.id,x:c.x, y:c.y};
+            if(c.id!=elementIDTxt )
+                          graph.links.push({source: identity, target: node, value:c.value})
+                        
+                
+        }); 
+}
 
 svg.append("defs").selectAll('marker')
     .data(graph.links)
@@ -314,8 +343,8 @@ svg.append("defs").selectAll('marker')
      .attr("refX", 1) /*must be smarter way to calculate shift*/
     .attr("refY", 5)
     .attr( "viewBox","0 0 10 10")
-    .attr("markerWidth", 4)
-    .attr("markerHeight", 4)
+    .attr("markerWidth", 5)
+    .attr("markerHeight", 5)
     .attr("orient", "auto")
     .append("path")
     .attr("d", "M 0 0 L 10 5 L 0 10 z") //this is actual shape for arrowhead
@@ -326,7 +355,8 @@ svg.append("defs").selectAll('marker')
             .enter()
             .append("g")
             .attr("class", "circle")
-            .attr("fill",  function(d) {return d.color});
+            .attr("fill",  function(d) {return d.color})
+            .on("click", function(d) { scope.onTransitions({type:scope.d3opts.elementType,elementId:elementID})});
     var el = circle.append("circle")
             .attr("cx", function(d) {return d.x})
             .attr("cy", function(d) {return d.y})
@@ -348,9 +378,9 @@ svg.append("defs").selectAll('marker')
 
   var  linkArc=function(d) {
        var x1 = d.source.x,
-          y1 = d.source.y - 20,
+          y1 = d.source.y - 40,
           x2 = d.target.x ,
-          y2 = d.target.y - 30,
+          y2 = d.target.y - 50,
           dx = x2 - x1,
           dy = y2 - y1,
           dr = Math.sqrt(dx * dx + dy * dy),
@@ -407,8 +437,7 @@ var path = svg.append("g").selectAll("path")
 
 svg.append("g").selectAll("g.linklabelholder")
     .data(graph.links).enter().append("g")
-    .attr("class", "linklabelholder")    
-
+    .attr("class", "linklabelholder") 
     .append("text")
       .text(function(d){
           return d.value+"%";
@@ -416,9 +445,98 @@ svg.append("g").selectAll("g.linklabelholder")
       
       .attr("stroke-width", ".2px")
       .attr("stroke", function(d) {return d.target.color})
-      .attr("dx",  function(d) {return ((classe=='provenance')?d.source.x:d.target.x)  })
-      .attr("dy",  function(d) {return ((classe=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
+      .attr("dx",  function(d) {return ((classe=='provenance_not_linear')?d.source.x:d.target.x)  })
+      .attr("dy",  function(d) {return ((classe=='provenance_not_linear')?d.source.y:d.target.y) + 1.75 * radius });
 
+}
+scope.inspectorRenderPie = function(data, classe) {
+  if(typeof classe =='undefined')        return;
+  var elementType = scope.d3opts.elementType;
+
+var elementID = scope.d3opts.currentId;
+if(scope.d3opts.currentId==null)
+  elementID = 0;
+if(elementType=='section') elementType='part';
+  d3.select(element[0]).selectAll("*").remove();
+
+
+
+var elementId = elementID;
+var color = d3.scale.category20c();
+var r = (height + margin.top )/2;
+
+ var globalData = $.grep(data, function(e){ return e.type == classe })[0].data;
+ globalData = globalData.filter(function(e){ return e.part == elementID })[0];
+
+
+
+ var data = [];
+ console.log(globalData);
+if((classe=="rereads_seq_tx")||(classe=="rereads_dec_tx"))
+  data = [{"label":"Relectures conjointes", "value":Math.round(parseFloat(100*globalData.indicators.rereads_seq_tx),2)}, 
+              {"label":"Relectures disjointes", "value":Math.round(parseFloat(100*globalData.indicators.rereads_dec_tx),2)}];
+
+if((classe=="resume_past")||(classe=="resume_future"))
+  data = [
+              {"label":"Reprise en arrière", "value":Math.round(parseFloat(100*globalData.indicators.resume_past),2)}, 
+              {"label":"Reprise normale", "value":Math.round(100 - parseFloat(100*globalData.indicators.resume_past),2)}, 
+              {"label":"Reprise en avant", "value":Math.round(parseFloat(100*globalData.indicators.resume_future),2)}
+           ];
+
+if(elementType=='section') elementType='part';
+  d3.select(element[0]).selectAll("*").remove();
+  width = $(element[0]).parent().width() - margin.left - margin.right ;
+  
+          svg = d3.select(element[0])
+          .append("svg")          
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom)
+          .attr('class','pie');
+        var vis =  svg.append("g")
+          .data([data])
+          .attr("transform", "translate(" + r + "," + (height + margin.top + margin.bottom)/2 + ")");
+var pie = d3.layout.pie().value(function(d){return d.value;});
+
+// declare an arc generator function
+var arc = d3.svg.arc().outerRadius(r);
+
+// select paths, use arc generator to draw
+var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+arcs.append("svg:path")
+    .attr("fill", function(d, i){
+        return color(i);
+    })
+    .attr("d", function (d) {
+        // log the result of the arc generator to show how cool it is :)
+        
+        return arc(d);
+    });
+
+// add the text
+arcs.append("svg:text").attr("transform", function(d){
+      d.innerRadius = 0;
+      d.outerRadius = r;
+    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "left").text( function(d, i) {
+    return (data[i].value+'%');}
+    );
+
+var legend = svg.append("g").selectAll("g")
+.data(data)
+  .enter().append("g")
+    .attr("transform", function(d, i) { return "translate("+(2*r+20)+"," + (20+(i+1) * 35) + ")"; });
+
+legend.append("rect")
+  .attr("width", 30)
+  .attr("height", 20)
+  .style("fill", function(d, i) { return color(i); });
+
+legend.append("text")
+  .attr("x", 95)
+  .attr("y", 10)
+  .attr("dy", ".35em")
+  .text(function(d) {return d.label; });
+
+/////////// END PIE
 }
 scope.$watch(function(){
    
@@ -432,34 +550,58 @@ scope.$watch(function(){
 
       if(typeof scope.data =='undefined') return;
       
-              //if(scope.d3opts.issueCode in {'actions':'', 'speed':'','reread':'','stop':''})              
-               scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
-           // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
+
+              if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+                else
+                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  else
+                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
+           // else scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)
     
     }
     
 
 scope.$watch('data', function(){
 
-  if(typeof scope.data =='undefined') 
-    {
-      //console.log("typeof scope.data =='undefined'")
-        return;}
-
-  //if(scope.d3opts.issueCode in {'actions':'', 'speed':'','reread':'','stop':''})              
-    scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
-           // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
+ if(typeof scope.data =='undefined') return; 
+ window.setTimeout(function() {
+      d3.select(element[0]).selectAll("*").remove();
+  }, 0);
+            if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+                else
+                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  else
+                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
           }, true);  
    
 
 scope.$watch('d3opts', function(){
-  //console.log(scope.d3opts.tab)
-  if(typeof scope.data =='undefined') 
-    {//console.log("typeof scope.data =='undefined'")
-        return;}
-  //  if(scope.d3opts.issueCode in {'actions':'', 'speed':'','reread':'','stop':''})              
-     scope.inspectorRenderBars(scope.data, scope.d3opts.issueCode)
-           // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.issueCode)
+ if(typeof scope.data =='undefined') return;
+ 
+ d3.select(element[0]).selectAll("*").remove();
+if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+                else
+                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  else
+                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
+          }, true);  
+scope.$watch('indicatorCode', function(){
+ if(typeof scope.data =='undefined') return;
+ console.log(scope.indicatorCode)
+ d3.select(element[0]).selectAll("*").remove();
+if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+                else
+                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  else
+                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
           }, true);  
 };
 
@@ -668,36 +810,32 @@ svg.append("g").selectAll("g.linklabelholder")
 
 if(scope.d3opts.type == 'global') 
 {  
-if(scope.d3opts.issueCode in {'actions':'', 'mean.duration':'','speed':'',
-                        'reread':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture_tx':'','stop':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
+  alert('global')
+if(scope.indicatorCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
+                        'rereadings_tx':'','rereads_seq_tx':'',
+                        'course_readers_rereaders':'','part_readers_rereaders':'','provenance_not_linear':'','provenance_past':'','provenance_future':'','destination_not_linear':'','destination_past':'','destination_future':'',
+                      'rupture_tx':'','norecovery_tx':'','resume_future':'','resume_past':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
                       })  globalCharts(scope, element)
 
 else 
-  if(scope.d3opts.issueCode in {'provenance':'','destination':''})  
+  if(scope.indicatorCode in {'provenance':'','destination':''})  
        //   globalNodeChart(scope, element)
       globalCharts(scope, element)
     //else globalBubbleChart(scope, element,'titre');
 }
 else
 if(scope.d3opts.type == 'inspector'){
+  
 inspectorCharts(scope, element,'titre')
-/*if(scope.d3opts.issueCode in {'actions':'', 'mean.duration':'','speed':'',
-                        'reread':'','course_readers_rereaders':'','part_readers_rereaders':'',
-                      'rupture_tx':'','stop':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
-                      })  inspectorCharts(scope, element,'titre')
 
-  else if(scope.d3opts.issueCode in {'provenance':'','destination':''})
-      nodeChart(scope, element);*/
 
 }
 else
 if(scope.d3opts.type == 'fact'){
+  alert('fact')
   
 inspectorCharts(scope, element,'titre')
-
-  /*if(scope.d3opts.issueCode in {'provenance':'','destination':''})
-      nodeChart(scope, element);*/
+//inspectorRenderTransitionNodes
 
 }
 else
@@ -711,7 +849,7 @@ else{
 if(scope.d3opts.issueClass =='Transition')
    nodeChart(scope, element)
  else 
-  if(scope.d3opts.issueCode in {'RRmaxD':'','RRVmaxSeq':''}) 
+  if(scope.indicatorCode in {'RRmaxD':'','RRVmaxSeq':''}) 
     RereadingsChart(scope, element)
     else
       barChart(scope, element, ' ');

@@ -30,14 +30,14 @@ var computeTwoBounderyValues = function(type){
 
 if(type=='chapter'){
   scope.chapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = parseFloat(chapter.indicators[scope.indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = parseFloat(part.indicators[scope.indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -58,14 +58,14 @@ var computeMinBounderyValues = function(type){
 
 if(type=='chapter'){
   scope.chapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = parseFloat(chapter.indicators[scope.indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = parseFloat(part.indicators[scope.indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -97,14 +97,14 @@ var computeBounderyValues = function(type){
 
 if(type=='chapter'){
   scope.chapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = parseFloat(chapter.indicators[scope.indicatorCode]);
       studiedFactData.push(partData);
   })
 }
 else{
   scope.chapters.forEach(function(chapter, i) {
     chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.properties.filter(function(value){ return value.property == scope.indicatorCode})[0].value);
+      var partData = parseFloat(part.indicators[scope.indicatorCode]);
       studiedFactData.push(partData);
     })
   })
@@ -134,7 +134,7 @@ var maxPartRoute="#"
     
       var allFacts = part.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );      
       var td=$("<td role='button'></td>");
-      var tdColor = part.indicators.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
+      var tdColor = part.metrics.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
        $(td)
         .attr('class','td_issue')
                .attr('data-part',part.id)
@@ -229,12 +229,14 @@ var maxChapRoute="#";
     var allFacts = chapter.facts.filter(function(e){ return ((e.issueCode == scope.issueCode))} );       
     
     var td=$("<td role='button'></td>");
-    var tdColor = chapter.indicators.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
+    var tdColor = chapter.metrics.filter(function(ind){ return ind.code == scope.indicatorCode})[0].color;
+    ;
      $(td)
       .attr('class','td_issue')
-             .attr('data-part',chapter.id)
+             .attr('data-part',chapter.id)             
              .attr('colspan',chapter.parts.length)
              .attr('data-indicator',scope.indicatorCode)
+             .attr('data-indicator-value',chapter.metrics.filter(function(ind){ return ind.code == scope.indicatorCode})[0].delta)
              .attr('data-path',chapter.route+'&indicator='+scope.indicatorCode)
              
              .on("click", function(d) {    
@@ -342,22 +344,6 @@ if(!scope.allFacts)
          tableIssuesDisplay()
         }, true);
      
-
-/*scope.$watch('byParts', function(){
-
-  if(typeof scope.data=='undefined' | typeof scope.indicatorCode =='undefined' | typeof scope.byParts=='undefined') return;
-  
-    scope.chapters = [];
-    angular.forEach(scope.data.tomes, function(tome) {
-    angular.forEach(tome.chapters, function(chapter) {     
-      scope.chapters.push( chapter ); 
-    });
-  });   
-    
-         tableIssuesDisplay()
-        
-    
-          }, true); */
 
 
             

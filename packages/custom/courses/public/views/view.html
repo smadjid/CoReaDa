@@ -36,6 +36,11 @@
  
 
  <div id='tableConfg' class="btn-group" uib-dropdown is-open="status.isopen">
+ <button id="single-button" type="button" class="indicatorSelectorButton" ng-click="allFactsDisplay=!allFactsDisplay">
+ <span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allFactsDisplay, 'glyphicon glyphicon-plus-sign pull-left': !allFactsDisplay}"  style="margin-right:5px"></span>
+ {{allFactsDisplay ? "Afficher moins de problèmes" : "Afficher plus de problèmes"}}</button>
+
+<!--
  <button id="single-button" type="button" class="glyphicon glyphicon glyphicon-option-horizontal indicatorSelectorButton" uib-dropdown-toggle ng-disabled="disabled"></button>
       <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
         <li role="menuitem"><a href="#" ng-click="allFactsDisplay=!allFactsDisplay">
@@ -47,6 +52,7 @@
 {{indicatorSelectorShow ? "Cacher le sélecteur d'indicateurs" : "Afficher le sélecteur d'indicateurs"}}</a></li>
         <li role="menuitem" ng-click="allIndicatorSelectorShow=!allIndicatorSelectorShow"><a href="#">Afficher tous les indicateurs</a></li>
       </ul>
+      -->
     </div>
  
 <div ng-show="indicatorSelectorShow" style='display: inline-flex'>
@@ -85,8 +91,13 @@
 
           <li class="tab-content vcenter tab-stats col-lg-12 inspector-content clearfix" >
          <div id='chartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
-         <div class='row' style="margin-right:3px; text-align:right"> <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em></div>
-            <d3-chart data='context.d3' ng-show='pageCount()>=0'  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,issueCode:inspectorStats.indicatorCode,courseId:course._id, tab:"stats"}' style="height:0"></d3-chart>
+
+         <div class='row' style="margin-right:3px; text-align:right"> 
+         <em role='button' style="color:#ed6245" ng-click='transitionsDlg(inspectorStats.indicatorCode)' ng-if="(['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)>-1)  "><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Table de transition</em>
+         <em role='button' style="color:#ed6245" ng-click='zoomGraph()' ng-if="['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)<=-1"><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em>
+         </div>
+
+            <d3-chart data='context.d3' ng-show='pageCount()>=0' indicator-code="inspectorStats.indicatorCode"  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:inspectorStats.id,currentId:currentElement.id,issueCode:inspectorStats.indicatorCode,courseId:course._id, tab:"stats"}' on-transitions=transitionsDlg(type) style="height:0"></d3-chart>
             <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}} </div>             
         </div>
 
@@ -121,7 +132,7 @@
           <li class="tab-content vcenter tab-facts col-lg-12 inspector-content clearfix "> 
               <div id='factChartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
               <div class='row' style="margin-right:3px; text-align:right"> <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em></div>
-              <d3-chart data='context.d3' ng-show='pageCount()>=0'  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:currentElement.id,issueCode:inspectorFacts.indicatorCode,courseId:course._id, tab:"stats"}' style="height:0"></d3-chart>
+              <d3-chart data='context.d3' ng-show='pageCount()>=0' indicator-code="inspectorFacts.indicatorCode"  d3opts='{type:"inspector",elementType:inspectorStats.type,elementId:currentElement.id,courseId:course._id, tab:"facts"}' on-transitions=transitionsDlg(type) style="height:0"></d3-chart>
               <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>             
             </div>
 
