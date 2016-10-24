@@ -30,6 +30,8 @@
 
 
 <!-- Navigation -->
+<tr ng-if="isIndicatorVisible('reading_not_linear')"><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'reading_not_linear'" ng-mouseover="$parent.inspectorStats.indicatorCode='reading_not_linear'">Le taux moyen des lectures qui ne suivent pas l'ordre initial des chapitres tel que prévu par l'auteur est de <span class="blue">{{100 * course.transitions.provenance.not_linear|number}}%</span></td></tr>
+
 <tr ng-if="isIndicatorVisible('provenance_not_linear')"><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'provenance_not_linear'" ng-mouseover="$parent.inspectorStats.indicatorCode='provenance_not_linear'">Le taux moyen des provenances non linéaires des chapitres du cours est de  <span class="blue">{{100 * course.transitions.provenance.not_linear|number}}%</span></td></tr>
 
 <tr ng-if="isIndicatorVisible('provenance_past')"><td class='componentInfo' aria-pressed="false" ng-model="$parent.inspectorStats.indicatorCode" uib-btn-radio="'provenance_past'" ng-mouseover="$parent.inspectorStats.indicatorCode='provenance_past'">Le taux moyen des arrivées provenant des chapitres plus en arrière est de  <span class="blue">{{100 * (course.transitions.provenance.past)|number}}%</span></td></tr>
