@@ -1922,7 +1922,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                     {'name':'rereads_dec_tx','value':  d3.round(100*mainStats.rereads_dec_tx)+'%',
                       'comment':'est le taux moyen des relectures des chapitres de cette partie et qui ont lieu  se font dans des séances de lecture distinctes'},
                     {'name':'rupture_tx', 'value':  d3.round(100*mainStats.rupture_tx)+'%',
-                      'comment':'est le taux moyen des fins de sances de lecture ayant lieu sur les chapitres de cette partie'}  ,
+                      'comment':'est le taux moyen des fins de séances de lecture ayant lieu sur les chapitres de cette partie'}  ,
                    {'name':'norecovery_tx', 'value':  d3.round(100*mainStats.norecovery_tx)+'%',
                       'comment':'est le taux moyen des arrêts définitfs de la lecture sur les chapitres de cette partie'}  ,
                     {'name':'resume_past', 'value':  d3.round(100*mainStats.resume_past)+'%',
@@ -1996,8 +1996,9 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
 
                    {'name':'readers_tx','value':d3.round(100*chapter.indicators.readers_tx,2)+'%',
                       'comment':' des lecteurs du cours ont visité ce chapitre',
-                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'rs_tx')}).length > 0)?
-            chapter.facts.filter(function(f){ return f.classof === 'rs_tx'})[0].route:null},
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'readers_tx')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'readers_tx'})[0].route:null},
+            
             {'name':'rs_tx','value':d3.round(100*chapter.indicators.rs_tx,2)+'%',
                       'comment':' des séances de lecture contiennent ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'rs_tx')}).length > 0)?
@@ -2346,8 +2347,8 @@ switch(granularity){
 
   }
 if($scope.inspectorStats.Indicators!=undefined){
-  var nd = $scope.inspectorStats.Indicators.filter(function(f){ return $scope.indicatorsSelectionModel.indexOf(f.name)>=0});
-  $scope.inspectorStats.Indicators =  nd
+  //var nd = $scope.inspectorStats.Indicators.filter(function(f){ return $scope.indicatorsSelectionModel.indexOf(f.name)>=0});
+  //$scope.inspectorStats.Indicators =  nd
 }
 
 }

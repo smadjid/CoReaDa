@@ -229,6 +229,7 @@ module.exports = function(Courses) {
             courseData.nRS = part.nRS;
             courseData.ob_begin = part.ob_begin;
             courseData.ob_end = part.ob_end;
+            courseData.reading_not_linear = part.reading_not_linear;
             courseData.provenance_not_linear = part.provenance_not_linear;
             courseData.provenance_past = part.provenance_past ;
             courseData.provenance_prev = part.provenance_prev;
@@ -242,6 +243,11 @@ module.exports = function(Courses) {
             courseData.rereads_seq_globratio = part.indicators.rereads_seq_globratio;
             courseData.rereads_dec_tx = part.indicators.rereads_dec_tx;
             courseData.rereads_dec_globratio = part.indicators.rereads_dec_globratio ;
+            courseData.norecovery_tx = part.indicators.norecovery_tx;
+            courseData.resume_abnormal_tx = part.indicators.resume_abnormal_tx;
+            courseData.resume_past = part.indicators.resume_past;
+            courseData.resume_future = part.indicators.resume_future;
+            courseData.rupture_tx = part.indicators.rupture_tx;
             
         };
         if(part.type==='partie') {
@@ -356,13 +362,19 @@ module.exports = function(Courses) {
             provenance_future : courseData.provenance_future ,
             destination_next : courseData.destination_next ,
             destination_not_linear : courseData.destination_not_linear ,
+            reading_not_linear : courseData.reading_not_linear ,
             destination_past : courseData.destination_past ,
             destination_future : courseData.destination_future,
             rereads_tx  : courseData.rereads_tx,
             rereads_seq_tx : courseData.rereads_seq_tx,
             rereads_seq_globratio : courseData.rereads_seq_globratio,
             rereads_dec_tx : courseData.rereads_dec_tx,
-            rereads_dec_globratio : courseData.rereads_dec_globratio
+            rereads_dec_globratio : courseData.rereads_dec_globratio,
+            norecovery_tx : courseData.norecovery_tx,
+            resume_abnormal_tx : courseData.resume_abnormal_tx,
+            resume_past : courseData.resume_past,
+            resume_future : courseData.resume_future,
+            rupture_tx  : courseData.rupture_tx
         };
         console.log(cIndicators);
         var course = new Course( {

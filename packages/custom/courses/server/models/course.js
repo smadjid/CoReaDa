@@ -164,6 +164,10 @@ var RSSchema = new Schema({
     type: Number,
     default: 0
   },
+   reading_not_linear:{
+    type: Number,
+    default: 0
+  },
   provenance_past:{
     type: Number,
     default: 0
@@ -210,6 +214,26 @@ var RSSchema = new Schema({
     default: 0
   },
   rereads_dec_globratio: {
+    type: Number,
+    default: 0
+  },
+  norecovery_tx: {
+    type: Number,
+    default: 0
+  },
+  resume_abnormal_tx: {
+    type: Number,
+    default: 0
+  },
+  resume_past: {
+    type: Number,
+    default: 0
+  },
+  resume_future: {
+    type: Number,
+    default: 0
+  },
+  rupture_tx: {
     type: Number,
     default: 0
   }
