@@ -2211,10 +2211,8 @@ var inspectorSectionData = function(section, indicator, fact, tab){
         },
         {
             target: '#tableConfg',
-            content: "<h4>Configuration</h4>"+
-            "Ce menu permet de:" +
-            "<ol><li>Sélectionner les indicateurs à afficher" +
-            "<li>Sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif </ol>"
+            content: "<h4>Mode d'affichage des problème</h4>"+
+            "Ce menu permet de sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif"
         }
         ,
        
