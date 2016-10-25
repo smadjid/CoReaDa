@@ -289,7 +289,8 @@ if(elementType=='section') elementType='part';
   var datum =[] ;  
   var identity ={};
 
-  if(classe=='provenance_not_linear'){   
+
+  if(classe.substring(0, 10)=='provenance'){   
   
        if(data.past>0) datum.push({id: "...", name:'past',value:data.past, color:'#008cba', igap : 0});
       if(data.normal>0) datum.push({id: elementIDTxt+"-1",name:'normal', value:data.normal, color:'#008cba', igap : gap});
@@ -445,8 +446,8 @@ svg.append("g").selectAll("g.linklabelholder")
       
       .attr("stroke-width", ".2px")
       .attr("stroke", function(d) {return d.target.color})
-      .attr("dx",  function(d) {return ((classe=='provenance_not_linear')?d.source.x:d.target.x)  })
-      .attr("dy",  function(d) {return ((classe=='provenance_not_linear')?d.source.y:d.target.y) + 1.75 * radius });
+      .attr("dx",  function(d) {return ((classe.substring(0, 10)=='provenance')?d.source.x:d.target.x)  })
+      .attr("dy",  function(d) {return ((classe.substring(0, 10)=='provenance')?d.source.y:d.target.y) + 1.75 * radius });
 
 }
 scope.inspectorRenderPie = function(data, classe) {
