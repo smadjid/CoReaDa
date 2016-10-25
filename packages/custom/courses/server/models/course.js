@@ -160,6 +160,14 @@ var RSSchema = new Schema({
       type: Number,
       default: 0
     },
+    RS_meanparts: {
+      type: Number,
+      default: 0
+    },
+    RS_meanperuser:{
+     type: Number,
+     default: 0
+    },
     provenance_not_linear:{
     type: Number,
     default: 0

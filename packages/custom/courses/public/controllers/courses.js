@@ -409,8 +409,8 @@ else{
 
 $scope.resetIndicators = function(){
       $scope.indicatorsHeader=[      
-        {'code':'Actions_tx', 'value':'Actions_tx', 'label':'Visites', 'inspectorText':'aux visites', 
-        'issueCode':'Actions_tx','category':'Indicateurs de lecture','title':'Le taux de vitesse enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
+        {'code':'Actions_tx', 'value':'Actions_tx', 'label':'Lectures', 'inspectorText':'aux visites', 
+        'issueCode':'Actions_tx','category':'Indicateurs de lecture','title':'Le taux de visites enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':true,'parent': null, 'level':'level0', 'details':false},
         /*{'code':'interest', 'value':'interest', 'label':'Intérêt', 'inspectorText':'aux visites', 
         'issueCode':'interest','category':'Indicateurs de lecture','title':'Le taux de vitesse enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
@@ -435,7 +435,7 @@ $scope.resetIndicators = function(){
          'issueCode':'rereads_dec_tx','category':'Indicateurs de relecture','title':'Le taux de relectures disjointes du cours ou d\'un de ses éléments (partie, chapitre, section) est calculé comme étant le taux que représentent les lectures qui sont des relectures, par rapport à l\'ensemble des lectures enregistrées sur le cours ou sur l\'élément en question',
          'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'rereads_tx', 'level':'level1', 'details':false},
    
-        {'code':'reading_not_linear', 'value':'reading_not_linear', 'label':'Linéarité','inspectorText':'...', 
+        {'code':'reading_not_linear', 'value':'reading_not_linear', 'label':'Navigation','inspectorText':'...', 
         'issueCode':'reading_not_linear','category':'Indicateurs de navigation','title':'...',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true,'parent':null, 'show':true, 'level':'level0', 'details':false},
         {'code':'provenance_not_linear', 'value':'provenance_not_linear', 'label':'Provenance non linéaire','inspectorText':'...', 
@@ -499,6 +499,8 @@ var toggleChildren = function(parent){
 $scope.toggleChildren = function(parent,$event){
  
    toggleChildren(parent);
+   inspectorCourseData('facts');
+   goHome();
  
  
 }
@@ -1446,17 +1448,24 @@ var topChaps={
       'nusers':$scope.course.indicators.nusers,    
       //'mean_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.duration'})[0].value/60),
       'mean_chap_speed':d3.round(d3.mean(chapsData, function(d) { return parseInt(d.speed); }),0),
+      'mean_chap_rupture_tx':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.rupture_tx); }),1)+'%',
       'mean_chap_norecovery_tx':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.norecovery_tx); }),1)+'%',
       'mean_chap_reread': d3.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.rereads_tx); }),1)+'%',
       'mean_chap_rereads_seq_tx': d3.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.rereads_seq_tx); }),1)+'%',
       'mean_chap_rereads_dec_tx': d3.round(100 * d3.mean(chapsData, function(d) { return parseFloat(d.rereads_dec_tx); }),1)+'%',
+      'mean_chap_resume_abnormal_tx':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.resume_abnormal_tx); }),1)+'%',
       'mean_chap_resume_past':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.resume_past); }),1)+'%',
       'mean_chap_resume_future':d3.round(100* d3.mean(chapsData, function(d) { return parseFloat(d.resume_future); }),1)+'%',
 
       'mean_sec_speed':d3.round(d3.mean(partsData, function(d) { return parseInt(d.speed); }),0),
-      'mean_sec_norecovery_tx':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.norecovery_tx); }),1)+'%',
       'mean_sec_rupture_tx':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.rupture_tx); }),1)+'%',
+      'mean_sec_norecovery_tx':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.norecovery_tx); }),1)+'%',
       'mean_sec_reread': d3.round(100 * d3.mean(partsData, function(d) { return parseFloat(d.rereads_tx); }),1)+'%',
+      'mean_sec_rereads_seq_tx': d3.round(100 * d3.mean(partsData, function(d) { return parseFloat(d.rereads_seq_tx); }),1)+'%',
+      'mean_sec_rereads_dec_tx': d3.round(100 * d3.mean(partsData, function(d) { return parseFloat(d.rereads_dec_tx); }),1)+'%',
+      'mean_sec_resume_abnormal_tx':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.resume_abnormal_tx); }),1)+'%',
+      'mean_sec_resume_past':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.resume_past); }),1)+'%',
+      'mean_sec_resume_future':d3.round(100* d3.mean(partsData, function(d) { return parseFloat(d.resume_future); }),1)+'%',
       
       //'median_duration':parseInt($scope.course.stats.filter(function(value){ return value.property === 'median.rs.duration'})[0].value/60),
       //'mean_nparts':parseInt($scope.course.stats.filter(function(value){ return value.property === 'mean.rs.nparts'})[0].value),
@@ -1825,7 +1834,7 @@ if(facts.length>0){
   'id':facts[0].partId,
   'type':facts[0].partType,
   'indicatorCode':facts[0].issueCode,
-  'Facts': $.grep(facts,  function(e){return ($.inArray(e.classof, $scope.indicatorsSelectionModel)>-1)})  
+  'Facts': $.grep(facts,  function(e){return $scope.isIndicatorVisible(e.classof)})  
 
   };
   $scope.courseFacts = $scope.inspectorFacts;
