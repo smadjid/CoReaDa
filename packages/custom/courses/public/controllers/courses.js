@@ -441,10 +441,10 @@ $scope.resetIndicators = function(){
         {'code':'provenance_not_linear', 'value':'provenance_not_linear', 'label':'Provenance non linéaire','inspectorText':'...', 
         'issueCode':'provenance_not_linear','category':'Indicateurs de navigation','title':'...',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':false,'parent':'reading_not_linear', 'level':'level1', 'details':false},
-        {'code':'provenance_past', 'value':'provenance_past', 'label':'Saut depuis l\'arrière','inspectorText':'...', 
+        {'code':'provenance_past', 'value':'provenance_past', 'label':'Provenance depuis l\'arrière','inspectorText':'...', 
         'issueCode':'provenance_past','category':'Indicateurs de navigation','title':'...',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'provenance_not_linear', 'level':'level2', 'details':false},
-        {'code':'provenance_future', 'value':'provenance_future', 'label':'Saut depuis l\'avant','inspectorText':'....', 
+        {'code':'provenance_future', 'value':'provenance_future', 'label':'Provenance depuis l\'avant','inspectorText':'....', 
         'issueCode':'provenance_future','category':'Indicateurs de navigation','title':'...',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'provenance_not_linear', 'level':'level2', 'details':false},
         {'code':'destination_not_linear', 'value':'destination_not_linear', 'label':'Destination non linéaire','inspectorText':'...', 
@@ -655,16 +655,16 @@ $scope.getGraphTitle = function(code){
         return('Provenance non linéaire');
         break;
     case 'provenance_past':
-        return('Saut depuis l\'arrière');
+        return('Provenance depuis l\'arrière');
         break;
     case 'provenance_future':
-        return('Saut depuis l\'arrière');
+        return('Provenance depuis l\'avant');
         break;
     case 'destination_not_linear':
         return('Destination non linéaire');
         break;
     case 'destination_past':
-        return('Saut vers l\'avant');
+        return('Saut vers l\'arrière');
         break;
     case 'destination_future':
         return('Saut vers l\'avant');
