@@ -40,7 +40,7 @@ if(elementType=='section') elementType='part';
   
           svg = d3.select(element[0])
           .append("svg")          
-          .attr('width', width + margin.left + margin.right)
+          .attr('width', width )
           .attr('height', height + margin.top + margin.bottom)
           .attr('class','barChart');
         var svgElt =  svg.append("g")
