@@ -1964,12 +1964,10 @@ border-radius: 3px;
 }
 
 .btn-action {
-   
-  
-  padding: 9px 15px 8px;
+  padding: 3px 10px 3px;
   text-align: center;
   vertical-align: middle; 
-  font-size: 14px;
+  font-size: 12px;
   border:1px solid white!important;
 
     cursor: pointer;

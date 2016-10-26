@@ -102,7 +102,7 @@ $scope.signalFact = function(){
 
 /////// Sendmail from the menu
  $scope.sendMail = function () {
-        ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '60%',
+        ngDialog.open({ template: 'courses/views/feedback.html', className: 'ngdialog-theme-default', width: '70%',
         controller: ['$scope', '$rootScope',  '$stateParams', '$location', '$http', 
         function($scope, $rootScope,  $stateParams, $location, $http) {
         $scope.result = 'hidden'
@@ -496,11 +496,12 @@ var toggleChildren = function(parent){
      
   })
 }
-$scope.toggleChildren = function(parent,$event){
+$scope.toggleChildren = function(parent){
  
    toggleChildren(parent);
+   goHome(); 
    inspectorCourseData('facts');
-   goHome();
+   
  
  
 }
@@ -2025,13 +2026,17 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                     {'name':'rereads_seq_tx','value':d3.round(100*chapter.indicators.rereads_seq_tx,2)+'%',
                       'comment':'des relectures de ce chapitre se font au cours des mêmes séances de lecture',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_seq_tx')}).length > 0)?
-            chapter.facts.filter(function(f){ return f.classof === 'rereads_tx'})[0].route:null},
-                    {'name':'rereads_dec_tx','value':d3.round(100*chapter.indicators.rereads_tx,2)+'%',
+            chapter.facts.filter(function(f){ return f.classof === 'rereads_seq_tx'})[0].route:null},
+                    {'name':'rereads_dec_tx','value':d3.round(100*chapter.indicators.rereads_dec_tx,2)+'%',
                       'comment':'des relectures de ce chapitre se font dans des séances de lecture distinctes',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_dec_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'rereads_dec_tx'})[0].route:null},
 
-                    {'name':'provenance_not_linear','value':d3.round(100*chapter.indicators.provenance_not_linear,2)+'%',
+                    {'name':'reading_not_linear','value':d3.round(100*chapter.indicators.reading_not_linear,2)+'%',
+                      'comment':'des chapitres lus avant et/ou après sont des chapitres lointains',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'reading_not_linear')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'reading_not_linear'})[0].route:null},
+                      {'name':'provenance_not_linear','value':d3.round(100*chapter.indicators.provenance_not_linear,2)+'%',
                       'comment':'des chapitres lus avant celui-ci se situent loin du chapitre qui précède ce dernier (provenance non linéaire)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_not_linear')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'provenance_not_linear'})[0].route:null},
@@ -2415,6 +2420,7 @@ var selectTab = function(tab){return;
 }
 /********************************************/
 var loadContext = function(){
+
   var width = $('.data-table').innerWidth() ;
   var top = $('.data-table').offset().top + $('.data-table').innerHeight();
   var left = $('.data-table').offset().left;
@@ -2437,7 +2443,7 @@ var loadContext = function(){
   
   var course  = $scope.course;
   var components = parseURL(path)
-
+console.log('loadcontext: begin')
   if(components == null){
     var tome=-1;
      
@@ -2622,7 +2628,7 @@ if(components != null)
   $scope.tabSelect = components.hasOwnProperty('factid')?'facts':'stats';
 $('.tableScroller').scroll();
  
-
+console.log('loadcontext: end')
 
 }
 
@@ -2656,21 +2662,12 @@ var loadURL = function(url){
    
 
   window.location.hash = url;
+
   return;
 
 
-  if(url == window.location.hash)
- {
-  goHome();
+  
 
-}
-  else 
-    {
-      window.location.hash = url;
-}
-
-
-  return false;
 
 };
 
@@ -2778,7 +2775,7 @@ selection.selected ='selectedTask';
     $scope.inspectorStats.indicatorCode = fact.issueCode;
 
 
-  
+  $('.factScroller').scroll();
  }
 
 
@@ -3516,8 +3513,9 @@ if (course){
         $scope.chartType = $scope.indicatorsSelectionModel[0];
         $scope.selectedElement = course;
 
-
+console.log('begin')
         $scope.completeCourseParts();
+        console.log('end')
             $scope.context = {
               'type':'course',      
               'route':$scope.course._id,
@@ -3696,21 +3694,7 @@ app.run(function(editableOptions, editableThemes) {
   editableThemes.bs3.buttonsClass = 'btn-xs';
 });
 
-/*app.config(function ($compileProvider) {
-  $compileProvider.debugInfoEnabled(false);
-});*/
-app.config(['fitTextConfigProvider', function(fitTextConfigProvider) {
-  fitTextConfigProvider.config = {
-    debounce: function(a,b,c) {         // OR specify your own function
-      var d;return function(){var e=this,f=arguments;clearTimeout(d),d=setTimeout(function(){d=null,c||a.apply(e,f)},b),c&&!d&&a.apply(e,f)}
-    },
-    delay: 500,                        // debounce delay
-    loadDelay: 10,                      // global default delay before initial calculation
-    compressor: 1,                      // global default calculation multiplier
-    min: 10,                             // global default min
-    max: 17       // global default max
-  };
-}]);
+
 app.config(function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     // Allow same origin resource loads.

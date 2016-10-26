@@ -6,7 +6,6 @@ angular.module('mean.courses')
       scope: {
         data: '=',
         d3opts: '=',
-        indicatorCode:'=',
         onTransitions:'&'
       },
       link: function (scope, element) {   
@@ -40,7 +39,7 @@ if(elementType=='section') elementType='part';
   
           svg = d3.select(element[0])
           .append("svg")          
-          .attr('width', width )
+          .attr('width', width + margin.left + margin.right )
           .attr('height', height + margin.top + margin.bottom)
           .attr('class','barChart');
         var svgElt =  svg.append("g")
@@ -49,8 +48,6 @@ if(elementType=='section') elementType='part';
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
         var y = d3.scale.linear().range([height, 0]);
 
-//console.log(classe)
-//console.log(globalData)
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
           data = data.filter(function(e){ return e.elementType == elementType });
         var xAxis = d3.svg.axis()
@@ -139,7 +136,7 @@ if(elementType!=='part')
                 });
               //////////////////////////////
               if("#"+d.route!=window.location.hash)
-               window.location.hash = "#"+d.route+"&tab="+scope.d3opts.tab;
+               window.location.hash = "#"+d.route;
             })
             .on("mouseover", function (d) {
                   d3.select(this).attr("stroke", '#45348A')
@@ -271,7 +268,7 @@ if(elementType=='section') elementType='part';
 //alert(elementID)
   var data={};
 
-  if(classe=='provenance_not_linear')
+  if(classe.substring(0, 10)=='provenance')
     data = {
   'normal' : Math.round(parseFloat(100*globalData.transitions.provenance.normal),2),
   'past' : Math.round(parseFloat(100*globalData.transitions.provenance.past),2),
@@ -552,107 +549,49 @@ scope.$watch(function(){
       if(typeof scope.data =='undefined') return;
       
 
-              if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
-              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+              if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else
-                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
-                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  if(scope.d3opts.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.d3opts.indicatorCode)
                   else
-                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
-           // else scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)
+                    scope.inspectorRenderBars(scope.data, scope.d3opts.indicatorCode)
+           // else scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)
     
     }
     
 
 scope.$watch('data', function(){
-
+  
  if(typeof scope.data =='undefined') return; 
  window.setTimeout(function() {
       d3.select(element[0]).selectAll("*").remove();
   }, 0);
-            if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
-              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+            if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else
-                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
-                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  if(scope.d3opts.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.d3opts.indicatorCode)
                   else
-                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
+                    scope.inspectorRenderBars(scope.data, scope.d3opts.indicatorCode)
           }, true);  
    
 
 scope.$watch('d3opts', function(){
+  
  if(typeof scope.data =='undefined') return;
  
  d3.select(element[0]).selectAll("*").remove();
-if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
-              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
+if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
+              scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else
-                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
-                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
+                  if(scope.d3opts.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                    scope.inspectorRenderPie(scope.data, scope.d3opts.indicatorCode)
                   else
-                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
+                    scope.inspectorRenderBars(scope.data, scope.d3opts.indicatorCode)
           }, true);  
-scope.$watch('indicatorCode', function(){
- if(typeof scope.data =='undefined') return;
- console.log(scope.indicatorCode)
- d3.select(element[0]).selectAll("*").remove();
-if(scope.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
-              scope.inspectorRenderTransitionNodes(scope.data, scope.indicatorCode)           
-                else
-                  if(scope.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
-                    scope.inspectorRenderPie(scope.data, scope.indicatorCode)
-                  else
-                    scope.inspectorRenderBars(scope.data, scope.indicatorCode)
-          }, true);  
+
 };
-
-/**************************************************************/
-var RereadingsChart = function(scope, element, title){  
-   
-   
-    var margin = {top: 0, right: 10, bottom: 0, left: 40},
-          width = 580 - margin.left - margin.right,
-          height = 270 - margin.top - margin.bottom;
-          var color = d3.scale.category20c();
-          var r = height/2;
-
-          var data = [{"label":"Conjointe", "value":parseInt(scope.data.seq_rereads)}, 
-              {"label":"Disjointe", "value":parseInt(scope.data.dec_rereads)}];
-
-        var vis = d3.select(element[0])
-          .append("svg")
-          .attr('class','rereadChart')
-          .data([data])
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom)
-          .append("svg:g").attr("transform", "translate(" + r + "," + r + ")");
-var pie = d3.layout.pie().value(function(d){return d.value;});
-
-// declare an arc generator function
-var arc = d3.svg.arc().outerRadius(r);
-
-// select paths, use arc generator to draw
-var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
-arcs.append("svg:path")
-    .attr("fill", function(d, i){
-        return color(i);
-    })
-    .attr("d", function (d) {
-        // log the result of the arc generator to show how cool it is :)
-        
-        return arc(d);
-    });
-
-// add the text
-arcs.append("svg:text").attr("transform", function(d){
-      d.innerRadius = 0;
-      d.outerRadius = r;
-    return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "left").text( function(d, i) {
-    return (data[i].label+' : ' +data[i].value+'%');}
-    );
-
-      }    
-
 
 
 
@@ -807,55 +746,10 @@ svg.append("g").selectAll("g.linklabelholder")
  }
 
 
-
-
-if(scope.d3opts.type == 'global') 
-{  
-  alert('global')
-if(scope.indicatorCode in {'Actions_tx':'', 'mean.duration':'','speed':'',
-                        'rereadings_tx':'','rereads_seq_tx':'',
-                        'course_readers_rereaders':'','part_readers_rereaders':'','provenance_not_linear':'','provenance_past':'','provenance_future':'','destination_not_linear':'','destination_past':'','destination_future':'',
-                      'rupture_tx':'','norecovery_tx':'','resume_future':'','resume_past':'','next_recovery_tx':'','prev_recovery_tx':'','distant_prev_recovery_tx':''
-                      })  globalCharts(scope, element)
-
-else 
-  if(scope.indicatorCode in {'provenance':'','destination':''})  
-       //   globalNodeChart(scope, element)
-      globalCharts(scope, element)
-    //else globalBubbleChart(scope, element,'titre');
-}
-else
-if(scope.d3opts.type == 'inspector'){
-  
 inspectorCharts(scope, element,'titre')
 
 
-}
-else
-if(scope.d3opts.type == 'fact'){
-  alert('fact')
-  
-inspectorCharts(scope, element,'titre')
-//inspectorRenderTransitionNodes
 
-}
-else
-
-if(scope.d3opts.type == 'rs'){
-
-  rsBxChart(scope, element, ' '); 
-
-}
-else{
-if(scope.d3opts.issueClass =='Transition')
-   nodeChart(scope, element)
- else 
-  if(scope.indicatorCode in {'RRmaxD':'','RRVmaxSeq':''}) 
-    RereadingsChart(scope, element)
-    else
-      barChart(scope, element, ' ');
- 
-}
 
 
         }
