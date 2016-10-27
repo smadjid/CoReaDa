@@ -221,33 +221,18 @@ module.exports = function(Courses) {
             };
         if(part.type==='course') {             
 
+            
             courseData.title = part.title;
             courseData.url = base_url+'/'+part.slug;
             courseData.properties = part.properties; 
-            courseData.nactions = part.nactions;
-            courseData.nusers = part.nusers;
-            courseData.nRS = part.nRS;
             courseData.ob_begin = part.ob_begin;
             courseData.ob_end = part.ob_end;
-            courseData.reading_not_linear = part.indicators.reading_not_linear;
-            courseData.provenance_not_linear = part.indicators.provenance_not_linear;
-            courseData.provenance_past = part.indicators.provenance_past ;
-            courseData.provenance_prev = part.indicators.provenance_prev;
-            courseData.provenance_future = part.indicators.provenance_future;
-            courseData.destination_next = part.indicators.destination_next;
-            courseData.destination_not_linear = part.indicators.destination_not_linear;
-            courseData.destination_past = part.indicators.destination_past;
-            courseData.destination_future = part.indicators.destination_future;    
-            courseData.rereads_tx  = part.indicators.rereads_tx;
-            courseData.rereads_seq_tx = part.indicators.rereads_seq_tx;
-            courseData.rereads_seq_globratio = part.indicators.rereads_seq_globratio;
-            courseData.rereads_dec_tx = part.indicators.rereads_dec_tx;
-            courseData.rereads_dec_globratio = part.indicators.rereads_dec_globratio ;
-            courseData.norecovery_tx = part.indicators.norecovery_tx;
-            courseData.resume_abnormal_tx = part.indicators.resume_abnormal_tx;
-            courseData.resume_past = part.indicators.resume_past;
-            courseData.resume_future = part.indicators.resume_future;
-            courseData.rupture_tx = part.indicators.rupture_tx;
+
+            courseData.indicators = part.indicators;
+            courseData.indicators.nactions = part.nactions;
+            courseData.indicators.nusers = part.nusers;
+            courseData.indicators.nRS = part.nRS;
+            
             
         };
         if(part.type==='partie') {
@@ -352,31 +337,7 @@ module.exports = function(Courses) {
         //if(sectionsAvailableData.length>0) 
           //  sectionsAvailable = sectionsAvailableData[0].value;
 
-        var cIndicators = {
-            nactions : courseData.nactions,
-            nusers : courseData.nusers,
-            nRS : courseData.nRS,
-            provenance_not_linear : courseData.provenance_not_linear ,
-            provenance_past  : courseData.provenance_past ,
-            provenance_prev : courseData.provenance_prev ,
-            provenance_future : courseData.provenance_future ,
-            destination_next : courseData.destination_next ,
-            destination_not_linear : courseData.destination_not_linear ,
-            reading_not_linear : courseData.reading_not_linear ,
-            destination_past : courseData.destination_past ,
-            destination_future : courseData.destination_future,
-            rereads_tx  : courseData.rereads_tx,
-            rereads_seq_tx : courseData.rereads_seq_tx,
-            rereads_seq_globratio : courseData.rereads_seq_globratio,
-            rereads_dec_tx : courseData.rereads_dec_tx,
-            rereads_dec_globratio : courseData.rereads_dec_globratio,
-            norecovery_tx : courseData.norecovery_tx,
-            resume_abnormal_tx : courseData.resume_abnormal_tx,
-            resume_past : courseData.resume_past,
-            resume_future : courseData.resume_future,
-            rupture_tx  : courseData.rupture_tx
-        };
-        console.log(cIndicators);
+        
         var course = new Course( {
             title : courseData.title,
             url:courseData.url,
@@ -393,7 +354,7 @@ module.exports = function(Courses) {
           //  rs:coursers,
             tomes:courseTomes,
             navigation:navigation,
-            indicators:cIndicators,
+            indicators:courseData.indicators,
             elementType:'course',
             content:'course content',
             user:"565d54d764d8ea197d1b6ccc",

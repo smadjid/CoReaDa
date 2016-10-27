@@ -18,6 +18,7 @@ scope.chapters =[]
 
 
 var tableIssuesDisplay=function(){
+  
   d3.select(element[0]).selectAll('td').remove();
   if(scope.byParts)
     partsIssuesDisplay()
@@ -25,99 +26,8 @@ var tableIssuesDisplay=function(){
     chaptersIssuesDisplay()    
 }
 
-var computeTwoBounderyValues = function(type){
-  var studiedFactData=[];
-
-if(type=='chapter'){
-  scope.chapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.indicators[scope.indicatorCode]);
-      studiedFactData.push(partData);
-  })
-}
-else{
-  scope.chapters.forEach(function(chapter, i) {
-    chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.indicators[scope.indicatorCode]);
-      studiedFactData.push(partData);
-    })
-  })
-}
-
-  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
-  
-  for(var i = 0; i<studiedFactData.length; i++){ 
-    studiedFactData[i] = Math.abs(studiedFactData[i] - median);
-  }
-  var min = d3.min(studiedFactData, function(d) { return parseFloat(d); }); 
-  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
-   
-  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
-}
-var computeMinBounderyValues = function(type){
-  var studiedFactData=[];
-
-if(type=='chapter'){
-  scope.chapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.indicators[scope.indicatorCode]);
-      studiedFactData.push(partData);
-  })
-}
-else{
-  scope.chapters.forEach(function(chapter, i) {
-    chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.indicators[scope.indicatorCode]);
-      studiedFactData.push(partData);
-    })
-  })
-}
-
-  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
-  
-  for(var i = 0; i<studiedFactData.length; i++){ 
-    studiedFactData[i] = median - studiedFactData[i];
-    if(studiedFactData[i] < 0 ) studiedFactData[i] = 0;
-  }
-  var min = 0; 
-  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
-   
-  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
-}
-
-var computeBgColor =function(val, indicator, range){
-  var scale = chroma.scale('OrRd').domain([range.MinValue, range.MaxValue]);
-  
-  return   scale(val).hex();
-}
 
 
-
-
-var computeBounderyValues = function(type){
-  var studiedFactData=[];
-
-if(type=='chapter'){
-  scope.chapters.forEach(function(chapter, i) {
-      var partData = parseFloat(chapter.indicators[scope.indicatorCode]);
-      studiedFactData.push(partData);
-  })
-}
-else{
-  scope.chapters.forEach(function(chapter, i) {
-    chapter.parts.forEach(function(part, i) {
-      var partData = parseFloat(part.indicators[scope.indicatorCode]);
-      studiedFactData.push(partData);
-    })
-  })
-}
-
-  var median = d3.median(studiedFactData, function(d) { return parseFloat(d); }); 
-  
-  
-  var min = d3.min(studiedFactData, function(d) { return parseFloat(d); }); 
-  var max = d3.max(studiedFactData, function(d) { return parseFloat(d); }); 
-   
-  return {'MinValue':min,'MedianValue':median,'MaxValue':max};
-}
 var saveLog = function(params) {
         return $http.post('/api/courses/log/'+scope.courseId,params);
       };

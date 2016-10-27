@@ -168,11 +168,57 @@ var RSSchema = new Schema({
      type: Number,
      default: 0
     },
-    provenance_not_linear:{
+    interest: {
     type: Number,
     default: 0
   },
-   reading_not_linear:{
+  Actions_tx: {
+    type: Number,
+    default: 0
+  },
+  readers_tx: {
+    type: Number,
+    default: 0
+  },
+  rs_tx: {
+    type: Number,
+    default: 0
+  },
+
+  nbactions: {
+    type: Number,
+    default: 0
+  },
+  Readers: {
+    type: Number,
+    default: 0
+  },
+  
+  norecovery_tx: {
+    type: Number,
+    default: 0
+  },
+  resume_abnormal_tx: {
+    type: Number,
+    default: 0
+  },
+  resume_past: {
+    type: Number,
+    default: 0
+  },
+  resume_future: {
+    type: Number,
+    default: 0
+  },
+  rupture_tx: {
+    type: Number,
+    default: 0
+  },
+  reading_not_linear:{
+    type: Number,
+    default: 0
+  },
+  provenance_not_linear:{
     type: Number,
     default: 0
   },
@@ -204,6 +250,10 @@ var RSSchema = new Schema({
     type: Number,
     default: 0
   },
+ speed: {
+    type: Number,
+    default: 0
+  },
   rereads_tx: {
     type: Number,
     default: 0
@@ -224,27 +274,8 @@ var RSSchema = new Schema({
   rereads_dec_globratio: {
     type: Number,
     default: 0
-  },
-  norecovery_tx: {
-    type: Number,
-    default: 0
-  },
-  resume_abnormal_tx: {
-    type: Number,
-    default: 0
-  },
-  resume_past: {
-    type: Number,
-    default: 0
-  },
-  resume_future: {
-    type: Number,
-    default: 0
-  },
-  rupture_tx: {
-    type: Number,
-    default: 0
   }
+    
   })
 
 /**

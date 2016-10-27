@@ -564,9 +564,7 @@ scope.$watch(function(){
 scope.$watch('data', function(){
   
  if(typeof scope.data =='undefined') return; 
- window.setTimeout(function() {
-      d3.select(element[0]).selectAll("*").remove();
-  }, 0);
+ 
             if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
               scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else

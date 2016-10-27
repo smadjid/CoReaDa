@@ -12,6 +12,8 @@ var Courses = new Module('courses');
  * Dependency injection is used to define required modules
  */
 Courses.register(function(app, auth, database) {
+  //app.set('views',__dirname + '/server/views');
+  
   Courses.routes(app, auth, database);
 
 
