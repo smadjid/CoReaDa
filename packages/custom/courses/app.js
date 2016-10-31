@@ -16,7 +16,7 @@ Courses.register(function(app, auth, database) {
   
   Courses.routes(app, auth, database);
 
-Courses.aggregateAsset('js',"../lib/opencpu.js/opencpu-0.5.js");
+
 
   Courses.aggregateAsset('js',"../lib/d3/d3.min.js");
   
