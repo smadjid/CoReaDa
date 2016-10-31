@@ -612,6 +612,15 @@ a.list-warning-item:hover {
         opacity: 0.6;
         z-index:1000;
       }
+.adminScroller {    
+  
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+   max-height:  74vh;
+    margin-bottom:10px!important;
+
+}
 .indexScroller {    
   
     overflow-y: hidden;

@@ -1,5 +1,6 @@
-<div class="" data-ng-controller="HomeController" >
 
+<div class="" data-ng-controller="HomeController" >
+<button id="adminBtn" type="button" class="btn-action pull-right" ng-click='admin()'>Administration</button>
 <div ng-show="dataLoading" id="floatingCirclesG">
 <div class="f_circleG" id="frotateG_01"></div>
   <div class="f_circleG" id="frotateG_02"></div>
@@ -14,12 +15,15 @@
 
 
 
- <div class="container-fluid row" id="box"  style="margin-right:15px!important">
+
+ <div class="container-fluid row" id="box"  style="margin-right:15px!important" ng-show='!adminShow'>
  
+
  <h1 style="padding-left:15px">Bienvenue sur <img src="/courses/assets/img/logo.png"  />  - the <i>Course Reading Dashboard</i></h1>
+
  <div class="col-md-7">
   <div class="bs-callout"  id="vAccordionBox"  >
-  <perfect-scrollbar class="indexScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
+  <perfect-scrollbar class=" always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
  <v-accordion class="vAccordion--default" style=" padding: 5px 20px; ">
  
    <v-pane>
@@ -165,9 +169,19 @@
       </ul>
     </li>
   </ul>                    
- </div></div></div>
+ </div></div>
 
-<div class="row alert alert-danger" role="alert" style="width:90%; margin-left:5%; margin-top:30px">
+<!-- ########################### ADMIN -->
+<div class="container-fluid row" id="box"  style="margin:25px!important" ng-show='adminShow' ng-include src="'courses/views/admin.html'">
+
+</div>
+<!-- ########################### END ADMIN -->
+
+
+
+</div>
+
+<div class="row alert alert-danger" role="alert" style="width:90%; margin-left:5%; margin-top:30px" ng-show='admin'>
   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
   <strong>Attention ! </strong>
   CoReaDa a été testé avec des versions récentes des navigateurs <em>Chrome</em>, <em>Chromium</em>, <em>Firefox</em> et <em>Opera</em> sous <em>Microsoft Windows</em> et <em>Linux</em>. Pour les autres navigateurs ou les versions antérieures à la version en cours de navigateurs ci-dessus indiqués,  certains éléments peuvent ne pas fonctionner correctement, provoquer des présentations mal organisées et la disparition de certaines fonctionnalités. 
@@ -181,6 +195,8 @@
         <a  href="http://www.openclassrooms.com/" target="_blank" style='margin-right:15px' >          <img src="https://sdz-upload.s3.amazonaws.com/prod/partners/img/logo_logo-oc.png" alt="OpenClassrooms" title="OpenClassrooms" height="50"></a>
       </div>
     </footer>
+
+</div>
 
 </div>
 

@@ -1,0 +1,60 @@
+ 
+
+ <div >
+       <!-- tabs -->
+      <div class=" col-lg-12 coreada-tabs coreada-tabs-layout-top-left coreada-tabs-theme ">
+       
+        
+        <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
+        <label id='factsTab' for="tab2" ><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> Data source management
+
+ 
+        </label> 
+    
+
+         <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
+        <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Courses management</label>
+      
+        <ul class="clearfix" style="height:75vh">
+        <li class="tab-content vcenter tab-facts col-lg-12  clearfix" style="height:75vh">
+       <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10">xsdsdfsdfsdf </perfect-scrollbar></li>
+
+ 
+
+          <li class="tab-content vcenter tab-stats col-lg-12  clearfix" style="height:75vh">
+       <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
+
+         <ol class='course_li'>
+            <li data-ng-repeat="course in courses">
+               <h4><strong>{{course.title}}</strong>
+               <a class="glyphicon glyphicon-remove pull-right" style='margin-right:30px' role='button' ng-click='removeCourse(course._id)'></a>
+               <a class="glyphicon glyphicon-eye-open pull-right" style='margin-right:40px'  data-ng-href="/courses/{{course._id}}" target='_blank'></a></h4>
+            
+              <ul>
+
+                <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}</li>
+                <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}</li>
+              <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
+                <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b></li>
+                <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b></li>
+                </ul>
+                <hr/>
+              </li>
+           </ol>
+        </perfect-scrollbar>
+    </li>
+  </ul> 
+
+          
+          
+       
+
+        
+          
+          </li>
+        </ul>
+        
+      </div>
+      <!--/ tabs -->
+
+    </div>

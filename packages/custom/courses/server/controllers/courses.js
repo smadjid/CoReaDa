@@ -9,7 +9,35 @@ var mongoose = require('mongoose'),
     config = require('meanio').loadConfig(),
     _ = require('lodash'),
     nodemailer = require('nodemailer'),
+    rio = require("rio"),
     transporter = nodemailer.createTransport('smtps://coreada.project%40gmail.com:madjid1980@smtp.gmail.com');
+
+//////////////////////////////////
+rio.e({filename:'R/test.R',data:{'a':5}, entrypoint:"main" });
+/*config = {
+    command: "",
+    filename: "",
+
+    entrypoint: "",
+    data: {},
+
+    callback: function (err, res) {
+        if (!err) {
+            console.log(res);
+        } else {
+            console.log("Rserve call failed. " + err);
+        }
+    },
+
+    host = "127.0.0.1",
+    port = "6311",
+    path = undefined,
+
+    user = "anon",
+    password = "anon"
+}*/
+////////////////////////////////////////////
+
 
 module.exports = function(Courses) {
     var base_url = "https://openclassrooms.com/courses";
@@ -33,10 +61,6 @@ module.exports = function(Courses) {
         var jsonPartsdata = JSON.parse(partsdata);
 
         //var course_title = jsoncourseName[0].title;
-        
-
-
-
         //course
         var partsCount = 0;
         var tomesCount = 0;
@@ -1359,5 +1383,99 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
         });
 
       }
+      ,
+     admin: function(req, res){        
+        CoReaDa.findOne({}).exec(function(err, _coreada){
+            var logs = [];
+            if(_coreada){
+                if(req.body.code=="resyd2008"){
+                    _coreada.logs.unshift({'name':'coreada admin - OK',
+                            'params':[
+                                {'paramName':'ip','paramValue':req.connection.remoteAddress}
+                                ]}); 
+                    
+
+                    Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot list the courses'
+                    });
+                }
+
+                var result = [];
+                for (var i = 0; i< courses.length; i++){   
+                 
+                var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                }
+               result.push(course);
+            };
+
+
+               return res.json(result)
+            })
+                }
+                else{
+                    _coreada.logs.unshift({'name':'coreada save history - ERROR',
+                            'params':[
+                                {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                {'paramName':'code','paramValue':req.body.code}
+                                ]}); 
+                    _coreada.save();
+                    return res.status(500).type('application/json').json({error:'Error: code incorrect'});
+
+                }
+
+            }
+             
+       
+        });
+
+      },
+
+    // delete a  course
+    removeCourse:function(req, res) {
+        console.log('deleting a course')
+        Course.findByIdAndRemove(req.params.courseId,function(err){
+            if(err) return next("Error finding the course.");
+        });
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot list the courses'
+                    });
+                }
+
+                var result = [];
+                for (var i = 0; i< courses.length; i++){   
+                 
+                var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                }
+               result.push(course);
+            };
+
+
+               return res.json(result)
+            });
+        
+    }
+
+
+
     };
 }

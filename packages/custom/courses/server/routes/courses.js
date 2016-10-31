@@ -25,6 +25,11 @@ module.exports = function(Courses, app) {
   app.route('/api/find/:courseCode')
       .get(courses.find);
 
+   app.route('/api/coreada/admin')
+    .post(courses.admin);
+  app.route('/api/coreada/delete/:courseId')
+      .delete(courses.removeCourse);
+
 
   app.route('/api/tasks/add/:courseId/:tomeId/:chapterId/:partId/:factId')
       .post(courses.addTodo);  

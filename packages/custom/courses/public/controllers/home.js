@@ -18,8 +18,80 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
 
 
     $scope.availableCircles = [];
+    $scope.adminShow = false;
+    $scope.tabSelect = 'stats';
 
-    $scope.courseCoder = function(coursecodeform){      
+    
+
+    $scope.admin = function(){
+      if($scope.adminShow){
+        $scope.adminShow = false
+        $scope.courses = [];
+        return;
+      }
+      swal({   title: "Code d'accès!",   text: "Cette action requiert des provilèges d'administration. Merci d'indiquer le code admin",   
+          type: "input",   
+      inputType: "password",
+          showCancelButton: true,   
+          closeOnConfirm: true,   
+          animation: "slide-from-top",   
+          inputPlaceholder: "Write something" }, 
+          function(inputValue){   if (inputValue === false) return false;      
+            if (inputValue === "") {     swal.showInputError("Merci d'indiquer le code administrateur!");     return false   }      
+          $scope.dataLoading = true;
+            
+            //$http.post('/api/coreada/admin',{'code':inputValue})
+          $http.post('/api/coreada/admin',{'code':'resyd2008'})
+          .success(function(data){  
+          $scope.adminShow = true;          
+            $scope.courses = data;
+            console.log($scope.courses)
+
+            $scope.dataLoading = false;
+            })   
+          .error(function(data) {             
+              
+              swal("Oops!", "Code incorrect. Ceci va être reporté à l'administrateur");
+              $scope.dataLoading = false;
+            }); 
+
+
+           });
+    }
+
+    $scope.removeCourse = function(id){
+      swal({
+      title: "Supprimer le cours ?", 
+      text: "Êtes vous sur de vouloir suppprimer ce cours ? ATTENTION : Toutes les données de l'analyse vont être perdues sans possibilité de récupération", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+       $scope.dataLoading = true;
+      $http.delete('/api/coreada/delete/'+id)
+      .success(function(data){  
+        swal("OK!", "Le cours et ses données ont bien été supprimés");
+           
+            $scope.courses = data;
+         
+
+            $scope.dataLoading = false;
+            })   
+          .error(function(data) {             
+              
+              swal("Oops!", "Une erreur s'est produite");
+              $scope.dataLoading = false;
+            }); 
+    })
+      
+    
+
+    }
+
+    $scope.courseCoder = function(coursecodeform){     console.log($scope.courseCode) 
       $scope.courses = []
         if (coursecodeform.$valid) {
           $scope.dataLoading = true;
