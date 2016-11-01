@@ -54,6 +54,7 @@ Courses.aggregateAsset('js',"../lib/v-accordion/dist/v-accordion.js");
 Courses.aggregateAsset('css',"../lib/v-accordion/dist/v-accordion.css");
 
   
+Courses.aggregateAsset('js',"../lib/angular-file-upload/dist/angular-file-upload.min.js");
 
   
   Courses.aggregateAsset('css', 'courses.css');
@@ -68,7 +69,7 @@ Courses.aggregateAsset('css',"../lib/v-accordion/dist/v-accordion.css");
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
   //Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','ngAnimate']);
-  Courses.angularDependencies(['ngSanitize','xeditable','perfect_scrollbar','selector','nzTour','ngDialog','vAccordion','ngAnimate']);
+  Courses.angularDependencies(['ngSanitize','xeditable','perfect_scrollbar','selector','nzTour','ngDialog','vAccordion','ngAnimate','angularFileUpload']);
 
 /*
 	Courses.menus.add({

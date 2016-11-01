@@ -2044,8 +2044,7 @@ margin-bottom: -5px!important;
   display: inline-block;
   }
 
- .tab-facts{  
-
+.tab-facts{  
   vertical-align: middle;
  }
 .tab-facts:checked ~ label .paginator{
@@ -2054,6 +2053,18 @@ margin-bottom: -5px!important;
 .tab-facts:not(checked) ~ label .paginator{
   visibility: hidden;
 }
+
+
+.tab-sources{  
+
+  vertical-align: middle;
+ }
+.tab-sources:checked ~ label .paginator{
+  visibility: visible;
+}
+.tab-sources:not(checked) ~ label .paginator{
+  visibility: hidden;
+} 
 
 
 .paginator hr{
@@ -2322,9 +2333,9 @@ margin-bottom: -5px!important;
 }
 .coreada-tabs > .tab-stats:checked ~ ul .tab-stats,
 .coreada-tabs > .tab-facts:checked ~ ul .tab-facts,
-.coreada-tabs > .tab-content-3:checked ~ ul .tab-content-3,
-.coreada-tabs > .tab-content-4:checked ~ ul .tab-content-4,
-.coreada-tabs > .tab-content-5:checked ~ ul .tab-content-5,
+.coreada-tabs > .tab-courses:checked ~ ul .tab-courses,
+.coreada-tabs > .tab-sources:checked ~ ul .tab-sources,
+.coreada-tabs > .tab-new-src:checked ~ ul .tab-new-src,
 .coreada-tabs > .tab-content-6:checked ~ ul .tab-content-6,
 .coreada-tabs > .tab-content-7:checked ~ ul .tab-content-7,
 .coreada-tabs > .tab-content-8:checked ~ ul .tab-content-8,
@@ -2359,9 +2370,9 @@ margin-bottom: -5px!important;
 }
 .coreada-tabs-height-auto > .tab-stats:checked ~ ul .tab-stats,
 .coreada-tabs-height-auto > .tab-facts:checked ~ ul .tab-facts,
-.coreada-tabs-height-auto > .tab-content-3:checked ~ ul .tab-content-3,
-.coreada-tabs-height-auto > .tab-content-4:checked ~ ul .tab-content-4,
-.coreada-tabs-height-auto > .tab-content-5:checked ~ ul .tab-content-5,
+.coreada-tabs-height-auto > .tab-courses:checked ~ ul .tab-courses,
+.coreada-tabs-height-auto > .tab-sources:checked ~ ul .tab-sources,
+.coreada-tabs-height-auto > .tab-new-src:checked ~ ul .tab-new-src,
 .coreada-tabs-height-auto > .tab-content-6:checked ~ ul .tab-content-6,
 .coreada-tabs-height-auto > .tab-content-7:checked ~ ul .tab-content-7,
 .coreada-tabs-height-auto > .tab-content-8:checked ~ ul .tab-content-8,
@@ -3252,6 +3263,16 @@ li.disabled, li[disabled]{
 }
 
 
+
+.progress {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+     box-shadow: inset 0 1px 2px rgba(0,0,0,0.1); 
+}
 
 
 
