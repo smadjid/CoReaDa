@@ -44,8 +44,9 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
           $http.post('/api/coreada/admin',{'code':'resyd2008'})
           .success(function(data){  
           $scope.adminShow = true;          
-            $scope.courses = data;
-            console.log($scope.courses)
+            $scope.courses = data.courses;
+            $scope.resources = data.resources;
+
 
             $scope.dataLoading = false;
             })   
@@ -59,6 +60,55 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
            });
     }
 
+    $scope.seedCourse = function(code){
+       $scope.dataLoading = true;
+      $http.get('/api/seed/'+code)
+      .success(function(data){
+          $scope.courses = data.courses;
+         $scope.resources = data.resources;
+                 swal("OK !", "Le cours a bien été ajouté au tableau de bord. Merci de noter son code : "+code);
+
+        })
+      .error(function(err){
+        swal("Oops!", "Une erreur s'est produite");
+
+      });
+       $scope.dataLoading = false;
+    }
+    $scope.seedAllCourses = function(code){
+      swal({
+      title: "Insérer tous les cours ?", 
+      text: "Cette action permettra d'inclure tous les cours sur le tableau de bord avec leurs codes respectifs. Continuer ?", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+       $scope.dataLoading = true;
+       var indexes = [];
+       $scope.resources.forEach(function(resrc){
+        if(!resrc.exist)
+          indexes.push(resrc.code);
+
+       })
+      $http.post('/api/seedallresources',{'indexes':indexes})
+      .success(function(data){
+          $scope.courses = data.courses;
+         $scope.resources = data.resources;
+         $scope.dataLoading = false;
+                 swal("OK !", "Tous les cours ont bien été ajoutés au tableau de bord. ");
+
+        })
+      .error(function(err){
+        $scope.dataLoading = false;
+        swal("Oops!", "Une erreur s'est produite");
+
+      });
+       
+     })
+    }
     $scope.removeCourse = function(id){
       swal({
       title: "Supprimer le cours ?", 
@@ -73,9 +123,10 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
        $scope.dataLoading = true;
       $http.delete('/api/coreada/delete/'+id)
       .success(function(data){  
-        swal("OK!", "Le cours et ses données ont bien été supprimés");
-           
-            $scope.courses = data;
+        
+        $scope.courses = data.courses;
+         $scope.resources = data.resources;
+                 swal("OK !", "Le cours et ses données ont bien été supprimés");
          
 
             $scope.dataLoading = false;
@@ -83,6 +134,38 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
           .error(function(data) {             
               
               swal("Oops!", "Une erreur s'est produite");
+              $scope.dataLoading = false;
+            }); 
+    })
+      
+    
+
+    }
+$scope.dropAllCourses = function(id){
+      swal({
+      title: "Supprimer TOUS les cours ?", 
+      text: "Êtes vous sur de vouloir suppprimer tous les cours ? ATTENTION : Toutes les données vont être perdues sans possibilité de récupération", 
+      type: "warning",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Oui",
+      cancelButtonText: "Non",
+      confirmButtonColor: "#ec6c62"
+    }, function() {
+       $scope.dataLoading = true;
+      $http.delete('/api/coreada/deleteallcourses')
+      .success(function(data){  
+        console.log(data)
+        $scope.courses = data.courses;
+              $scope.resources = data.resources;
+        swal("OK !", "Tous les cours ont bien été supprimés");
+           
+            $scope.dataLoading = false;
+            })   
+          .error(function(data) {             
+              
+              swal("Oops!", "Une erreur s'est produite");
+              
               $scope.dataLoading = false;
             }); 
     })

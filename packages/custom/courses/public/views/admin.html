@@ -1,5 +1,3 @@
- 
-
  <div >
        <!-- tabs -->
       <div class=" col-lg-12 coreada-tabs coreada-tabs-layout-top-left coreada-tabs-theme ">
@@ -16,18 +14,35 @@
         <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Courses management</label>
       
         <ul class="clearfix" style="height:75vh">
+        <!-- Source control -->
         <li class="tab-content vcenter tab-facts col-lg-12  clearfix" style="height:75vh">
-       <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10">xsdsdfsdfsdf </perfect-scrollbar></li>
+       <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10">
+       <h3>Ressources disponibles <span class='blue' style='font-size:16px;margin-left:40px' role='button' ng-click='seedAllCourses()'><span class="glyphicon glyphicon-plus"  ></span><em>Tout ajouter</em></span></h3>
+       <ol class='course_li'>
+            <li data-ng-repeat="course in resources">
+               <h4><strong>{{course.title}}</strong> 
+               <a ng-if='!course.exist' class="glyphicon glyphicon-plus pull-right" style='margin-right:50px' role='button' ng-click='seedCourse(course.code)'></a></h4>
+            
+              <ul>
+                <li><em>Code du cours</em> : <span class='red'>[{{course.code}}]</span>
+                <li>Données de lecture : du <b>{{course.ob_begin| date:'dd-MM-yyyy'}}</b> au <b>{{course.ob_end| date:'dd-MM-yyyy'}}</b></li>
+              <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
+                <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b></li>
+                </ul>
+                <hr/>
+              </li>
+           </ol> 
 
- 
-
+       </perfect-scrollbar></li>
+      
+      <!-- Course control -->
           <li class="tab-content vcenter tab-stats col-lg-12  clearfix" style="height:75vh">
        <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
-
+<h3>Cours disponibles <span class='red' style='font-size:16px;margin-left:40px'   role='button' ng-click='dropAllCourses()'><span class="glyphicon glyphicon-remove"></span><em>Tout supprimer</em></span></h3>
          <ol class='course_li'>
             <li data-ng-repeat="course in courses">
                <h4><strong>{{course.title}}</strong>
-               <a class="glyphicon glyphicon-remove pull-right" style='margin-right:30px' role='button' ng-click='removeCourse(course._id)'></a>
+               <a class="glyphicon glyphicon-remove pull-right" style='margin-right:30px; color:red' role='button' ng-click='removeCourse(course._id)'></a>
                <a class="glyphicon glyphicon-eye-open pull-right" style='margin-right:40px'  data-ng-href="/courses/{{course._id}}" target='_blank'></a></h4>
             
               <ul>

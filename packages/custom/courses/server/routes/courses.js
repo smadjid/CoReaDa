@@ -22,6 +22,8 @@ module.exports = function(Courses, app) {
       .get(courses.seed);
   app.route('/api/seedall')
       .get(courses.seedall);
+  app.route('/api/seedallresources')
+      .post(courses.seedallresources);
   app.route('/api/find/:courseCode')
       .get(courses.find);
 
@@ -29,6 +31,8 @@ module.exports = function(Courses, app) {
     .post(courses.admin);
   app.route('/api/coreada/delete/:courseId')
       .delete(courses.removeCourse);
+  app.route('/api/coreada/deleteallcourses')
+      .delete(courses.removeAllCourses);
 
 
   app.route('/api/tasks/add/:courseId/:tomeId/:chapterId/:partId/:factId')

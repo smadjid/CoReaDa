@@ -41,11 +41,54 @@ rio.e({filename:'R/test.R',data:{'a':5}, entrypoint:"main" });
 
 module.exports = function(Courses) {
     var base_url = "https://openclassrooms.com/courses";
+
+    var subsetByField = function (arr,field,value) {
+        var objectArray = [];
+             for (var i = 0, l = arr.length; i < l; i++){
+                
+                    if (arr[i][field] === value) {
+                     objectArray.push(arr[i]);
+                }        
+            }
+            return objectArray;
+        }
+
+    var lsResource = function(courseCode){
+        var courseHome="coursesdata/"+courseCode;
+        var fs = require("fs");  
+        var facts = fs.readFileSync(courseHome+"/facts.json");
+        var jsonFacts = JSON.parse(facts);
+
+
+        var partsdata = fs.readFileSync(courseHome+"/data.json");
+        var jsonPartsdata = JSON.parse(partsdata);    
+
+        var partProps = subsetByField(jsonPartsdata, 'id', 0);
+        
+            var result = {'code':courseCode,'title':'','ob_begin':'','ob_end':'','nbfacts':jsonFacts.length,'exist':false};
+
+            for(var key in partProps) {
+                    if(partProps[key].variable=='title') 
+                        result.title = partProps[key].value
+                    else
+                        if(partProps[key].variable=='ob_begin')                            
+                                result.ob_begin=partProps[key].value
+                        else
+                            if(partProps[key].variable=='ob_end')
+                                result.ob_end=partProps[key].value
+
+                }
+        return result
+
+    }
+    var getAllData = function(){
+       
+
+
+      }
     var analyzeCourse = function(courseCode){
         var courseHome="coursesdata/"+courseCode;
-    
-    
-    var fs = require("fs");      
+        var fs = require("fs");      
 
         
         var facts = fs.readFileSync(courseHome+"/facts.json");
@@ -75,16 +118,7 @@ module.exports = function(Courses) {
 
         }
          
-       var subsetByField = function (arr,field,value) {
-        var objectArray = [];
-             for (var i = 0, l = arr.length; i < l; i++){
-                
-                    if (arr[i][field] === value) {
-                     objectArray.push(arr[i]);
-                }        
-            }
-            return objectArray;
-        }
+       
 
         
         var computePart = function(p, part_data, part_facts){          
@@ -1279,6 +1313,78 @@ transporter.sendMail(mailOptions, function(error, info){
             })
         },
   ////////////////////////  
+  ls: function(req, res){
+
+        var fs = require("fs");
+         var allF = fs.readdirSync("coursesdata/");
+         var codes = []
+
+       
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0))
+                {
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+
+        }
+        return res.status(200).json(code);
+    },
+    seedallresources: function(req, res){
+        var indexes = req.indexes;
+
+        var fs = require("fs");
+         var allF = fs.readdirSync("coursesdata/");
+
+       
+        for (var i = 0; i < allF.length ; i++){
+            if(allF.indexOf(allF[i]>=0))
+                analyzeCourse(allF[i]);
+
+        }
+        console.log("\n *FINISHED SEEDING ALL* \n");
+
+         ////////////////// GetDataBack
+         var result = [],
+            indexes = [],
+            fs = require("fs"),
+            allF = fs.readdirSync("coursesdata/"),
+            codes = [];
+
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+        for (var i = 0; i< courses.length; i++){   
+            var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                }
+               result.push(course);
+            };
+
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0))
+                 {
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+        }
+
+
+                return res.status(200).json({'courses':result,'resources':codes})
+            })
+    },
        seedall: function(req, res){
 
         var fs = require("fs");
@@ -1290,7 +1396,45 @@ transporter.sendMail(mailOptions, function(error, info){
             analyzeCourse(allF[i]);
 
         }
-        return res.status(200).json('Tous les cours ont été chargés en base de données');
+        console.log("\n *FINISHED SEEDING ALL* \n");
+        
+        ////////////////// GetDataBack
+         var result = [],
+            indexes = [],
+            fs = require("fs"),
+            allF = fs.readdirSync("coursesdata/"),
+            codes = [];
+
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+        for (var i = 0; i< courses.length; i++){   
+            var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                }
+               result.push(course);
+            };
+
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0))
+                 {
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+        }
+
+
+                return res.status(200).json({'courses':result,'resources':codes})
+            })
     },
     seed: function(req, res){
         
@@ -1298,7 +1442,45 @@ transporter.sendMail(mailOptions, function(error, info){
         console.log('Cours : '+req.params.courseTitle);
         analyzeCourse(req.params.courseTitle);
 console.log("\n *FINISHED SEEDING* \n");
-return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded ');
+
+////////////////// GetDataBack
+         var result = [],
+            indexes = [],
+            fs = require("fs"),
+            allF = fs.readdirSync("coursesdata/"),
+            codes = [];
+
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+        for (var i = 0; i< courses.length; i++){   
+            var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                }
+               result.push(course);
+               indexes.push(courses[i].courseCode);
+            };
+
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0)){
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+        }
+
+
+               return res.status(200).json({'courses':result,'resources':codes})
+            })
+
 
        },
      ////////////////////////  
@@ -1389,23 +1571,22 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
             var logs = [];
             if(_coreada){
                 if(req.body.code=="resyd2008"){
-                    _coreada.logs.unshift({'name':'coreada admin - OK',
+                     _coreada.logs.unshift({'name':'coreada admin - OK',
                             'params':[
                                 {'paramName':'ip','paramValue':req.connection.remoteAddress}
                                 ]}); 
                     
+                    ////////////////// GetDataBack
+         var result = [],
+            indexes = [],
+            fs = require("fs"),
+            allF = fs.readdirSync("coursesdata/"),
+            codes = [];
 
-                    Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot list the courses'
-                    });
-                }
-
-                var result = [];
-                for (var i = 0; i< courses.length; i++){   
-                 
-                var course={
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+        for (var i = 0; i< courses.length; i++){   
+            var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
                     'nbfacts':courses[i].nbfacts,
@@ -1416,11 +1597,24 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
                     'updated':courses[i].updated
                 }
                result.push(course);
+               indexes.push(courses[i].courseCode)
             };
 
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0))
+                {
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+        }
 
-               return res.json(result)
+
+               return res.status(200).type('application/json').json({'courses':result,'resources':codes})
             })
+
                 }
                 else{
                     _coreada.logs.unshift({'name':'coreada save history - ERROR',
@@ -1472,6 +1666,51 @@ return res.status(200).json('Success : Course '+req.params.courseTitle+' seeded 
 
                return res.json(result)
             });
+        
+    },
+    removeAllCourses:function(req, res) {
+        console.log('deleting a course')
+        Course.remove({},function(err){
+            if(err) return next("Error finding the course.");
+        });
+        ////////////////// GetDataBack
+         var result = [],
+            indexes = [],
+            fs = require("fs"),
+            allF = fs.readdirSync("coursesdata/"),
+            codes = [];
+
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+        for (var i = 0; i< courses.length; i++){   
+            var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                }
+               result.push(course);
+               indexes.push(courses[i].courseCode);
+            };
+
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0)){
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+        }
+
+
+               return res.status(200).json({'courses':result,'resources':codes})
+            })
+
         
     }
 
