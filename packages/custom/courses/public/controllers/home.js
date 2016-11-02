@@ -313,8 +313,35 @@ $scope.expandCallback = function (index, id) {
     $scope.getLogs();
 
     /*       FILE UPLOADER    */
+    $( '.inputfile' ).each( function()
+  {
+    var $input   = $( this ),
+      $label   = $input.next( 'label' ),
+      labelVal = $label.html();
+
+    $input.on( 'change', function( e )
+    {
+      var fileName = '';
+
+      if( this.files && this.files.length > 1 )
+        fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+      else if( e.target.value )
+        fileName = e.target.value.split( '\\' ).pop();
+
+      if( fileName )
+        $label.find( 'span' ).html( fileName );
+      else
+        $label.html( labelVal );
+    });
+
+    // Firefox bug fix
+    $input
+    .on( 'focus', function(){ $input.addClass( 'has-focus' ); })
+    .on( 'blur', function(){ $input.removeClass( 'has-focus' ); });
+  });
+    
     var uploader = $scope.uploader = new FileUploader({
-            url: 'upload.php'
+            url: '/api/coreada/upload'
         });
 
         // FILTERS
@@ -322,7 +349,7 @@ $scope.expandCallback = function (index, id) {
         uploader.filters.push({
             name: 'customFilter',
             fn: function(item /*{File|FileLikeObject}*/, options) {
-                return this.queue.length < 10;
+                return this.queue.length < 2;
             }
         });
 
@@ -362,7 +389,7 @@ $scope.expandCallback = function (index, id) {
             console.info('onCompleteAll');
         };
 
-        console.info('uploader', uploader);
+        
     /*       END FILE UPLOADER    */
    
   }

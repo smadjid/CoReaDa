@@ -1,6 +1,7 @@
 
 <div class="" data-ng-controller="HomeController" >
-<button id="adminBtn" type="button" class="btn-action pull-right" ng-click='admin()'>Administration</button>
+
+
 <div ng-show="dataLoading" id="floatingCirclesG">
 <div class="f_circleG" id="frotateG_01"></div>
   <div class="f_circleG" id="frotateG_02"></div>
@@ -17,11 +18,10 @@
 
 
  <div class="container-fluid row" id="box"  style="margin-right:15px!important" ng-show='!adminShow'>
- 
+ <button id="adminBtn" type="button" class="sm_btn btn-danger pull-right" ng-click='admin()'>Administration</button>
 
  <h1 style="padding-left:15px">Bienvenue sur <img src="/courses/assets/img/logo.png"  />  - the <i>Course Reading Dashboard</i></h1>
-
-
+ 
 
  <div class="col-md-7">
   <div class="bs-callout"  id="vAccordionBox"  >
@@ -150,8 +150,8 @@
   <h3><span class="glyphicon glyphicon-lock"></span> Code de votre cours</h3>
   <form   id="coursecodeform" name="coursecodeform" ng-submit="courseCoder(coursecodeform)" style="width:100%">
   <div class="form-group" >
-    <input type="text" class="form-control" placeholder="Code d'accès du cours à afficher" ng-model="courseCode" style="width:70%; display:inline-block" required>
-    <button id="loadCourseBtn" type="submit" class="btn-action pull-right" >Charger</button>
+    <input type="text" class="form-control" placeholder="Code d'accès du cours à afficher" ng-model="courseCode" style="width:80%; display:inline-block" required>
+    <button id="loadCourseBtn" type="submit" class="bs_btn btn-action" >Charger</button>
   </div>
   
 </form>
@@ -174,6 +174,7 @@
  </div></div>
 
 <!-- ########################### ADMIN -->
+
 <div class="container-fluid row" id="box"  style="margin:10px!important" ng-show='adminShow' ng-include src="'courses/views/admin.html'">
 
 </div>

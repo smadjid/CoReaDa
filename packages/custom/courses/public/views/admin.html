@@ -1,4 +1,4 @@
- <div >
+<button id="adminBtn" type="button" class="sm_btn btn-danger pull-right" ng-click='admin()'>Fermer l'outil d'administration</button>
        <!-- tabs -->
       <div class=" col-lg-12 coreada-tabs coreada-tabs-layout-top-left coreada-tabs-theme ">
        
@@ -68,105 +68,60 @@
           <li class="tab-content vcenter tab-new-src col-lg-12  clearfix" style="height:75vh">
           
        <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
-        <v-accordion class="vAccordion--default col-lg-7" style=" padding: 5px 20px; ">
- <h3>Source de données</h3>
-     <hr/>
-  <v-pane>
-    <v-pane-header>
-      <h4><i>Export sous forme textuelle (CSV)</i></h4>
-    </v-pane-header>
-    <v-pane-content>
-                <div class="row">
+        
+<uib-tabset class='col-lg-8'>
+       <uib-tab>
+             <uib-tab-heading><b> Export sous forme textuelle (CSV)</b></uib-tab-heading>
+             <uib-tab-content>
+             <br/>
+             <table style="width:auto">
+   <tr>
+     <td class="input_box">
+     <h3>Fichier structure (<em>json</em>)</h3>
+       <input type="file" name="file-1[]" id="file-1" nv-file-select="" uploader="uploader" class="inputfile inputfile-1" >
+          <label for="file-1"><i class="glyphicon glyphicon-folder-open" style="margin-right: 7px"></i>  <span>Choisir un fichier</span></label>          
+     </td>
 
-                <div class="col-md-3">
-
-                    <h3>CHoisissez vos fichiers</h3>
-                    Fichier décrivant la structure (json)
-                    <input class='btn-action' type="file" nv-file-select="" uploader="uploader"  /><br/>
-
-                    Fichier de données (csv)
-                    <input class='btn-action' type="file" nv-file-select="" uploader="uploader" />
-                </div>
-
-                <div class="col-md-9" style="margin-bottom: 40px">
-
-                    <h3>Upload queue</h3>
-                    <p>Queue length: {{ uploader.queue.length }}</p>
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th width="30%">Nom</th>
-                                <th ng-show="uploader.isHTML5">Taille</th>
-                                <th ng-show="uploader.isHTML5">Progrès</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in uploader.queue">
-                                <td><strong>{{ item.file.name }}</strong></td>
-                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                <td ng-show="uploader.isHTML5">
-                                    <div class="progress" style="margin-bottom: 0;">
-                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                </td>
-                                <td nowrap>
-                                    <button type="button" class="btn-action  btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                        <span class="glyphicon glyphicon-upload"></span> Upload
-                                    </button>
-                                    <button type="button" class="btn-action  btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                                    </button>
-                                    <button type="button" class="btn-action  btn-danger btn-xs" ng-click="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> Remove
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div>
-                        <div>
-                            Situation:
+     <td class="input_box">
+     <h3>Fichier données (<em>csv</em>)</h3>
+       <input type="file" name="file-2[]" id="file-2" nv-file-select="" uploader="uploader" class="inputfile inputfile-1" >
+          <label for="file-2"><i class="glyphicon glyphicon-folder-open" style="margin-right: 7px"></i>  <span>Choisir un fichier</span></label>
+     </td>
+   </tr>
+    <tr>
+   <td colspan="2" style="border:none!important">
+   <button type="button" class="bs_btn btn-success btn-lg" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                           <b> <span class="glyphicon glyphicon-upload"></span> Envoyer</b>
+                        </button>
+                        <button type="button" class="bs_btn  btn-warning btn-lg" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                         <b>   <span class="glyphicon glyphicon-ban-circle"></span> Annuler</b>
+                        </button>
+                        <button type="button" class="bs_btn  btn-danger btn-lg" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                           <b> <span class="glyphicon glyphicon-trash"></span> Supprimer</b>
+                        </button>
+   <div>
+                            Progression:
                             <div class="progress" style="">
-                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"><b>{{uploader.progress}}%</b></div>
                             </div>
                         </div>
-                        <button type="button" class="btn-action btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
-                            <span class="glyphicon glyphicon-upload"></span> Tout envoyer
-                        </button>
-                        <button type="button" class="btn-action btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Tout annuler
-                        </button>
-                        <button type="button" class="btn-action btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
-                            <span class="glyphicon glyphicon-trash"></span> Tout supprimer
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-
-    </v-pane-content>
-  </v-pane>
-
-  <v-pane>
-    <v-pane-header>
-      <h4><i>Base de données des traces</i></h4>
-    </v-pane-header>
-    <v-pane-content>
-    <b>CoReaDa</b> ....      
-    </v-pane-content>
-  </v-pane>
-</v-accordion>
-<div class='col-lg-5'>
+   </td>
+   </tr>
+   <tr>
+   
+   </tr>
+ </table>
+             </uib-tab-content>
+       </uib-tab>
+       <uib-tab>
+             <uib-tab-heading> <b>Base de données des traces</b></uib-tab-heading>
+             <uib-tab-content>
+             <br/>
+             Coonection...</uib-tab-content>
+       </uib-tab>
+       
+</uib-tabset>
+<div class='col-lg-4'>
   <h3><em>Paramètres</em></h3>
      <hr/>
 
@@ -190,4 +145,4 @@
       </div>
       <!--/ tabs -->
 
-    </div>
+    

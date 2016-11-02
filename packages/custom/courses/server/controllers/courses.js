@@ -10,6 +10,9 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     nodemailer = require('nodemailer'),
     rio = require("rio"),
+    multiparty = require('multiparty'),
+    util = require('util'),
+    path = require('path'),
     transporter = nodemailer.createTransport('smtps://coreada.project%40gmail.com:madjid1980@smtp.gmail.com');
 
 //////////////////////////////////
@@ -1633,6 +1636,19 @@ console.log("\n *FINISHED SEEDING* \n");
         });
 
       },
+      // upload a file
+    upload:function(req, res) {
+        var form = new multiparty.Form( {'autoFiles':true,'uploadDir': path.dirname(require.main.filename)+'/rawdata'});
+
+    form.parse(req, function(err, fields, files) {
+        
+        
+      res.writeHead(200, {'content-type': 'text/plain'});
+      res.write('received upload:\n\n');
+      res.end(util.inspect({fields: fields, files: files}));
+    });
+    return;
+    },
 
     // delete a  course
     removeCourse:function(req, res) {

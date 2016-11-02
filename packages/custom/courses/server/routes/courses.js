@@ -33,6 +33,8 @@ module.exports = function(Courses, app) {
       .delete(courses.removeCourse);
   app.route('/api/coreada/deleteallcourses')
       .delete(courses.removeAllCourses);
+  app.route('/api/coreada/upload')
+    .post(courses.upload);
 
 
   app.route('/api/tasks/add/:courseId/:tomeId/:chapterId/:partId/:factId')
