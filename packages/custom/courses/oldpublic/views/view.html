@@ -1,0 +1,185 @@
+<section data-ng-controller="CoursesController" data-ng-init="findOne()">
+<!--
+<div ng-intro-options="tour.IntroOptions" ng-intro-method="launchGuidedTour"
+         ng-intro-oncomplete="tour.CompletedEvent" ng-intro-onexit="tour.ExitEvent"
+         ng-intro-onchange="tour.ChangeEvent" ng-intro-onbeforechange="tour.BeforeChangeEvent"
+         ng-intro-onafterchange="tour.AfterChangeEvent"
+         ng-intro-autostart="tour.ShouldAutoStart"></div>
+-->
+
+
+
+<div ng-show="dataLoading" id="floatingCirclesG">
+<div class="f_circleG" id="frotateG_01"></div>
+  <div class="f_circleG" id="frotateG_02"></div>
+  <div class="f_circleG" id="frotateG_03"></div>
+  <div class="f_circleG" id="frotateG_04"></div>
+  <div class="f_circleG" id="frotateG_05"></div>
+  <div class="f_circleG" id="frotateG_06"></div>
+  <div class="f_circleG" id="frotateG_07"></div>
+  <div class="f_circleG" id="frotateG_08"></div>
+</div>
+<div class="container-fluid row" ng-show="pageLoaded">  
+<div class="coreada-box">        
+
+  <perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   model="indicatorsSelectionModel"> 
+  
+ <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
+
+
+  <div id="divOverlay"> </div> 
+   <div id="divHoverOverlay" ng-show='courseDisplay && tabSelect=="stats"'></div> 
+   </perfect-scrollbar>  
+</div>
+
+  <div style='margin:0px;margin-bottom:5px;  padding:0;  display: flex; '>
+ 
+
+ <div id='tableConfg' class="btn-group" uib-dropdown is-open="status.isopen">
+ <button id="single-button" type="button" class="indicatorSelectorButton" ng-click="allFactsDisplay=!allFactsDisplay">
+ <span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allFactsDisplay, 'glyphicon glyphicon-plus-sign pull-left': !allFactsDisplay}"  style="margin-right:5px"></span>
+ {{allFactsDisplay ? "Afficher moins de problèmes" : "Afficher plus de problèmes"}}</button>
+
+<!--
+ <button id="single-button" type="button" class="glyphicon glyphicon glyphicon-option-horizontal indicatorSelectorButton" uib-dropdown-toggle ng-disabled="disabled"></button>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+        <li role="menuitem"><a href="#" ng-click="allFactsDisplay=!allFactsDisplay">
+{{allFactsDisplay ? "Afficher moins de problèmes" : "Afficher plus de problèmes"}}
+
+        </a></li>
+               <li class="divider"></li>
+        <li role="menuitem" ng-click="indicatorSelectorShow=!indicatorSelectorShow"><a href="#">
+{{indicatorSelectorShow ? "Cacher le sélecteur d'indicateurs" : "Afficher le sélecteur d'indicateurs"}}</a></li>
+        <li role="menuitem" ng-click="allIndicatorSelectorShow=!allIndicatorSelectorShow"><a href="#">Afficher tous les indicateurs</a></li>
+      </ul>
+      -->
+    </div>
+ 
+<div ng-show="indicatorSelectorShow" style='display: inline-flex'>
+
+
+    <select class="indicatorSelectorShow"  model="indicatorsSelectionModel"  selector  multi="true" options="indicatorsHeader"   group-attr ="category"  value-attr="value">      
+    </select>
+
+<div style='padding:3px'>
+     <span class="mycheckbox" role='button' ng-click="indicatorSelectorShow=false">X</span>
+  </div>
+ 
+
+    </div>
+
+  </div>
+  
+
+    <div class="inspector-container" id="inspector-container">
+       <!-- tabs -->
+      <div class=" col-lg-9 coreada-tabs coreada-tabs-layout-top-left coreada-tabs-theme inspector-content">
+       
+        
+        <input type="radio" name="coreada-tabs" id="tab2" value="facts" class="tab-facts" ng-model="tabSelect">
+        <label id='factsTab' for="tab2" ><span class="glyphicon glyphicon-exclamation-sign" style='margin-right: 2px'></span> <b>{{pageCount()>-1?pageCount()+1:"Aucun" }}</b> {{pageCount()>0 ? "problèmes potentiels":"problème potentiel"}} pour ce cours
+
+ 
+        </label> 
+    
+
+         <input type="radio" name="coreada-tabs" checked  id="tab1" value="stats" class="tab-stats" ng-model="tabSelect">
+        <label id='statsTab' for="tab1"><span class="glyphicon glyphicon-stats" style='margin-right: 2px'></span>Statistiques de lecture pour <em>{{context.inspector_title}}</em></label>
+      
+        <ul class="clearfix">
+ 
+
+          <li class="tab-content vcenter tab-stats col-lg-12 inspector-content clearfix" >
+         <div id='chartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
+
+         <div class='row' style="margin-right:3px; text-align:right"> 
+         <em role='button' style="color:#ed6245" ng-click='transitionsDlg(inspectorStats.indicatorCode)' ng-if="(['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)>-1)  "><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Table de transition</em>
+         <em role='button' style="color:#ed6245" ng-click='zoomGraph()' ng-if="['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)<=-1"><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em>
+         </div>
+
+            <d3-chart data='context.d3' ng-show='pageCount()>=0' indicator-code="inspectorStats.indicatorCode"  d3opts='{elementType:inspectorStats.type,elementId:inspectorStats.id,currentId:currentElement.id,issueCode:inspectorStats.indicatorCode,indicatorCode:inspectorStats.indicatorCode,courseId:course._id}' on-transitions=transitionsDlg(type) style="height:0;margin-left: 20px"></d3-chart>
+            <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}} </div>             
+        </div>
+
+        <div class="col-lg-12" style="width:100%; font-size: 16px;   padding-top:5px">
+        <span id="titleBar">
+          <span  class="glyphicon glyphicon-home"  aria-hidden="true " "> </span> 
+            <a style="font-size: 14px"  role='button' ng-click='loadURL("#")'>{{course.title }}</a>
+          
+
+          <span ng-if="inspectorStats.breadcrumbsData.part !=null " style="font-size: 14px">
+           <span class="glyphicon glyphicon-menu-right"></span>
+              <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.part.route)'>{{inspectorStats.breadcrumbsData.part.title }}</a>
+          </span>           
+          <span ng-if="inspectorStats.breadcrumbsData.chapter !=null " style="font-size: 14px">
+          <span class="glyphicon glyphicon-menu-right"></span>
+              <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.chapter.route)'> {{inspectorStats.breadcrumbsData.chapter.title }}</a>
+          </span> 
+          <span ng-if="inspectorStats.breadcrumbsData.section !=null " style="font-size: 14px">
+          <span class="glyphicon glyphicon-menu-right"></span>
+              <a role='button' ng-click='loadURL(inspectorStats.breadcrumbsData.section.route)'>{{inspectorStats.breadcrumbsData.section.title }}</a>
+          </span>          
+          </span>
+             <a id="gotoOC" title="Voir sur OpenClassrooms (nouvelle fenêtre)" title="Voir sur OpenClassrooms (nouvelle fenêtre)" target='_blank' data-ng-href="{{context.url}}"  style='margin-left:10px;margin-bottom:0' class="glyphicon glyphicon glyphicon-new-window" aria-hidden="true"></a> 
+    </div>
+
+           
+
+          <div class="col-lg-6 container-nginclude"    ng-include src="'courses/views/stats.html'" style="height:90%;padding:0;margin:0"> </div>
+          
+          </li>
+          
+          <li class="tab-content vcenter tab-facts col-lg-12 inspector-content clearfix "> 
+              <div id='factChartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
+              <div class='row' style="margin-right:3px; text-align:right"> <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em></div>
+              <d3-chart data='context.d3' ng-show='pageCount()>=0'  d3opts='{elementType:inspectorStats.type,elementId:currentElement.id,indicatorCode:inspectorFacts.indicatorCode,courseId:course._id}' on-transitions=transitionsDlg(type) style="height:0; margin-left: 20px"></d3-chart>
+              <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>             
+            </div>
+
+           <div ng-show='pageCount()<0' >
+           
+         
+         
+           <div  style='vertical-align:middle; text-align:center; padding:3%'>
+            <h3>Il n’y a pas de problèmes majeurs dans {{inspectorStats.typeTxt}} relatifs à {{inspectorStats.indicatorTxt}}.</h3>
+             <h4>Vous pouvez aussi <i href="#" role="button" ng-click="allFactsDisplay=true" style="color: #337ab7">afficher plus de problèmes</i> ou <i href="#" role="button" ng-click="tabSelect='stats'" style="color: #337ab7">consulter les statistiques globales</i> de {{inspectorStats.typeTxt}}.</h4> 
+          
+          </div>
+          
+           </div>
+
+           
+
+          <div class="container-nginclude" ng-show='pageCount()>=0' ng-include src="'courses/views/facts.html'"> </div>
+
+          </div>
+
+
+          </li>
+        </ul>
+        <div class="col-lg-3 " >   
+        <div id="task-panel" class="fadein fadeout showpanel panel "  ng-include src="'courses/views/tasks-manager.html'"></div>
+      </div>
+      </div>
+      <!--/ tabs -->
+
+    </div>
+
+  </div>
+
+  </div>  
+
+<span  id='tourStarter' class='tourStarter'>
+<span id='about'  role="button" ng-click ="about();"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</span>&nbsp;&nbsp;&nbsp;
+<span style=''   role="button" ng-click ="startGuidedTour();"><i class="glyphicon glyphicon-globe"></i>&nbsp;Visite guidée</span> &nbsp;&nbsp;&nbsp;
+<span id='contact_us'  role="button" ng-click ="sendMail();"><i class="glyphicon glyphicon-envelope"></i>&nbsp;Contact</span>
+</span>
+</span>
+<!--<div id='elementContent'>{{context.url}}</div>
+<iframe src="https://openclassrooms.com/courses/des-applications-ultra-rapides-avec-node-js/node-js-mais-a-quoi-ca-sert" ></iframe>
+-->
+
+
+</section>
+
+

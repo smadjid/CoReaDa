@@ -1,0 +1,44 @@
+<h3>Évaluation de la pertinence du problème</h3>    
+            
+ 
+<form id="facteval" style='padding:10px' ng-submit="sendFeedback()" name="facteval" method="post"   class="form-horizontal" role="form">
+  
+    
+    <div  class="col-lg-10">
+    <div style="vertical-align: middle;">
+       <span style="font-size: 18px;margin-top: 13px;   margin-bottom: 10px;font-weight: 500;    line-height: 1.1; " class="pull-left">Ce problème vous parait-il pertinent ?    </span> 
+        
+             <select class="btn-action  btn-default pull-right" ng-model="fact_val">
+                <option value=0 selected>Pas du tout pertinent</option>
+                <option value=1>Peu pertinent</option>
+                <option value=2>Aucun avis</option>
+                <option value=3>Pertinent</option>
+                <option value=4>Très pertinent</option>
+              </select>
+        
+    </div>
+<br/><br/>
+    <div style="vertical-align: middle;">  
+         <span style="font-size: 18px;margin-top: 13px;   margin-bottom: 10px;font-weight: 500;    line-height: 1.1;" class="pull-left">La suggestion vous parait elle appropriée ?</span> 
+        
+            <select class="btn-action  btn-default pull-right" ng-model="prop_val">
+                <option value=0 selected>Pas du tout appropriée</option>
+                <option value=1>Peu appropriée</option>
+                <option value=2>Aucun avis</option>
+                <option value=3>Appropriée</option>
+                <option value=4>Très appropriée</option>
+              </select>
+        
+    </div>
+</div>
+    
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-9 col-lg-3">
+                                <button type="submit" class="btn-action pull-right" ng-disabled="submitButtonDisabled">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+

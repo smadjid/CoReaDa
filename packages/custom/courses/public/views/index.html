@@ -22,7 +22,6 @@
 
  <h1 style="padding-left:15px">Bienvenue sur <img src="/courses/assets/img/logo.png"  />  - the <i>Course Reading Dashboard</i></h1>
  
-
  <div class="col-md-7">
   <div class="bs-callout"  id="vAccordionBox"  >
   <perfect-scrollbar class=" always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
@@ -83,10 +82,10 @@
 <form id="contactform" ng-submit="sendFeedback(contactform)" name="contactform" method="post"   class="form-horizontal" role="form">
 <div class="feedbackbox" id="box">
 
-                        <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
-                            <label for="inputName" class="col-lg-2 control-label">Nom</label>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputCode.$invalid && submitted }">
+                            <label for="inputCode" class="col-lg-2 control-label">Nom</label>
                             <div class="col-lg-10">
-                                <input ng-model="feedbackFormData.inputName" type="text" class="form-control" id="inputName" name="inputName" placeholder="Votre nom" required>
+                                <input ng-model="feedbackFormData.inputCode" type="text" class="form-control" id="inputCode" name="inputCode" placeholder="Votre nom" required>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error': contactform.inputEmail.$invalid && submitted }">
@@ -95,10 +94,10 @@
                                 <input ng-model="feedbackFormData.inputEmail" type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Votre Email" required>
                             </div>
                         </div>
-                        <div class="form-group" ng-class="{ 'has-error': contactform.inputSubject.$invalid && submitted }">
-                            <label for="inputSubject" class="col-lg-2 control-label">Sujet</label>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputAuthorName.$invalid && submitted }">
+                            <label for="inputAuthorName" class="col-lg-2 control-label">Sujet</label>
                             <div class="col-lg-10">
-                                <input ng-model="feedbackFormData.inputSubject" type="text" class="form-control" id="inputSubject" name="inputSubject" placeholder="A propos de ..." required>
+                                <input ng-model="feedbackFormData.inputAuthorName" type="text" class="form-control" id="inputAuthorName" name="inputAuthorName" placeholder="A propos de ..." required>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error': contactform.inputMessage.$invalid && submitted }">

@@ -1,0 +1,31 @@
+{
+  "name": "angular-chroma",
+  "authors": [
+    "bitliner <giovanni.gaglione@gmail.com>"
+  ],
+  "description": "Wrapper of chroma-js for angular",
+  "main": "angular-chroma.js",
+  "keywords": [
+    "chroma",
+    "angular",
+    "colors"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/bitliner/angular-chroma",
+  "_release": "2654e8d18e",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "2654e8d18efc47c1d1aecb84ab050f17a710eed4"
+  },
+  "_source": "git://github.com/bitliner/angular-chroma.git",
+  "_target": "*",
+  "_originalSource": "angular-chroma"
+}

@@ -1,0 +1,88 @@
+<h1 style="    margin-left: 20px;"> Bienvenue sur CoReaDa</h1>
+
+<!-- add `multiple` attribute to allow multiple sections to open at once -->
+<v-accordion class="vAccordion--default" style="border-left: solid;    padding: 25px;    margin-left: 20px;">
+
+   <v-pane>
+    <v-pane-header>
+      <i>Que signifie CoReaDa ?</i>
+    </v-pane-header>
+    <v-pane-content>
+      <b>CoReaDa</b> est un acronyme pour <i><b>Co</b>urse <b>Rea</b>ding <b>Da</b>shboard</i>, littéralement <i>Tableau de bord de lecture de cours</i>. Il fait partie d'un projet ayant pour objectif d'utiliser les traces de lecture pour assister les auteurs des cours en ligne lors de la révision de leurs contenus.
+    </v-pane-content>
+  </v-pane>
+
+
+  <v-pane>
+    <v-pane-header>
+      <i>Qu'est-ce que ce tableau de bord ?</i>
+    </v-pane-header>
+    <v-pane-content>
+    <b>CoReaDa</b> est un tableau de bord qui vous présente des données sur la lecture de votre cours, vous montre de potentiels problèmes de lecture et vous suggère des actions appropriées. Pour ce faire, l'outil collecte les logs des utilisateurs qui lisent votre cours sur OpenClassrooms et les analyse. Des indicateurs sont ainsi calculés pour chaque chapitre et chaque section du cours. Quand des valeurs anormales sont observées, l'outil vous indique un problème de lecture et vous suggère des actions qui peuvent potentiellement résoudre le problème détecté.   
+
+    </v-pane-content>
+  </v-pane>
+
+    <v-pane>
+    <v-pane-header>
+      <i>Comment est-il construit ?</i>
+    </v-pane-header>
+    <v-pane-content>
+    <table><tr>
+    <td width="50%"  style="padding:0">Le processus est organisé en 3 étapes principales:
+    <ol>
+    <li>Traçage des lecteurs et collecte des données. Les logs de traces ainsi récupérés sont sauvegardés dans une base de données dédiées.
+    <li>Traitement de données. Différents traitement sont réalisés sur les traces sauvegardées afin de calculer différents indicateurs de lecture. Ces traitements permettent par ailleurs d'inférer d'éventuels problèmes de lecture
+    <li>Génération de visualisations. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour envisager de réaliser de modifications à même de résoudre les problèmes détéctés.
+    </li>
+
+    </td>
+    <td width="50%" style="padding:0">  <img src="/courses/assets/img/about.png" width="100%" ></td>
+    </tr></table>
+   
+   
+    </v-pane-content>
+  </v-pane>
+
+  <v-pane>
+    <v-pane-header>
+      <i>Quels sont les gens derrière ce projet ?</i>
+    </v-pane-header>
+    <v-pane-content>
+   <ul>
+   <li><b><a target="_blank" href="https://bit.ly/smadjid">Madjid Sadallah</a></b> : doctorant algérien, CERIST, Alger.
+   <li><b><a target="_blank" href="https://liris.cnrs.fr/~bencelle/wiki/doku.php">Benoît Encelle</a></b> : docteur en informatique, LIRIS, Université Lyon1. 
+   <li><b><a target="_blank" href="http://yannickprie.net">Yannick Prié</a></b> : professeur en informatique, LINA, Université de Nantes.
+   </ul>
+   
+    </v-pane-content>
+  </v-pane>
+
+  <v-pane>
+    <v-pane-header>
+      <i>** Quelques concepts clés</i>
+    </v-pane-header>
+    <v-pane-content>
+    <ul>
+    <li><u>Trace de lecture</u> : Une trace de lecture d'un utilisateur représente l'ensemble de ses données de navigation au sein du cours. 
+    <li><u>Analyse de traces</u> : 
+    Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.
+    <li><u>Indicateur</u> : Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.
+    <li><u>Problèmes de lecture</u> : Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.
+    <li><u>Suggestion de reconception</u> :
+    </ul>
+    
+    </v-pane-content>
+  </v-pane>
+
+  
+
+   
+
+
+  
+
+ 
+
+</v-accordion>
+

@@ -1,0 +1,205 @@
+
+<div class="" data-ng-controller="HomeController" >
+
+
+<div ng-show="dataLoading" id="floatingCirclesG">
+<div class="f_circleG" id="frotateG_01"></div>
+  <div class="f_circleG" id="frotateG_02"></div>
+  <div class="f_circleG" id="frotateG_03"></div>
+  <div class="f_circleG" id="frotateG_04"></div>
+  <div class="f_circleG" id="frotateG_05"></div>
+  <div class="f_circleG" id="frotateG_06"></div>
+  <div class="f_circleG" id="frotateG_07"></div>
+  <div class="f_circleG" id="frotateG_08"></div>
+</div>
+
+
+
+
+
+ <div class="container-fluid row" id="box"  style="margin-right:15px!important" ng-show='!adminShow'>
+ <button id="adminBtn" type="button" class="sm_btn btn-danger pull-right" ng-click='admin()'>Administration</button>
+
+ <h1 style="padding-left:15px">Bienvenue sur <img src="/courses/assets/img/logo.png"  />  - the <i>Course Reading Dashboard</i></h1>
+ 
+
+ <div class="col-md-7">
+  <div class="bs-callout"  id="vAccordionBox"  >
+  <perfect-scrollbar class=" always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
+ <v-accordion class="vAccordion--default" style=" padding: 5px 20px; ">
+ 
+   <v-pane>
+    <v-pane-header>
+      <h4><i>Présentation du projet CoReaDa</i></h4>
+    </v-pane-header>
+    <v-pane-content>
+    <b>CoReaDa</b> est un acronyme pour <i><b>Co</b>urse <b>Rea</b>ding <b>Da</b>shboard</i>, littéralement <i>Tableau de bord de lecture de cours</i>. Il désigne un projet de tableau de bord dont l'objectif est  d'utiliser les traces de lecture sur les cours en ligne pour assister leurs auteurs dans leurs tâches de révision de contenus. En plus de présenter différentes statistiques de lecture, il montre de potentiels problèmes observés pour lesquelles il suggère un certain nombre d'actions appropriées. 
+      
+    </v-pane-content>
+  </v-pane>
+
+    <v-pane>
+    <v-pane-header>
+      <h4><i>Processus de construction d'un tableau de bord CoReaDa?</i></h4>
+    </v-pane-header>
+    <v-pane-content>
+    <span>La construction du tableau de bord d'un cours resulte du processus illustré sur la figure suivante:</span>
+      <img src="/courses/assets/img/about.png" width="80%" style="padding:10px; padding-left:8%">
+  
+    <ol>
+    <li><em>Traçage des lecteurs et collecte des données</em>. Les logs ainsi récupérés sont sauvegardés dans une base de données.</li>
+    <li><em>Traitement de données</em>. Les traces enregsitrées subissent un ensemble de traitements pour calculer différents indicateurs de lecture et de détecter d'éventuels problèmes de lecture.</li>
+    <li><em>Génération de visualisations</em>. les résultats sont enfin présentés à l'auteur sur le tableau de bord. L'auteur peut utiliser ce dernier pour réaliser de modifications sur le contenu de son cours.</li>
+
+  </ol>
+   
+    </v-pane-content>
+  </v-pane>
+
+  <v-pane id='contactPane'>
+    <v-pane-header>
+      <h4><i>Equipe du projet et contact</i></h4>
+    </v-pane-header>
+    <v-pane-content>
+<h4>Les gens derrière ce projet</h4> 
+   <ul>
+   <li><b><a target="_blank" href="https://bit.ly/smadjid">Madjid Sadallah</a></b> : doctorant algérien, CERIST, Alger.</li>
+   <li><b><a target="_blank" href="https://liris.cnrs.fr/~bencelle/wiki/doku.php">Benoît Encelle</a></b> : docteur en informatique, LIRIS, Université Lyon1. </li>
+   <li><b><a target="_blank" href="http://yannickprie.net">Yannick Prié</a></b> : professeur en informatique, LINA, Université de Nantes.</li>
+   </ul>
+  <br/>
+  <h4>Contact</h4>
+   <p style=' '>Si vous désirez avoir plus d'information sur ce projet, si vous avez des suggestions ou si vous voulez rapporter un bug ou un problème dans l'interface, vous pouvez :</p>
+<ul  style='padding-left:10%'>
+    <li>Nous envoyer un mail: <a href='mailto:coreada.project@gmail.com'>coreada.project@gmail.com</a></li>
+    <li>Envoyer un mail à la personne de contact du projet: <a href='mailto:madjid.sadallah@gmail.com'>madjid.sadallah@gmail.com</a></li>
+    <li>Remplir le formulaire ci-dessous</li>
+</ul>
+
+
+                       
+
+
+<form id="contactform" ng-submit="sendFeedback(contactform)" name="contactform" method="post"   class="form-horizontal" role="form">
+<div class="feedbackbox" id="box">
+
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
+                            <label for="inputName" class="col-lg-2 control-label">Nom</label>
+                            <div class="col-lg-10">
+                                <input ng-model="feedbackFormData.inputName" type="text" class="form-control" id="inputName" name="inputName" placeholder="Votre nom" required>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputEmail.$invalid && submitted }">
+                            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-10">
+                                <input ng-model="feedbackFormData.inputEmail" type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Votre Email" required>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputSubject.$invalid && submitted }">
+                            <label for="inputSubject" class="col-lg-2 control-label">Sujet</label>
+                            <div class="col-lg-10">
+                                <input ng-model="feedbackFormData.inputSubject" type="text" class="form-control" id="inputSubject" name="inputSubject" placeholder="A propos de ..." required>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputMessage.$invalid && submitted }">
+                            <label for="inputMessage" class="col-lg-2 control-label">Message</label>
+                            <div class="col-lg-10">
+                                <textarea ng-model="feedbackFormData.inputMessage" class="form-control" rows="4" id="inputMessage" name="inputMessage" placeholder="Votre message..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-9 col-lg-3">
+                                <button type="submit" class="btn-action pull-right" ng-disabled="submitButtonDisabled">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </div>
+</div></form>
+   
+
+</v-pane-content>
+  
+
+   </v-pane>
+
+  <v-pane>
+    <v-pane-header>
+      <h4><i>Quelques concepts clés</i></h4>
+    </v-pane-header>
+    <v-pane-content>
+    <ul>
+    <li><u>Trace de lecture</u> : Une trace de lecture d'un utilisateur représente l'ensemble de ses données de navigation au sein du cours. </li>
+    <li><u>Analyse de traces</u> : 
+    Il est important de noter que CoReaDa ne s'intéresse pas aux activités d'un utilisateur individuel mais utilise l'aggrégation des données de tous les utilisateurs afin d'être sûr que les conclusions que l'on peut en tirer sont représentatives et donc significatives.</li>
+    <li><u>Indicateur</u> : Un indicateur est une mesure ou variable au sens mathématique à laquelle sont attribuées une série de caractéristiques et une signification dans le domaine d'application. Ainsi, un indicateur "nombre de visite" d'un chapitre de cours peut être calculé comme étant le comptage de nombre d'entrées de logs contenant ce chapitre.</li>
+    <li><u>Problèmes de lecture</u> : Les problèmes de lecture sont inférés à partir des indicateurs de lecture. Une valeur d'un indicateur est dite potentiellement problématique si sa valeur s'éloigne d'une façon très important des valeur médianes de cet indicateur.</li>
+    <li><u>Suggestion de reconception</u> : une suggestion de reconception est une action de modification du contenu de cours de telle manière à résoudre un problème éventuel détecté.</li>
+    </ul>
+    
+    </v-pane-content>
+  </v-pane>
+
+
+</v-accordion>
+ </perfect-scrollbar> 
+  </div>
+  
+  </div>
+   
+  <div class="col-md-5 feedbackbox" id="box">
+  <h3><span class="glyphicon glyphicon-lock"></span> Code de votre cours</h3>
+  <form   id="coursecodeform" name="coursecodeform" ng-submit="courseCoder(coursecodeform)" style="width:100%">
+  <div class="form-group" >
+    <input type="text" class="form-control" placeholder="Code d'accès du cours à afficher" ng-model="courseCode" style="width:80%; display:inline-block" required>
+    <button id="loadCourseBtn" type="submit" class="bs_btn btn-action" >Charger</button>
+  </div>
+  
+</form>
+  <em ng-show="!(courses.length)">Le code d'accès d'un cours est un identifiant unique qui permet d'afficher dans cet espace des données sur le cours ainsi qu'un lien d'accès à son tableau de bord. Si vous avez oublié le code de votre cours, veuillez nous contacter à l'adresse <a href="coreada.project@gmail.com">coreada.project@gmail.com</a> ou d'utiliser le formulaire de contact présent à gauche (section "Équipe du projet et contact")</a></em>
+  
+  <ul class='course_li'>
+    <li data-ng-repeat="course in courses">
+       <h4><a data-ng-href="/courses/{{course._id}}"><strong>{{course.title}}</strong></a></h4>
+    
+      <ul>
+
+        <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}</li>
+        <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}</li>
+      <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
+        <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b></li>
+        <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b></li>
+      </ul>
+    </li>
+  </ul>                    
+ </div></div>
+
+<!-- ########################### ADMIN -->
+
+<div class="container-fluid row" id="box"  style="margin:10px!important" ng-show='adminShow' ng-include src="'courses/views/admin.html'">
+
+</div>
+<!-- ########################### END ADMIN -->
+
+
+
+</div>
+
+<div class="row alert alert-danger" role="alert" style="width:90%; margin-left:5%; margin-top:30px" ng-show='admin'>
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <strong>Attention ! </strong>
+  CoReaDa a été testé avec des versions récentes des navigateurs <em>Chrome</em>, <em>Chromium</em>, <em>Firefox</em> et <em>Opera</em> sous <em>Microsoft Windows</em> et <em>Linux</em>. Pour les autres navigateurs ou les versions antérieures à la version en cours de navigateurs ci-dessus indiqués,  certains éléments peuvent ne pas fonctionner correctement, provoquer des présentations mal organisées et la disparition de certaines fonctionnalités. 
+</div>
+<footer class="footer" style="height:60px">
+      <div class="container" style="text-align:right;padding-bottom:5px">
+      <a href="http://www.cerist.dz" target="_blank"><img src="http://www.cerist.dz/templates/tpl_theme14/images/logo.png" alt="CERIST" title="CERIST, Alger" height="60" style='margin-right:15px'></a>
+     
+        <a href="http://www.lina.univ-nantes.fr" target="_blank" style='margin-right:15px'><img src="http://duke.univ-nantes.fr/wp-content/uploads/2014/09/logo_lina.png" alt="LINA, U. Nantes" title="LINA"  height="50"></a>
+        <a  href="https://liris.cnrs.fr" target="_blank" style='margin-right:15px'>          <img src="https://liris.cnrs.fr/LirisLogo.png" alt="LIRIS, U. Lyon 1" title="LIRIS" height="50"></a>
+        <a  href="http://www.openclassrooms.com/" target="_blank" style='margin-right:15px' >          <img src="https://sdz-upload.s3.amazonaws.com/prod/partners/img/logo_logo-oc.png" alt="OpenClassrooms" title="OpenClassrooms" height="50"></a>
+      </div>
+    </footer>
+
+</div>
+
+</div>
+

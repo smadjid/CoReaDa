@@ -3361,19 +3361,20 @@ fieldset[disabled] .bs_btn {
 .input_box {
     background-color: #dfc8ca;
     padding: 20px;
-    margin:10px;
+    
     display: inline-block;
     text-align: center;
-    border:none!important;
+    
+    width:100%!important;
 
 }
 .inputfile-1 + label {
     color: #f1e5e6;
     background-color: #d3394c;
 }
-.inputfile + label {
+.browsedFileLabel {
     max-width: 80%;
-    font-size: 20px;
+    font-size: 18px;
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
@@ -3381,7 +3382,7 @@ fieldset[disabled] .bs_btn {
     overflow: hidden;
     padding: 0.625rem 1.25rem;
 }
-.inputfile-1 + label {
+.inputfile-1 .browsedFileLabel {
     color: #f1e5e6!important;
     background-color: #d3394c;
 }

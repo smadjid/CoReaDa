@@ -1,0 +1,46 @@
+                 <h3>Contact</h3>    
+
+<p style='padding-left:5%'>Si vous désirez avoir plus d'information sur ce projet, si vous avez des suggestions ou si vous voulez rapporter un bug ou un problème dans l'interface, vous pouvez :</p>
+<ul  style='padding-left:10%'>
+    <li>Nous envoyer un mail: <a href='mailto:coreada.project@gmail.com'>coreada.project@gmail.com</a>
+    <li>Envoyer un mail à la personne de contact du projet: <a href='mailto:madjid.sadallah@gmail.com'>madjid.sadallah@gmail.com</a>
+    <li>Remplir le formulaire ci-dessous
+</ul>
+
+ 
+<form id="contactform" ng-submit="sendFeedback(contactform)" name="contactform" method="post"   class="form-horizontal" role="form">
+    
+    
+
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputName.$invalid && submitted }">
+                            <label for="inputName" class="col-lg-2 control-label">Nom</label>
+                            <div class="col-lg-10">
+                                <input ng-model="feedbackFormData.inputName" type="text" class="form-control" id="inputName" name="inputName" placeholder="Votre nom" required>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputEmail.$invalid && submitted }">
+                            <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                            <div class="col-lg-10">
+                                <input ng-model="feedbackFormData.inputEmail" type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Votre Email" required>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputSubject.$invalid && submitted }">
+                            <label for="inputSubject" class="col-lg-2 control-label">Sujet</label>
+                            <div class="col-lg-10">
+                                <input ng-model="feedbackFormData.inputSubject" type="text" class="form-control" id="inputSubject" name="inputSubject" placeholder="A propos de ..." required>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': contactform.inputMessage.$invalid && submitted }">
+                            <label for="inputMessage" class="col-lg-2 control-label">Message</label>
+                            <div class="col-lg-10">
+                                <textarea ng-model="feedbackFormData.inputMessage" class="form-control" rows="4" id="inputMessage" name="inputMessage" placeholder="Votre message..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-9 col-lg-3">
+                                <button type="submit" class="btn-action pull-right" ng-disabled="submitButtonDisabled">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </div>
+                    </form>

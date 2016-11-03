@@ -311,9 +311,26 @@ $scope.expandCallback = function (index, id) {
     }
 
     $scope.getLogs();
+    $scope.structFileName='';
+    $scope.dataFileName = '';
+     $scope.uploadFile = function(){
+        var filename = ''
+        if(event.target.files.length>0) filename = event.target.files[0].name;
+
+ var input   = $( event.target );
+$(input).next('label').children('span').text(filename);
+
+
+        if($(event.currentTarget).attr('id') ==='file-structure') 
+          $scope.structFileName = filename;
+        if($(event.currentTarget).attr('id') ==='file-data') 
+          $scope.dataFileName = filename;
+
+        $scope.$apply();
+    };
 
     /*       FILE UPLOADER    */
-    $( '.inputfile' ).each( function()
+  $( '.inputfileOLD' ).each( function()
   {
     var $input   = $( this ),
       $label   = $input.next( 'label' ),
@@ -327,6 +344,7 @@ $scope.expandCallback = function (index, id) {
         fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
       else if( e.target.value )
         fileName = e.target.value.split( '\\' ).pop();
+
 
       if( fileName )
         $label.find( 'span' ).html( fileName );
@@ -391,6 +409,7 @@ $scope.expandCallback = function (index, id) {
 
         
     /*       END FILE UPLOADER    */
+    
    
   }
 ]);

@@ -74,23 +74,47 @@
              <uib-tab-heading><b> Export sous forme textuelle (CSV)</b></uib-tab-heading>
              <uib-tab-content>
              <br/>
-             <table style="width:auto">
+             
+<table style="width:100%;table-layout:fixed">
    <tr>
-     <td class="input_box">
-     <h3>Fichier structure (<em>json</em>)</h3>
-       <input type="file" name="file-1[]" id="file-1" nv-file-select="" uploader="uploader" class="inputfile inputfile-1" >
-          <label for="file-1"><i class="glyphicon glyphicon-folder-open" style="margin-right: 7px"></i>  <span>Choisir un fichier</span></label>          
+     <td style="width:50%; border:none!important;">
+     <div class="input_box">
+     <h3>Structure (<em>fichier json</em>)</h3>
+
+       <input type="file" name="file-structure[]" id="file-structure" nv-file-select="" custom-on-change="uploadFile" uploader="uploader" class="inputfile inputfile-structure" >       
+
+           <label class='browsedFileLabel' for="file-structure">           
+           <i class="glyphicon glyphicon-folder-open" style="margin-right: 7px"></i>  
+           <span ng-if="!(structFileName.length)">Choisir...</span>       
+           <span ng-if="(structFileName.length)">{{structFileName}}</span>       
+           </label>  
+
+           <span class='browsedFileLabel' ng-if="structFileName.length" role='button' ng-click="clearFile('structure')">
+           <i class="glyphicon glyphicon-remove" style="margin-right: 7px;color:red"></i>
+           </span>
+
+          </div>
      </td>
 
-     <td class="input_box">
-     <h3>Fichier données (<em>csv</em>)</h3>
-       <input type="file" name="file-2[]" id="file-2" nv-file-select="" uploader="uploader" class="inputfile inputfile-1" >
-          <label for="file-2"><i class="glyphicon glyphicon-folder-open" style="margin-right: 7px"></i>  <span>Choisir un fichier</span></label>
+     <td style="width:50%; border:none!important;">
+     <div class="input_box">
+     <h3>Données (<em>fichier csv</em>)</h3>
+       <input type="file" name="file-data[]" id="file-data" nv-file-select="" uploader="uploader"  class="inputfile inputfile-structure" custom-on-change="uploadFile">
+
+          <label label class='browsedFileLabel' for="file-data">
+          <i class="glyphicon glyphicon-folder-open"  style="margin-right: 7px"></i>  
+          <span ng-if="!(dataFileName.length)">Choisir...</span>       
+           <span ng-if="(dataFileName.length)">{{dataFileName}}</span>      
+          </label>
+          <span class='browsedFileLabel'  ng-if="dataFileName" role='button' ng-click="clearFile('data')">
+           <i class="glyphicon glyphicon-remove" style="margin-right: 7px;color:red"></i>
+           </span>
+          </div>
      </td>
    </tr>
     <tr>
    <td colspan="2" style="border:none!important">
-   <button type="button" class="bs_btn btn-success btn-lg" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+   <button type="button" class="bs_btn btn-success btn-lg" ng-click="uploader.uploadAll()" ng-disabled="uploader.getNotUploadedItems().length<2">
                            <b> <span class="glyphicon glyphicon-upload"></span> Envoyer</b>
                         </button>
                         <button type="button" class="bs_btn  btn-warning btn-lg" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
@@ -100,8 +124,8 @@
                            <b> <span class="glyphicon glyphicon-trash"></span> Supprimer</b>
                         </button>
    <div>
-                            Progression:
-                            <div class="progress" style="">
+                            
+                            <div ng-show='uploader.progress>0' class="progress" style="">
                                 <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"><b>{{uploader.progress}}%</b></div>
                             </div>
                         </div>
@@ -111,6 +135,7 @@
    
    </tr>
  </table>
+
              </uib-tab-content>
        </uib-tab>
        <uib-tab>
@@ -124,8 +149,52 @@
 <div class='col-lg-4'>
   <h3><em>Paramètres</em></h3>
      <hr/>
+    <form id="paramform" ng-submit="sendParams(paramform)" name="paramform" method="post"   class="form-horizontal" role="form">
+    
+    
 
-
+                        <div class="form-group" ng-class="{ 'has-error': paramform.inputCode.$invalid && submitted }">
+                            <label for="inputCode" class="col-lg-3 control-label">Code</label>
+                            <div class="col-lg-9">
+                                <input ng-model="feedbackFormData.inputCode" type="text" class="form-control" id="inputCode" name="inputCode" placeholder="Code d'accès au cours" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" ng-class="{ 'has-error': paramform.inputAuthorName.$invalid && submitted }">
+                            <label for="inputAuthorName" class="col-lg-3 control-label">Nom de l'auteur</label>
+                            <div class="col-lg-9">
+                                <input ng-model="feedbackFormData.inputAuthorName" type="text" class="form-control" id="inputAuthorName" name="inputAuthorName" placeholder="A propos de ..." required>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="form-group" ng-class="{ 'has-error': paramform.granularityLevel.$invalid && submitted }">
+                            <label for="granularityLevel" class="col-lg-3 control-label">Niveau d'analyse</label>
+                            <div class="col-lg-9">
+                              <select class="form-control" id="sel1">
+                                <option>Chapitres</option>
+                                <option>Sections</option>
+                                <option>Chapitres/Sections</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error': paramform.granularityLevel.$invalid && submitted }">
+                            <label for="granularityLevel" class="col-lg-3 control-label">Méthode de detection de seuil</label>
+                            <div class="col-lg-9">
+                              <select class="form-control" id="sel1">
+                                <option>Moyenne</option>
+                                <option>Médiane</option>                                
+                              </select>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="form-group">
+                            <div class="col-lg-offset-9 col-lg-3">
+                                <button type="submit" class="btn-action pull-right" ng-disabled="submitButtonDisabled">
+                                    Enregistrer
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
 </div>
   

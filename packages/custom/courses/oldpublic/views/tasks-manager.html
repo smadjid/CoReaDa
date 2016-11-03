@@ -1,0 +1,75 @@
+<div class="panel-heading tasks-panel-heading" >
+			<i class="panel-title-icon fa fa-tasks"></i>
+			<span class="panel-title">Tâches</span>
+			
+<div id="taskEditor" editable-text="formData" onshow="openEditableArea(true)" onhide="openEditableArea(false)" blur='cancel'  e-required style="vertical-align:text-top" onbeforesave="addTask($data)" oncancel="clearEditingTask()" title='Cliquer ici pour ajouter une nouvelle tâche'>
+<span id='newTaskSpan'	  class="glyphicon glyphicon-plus"></span> 
+				{{formData ||  context.taskText  }}
+
+		</div>
+		<i style="font-size:13px" ng-show='editableAreaOpen'>{{context.taskPanelMiniTitle}}</i>
+		</div>
+	
+
+
+<perfect-scrollbar class="taskScroller" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+
+
+		<div class="tasks-panel-body" id="tasks-table">
+		
+<table  class="tasks-table" style="">
+
+	
+
+	<tr role='button' ng-repeat="task in context.Tasks"   ng-class="task.selected" >
+		<td style="width: 85%;"  ng-click="taskContexter(task,$event)"  data-pbm={{task.route}} style="vertical-align:middle" align="left" valign="middle">
+		<div  editable-textarea="task.todo" onshow="openEditableArea(task.minipath)" onhide="openEditableArea(false)" e-name="name" e-form="rowform" e-required  >
+		
+			<span ng-class="{'underlined':task.done,'nothing':!task.done}" >{{ task.todo || 'empty' }} </span>
+			<br/>
+			<div class='taskMiniPath'>(<em>{{ task.minipath}}</em>)</div>
+		</div>
+	</td>
+	<td style="width: 10%;text-align: left" valign="top">
+		<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
+			<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="rowform.$save()"></a>
+			<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" aria-hidden="true" ng-click="rowform.$cancel()"></a>
+		</form>
+			<div class="buttons" ng-show="!rowform.$visible">
+				<a role="button" title='Modifier cette tâche' class="glyphicon glyphicon-pencil" aria-hidden="true" ng-click="rowform.$show()"></a>
+				<a role="button" ng-attr-title="{{task.done && 'Marquer cette tâche comme non encore faite' || 'Marquer cette tâche comme étant faite' }}"  class="glyphicon " ng-class="{'glyphicon-tag': task.done, 'glyphicon-ok': !task.done}" aria-hidden="true" ng-click="markTaskDone(task.route, $index)"></a>
+				<a role="button" title='Supprimer cette tâche'  class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deleteTask(task.route, $index)"></a>
+			</div>
+		</td>
+	</tr>
+<!--
+	<tr ng-repeat="task in context.Tasks|filter:{'selected':'0'}" class="unselectedTask">
+		<td style="width: 70%;" >
+<uib-accordion close-others="oneAtATime" style="width:50%">
+   <uib-accordion-group is-open="status.open" class='task-accordion'>
+      <uib-accordion-heading>
+      <i class="pull-left glyphicon" style="font-size: 10px; vertical-align:text-bottom; padding-top:3px;padding-right:5px" ng-class="{'glyphicon-menu-down': status.open, 'glyphicon-menu-right': !status.open}"></i>
+        <span editable-textarea="task.todo" e-name="name" e-form="rowform" e-required style="vertical-align:text-top">
+				{{ task.todo || 'empty' }} 
+		</span>
+      </uib-accordion-heading>
+      description
+    </uib-accordion-group>
+  </uib-accordion>
+
+</td>
+ 
+		<td style="width: 10%;" valign="top">
+			<form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"  blur="cancel" onaftersave="editTask(task.route, $data.name)">
+				<a role="button" ng-disabled="rowform.$waiting" class="glyphicon glyphicon-ok" ng-click="rowform.$save()"></a>
+				<a role="button" class="glyphicon glyphicon-remove" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()"></a>
+			</form>
+			<div class="buttons" ng-show="!rowform.$visible">
+				<a role="button" class="glyphicon glyphicon-pencil" ng-click="rowform.$show()"></a>
+				<a role="button" class="glyphicon glyphicon-minus" ng-click="deleteTask(task.route, $index)"></a>
+			</div>
+		</td>
+	</tr>-->
+</table>
+	</div>
+	</perfect-scrollbar>

@@ -1,0 +1,28 @@
+<section data-ng-controller="CoursesListController" data-ng-init="find()">
+<div style="padding:10px">
+<h3>Cours disponibles pour analyse</h3>
+  <ul class="courses unstyled">
+    <li data-ng-repeat="course in courses">
+      <h4>
+        <a data-ng-href="/courses/{{course._id}}">{{course.title}}</a>
+      <!--  <span data-ng-if="hasAuthorization(course)">
+          <a class="btn" href="/courses/{{course._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(course);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>-->
+      </h4>
+<strong>Auteur: </strong><span>{{course.user.name}}</span>
+
+<ul>
+<li>Analyse créée le: {{course.created | date:'medium'}}
+<li>Nombre de remarques:
+<li>Nombre de tâches planifiées:
+</ul>
+    </li>
+  </ul>
+  <h1 data-ng-hide="!courses || courses.length">No courses yet. <br> Why don't you <a href="/courses/create">Create One</a>?</h1>
+  </div>
+</section>
