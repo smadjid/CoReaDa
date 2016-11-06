@@ -6,30 +6,6 @@ BaseURL = ('/home/madjid/Dropbox/rcoreada')
 BaseURL="C:/Users/MADJID/Desktop/rcoreada"
 DataBaseURL = paste(BaseURL,'R', sep='/')
 
-initfulldata <- function(home){
-#home='/home/madjid/Dropbox/rcoreada/Dataset'
-setwd(home)
-fulldata = read.csv2('USER_COURSE_VISUALISATION.csv', stringsAsFactors=FALSE)
-courseIds = unique(fulldata$course_id)
-for(i in 1:length(courseIds)){
-course_id = courseIds[i]
-
-data = fulldata[which(fulldata$course_id==course_id),]
-nothing = min(as.character(data$session_id))
-data=data[which(data$session_id!=nothing),]
-
-data = data[which(!is.na(data$part_id)),]
-data=unique(data)
-colnames(data)[4]="date"
-data$date = as.POSIXct(data$date)
-data=data[order(data$date),]  
-rownames(data)=1:nrow(data)
-data$id=1:nrow(data)
-save(data, file='data.rdata')
-
-}
-
-}
 main <- function (jsonObj) {
  o = fromJSON(jsonObj)
  o$a
@@ -85,15 +61,43 @@ main <- function (jsonObj) {
 }
 
 ###############  INIT ###########################
-init <- function(slug,courseId){
-selectedCourse = slug
+home='/home/madjid/Dropbox/rcoreada/Dataset'
+coursesdata_home='/home/madjid/dev/CoReaDa/rawdata'
 
-dir.create(file.path(DataBaseURL, slug), showWarnings = FALSE)
+initfulldata <- function(home){
+#
+setwd(home)
+### RUN ONCE
+#fulldata = read.csv2('USER_COURSE_VISUALISATION.csv', stringsAsFactors=FALSE)
+#save(fulldata,file='fulldata.rdata')
+#load('fulldata.rdata')
+courseIds = unique(fulldata$course_id)
+ncourses=length(courseIds)
+for(i in 1:ncourses){
+course_id = courseIds[i]
+
+dir.create(file.path(home, course_id), showWarnings = FALSE)
+setwd(paste(home,course_id,sep='/'))
  
-#print(paste('Cours', course_nb,'/',nrow(courses),': ',selectedCourse))
-setwd(paste(BaseURL,selectedCourse, sep='/'))
+print(paste('Cours', i,'/',ncourses))
+#setwd(paste(BaseURL,selectedCourse, sep='/'))
+data = fulldata[which(fulldata$course_id==course_id),]
+write.csv2(data,file='data.csv')
+setwd(home)
 
-jsonstructure <- fromJSON(paste(selectedCourse,'json', sep='.'))
+}
+
+alljsons = list.files(paste(home,'jsons',sep='/'))
+
+################ BEGIN FOR
+for(i in 1:length(alljsons)){
+print(paste('Cours structure', i,'/',length(alljsons)))
+selectedCoursePath = paste(home,'jsons',sep='/')
+setwd(selectedCoursePath)
+jsonstructure <- fromJSON(alljsons[i])
+  
+courseId = jsonstructure$id
+
 
 id_counter = 0;
 structure = data.frame(id=id_counter, part_id=jsonstructure$id, parent_id=0,title=jsonstructure$title,type=jsonstructure$subtype,
@@ -126,39 +130,105 @@ for(t_counter in 1:ntomes){
       id_counter = id_counter + 1
       ipart =  as.data.frame(ichap$children)[part_counter,]
       part.structure = data.frame(id = id_counter, part_id=ipart$id, parent_id=ichap$id,title=ipart$title,type=ipart$subtype,
-                                  slug=ipart$slug, element_id=ipart$elementId,course_id= courseId)
+                                  slug='', element_id=ipart$elementId,course_id= courseId)
       structure = rbind(structure , part.structure)
     }
   }
   
 }
 
+setwd(home)
+setwd(as.character(courseId))
+cat(toJSON(jsonstructure), file="structure.json")
 save(structure, file="structure.rdata")
+setwd(home)
 
+}############### END FOR
+}
+
+###############  CSV + Structure ###########################
+#importa_data("/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv","/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json")
+importa_data <- function(csv_f,json_f){
+
+data = extract_course(csv_f)
+print('DATA OK')
+structure = extract_structure(json_f)
+structure$size = 0
+structure$nb_img = 0
+structure$vid_length = 0
+print('STRUCTURE OK')
+
+courseId = unique(data$course_id)
+setwd(coursesdata_home)
+dir.create(file.path(coursesdata_home, courseId), showWarnings = FALSE)
+setwd(paste(coursesdata_home,courseId,sep='/'))
+save(data,file='data.rdata')
+save(structure,file='structure.rdata')
 
 }
 
-###############  EXTRACT COURSE ###########################
-extract_course <- function(slug, courseId){
-  selectedCourse = slug
-  selectedId = courseId
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
+extract_course <- function(csv_f){
+
+data = read.csv2(csv_f)
+nothing = min(as.character(data$session_id))
+data=data[which(data$session_id!=nothing),]
+
+data = data[which(!is.na(data$part_id)),]
+data=unique(data)
+data$date = as.POSIXct(data$date)
+data=data[order(data$date),]  
+rownames(data)=1:nrow(data)
+data$id=1:nrow(data)
+return(data)
+}
+
+extract_structure <- function(path){
+jsonstructure <- fromJSON(path)
+courseId = jsonstructure$id
+
+id_counter = 0;
+structure = data.frame(id=id_counter, part_id=jsonstructure$id, parent_id=0,title=jsonstructure$title,type=jsonstructure$subtype,
+                       slug=jsonstructure$slug, element_id=jsonstructure$elementId, course_id= courseId)
+
+ntomes = nrow(jsonstructure$children)
+if(ntomes>0)
+for(t_counter in 1:ntomes){
+ 
+  itome = as.data.frame(jsonstructure$children[t_counter,])
+  tome.structure = data.frame(id=-99, part_id=itome$id, parent_id=structure[1,'part_id'],title=itome$title, type=itome$subtype,
+                              slug=itome$slug, element_id=itome$elementId,course_id= courseId)
+  structure = rbind(structure , tome.structure)
   
-  
-  data=fulldata[which(fulldata$course_id==selectedId),]
-  nothing = min(as.character(data$session_id))
-  data=data[which(data$session_id!=nothing),]
-  
-  data = data[which(!is.na(data$part_id)),]
-  data=unique(data)
-  colnames(data)[4]="date"
-  data$date = as.POSIXct(data$date)
-  data=data[order(data$date),]  
-  rownames(data)=1:nrow(data)
-  data$id=1:nrow(data)
-  save(data, file='data.rdata')
+  chaps= as.data.frame(itome$children)
+    nchaps =  nrow(chaps)
+  if(nchaps>0)
+  for(ch_counter in 1:nchaps){
+    id_counter = id_counter + 1
+    ichap =  as.data.frame(chaps[ch_counter,])
+    chap.structure = data.frame(id=id_counter, part_id=ichap$id, parent_id=itome$id,title=ichap$title,type=ichap$subtype,
+                                slug=ichap$slug, element_id=ichap$elementId,course_id= courseId)
+    structure = rbind(structure , chap.structure)
+    
+    parts =  as.data.frame(ichap$children)
+    npart = nrow(parts)
+    
+    if(npart>0)
+    for(part_counter in 1:npart ){
+      id_counter = id_counter + 1
+      ipart =  as.data.frame(ichap$children)[part_counter,]
+      part.structure = data.frame(id = id_counter, part_id=ipart$id, parent_id=ichap$id,title=ipart$title,type=ipart$subtype,
+                                  slug='', element_id=ipart$elementId,course_id= courseId)
+      structure = rbind(structure , part.structure)
+    }
+  }
   
 }
+
+return(structure)
+
+}
+
+
 ###############  PREPROCESS COURSE ###########################
 preprocess <- function(slug, courseId){
   selectedCourse = slug
@@ -215,13 +285,6 @@ rs <- function(slug, courseId){
     j=1
     for(j in 1:l)
     {
-      
-      
-      # currentID =time$id[j] 
-      # nextID = time$id[j+1]
-      # data[which(data$id==currentID),]$end = data[which(data$id==nextID),]$date
-      # duration = as.numeric(difftime(data[which(data$id==currentID),]$end,data[which(data$id==currentID),]$date, units = "secs"))
-      # data[which(data$id==currentID),]$duration = duration
       
       duration =  as.numeric(difftime(time$date[j+1],time$date[j], units = "secs"))
       data[which(data$id==time$id[j]),c('end','duration')]=list(time$date[j+1],duration)
