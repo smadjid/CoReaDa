@@ -5,8 +5,3 @@ library('Rserve')
 Rserve(args='--vanilla')
 
 
-
-
-require("RSclient")
-c <- RSconnect()
-RSshutdown(c)

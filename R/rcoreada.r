@@ -1,14 +1,23 @@
-library('jsonlite')
-options(stringsAsFactors=FALSE)
-library('jsonlite')
-library('reshape')
-BaseURL = ('/home/madjid/Dropbox/rcoreada')
-BaseURL="C:/Users/MADJID/Desktop/rcoreada"
-DataBaseURL = paste(BaseURL,'R', sep='/')
 
 main <- function (jsonObj) {
- o = fromJSON(jsonObj)
- o$a
+options(stringsAsFactors=FALSE)
+#options(warn=-1)
+library('jsonlite')
+library('reshape2')
+library('Peirce')
+library('plyr')
+#library('data.table')
+
+BaseURL = ('/home/madjid/Dropbox/rcoreada')
+#BaseURL="C:/Users/MADJID/Desktop/rcoreada"
+coreaDataURL = "/home/madjid/dev/CoReaDa/coursesdata"
+home='/home/madjid/Dropbox/rcoreada/Dataset'
+coursesdata_home='/home/madjid/dev/CoReaDa/rawdata'
+
+DataBaseURL = paste(BaseURL,'R', sep='/')
+ #o = fromJSON(jsonObj)
+ #o$a
+
  range01 <- function(x, ...){(x - min(x, ...)) / (max(x, ...) - min(x, ...))}
  consistency.constant <- 1.4826
  
@@ -58,106 +67,30 @@ main <- function (jsonObj) {
  }
  
  
+
+###################################################### FUNCTIONS DECLARATION
+tmp<- function(){
+home="/home/madjid/Dropbox/rcoreada/Dataset"
+allF = list.dirs(home)
+for(i in 2: length(allF)){
+do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='/'))
+print(paste(i-1,length(allF)-1,sep=' / ')) 
 }
 
-###############  INIT ###########################
-home='/home/madjid/Dropbox/rcoreada/Dataset'
-coursesdata_home='/home/madjid/dev/CoReaDa/rawdata'
-
-initfulldata <- function(home){
-#
-setwd(home)
-### RUN ONCE
-#fulldata = read.csv2('USER_COURSE_VISUALISATION.csv', stringsAsFactors=FALSE)
-#save(fulldata,file='fulldata.rdata')
-#load('fulldata.rdata')
-courseIds = unique(fulldata$course_id)
-ncourses=length(courseIds)
-for(i in 1:ncourses){
-course_id = courseIds[i]
-
-dir.create(file.path(home, course_id), showWarnings = FALSE)
-setwd(paste(home,course_id,sep='/'))
- 
-print(paste('Cours', i,'/',ncourses))
-#setwd(paste(BaseURL,selectedCourse, sep='/'))
-data = fulldata[which(fulldata$course_id==course_id),]
-write.csv2(data,file='data.csv')
-setwd(home)
-
 }
-
-alljsons = list.files(paste(home,'jsons',sep='/'))
-
-################ BEGIN FOR
-for(i in 1:length(alljsons)){
-print(paste('Cours structure', i,'/',length(alljsons)))
-selectedCoursePath = paste(home,'jsons',sep='/')
-setwd(selectedCoursePath)
-jsonstructure <- fromJSON(alljsons[i])
-  
-courseId = jsonstructure$id
+###############  MAIN CALL FUNCTION 
 
 
-id_counter = 0;
-structure = data.frame(id=id_counter, part_id=jsonstructure$id, parent_id=0,title=jsonstructure$title,type=jsonstructure$subtype,
-                       slug=jsonstructure$slug, element_id=jsonstructure$elementId, course_id= courseId)
-
-ntomes = nrow(jsonstructure$children)
-if(ntomes>0)
-for(t_counter in 1:ntomes){
- 
-  itome = as.data.frame(jsonstructure$children[t_counter,])
-  tome.structure = data.frame(id=-99, part_id=itome$id, parent_id=structure[1,'part_id'],title=itome$title, type=itome$subtype,
-                              slug=itome$slug, element_id=itome$elementId,course_id= courseId)
-  structure = rbind(structure , tome.structure)
-  
-  chaps= as.data.frame(itome$children)
-    nchaps =  nrow(chaps)
-  if(nchaps>0)
-  for(ch_counter in 1:nchaps){
-    id_counter = id_counter + 1
-    ichap =  as.data.frame(chaps[ch_counter,])
-    chap.structure = data.frame(id=id_counter, part_id=ichap$id, parent_id=itome$id,title=ichap$title,type=ichap$subtype,
-                                slug=ichap$slug, element_id=ichap$elementId,course_id= courseId)
-    structure = rbind(structure , chap.structure)
-    
-    parts =  as.data.frame(ichap$children)
-    npart = nrow(parts)
-    
-    if(npart>0)
-    for(part_counter in 1:npart ){
-      id_counter = id_counter + 1
-      ipart =  as.data.frame(ichap$children)[part_counter,]
-      part.structure = data.frame(id = id_counter, part_id=ipart$id, parent_id=ichap$id,title=ipart$title,type=ipart$subtype,
-                                  slug='', element_id=ipart$elementId,course_id= courseId)
-      structure = rbind(structure , part.structure)
-    }
-  }
-  
-}
-
-setwd(home)
-setwd(as.character(courseId))
-cat(toJSON(jsonstructure), file="structure.json")
-save(structure, file="structure.rdata")
-setwd(home)
-
-}############### END FOR
-}
-
-###############  CSV + Structure ###########################
-#importa_data("/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv","/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json")
-importa_data <- function(csv_f,json_f){
-
+do_course <- function(csv_f,json_f){
 data = extract_course(csv_f)
-print('DATA OK')
+#print('DATA OK')
 structure = extract_structure(json_f)
 structure$size = 0
 structure$nb_img = 0
 structure$vid_length = 0
-print('STRUCTURE OK')
+#print('STRUCTURE OK')
 
+data = head(data, n=500)
 courseId = unique(data$course_id)
 setwd(coursesdata_home)
 dir.create(file.path(coursesdata_home, courseId), showWarnings = FALSE)
@@ -165,10 +98,60 @@ setwd(paste(coursesdata_home,courseId,sep='/'))
 save(data,file='data.rdata')
 save(structure,file='structure.rdata')
 
+do_fct = preprocess(data,structure)
+data = do_fct$data
+structure = do_fct$structure
+
+do_fct = sessionization(data,structure)
+data = do_fct$data
+structure = do_fct$structure
+
+indicators = indicators_calculation(data,structure)
+data = indicators$data
+structure = indicators$structure
+RS = indicators$RS
+Interest = indicators$Interest
+Reads = indicators$Reads
+Ruptures = indicators$Ruptures
+partFollow = indicators$partFollow
+save(RS, file="RS.rdata")
+save(Interest, file="Interest.rdata")
+save(Reads, file="Reads.rdata")
+save(Ruptures,file="Ruptures.rdata")
+save(partFollow, file="partFollow.rdata")
+
+dir.create(file.path(coreaDataURL,courseId), showWarnings = FALSE)
+courseDataURL=paste(coreaDataURL,courseId,sep='/')
+CourseDataCalc = course_data_calculation(data,structure, indicators)
+
+CourseData=CourseDataCalc$CourseData
+PartData = CourseDataCalc$PartData
+TransitionsData =  CourseDataCalc$TransitionsData
+
+
+
+meltParts=melt(PartData, id.vars = 'id')
+  meltedCourseStats = melt(CourseData,  id.vars ="id")  
+  meltedCourseData = rbind(meltParts,meltedCourseStats)
+  if(nrow(meltedCourseData[is.nan(meltedCourseData$value),])>0) meltedCourseData[is.nan(meltedCourseData$value),]$value=0
+  if(nrow(meltedCourseData[is.na(meltedCourseData$value),])>0) meltedCourseData[is.na(meltedCourseData$value),]$value=0
+  
+CourseData.json = toJSON(meltedCourseData) 
+cat(CourseData.json, file=paste(courseDataURL,"data.json",sep='/'))
+
+TransitionsData.json = toJSON(TransitionsData)
+cat(TransitionsData.json, file=paste(courseDataURL,"navigation.json",sep='/'))
+
+facts = course_issues_calculation(data, structure,PartData)
+facts.json = toJSON(facts)
+save(facts, file="facts.rdata")
+cat(facts.json, file=paste(courseDataURL,"facts.json",sep='/'))
+print('COREADA')
 }
+###############  CSV + Structure ###########################
+
 
 extract_course <- function(csv_f){
-
 data = read.csv2(csv_f)
 nothing = min(as.character(data$session_id))
 data=data[which(data$session_id!=nothing),]
@@ -179,6 +162,7 @@ data$date = as.POSIXct(data$date)
 data=data[order(data$date),]  
 rownames(data)=1:nrow(data)
 data$id=1:nrow(data)
+data=data[,c("id" ,"course_id" , "part_id"  ,"user_id",  "session_id" ,"date")]
 return(data)
 }
 
@@ -230,19 +214,13 @@ return(structure)
 
 
 ###############  PREPROCESS COURSE ###########################
-preprocess <- function(slug, courseId){
-  selectedCourse = slug
-  selectedId = courseId
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
-  
-  load('data.rdata')
-  load('structure.rdata')
+preprocess <- function(data, structure){
   names(structure)[1] = 'part_index'
   structure$obsels=0
   part3count = nrow(structure[which(structure$type=='title-2'),])
   structure[which(structure$type!='title-2'),]$part_index=0
   structure[which(structure$type=='title-2'),]$part_index=1:part3count
-  save(structure, file='structure.rdata')
+  
   
   parts=unique(data$part_id)
   nparts=length(parts)
@@ -254,19 +232,14 @@ preprocess <- function(slug, courseId){
   }
   
   data=data[order(data$date),]  
-  data$id=1:nrow(data)
-  save(data, file="data.rdata")
+  data$id=1:nrow(data) 
+  res = list(data=data,structure = structure)
+  return(res)
   
 }
 
 ###############  RS COMPUTATION 
-rs <- function(slug, courseId){
-  selectedCourse = slug
-  selectedId = courseId
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
-  
-  load('data.rdata')
-  load('structure.rdata')
+sessionization <- function(data,structure){
   parts=unique(data$part_id)
   nparts=length(parts)
   
@@ -275,7 +248,7 @@ rs <- function(slug, courseId){
   users = unique(unique(data$user_id))
   nusers=length(unique(data$user_id))
   # End calculation
-  print('End calculation')
+  #print('End calculation')
   for (i in 1:nusers)
   {
     time = subset(data, data$user_id==users[i], select=c(id,date))
@@ -289,15 +262,13 @@ rs <- function(slug, courseId){
       duration =  as.numeric(difftime(time$date[j+1],time$date[j], units = "secs"))
       data[which(data$id==time$id[j]),c('end','duration')]=list(time$date[j+1],duration)
       
-      print(paste(i,'/',nusers))
+      #print(paste(i,'/',nusers))
       
     }   
   }
   
-  save(data,file='data.rdata')
-  
   # Durations
-  print('Durations')
+  #print('Durations')
   
   structure$max.duration=NA
   structure$mean.duration=NA
@@ -317,7 +288,7 @@ rs <- function(slug, courseId){
   nparts = length(parts)
   for (i in 1:nparts)
   {
-    print(i)
+    #print(i)
     part_data = subset(data_with_duration, data_with_duration$part_id==parts[i])
     part_data=Peirce(part_data$duration);
     maxD = round(as.numeric(max(part_data)  ),2);
@@ -335,24 +306,15 @@ rs <- function(slug, courseId){
     
   }
   
-  
-  
-  
-  
-  #structure$max.duration=as.numeric(as.character(structure$max.duration))
-  save(structure, file="structure.rdata") 
-  
-  save(data, file="data.rdata")
-  
   # Seance calculation
-  print('Seance calculation')
+  #print('Seance calculation')
   data$seance = 1
   users = unique(data$user_id)
   users=sort(users)
   
   for (i in 1:nusers)
   {
-    print(i)
+    #print(i)
     user = subset(data ,data$user_id==users[i],  select=c(id,part_id, date, end, duration, seance))
     
     user=user[order(user$date),]
@@ -382,25 +344,21 @@ rs <- function(slug, courseId){
     }
     
   }
-  save(data, file="data.rdata")
+  
+  res = list(data=data,structure = structure)
+  return(res)
     
 }
 
 ###############  INDICATORS
-indicators_calculation <- function(slug, courseId){
-  selectedCourse = slug
-  selectedId = courseId
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
-  
-  load('data.rdata')
-  load('structure.rdata')
+indicators_calculation <- function(data,structure){
   
   data = data[which(data$user_id!=0),]
   nusers=length(unique(data[["user_id"]]))
   users = unique(data[["user_id"]])
   users=sort(users)
   ############ RS 
-  print('RS ')
+  #print('RS ')
   
   nRS=nrow(unique(subset(data, select=c("user_id","seance"))))
   
@@ -425,10 +383,10 @@ indicators_calculation <- function(slug, courseId){
     }
   }
   RS = RS[which(RS$duration>60),]
-  save(RS, file="RS.rdata")
+  
   
   ################ INTEREST #####################################################"
-  print('INTEREST')
+  #print('INTEREST')
   
   data=data[order(data$date),]
   allParts=structure$part_id
@@ -476,7 +434,7 @@ indicators_calculation <- function(slug, courseId){
                                                  RS_nb = nrow(unique(data[,c("user_id","seance")])));
   
   Interest = merge(Interest, structure[,c('part_index','part_id','type')])
-  save(Interest, file="Interest.rdata")
+  
   
   ################ READS #####################################################"
   
@@ -541,7 +499,7 @@ indicators_calculation <- function(slug, courseId){
   
   for (i in 1:nusers)
   {
-    # print(paste("USER: ",i,'/', nusers))
+    # #print(paste("USER: ",i,'/', nusers))
     user.seances = subset(data, data$user_id==users[i], select=c(seance,part_index,date))
     user.seances=user.seances[order(user.seances$date),]
     nseances=length(unique(user.seances[["seance"]]))
@@ -586,10 +544,10 @@ indicators_calculation <- function(slug, courseId){
   Reads$course_readers_rereaders = round(Reads$Rereaders / nusers, 4) 
   Reads$rereads_seq_tx = round(100 * Reads$Sequential_rereadings / Reads$Rereadings,0)
   Reads$rereads_dec_tx = round(100 * Reads$Decaled_rereadings / Reads$Rereadings,0)
-  save(Reads, file="Reads.rdata")
+  
   
   ###### RUPTURE #################
-  print('Ruptures ')
+  #print('Ruptures ')
   Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), recovery=logical(),
                        direct_recovery=logical(),next_recovery=logical(), distant_next_recovery=logical(),
                        prev_recovery=logical(), distant_prev_recovery=logical())
@@ -598,7 +556,7 @@ indicators_calculation <- function(slug, courseId){
   nusers=length(users)
   for (i in 1:nusers)
   {
-    # print(paste("USER: ",i,'/', nusers))
+    # #print(paste("USER: ",i,'/', nusers))
     
     user = data[which(data$user_id==users[i]),]
     user=user[order(user$date),]
@@ -731,7 +689,7 @@ indicators_calculation <- function(slug, courseId){
       sum( Ruptures[which(Ruptures$part_id%in%children),]$direct_recovery)
   }
   
-  save(Ruptures,file="Ruptures.rdata")
+ 
   
   
   ######################Parts Follow ######################
@@ -754,7 +712,7 @@ indicators_calculation <- function(slug, courseId){
     }
   }
   
-  save(partFollow, file="partFollow.rdata")
+  
   
   ######## Parents Follow
   chaps=data.frame(parent_id= unique(structure[which(structure$type=='title-2'),]$part_id))
@@ -773,7 +731,7 @@ indicators_calculation <- function(slug, courseId){
   structure = merge(structure, chaps, all.x = TRUE)
   data = merge(data, structure[,c('part_id','chap_index','tome_index')] , all.x = TRUE)
   
-  save(structure, file='structure.rdata')
+  
   
   
   #TomeFollow
@@ -796,33 +754,21 @@ indicators_calculation <- function(slug, courseId){
         tomeFollow[userData[i], userData[i+1]]  + 1
     }
   }
-  save(tomeFollow, file='tomeFollow.rdata')
+  #save(tomeFollow, file='tomeFollow.rdata') ?????????????????
+  
+  
+  res = list(data=data, structure=structure, RS=RS , Interest=Interest,Reads=Reads,Ruptures=Ruptures,partFollow=partFollow)
+  return(res)
 }
 
 
 ###############  COURSE DATA
-course_data_calculation <- function(slug, courseId){
-  selectedCourse = slug
-  selectedId = courseId
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
-  
-  load('data.rdata')
-  load('structure.rdata')
-  
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
-  CoursedataURL = paste(DataBaseURL, courses[course_nb,]$code,sep='/')
-  dir.create(file.path(DataBaseURL, courses[course_nb,]$code), showWarnings = FALSE)
-  
-  
-  
-  load('data.rdata')
-  load('structure.rdata')
-  load('Interest.rdata')
-  load('Reads.rdata')
-  load('Ruptures.rdata')
-  load('RS.rdata')
-  load('partFollow.rdata')
-  
+course_data_calculation <- function(data,structure,indicators){
+  Interest = indicators$Interest
+  Reads = indicators$Reads
+  Ruptures = indicators$Ruptures
+  RS = indicators$RS
+  partFollow = indicators$partFollow  
   
   
   ################################# PARTDATA ########################################################
@@ -835,18 +781,16 @@ course_data_calculation <- function(slug, courseId){
   if(nrow(PartData[which(PartData$type=='title-3'),])>0)
     PartData[which(PartData$type=='title-3'),]$type='section'
   
-  print(paste('Cours', course_nb,'/',nrow(courses),': ',PartData[which(PartData$type=='course'),]$title))
-  courses[course_nb,]$Title = structure[which(structure$type=='course'),]$title
   ############## SIZE : 1s video --> 2 mots. 1 image --> 30 mots
   
   if("vid_length" %in% colnames(PartData))
   {
-    print("vids exist")
+    #print("vids exist")
     PartData$size = PartData$size + PartData$vid_length * 2
   }
   if("nb_img" %in% colnames(PartData))
   {
-    print("imgs exist")
+    #print("imgs exist")
     PartData$size = PartData$size +  PartData$nb_img * 30
   }
   
@@ -859,7 +803,7 @@ course_data_calculation <- function(slug, courseId){
   
   PartData$speed=round(PartData$size/(PartData$mean.duration/60),2)
   PartData[is.na(PartData$speed),]$speed <- -1
-  save(PartData, file='PartData.rdata')
+  
   
   
   
@@ -902,8 +846,7 @@ course_data_calculation <- function(slug, courseId){
   TransitionsData=TransitionsData[,c('x','part_id','provenance','destination')]
   names(TransitionsData)[2]='y'
   
-  TransitionsData.json = toJSON(TransitionsData)
-  cat(TransitionsData.json, file=paste(CoursedataURL,"navigation.json",sep='/'))
+  
   
   
   Destinations_stats = data.frame(part_index=part_indexes,destination_next=0.0,destination_past=0.0,
@@ -957,13 +900,15 @@ course_data_calculation <- function(slug, courseId){
   PartData$Actions_tx = PartData$Actions_nb / nrow(data)
   PartData$readers_tx = PartData$Readers / nusers
   PartData$rs_tx = PartData$RS_nb / rs_nb
+  PartData$invspeed = 0
+  if(min(PartData$speed>0)){
   minspeed = min(PartData[PartData$speed>0,]$speed)
   maxspeed = max(PartData[PartData$speed>0,]$speed)
   PartData$invspeed = -1
   PartData[PartData$speed>0,]$invspeed = maxspeed- PartData[PartData$speed>0,]$speed
   
   PartData[PartData$speed>0,]$invspeed =range01(PartData[PartData$speed>0,]$invspeed, na.rm=TRUE)
-  
+  }
   
   PartData$interest = PartData$readers_tx + PartData$rs_tx + PartData$invspeed
   PartData[PartData$interest>0,]$interest = range01(PartData[PartData$interest>0,]$interest, na.rm=TRUE)
@@ -1088,7 +1033,7 @@ course_data_calculation <- function(slug, courseId){
   #save(PartData, file='../coursesdata/PartData.rdata')
   
   #################### EXPORT
-  meltParts=melt(PartData, id.vars = 'id')
+  
   
   ########## Stats 
   CourseData = data.frame(id=0, title=PartData[PartData$type=='course','title'])
@@ -1099,27 +1044,17 @@ course_data_calculation <- function(slug, courseId){
   CourseData$RS_meanperuser = nrow(RS)/nusers
   CourseData$ob_begin=as.character(min(data$date))
   CourseData$ob_end=as.character(max(data$date))
-  meltedCourseStats = melt(CourseData,  id.vars ="id")
-  
-  meltedCourseData = rbind(meltParts,meltedCourseStats)
-  if(nrow(meltedCourseData[is.nan(meltedCourseData$value),])>0) meltedCourseData[is.nan(meltedCourseData$value),]$value=0
-  if(nrow(meltedCourseData[is.na(meltedCourseData$value),])>0) meltedCourseData[is.na(meltedCourseData$value),]$value=0
-  
-  CourseData.json = toJSON(meltedCourseData) 
-  cat(CourseData.json, file=paste(CoursedataURL,"data.json",sep='/'))
   
   
+  
+  
+  res = list(PartData=PartData,CourseData=CourseData, TransitionsData=TransitionsData)
+  return(res) 
   
 }
 
-###############  COURSE DATA
-course_issues_calculation <- function(slug, courseId){
-  selectedCourse = slug
-  selectedId = courseId
-  setwd(paste(BaseURL,selectedCourse, sep='/'))
-  
-  load('data.rdata')
-  load('structure.rdata')
+###############  COURSE ISSUES
+course_issues_calculation <- function(data, structure,PartData){
   
   ######################INDICATORS INIT.###############################
   minVisits=   	# Actions_tx
@@ -1239,6 +1174,7 @@ course_issues_calculation <- function(slug, courseId){
                         minDuration =  byChaps
                         }
   ################## Vitesse MAX  
+  if(min(PartData$speed>0)){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>2)&(chaptersData$speed>median(chaptersData$speed) ),c('part_id','speed')]  
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
@@ -1257,8 +1193,9 @@ course_issues_calculation <- function(slug, courseId){
     #minSpeed =  rbind(byParts,byChaps)
     minSpeed =  byChaps
   }
+  }
   ################## Vitesse MIN
-  
+  if(min(PartData$speed>0)){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>2)&(chaptersData$speed<median(chaptersData$speed) ),c('part_id','speed')]
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
@@ -1276,6 +1213,7 @@ course_issues_calculation <- function(slug, courseId){
     
     #  maxSpeed =  rbind(byParts,byChaps)
     maxSpeed =  byChaps
+  }
   }
   ####### MAX REREADINGS
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$rereads_tx)>2)&
@@ -1528,9 +1466,7 @@ course_issues_calculation <- function(slug, courseId){
   ##############CONCATENATE EVERYTHING##############
   
   names(minVisits)[c(1,2)]=
-    names(minReaders)[c(1,2)]=
-    names(minSpeed)[c(1,2)]=
-    names(maxSpeed)[c(1,2)]=
+    names(minReaders)[c(1,2)]=   
     names(maxRereadings)[c(1,2)]=
     names(maxDijRereadings)[c(1,2)]=
     names(maxConjRereadings)[c(1,2)]=
@@ -1547,14 +1483,14 @@ course_issues_calculation <- function(slug, courseId){
     names(recoveryPast)[c(1,2)]=
     names(recoveryFuture)[c(1,2)]=
     c("part_id","value")
+    
+   
   
   
   facts = 
     rbind(
       minVisits,
       minReaders,
-      minSpeed,
-      maxSpeed,
       maxRereadings,
       maxDijRereadings,
       maxConjRereadings,
@@ -1570,10 +1506,117 @@ course_issues_calculation <- function(slug, courseId){
       resumeLinearity,
       recoveryFuture,
       recoveryPast)
+ if(min(PartData$speed>0)){
+  names(minSpeed)[c(1,2)]=
+    names(maxSpeed)[c(1,2)]=c("part_id","value")
+    facts =  rbind(facts,minSpeed,maxSpeed)
+ }
+      return(facts)
   
-  save(facts, file="facts.rdata")
-  
-  facts.json = toJSON(facts)
-  cat(facts.json, file=paste(CoursedataURL,"facts.json",sep='/'))
   
 }
+
+###################################################### DO
+params = fromJSON(jsonObj)
+do_course(params$csv_f,params$json_f)
+#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv"
+#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json"
+#do_course(csv_f,json_f)
+
+####################################### END ##################################################################### 
+}
+###############  INITIAL FULLDATA ###########################
+
+
+initfulldata <- function(home){
+#
+setwd(home)
+### RUN ONCE
+#fulldata = read.csv2('USER_COURSE_VISUALISATION.csv', stringsAsFactors=FALSE)
+#save(fulldata,file='fulldata.rdata')
+#load('fulldata.rdata')
+courseIds = unique(fulldata$course_id)
+ncourses=length(courseIds)
+for(i in 1:ncourses){
+course_id = courseIds[i]
+
+dir.create(file.path(home, course_id), showWarnings = FALSE)
+setwd(paste(home,course_id,sep='/'))
+ 
+#print(paste('Cours', i,'/',ncourses))
+#setwd(paste(BaseURL,selectedCourse, sep='/'))
+data = fulldata[which(fulldata$course_id==course_id),]
+write.csv2(data,file='data.csv')
+setwd(home)
+
+}
+
+alljsons = list.files(paste(home,'jsons',sep='/'))
+
+################ BEGIN FOR
+for(i in 1:length(alljsons)){
+#print(paste('Cours structure', i,'/',length(alljsons)))
+selectedCoursePath = paste(home,'jsons',sep='/')
+setwd(selectedCoursePath)
+jsonstructure <- fromJSON(alljsons[i])
+  
+courseId = jsonstructure$id
+
+
+id_counter = 0;
+structure = data.frame(id=id_counter, part_id=jsonstructure$id, parent_id=0,title=jsonstructure$title,type=jsonstructure$subtype,
+                       slug=jsonstructure$slug, element_id=jsonstructure$elementId, course_id= courseId)
+
+ntomes = nrow(jsonstructure$children)
+if(ntomes>0)
+for(t_counter in 1:ntomes){
+ 
+  itome = as.data.frame(jsonstructure$children[t_counter,])
+  tome.structure = data.frame(id=-99, part_id=itome$id, parent_id=structure[1,'part_id'],title=itome$title, type=itome$subtype,
+                              slug=itome$slug, element_id=itome$elementId,course_id= courseId)
+  structure = rbind(structure , tome.structure)
+  
+  chaps= as.data.frame(itome$children)
+    nchaps =  nrow(chaps)
+  if(nchaps>0)
+  for(ch_counter in 1:nchaps){
+    id_counter = id_counter + 1
+    ichap =  as.data.frame(chaps[ch_counter,])
+    chap.structure = data.frame(id=id_counter, part_id=ichap$id, parent_id=itome$id,title=ichap$title,type=ichap$subtype,
+                                slug=ichap$slug, element_id=ichap$elementId,course_id= courseId)
+    structure = rbind(structure , chap.structure)
+    
+    parts =  as.data.frame(ichap$children)
+    npart = nrow(parts)
+    
+    if(npart>0)
+    for(part_counter in 1:npart ){
+      id_counter = id_counter + 1
+      ipart =  as.data.frame(ichap$children)[part_counter,]
+      part.structure = data.frame(id = id_counter, part_id=ipart$id, parent_id=ichap$id,title=ipart$title,type=ipart$subtype,
+                                  slug='', element_id=ipart$elementId,course_id= courseId)
+      structure = rbind(structure , part.structure)
+    }
+  }
+  
+}
+
+setwd(home)
+setwd(as.character(courseId))
+cat(toJSON(jsonstructure), file="structure.json")
+save(structure, file="structure.rdata")
+setwd(home)
+
+}############### END FOR
+}
+
+#####################################
+#library('jsonlite')
+#options(stringsAsFactors=FALSE)
+#library('Rserve')
+### STARTING
+#Rserve(args='--vanilla')
+### SHUTING
+#require("RSclient")
+#c <- RSconnect()
+#RSshutdown(c)

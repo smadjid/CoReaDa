@@ -13,10 +13,12 @@ var mongoose = require('mongoose'),
     multiparty = require('multiparty'),
     util = require('util'),
     path = require('path'),
+    child_process = require('child_process'),
     transporter = nodemailer.createTransport('smtps://coreada.project%40gmail.com:madjid1980@smtp.gmail.com');
 
 //////////////////////////////////
-rio.e({filename:'R/test.R',data:{'a':5}, entrypoint:"main" });
+
+//rio.e({filename:'R/test.R',data:{'a':5}, entrypoint:"main" });
 /*config = {
     command: "",
     filename: "",
@@ -40,10 +42,38 @@ rio.e({filename:'R/test.R',data:{'a':5}, entrypoint:"main" });
     password = "anon"
 }*/
 ////////////////////////////////////////////
+const spawn = require('child_process').spawn;
 
 
 module.exports = function(Courses) {
     var base_url = "https://openclassrooms.com/courses";
+
+
+
+
+
+
+var import_course = function(){
+    var args ={'csv_f': "/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv",
+                'json_f' : "/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json"}
+    const rspawn = spawn('Rscript', ["R/startr.R" ]);
+rspawn.stdout.on('data', (data) => {
+ // console.log(`stdout: ${data}`);
+  rio.e({filename:'R/rcoreada.r',data:args, entrypoint:"main" })
+
+  rio.e({command: "require('RSclient');c <- RSconnect();RSshutdown(c)" })
+});
+
+rspawn.stderr.on('data', (data) => {
+ // console.log(`stderr: ${data}`);
+});
+
+rspawn.on('close', (code) => {
+  console.log(`R process exited with code ${code}`);
+});
+
+}
+import_course();
 
     var subsetByField = function (arr,field,value) {
         var objectArray = [];
