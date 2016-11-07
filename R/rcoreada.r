@@ -73,8 +73,10 @@ tmp<- function(){
 home="/home/madjid/Dropbox/rcoreada/Dataset"
 allF = list.dirs(home)
 for(i in 2: length(allF)){
-do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='/'))
 print(paste(i-1,length(allF)-1,sep=' / ')) 
+
+do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='/'))
+
 }
 
 }

@@ -42,7 +42,7 @@ var mongoose = require('mongoose'),
     password = "anon"
 }*/
 ////////////////////////////////////////////
-const spawn = require('child_process').spawn;
+//const spawn = require('child_process').spawn;
 
 
 module.exports = function(Courses) {
@@ -52,7 +52,7 @@ module.exports = function(Courses) {
 
 
 
-
+/*
 var import_course = function(){
     var args ={'csv_f': "/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv",
                 'json_f' : "/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json"}
@@ -73,7 +73,7 @@ rspawn.on('close', (code) => {
 });
 
 }
-import_course();
+import_course();*/
 
     var subsetByField = function (arr,field,value) {
         var objectArray = [];
