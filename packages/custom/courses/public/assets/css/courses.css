@@ -3386,3 +3386,36 @@ fieldset[disabled] .bs_btn {
     color: #f1e5e6!important;
     background-color: #d3394c;
 }
+
+/**CSS FOR THE RING**/
+
+.glyphicon-ring {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none ;
+  color: white;
+  display: inline-table;
+  text-align: center;
+}
+/**CSS FOR ICON WITH NO BACKGROUND COLOR**/
+
+.glyphicon-ring .glyphicon-bordered {
+  font-size: 13px;
+  vertical-align: middle;
+  display: table-cell;
+}
+/**WITH AN ADDED BACKGROUND COLOR**/
+
+.glyphicon-white {
+  background: white;
+  color: black;
+  border: 4px solid black;
+}
+.glyphicon-teal {
+  background: teal;
+  color: orange;
+}
+.glyphicon-red {
+  background: #db4437;
+}

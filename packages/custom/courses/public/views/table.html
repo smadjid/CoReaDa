@@ -45,8 +45,15 @@
        
        <tr table-td by-parts='false' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay'  ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData"  course-id="course._id" class="{{indicator.class}}" ng-show="indicator.show && !sectionDisplay" >
             <th class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
-                <div style="display: flex;" class={{indicator.level}} >
-                <span ng-class="{'glyphicon glyphicon-plus pull-left': !indicator.details, 'glyphicon glyphicon-minus pull-left': indicator.details}" ng-show="indicator.hasChildren" role='button' data-id={{indicator.name}} data-parent={{indicator.parent}} ng-click='toggleChildren(indicator, $event)'></span><b title={{indicator.title}}> {{indicator.label}}</b>
+            
+            
+
+                <div style=" padding: 0;width:100%" class={{indicator.level}} >
+                <div><b title={{indicator.title}}> {{indicator.label}}</b></div>
+                <div ng-class="{'glyphicon-ring glyphicon-red pull-right': !indicator.details, 'glyphicon glyphicon-minus pull-right': indicator.details}" ng-show="indicator.hasChildren" role='button' data-id={{indicator.name}} data-parent={{indicator.parent}} ng-click='toggleChildren(indicator, $event)'>
+                <span class="glyphicon glyphicon-plus glyphicon-bordered"></span> 
+                </div>
+                
                 </div>
             </th></tr>
 

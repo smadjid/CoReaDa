@@ -82,6 +82,9 @@ do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='
 }
 ###############  MAIN CALL FUNCTION 
 
+#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/1946386/data.csv"
+#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/1946386/structure.json"
+#do_course(csv_f,json_f)
 
 do_course <- function(csv_f,json_f){
 data = extract_course(csv_f)
@@ -92,7 +95,7 @@ structure$nb_img = 0
 structure$vid_length = 0
 #print('STRUCTURE OK')
 
-data = head(data, n=500)
+#data = head(data, n=500)
 courseId = unique(data$course_id)
 setwd(coursesdata_home)
 dir.create(file.path(coursesdata_home, courseId), showWarnings = FALSE)
@@ -250,7 +253,7 @@ sessionization <- function(data,structure){
   users = unique(unique(data$user_id))
   nusers=length(unique(data$user_id))
   # End calculation
-  #print('End calculation')
+ print('End calculation')
   for (i in 1:nusers)
   {
     time = subset(data, data$user_id==users[i], select=c(id,date))
@@ -264,13 +267,13 @@ sessionization <- function(data,structure){
       duration =  as.numeric(difftime(time$date[j+1],time$date[j], units = "secs"))
       data[which(data$id==time$id[j]),c('end','duration')]=list(time$date[j+1],duration)
       
-      #print(paste(i,'/',nusers))
+     print(paste(i,'/',nusers))
       
     }   
   }
   
   # Durations
-  #print('Durations')
+ print('Durations')
   
   structure$max.duration=NA
   structure$mean.duration=NA
@@ -290,7 +293,7 @@ sessionization <- function(data,structure){
   nparts = length(parts)
   for (i in 1:nparts)
   {
-    #print(i)
+   print(i)
     part_data = subset(data_with_duration, data_with_duration$part_id==parts[i])
     part_data=Peirce(part_data$duration);
     maxD = round(as.numeric(max(part_data)  ),2);
@@ -309,14 +312,14 @@ sessionization <- function(data,structure){
   }
   
   # Seance calculation
-  #print('Seance calculation')
+ print('Seance calculation')
   data$seance = 1
   users = unique(data$user_id)
   users=sort(users)
   
   for (i in 1:nusers)
   {
-    #print(i)
+   print(i)
     user = subset(data ,data$user_id==users[i],  select=c(id,part_id, date, end, duration, seance))
     
     user=user[order(user$date),]
@@ -360,7 +363,7 @@ indicators_calculation <- function(data,structure){
   users = unique(data[["user_id"]])
   users=sort(users)
   ############ RS 
-  #print('RS ')
+ print('RS ')
   
   nRS=nrow(unique(subset(data, select=c("user_id","seance"))))
   
@@ -388,7 +391,7 @@ indicators_calculation <- function(data,structure){
   
   
   ################ INTEREST #####################################################"
-  #print('INTEREST')
+ print('INTEREST')
   
   data=data[order(data$date),]
   allParts=structure$part_id
@@ -501,7 +504,7 @@ indicators_calculation <- function(data,structure){
   
   for (i in 1:nusers)
   {
-    # #print(paste("USER: ",i,'/', nusers))
+   print(paste("USER: ",i,'/', nusers))
     user.seances = subset(data, data$user_id==users[i], select=c(seance,part_index,date))
     user.seances=user.seances[order(user.seances$date),]
     nseances=length(unique(user.seances[["seance"]]))
@@ -549,7 +552,7 @@ indicators_calculation <- function(data,structure){
   
   
   ###### RUPTURE #################
-  #print('Ruptures ')
+ print('Ruptures ')
   Ruptures= data.frame(user_id=numeric(), seance=integer(),part_index=integer(), recovery=logical(),
                        direct_recovery=logical(),next_recovery=logical(), distant_next_recovery=logical(),
                        prev_recovery=logical(), distant_prev_recovery=logical())
@@ -558,7 +561,7 @@ indicators_calculation <- function(data,structure){
   nusers=length(users)
   for (i in 1:nusers)
   {
-    # #print(paste("USER: ",i,'/', nusers))
+   print(paste("USER: ",i,'/', nusers))
     
     user = data[which(data$user_id==users[i]),]
     user=user[order(user$date),]
@@ -787,12 +790,12 @@ course_data_calculation <- function(data,structure,indicators){
   
   if("vid_length" %in% colnames(PartData))
   {
-    #print("vids exist")
+   print("vids exist")
     PartData$size = PartData$size + PartData$vid_length * 2
   }
   if("nb_img" %in% colnames(PartData))
   {
-    #print("imgs exist")
+   print("imgs exist")
     PartData$size = PartData$size +  PartData$nb_img * 30
   }
   
@@ -912,7 +915,8 @@ course_data_calculation <- function(data,structure,indicators){
   PartData[PartData$speed>0,]$invspeed =range01(PartData[PartData$speed>0,]$invspeed, na.rm=TRUE)
   }
   
-  PartData$interest = PartData$readers_tx + PartData$rs_tx + PartData$invspeed
+  PartData$interest =PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx + PartData$invspeed
+  
   PartData[PartData$interest>0,]$interest = range01(PartData[PartData$interest>0,]$interest, na.rm=TRUE)
   
   #################FIN####################
@@ -1425,7 +1429,7 @@ course_issues_calculation <- function(data, structure,PartData){
   if(nrow(byChaps)>0){
     byChaps$classe="resume_abnormal_tx"
     byChaps$issueCode="StopResumeBack"
-    byChaps$content="Après fait de lecture sur ce chapitre, trop de de reprise sur des chapitres lointains (en avant ou en arrière)"
+    byChaps$content="Après arrêt de la lecture sur ce chapitre, trop de de reprise sur des chapitres lointains (en avant ou en arrière)"
     byChaps$delta = byChaps$resume_abnormal_tx
     byChaps$description=paste(round(100*byChaps$resume_abnormal_tx,2),"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres précédents.")
     byChaps$suggestion_title="Revoir ce chapitre et les chapitres voisins directs"

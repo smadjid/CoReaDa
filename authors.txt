@@ -1,0 +1,9 @@
+Prenez en main Bootstrap - Maurice Chavelli (bestmomo)
+Comprendre le Web (M. Nebra)
+ Animez une communauté Twitter - Fabien Delattre (Neabfi) et Nathanaël Langlois (Etoile Filante)
+ Programmez vos premiers montages avec Arduino - Jean-Noël Rousseau (nanomaitre)
+ Apprenez à coder avec JavaScript - Baptiste Pesquet (bpesquet)
+ Développez une application mobile multi-plateforme avec Ionic - Stéphanie Moallic (stephaniemoallic)
+ Continuez avec Ruby on Rails - Julien Grillot
+ Utilisez des API REST dans vos projets web - Emily Reese (eclairereese)
+ Découvrez les bases de la gestion de projet - Pauline Prévot
