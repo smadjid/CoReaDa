@@ -48,10 +48,15 @@
             
             
 
-                <div style=" padding: 0;width:100%" class={{indicator.level}} >
-                <div><b title={{indicator.title}}> {{indicator.label}}</b></div>
-                <div ng-class="{'glyphicon-ring glyphicon-red pull-right': !indicator.details, 'glyphicon glyphicon-minus pull-right': indicator.details}" ng-show="indicator.hasChildren" role='button' data-id={{indicator.name}} data-parent={{indicator.parent}} ng-click='toggleChildren(indicator, $event)'>
-                <span class="glyphicon glyphicon-plus glyphicon-bordered"></span> 
+                <div style="position:relative; padding: 0;width:100%;height:100%" class={{indicator.level}} >
+               
+                <div style='margin: 5px; margin-right: 25px; text-align: left'><b title={{indicator.title}}> {{indicator.label}}</b></div>
+                <div class='q1'>
+                <div class="glyphicon-ring glyphicon-red pull-right" ng-show="indicator.hasChildren" role='button' data-id={{indicator.name}} data-parent={{indicator.parent}} ng-click='toggleChildren(indicator, $event)'>
+                <span ng-show='!indicator.details' class="glyphicon glyphicon-plus glyphicon-bordered" title="Afficher tous les indicateurs de cette classe"></span> 
+                <span ng-show='indicator.details' class="glyphicon glyphicon-minus glyphicon-bordered" title="cacher les autres indicateurs de cette classe"></span> 
+
+                </div>
                 </div>
                 
                 </div>

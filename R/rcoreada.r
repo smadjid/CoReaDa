@@ -95,7 +95,7 @@ structure$nb_img = 0
 structure$vid_length = 0
 #print('STRUCTURE OK')
 
-#data = head(data, n=500)
+#data = head(data, n=800)
 courseId = unique(data$course_id)
 setwd(coursesdata_home)
 dir.create(file.path(coursesdata_home, courseId), showWarnings = FALSE)
@@ -543,13 +543,6 @@ indicators_calculation <- function(data,structure){
   courseId  = structure[which(structure$type=='course'),]$part_id
   Reads[which(Reads$part_id==courseId),]$Readers =    length(unique(data$user_id))
   
-  Reads$rereadings_tx = Reads$Rereadings / Reads$Readings
-  
-  Reads$part_readers_rereaders = round(Reads$Rereaders / Reads$Readers, 4) 
-  Reads$course_readers_rereaders = round(Reads$Rereaders / nusers, 4) 
-  Reads$rereads_seq_tx = round(100 * Reads$Sequential_rereadings / Reads$Rereadings,0)
-  Reads$rereads_dec_tx = round(100 * Reads$Decaled_rereadings / Reads$Rereadings,0)
-  
   
   ###### RUPTURE #################
  print('Ruptures ')
@@ -915,7 +908,8 @@ course_data_calculation <- function(data,structure,indicators){
   PartData[PartData$speed>0,]$invspeed =range01(PartData[PartData$speed>0,]$invspeed, na.rm=TRUE)
   }
   
-  PartData$interest =PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx + PartData$invspeed
+  PartData$interest =PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx 
+  #+ PartData$invspeed
   
   PartData[PartData$interest>0,]$interest = range01(PartData[PartData$interest>0,]$interest, na.rm=TRUE)
   
@@ -961,10 +955,9 @@ course_data_calculation <- function(data,structure,indicators){
   PartData$mean.tx_total_readers = round(100 * PartData$Rereaders / nusers, 2) 
   
   PartData$rereads_seq_tx = 0
-  PartData$rereads_seq_globratio = 0
+ 
   sumseq = sum(PartData[which(PartData$type=='chapitre'),]$Sequential_rereadings, na.rm=TRUE)
-  PartData[which(PartData$type=='chapitre'),]$rereads_seq_tx =  PartData[which(PartData$type=='chapitre'),]$Sequential_rereadings / PartData[which(PartData$type=='chapitre'),]$Rereadings
-  PartData[which(PartData$type=='chapitre'),]$rereads_seq_globratio = PartData[which(PartData$type=='chapitre'),]$Sequential_rereadings / sumseq
+  PartData[which(PartData$type=='chapitre'),]$rereads_seq_tx =   PartData[which(PartData$type=='chapitre'),]$Sequential_rereadings / sumseq
   # for tomes
   tomeIds = PartData[which(PartData$type=='partie'),]$part_id
   for(i in 1:length(tomeIds)){
@@ -972,47 +965,43 @@ course_data_calculation <- function(data,structure,indicators){
   }
   # for all course
   PartData[which(PartData$type=='course'),]$rereads_seq_tx =  mean(PartData[which(PartData$type=='chapitre'),]$rereads_seq_tx)
-  PartData[which(PartData$type=='course'),]$rereads_seq_globratio =  mean(PartData[which(PartData$type=='chapitre'),]$rereads_seq_globratio)
+  
   
   PartData$rereads_dec_tx = 0
-  PartData$rereads_dec_globratio = 0
   sumdec = sum(PartData[which(PartData$type=='chapitre'),]$Decaled_rereadings, na.rm=TRUE)
-  PartData[which(PartData$type=='chapitre'),]$rereads_dec_tx =  PartData[which(PartData$type=='chapitre'),]$Decaled_rereadings / PartData[which(PartData$type=='chapitre'),]$Rereadings
-  PartData[which(PartData$type=='chapitre'),]$rereads_dec_globratio =  PartData[which(PartData$type=='chapitre'),]$Decaled_rereadings / sumdec
+  PartData[which(PartData$type=='chapitre'),]$rereads_dec_tx =   PartData[which(PartData$type=='chapitre'),]$Decaled_rereadings / sumdec
   # for chapters
   tomeIds = PartData[which(PartData$type=='partie'),]$part_id
   for(i in 1:length(tomeIds)){
-    PartData[which(PartData$part_id==tomeIds[i]),]$rereads_dec_tx =  mean(PartData[which(PartData$parent_id==tomeIds[i]),]$rereads_dec_tx)
-    PartData[which(PartData$part_id==tomeIds[i]),]$rereads_dec_globratio =  mean(PartData[which(PartData$parent_id==tomeIds[i]),]$rereads_dec_globratio)
+    PartData[which(PartData$part_id==tomeIds[i]),]$rereads_dec_tx =  mean(PartData[which(PartData$parent_id==tomeIds[i]),]$rereads_dec_tx)    
   }
   # for all course
   PartData[which(PartData$type=='course'),]$rereads_dec_tx =  mean(PartData[which(PartData$type=='chapitre'),]$rereads_dec_tx)
-  PartData[which(PartData$type=='course'),]$rereads_dec_globratio =  mean(PartData[which(PartData$type=='chapitre'),]$rereads_dec_globratio)
+  
   
   ####################FIN####################
   PartData[PartData$type=='course',]$speed =
-    median(PartData[PartData$type=='chapitre',]$speed)
+    mean(PartData[PartData$type=='chapitre',]$speed)
   PartData[PartData$type=='course',]$rereadings_tx =
-    median(PartData[PartData$type=='chapitre',]$rereadings_tx)
+    mean(PartData[PartData$type=='chapitre',]$rereadings_tx)
   PartData[PartData$type=='course',]$Actions_tx =
-    median(PartData[PartData$type=='chapitre',]$Actions_tx)
+    mean(PartData[PartData$type=='chapitre',]$Actions_tx)
   PartData[PartData$type=='course',]$readers_tx =
-    median(PartData[PartData$type=='chapitre',]$readers_tx)
+    mean(PartData[PartData$type=='chapitre',]$readers_tx)
   PartData[PartData$type=='course',]$rs_tx =
-    median(PartData[PartData$type=='chapitre',]$rs_tx)
+    mean(PartData[PartData$type=='chapitre',]$rs_tx)
   PartData[PartData$type=='course',]$rupture_tx =
-    median(PartData[PartData$type=='chapitre',]$rupture_tx)
+    mean(PartData[PartData$type=='chapitre',]$rupture_tx)
   PartData[PartData$type=='course',]$norecovery_tx =
-    median(PartData[PartData$type=='chapitre',]$norecovery_tx)
+    mean(PartData[PartData$type=='chapitre',]$norecovery_tx)
   PartData[PartData$type=='course',]$rereads_tx =
-    median(PartData[PartData$type=='chapitre',]$rereads_tx)
+    mean(PartData[PartData$type=='chapitre',]$rereads_tx)
   
   PartData=PartData[,c("part_index","part_id","parent_id","title","type", "slug", "max.duration"  ,  "mean.duration"  ,
                        "median.duration" ,"q1.duration" , "q3.duration", "size", "speed" ,"interest" , "Actions_nb",
                        "Readers", "Rereaders" , "Readings","readers_tx", "Actions_tx","rs_tx",
-                       "Rereadings", "rereads_tx","rereads_globratio", "rereads_seq_tx" , "rereads_seq_globratio" , "rereads_dec_tx","rereads_dec_globratio", 
-                       "Sequential_rereadings" ,"Decaled_rereadings",
-                       "part_readers_rereaders"  , "course_readers_rereaders" , "reading_not_linear",
+                       "Rereadings", "rereads_tx", "rereads_seq_tx" ,  "rereads_dec_tx", 
+                       "Sequential_rereadings" ,"Decaled_rereadings",  "reading_not_linear",
                        "provenance_prev" , "provenance_not_linear", "provenance_past",  "provenance_future" ,
                        "destination_next", "destination_not_linear","destination_past" ,"destination_future"  ,
                        "rupture_tx", "norecovery_tx","resume_abnormal_tx" ,"resume_past","resume_future")]
@@ -1063,33 +1052,55 @@ course_data_calculation <- function(data,structure,indicators){
 course_issues_calculation <- function(data, structure,PartData){
   
   ######################INDICATORS INIT.###############################
-  minVisits=   	# Actions_tx
-    minReaders= 		# readers_tx 			<----------
-  minRS= 		# rs_tx  			<----------
-  maxSpeed= 		# speed
+  minInterest =
+  minVisits =   	# Actions_tx
+    minReaders = 		# readers_tx 			<----------
+  minRS = 		# rs_tx  			<----------
+  maxSpeed = 		# speed
     
-    maxRereadings= 	# rereads_tx
-    maxDijRereadings= 	# rereads_dec_tx
-    maxConjRereadings= 	# rereads_seq_tx
+    maxRereadings = 	# rereads_tx
+    maxDijRereadings = 	# rereads_dec_tx
+    maxConjRereadings = 	# rereads_seq_tx
     
-    readingLinearity= 	# reading_not_linear  		<----------
-  provenanceLinearity= 	# provenance_not_linear
-    provenanceFuture= 	# provenance_future
-    provenancePast= 	# provenance_past
-    destinationLinearity= # destination_not_linear
-    destinationFuture= 	# destination_future
-    destinationPast= 	# destination_past
+    readingLinearity = 	# reading_not_linear  		<----------
+  provenanceLinearity = 	# provenance_not_linear
+    provenanceFuture = 	# provenance_future
+    provenancePast = 	# provenance_past
+    destinationLinearity = # destination_not_linear
+    destinationFuture = 	# destination_future
+    destinationPast = 	# destination_past
     
-    maxRSStops= 		# rupture_tx
-    maxFinalStops= 	# norecovery_tx
-    resumeLinearity= 	# resume_abnormal_tx  		<----------
-  recoveryPast= 	# resume_past
-    recoveryFuture=	#resume_future
+    maxRSStops = 		# rupture_tx
+    maxFinalStops = 	# norecovery_tx
+    resumeLinearity = 	# resume_abnormal_tx  		<----------
+  recoveryPast = 	# resume_past
+    recoveryFuture =	#resume_future
     data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),content=character(),delta=numeric(),
                description=character(),suggestion_title=character(),suggestion_content=character()) 
   
   
   chaptersData = PartData[which(PartData$type=='chapitre'),]
+  
+   ####### TROP PEU D'INTERET
+  
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$interest)>2)&(chaptersData$interest<median(chaptersData$interest) ),c('part_id','interest')]
+  if(nrow(byChaps)>0){
+    byChaps$classe="interest"
+    byChaps$issueCode="RminInterest"
+    byChaps$content="Trop peu d'intérêt"
+    byChaps$delta  = median(chaptersData$interest,na.rm = TRUE)- byChaps$interest
+    val = round(median(chaptersData$interest,na.rm = TRUE)/ byChaps$interest,2)
+    byChaps$description=paste("Le taux d'intéret calculé pour ce chapitre est très réduit. Il est", val,"fois moins que le le taux médian des autres chapitres")
+    byChaps$suggestion_title="Revoir le titre et le contenu"
+    byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
+    Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
+    être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. 
+    Le cas échéant, il faudrait penser à le reformuler"
+    
+    #minVisits = rbind(byParts,byChaps)
+    minInterest = byChaps
+  }
+  
   ####### NOMBRE DE VISITES TROP PEU   
   
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$Actions_tx)>2)&(chaptersData$Actions_tx<median(chaptersData$Actions_tx) ),c('part_id','Actions_tx')]
