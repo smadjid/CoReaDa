@@ -13,7 +13,228 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses, nzTour) {
     $scope.global = Global;
 
+var compilFact = function(fact){
+/*
+        fact.name = ;
+        fact.description = ;
+        fact.suggestion_title = ;
+        fact.suggestion_content = ;
+        */
+  switch(fact.issueCode)
+  switch(code) {
+    case "interest":
+        fact.name ="Trop peu d'intérêt";
+        fact.description ="Ce chapitre suscite peu d’intérêt chez les lecteurs, le taux d'intérêt calculé étant très réduit: il est"+fact.error_value+
+    "fois moins que le le taux médian des autres chapitres.  Cet indicateur résumé l'intérêt en termes de nombre de visites, de nombre de lecteurs,"+ 
+    "de nombre de séances de lecture et la vitesse de lecture du chapitre.    Il serait intéressant de regarder ces indicateurs.";
+        fact.suggestion_title ="Revoir le contenu du chapitre, son titre et sa position dans le cours";
+        fact.suggestion_content ="Est-ce que le titre du chapitre  résume bien son contenu ?"+ 
+    "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
+    "être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. "+
+    "Le cas échéant, il faudrait penser à le reformuler";
+        break;
 
+     case "Actions_tx":
+       fact.name = "Trop peu de visites";
+        fact.description = "Ce chapitre est visité"+fact.error_value+"fois moins que le nombre médian de visites des autres chapitres";
+        fact.suggestion_title ="Revoir le titre et le contenu" ;
+        fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ?"+ 
+    "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
+    "être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. "+
+    "Le cas échéant, il faudrait penser à le reformuler";
+        break;
+
+   
+    case "readers_tx":
+        fact.name = "Trop peu de lecteurs";
+        fact.description = "Ce chapitre est lu par"+fact.error_value+"fois moins de lecteurs que le nombre médian de lecteurs des autres chapitres";
+        fact.suggestion_title = "Revoir le titre et le contenu";
+        fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ? "+
+    "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
+    "être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. "+
+    "Le cas échéant, il faudrait penser à le reformuler";
+        break;
+
+    case "rs_tx":
+        fact.name = "Trop peu de séances";
+        fact.description = "Ce chapitre est lû dans très peu de séances : "+fact.error_value+"fois moins que le nombre médian de séances appraissent les autres chapitres";
+        fact.suggestion_title = "Revoir le titre et le contenu";
+        fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ? "+
+    "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
+    "être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. "+
+    "Le cas échéant, il faudrait penser à le reformuler";
+        break;
+
+    case "speed":
+    if(fact.issueSubCode=='max'){
+        fact.name = "Lecture trop rapide";
+        fact.description = "Ce chapitre est probablement trop longue ou contient beaucoup de notions complexes ou nouvelles, sa vitesse moyenne de lecture étant"+fact.error_value+
+        "fois inférieure à la vitesse moyenne de lecture des autres chapitres";
+        fact.suggestion_title = "Réviser le chapitre ou le scinder";
+        fact.suggestion_content = "Le chapitre doit être plus simple à lire/comprendre : "+
+    "- utiliser un vocabulaire plus commun ou directement défini dans le texte, "+
+    "- vérifier l'enchaînement logique des propos"+
+    "- ajouter des exemples/analogies pour améliorer la compréhension"+
+    "- éviter les dispersions : aller à l'essentiel."; 
+    }
+    else{
+        fact.name = "Lecture trop lente";
+        fact.description = "Ce chapitre  comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant"+fact.error_value+
+        "fois supéreire à la vitesse moyenne de lecture des autres chapitres";
+        fact.suggestion_title = "Réviser ou supprimer le chapitre";
+        fact.suggestion_content = "Le chapitre doit être plus simple à lire/comprendre : "+
+    "- utiliser un vocabulaire plus commun ou directement défini dans le texte, "+
+    "- vérifier l'enchaînement logique des propos"+
+    "- ajouter des exemples/analogies pour améliorer la compréhension"+
+    "- éviter les dispersions : aller à l'essentiel.";    
+    } 
+        break;   
+
+   
+    case 'rereads_tx':
+        fact.name = "Trop de relectures";
+        fact.description ="Ce chapitre est en moyenne relue"+fact.error_value+"fois plus que le nombre moyen de relectures des autres chapitres" ;
+        fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchainement des idées";
+        fact.suggestion_content = "Le chapitre et les sections qui le composent doivent être plus simples à  lire et comprendre : "+
+    "- utiliser un vocabulaire plus commun ou directement défini dans le texte, "
+    "- vérifier l'enchaînement logique des propos"
+    "- ajouter des exemples/analogies pour améliorer la compréhension"
+    "- éviter les dispersions : aller à  l'essentiel."
+    "Sinon, regarder l'indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion";;
+        break;
+
+    case 'rereads_seq_tx':
+        fact.name = "Beaucoup de relectures conjointes (i.e. dans les mêmes séances de lecture)";
+        fact.description = "Ce chapitre est en moyenne relu successivement dans les mêmes séances de lecture"+ fact.error_value +"fois plus que les autres chapitres";
+        fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchainement des sections";
+        fact.suggestion_content ="Ce chapitre est un préquis ou contient des sections qui snt des prérquis à la lecture d’autre(s) chapitre(s)/partie(s). "+
+    "N’y a t-il pas une restructuration du cours, du chapitre et de la partie le contenant plus intéressante pour éviter"+
+    " ce phénomène (par exemple, déplacer le chapitre ou l’englober dans une autre chapitre ou partie) ?   "; 
+        break;
+
+    case 'rereads_dec_tx':
+        fact.name = "Beaucoup de relectures disjointes (i.e. dans des séances de lecture distinctes)";
+        fact.description = "Les sections de ce chapitre sont en moyenne relues dans des sections différentes"+ fact.error_value +"fois plus que le nombre moyen de relectures disjointes des sections des autres chapitres";
+        fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchainement des sections";
+        fact.suggestion_content = "Ce chapitre est un préquis ou contient des sections qui snt des prérquis à la lecture d’autre(s) chapitre(s)/partie(s). "+
+    "N’y a t-il pas une restructuration du cours, du chapitre et de la partie le contenant plus intéressante pour éviter ce phénomène "+
+    "(par exemple, déplacer le chapitre ou l’englober dans une autre chapitre ou partie) ?    ";
+        break;
+
+    case 'reading_not_linear':
+        fact.name = "Trop de navigation non linéaires (non consécutives) impliquant se chapitre";
+        fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans la structure du cours.";
+        fact.suggestion_title ="Revoir le contenu et la position du chapitre dans le plan du cours" ;
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?";
+        break;
+
+     case 'provenance_not_linear':
+        fact.name = "Trop d\'arrivées non linéaires (non consécutives) sur se chapitre";
+        fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans la structure du cours.";
+        fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"+
+    "Si vous remarquez beaucoup de retour vers ce chapitre depuis des chapitres bien avant, il se peut que "+
+    "ce  chapitre soitun pré-requis à la lecture d'autre(s) chapitre(s) ou partie(s), n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?";
+        break;
+
+    case 'provenance_past':
+        fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en arrière";
+        fact.description = paste("Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci se situe bien avant le chapitre précédent dans la structure du cours.");
+        fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"  ;
+        break;
+
+    case 'provenance_future':
+        fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en avant";
+        fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci  est un chapitre situé après ce chapitre dans le plan du cours";
+        fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
+        fact.suggestion_content =     "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"+
+    "Il se peut que  ce chapitre soit un pré-requis important à la lecture d'autre(s) chapitre(s) ou partie(s), "+
+    "n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?";;
+        break;
+
+    case 'destination_not_linear':
+        fact.name = "Trop de sauts vers des chapitres lointains en avant ou en arrière";
+        fact.description ="Dans"+ fact.error_value +"% des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la structure du cours mais est un chapitre distant." ;
+        fact.suggestion_title ="Revoir le contenu et la position du chapitre dans le plan du cours" ;
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan du cours ?"+
+    "Est-ce que ce chapitre et ceux voisins qui le suivent sont réellement pertinents ?"+
+    "Essayez de revoir ce contenu afin que les lecteurs n'aient plus besoin d'aller sur d'autres chapitres pour comprendre ce dernier.";;
+        break;
+
+    case 'destination_past':
+        fact.name = "Trop de sauts vers des chapitres plus en arrière";
+        fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu après ce chapitre se situe avant celui-ci dans la structure du cours";
+        fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan du cours ?"+
+    "Est-ce que ce chapitre et ceux voisins qui le suivent sont réellement pertinents ?"+ 
+    "Essayez de revoir ce contenu afin que les lecteurs n'aient plus besoin d'aller sur d'autres chapitres pour comprendre ce dernier.";;
+        break;
+
+    case 'destination_future':
+        fact.name ="Trop de sauts vers des chapitres lointains" ;
+        fact.description ="Dans",+fact.error_value+"% des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la structure du cours mais se siture plus en avant." ;
+        fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan du cours ?"+
+    "Est-ce que ce chapitre et ceux voisins qui le suivent sont réellement pertinents ?" +
+    "ssayez de revoir ce contenu afin que les lecteurs n'aient plus besoin d'aller sur d'autres chapitres pour comprendre ce dernier.";;
+        break;
+
+    case 'rupture_tx':
+        fact.name = "Trop de séances de lecture se terminent sur ce chapitre";
+        fact.description =fact.error_value+"% des séances de lecture se terminent sur ce chapitre.";
+        fact.suggestion_title = "Réécrire et simplifier ce chapitre";
+        fact.suggestion_content = "Ce chapitre a besoin d\'être plus simple à lire et à comprendre : "+
+    "- utiliser un vocabulaire plus commun ou directement défini dans le texte, "+
+    "- vérifier l'enchaînement logique des propos"+
+    "- ajouter des exemples/analogies pour améliorer la compréhension"+
+    "- éviter les dispersions : aller à l\'essentiel";;
+        break;
+
+    case 'norecovery_tx':
+        fact.name = "Trop d'arrêts définitifs de la lecture sur ce chapitre";
+        fact.description =fact.error_value+ "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur ce chapitre.";
+        fact.suggestion_title = "Réécrire et simplifier ce chapitre";
+        fact.suggestion_content = "Ce chapitre a besoin d\'être plus simple à lire et à comprendre : "+
+    "- utiliser un vocabulaire plus commun ou directement défini dans le texte, "+
+    "- vérifier l'enchaînement logique des propos"+
+    "- ajouter des exemples/analogies pour améliorer la compréhension"+
+    "- éviter les dispersions : aller à l\'essentiel";;
+        break;
+
+    case 'resume_abnormal_tx':
+        fact.name = "Après arrêt de la lecture sur ce chapitre, trop de de reprise sur des chapitres lointains";
+        fact.description =fact.error_value+"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres précédents." ;
+        fact.suggestion_title ="Revoir ce chapitre et les chapitres voisins directs"
+        fact.suggestion_content = "Les chapitres précédents voisins de  ce chapitre doivent probablement être des pré-requis importants pour continuer la lecture. "+
+    "Dans le cas contraire, ces chapitres-là doivent peut-être être plus simple à lire/comprendre (cf. problèmes éventuels de relecture pour les chapitres en question).";
+        break;
+
+    case 'resume_past':
+        fact.name ="Après arrêt de la lecture sur ce chapitre, trop de de reprise se font sur des chapitres précédents";
+        fact.description =fact.error_value+"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres précédents.";
+        fact.suggestion_title = "Revoir ce chapitre et les chapitres voisins directs";
+        fact.suggestion_content = "Les chapitres précédents voisins de  ce chapitre doivent probablement être des pré-requis importants pour continuer la lecture. "+
+    "Dans le cas contraire, ces chapitres-là doivent peut-être être plus simple à lire/comprendre (cf. problèmes éventuels de relecture pour les chapitres en question).";
+        break; 
+
+    case 'resume_future':
+        fact.name = "Après arrêt de la lecture sur ce chapitre, trop de de reprise se font sur des chapitres suivants éloignés" ;
+        fact.description =fact.error_value+"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres suivants éloignés (au-dela du prochain chapitre";
+        fact.suggestion_title = "Revoir ce chapitre et les chapitres voisins directs";
+        fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan du cours ?"+
+    "Est-ce que ce chapitre et ceux voisines suivants sont réellement pertinents ?";
+        break;        
+
+    
+
+    
+
+   
+
+}
+
+}
 var resetIndicators = function(){
       return [      
         {'class':'reading','code':'interest', 'value':'interest', 'label':'Intérêt', 'inspectorText':'aux visites', 
@@ -220,7 +441,8 @@ var completeCourseParts = function(){
 
 
       chapter.url = $scope.course.url+'/'+chapter.url;
-      angular.forEach(chapter.facts,function(fact){        
+      angular.forEach(chapter.facts,function(fact){ 
+          compilFact(fact);
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
           fact.tome=tome._id;
           fact.partId=chapter.id;

@@ -299,6 +299,8 @@ import_course();*/
                     'value':part_facts[i].value,
                     'classof':part_facts[i].classe,
                     'issueCode':part_facts[i].classe,
+                    'issueSubCode':part_facts[i].issueCode,
+                    'error_value':part_facts[i].error_value,
                     'type':part_facts[i].type,
                     'elementType':'fact',
                     'description':part_facts[i].description,

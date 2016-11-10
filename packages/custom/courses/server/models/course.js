@@ -69,6 +69,9 @@ var FactSchema = new Schema({
   issueCode: {
     type: String
   },
+  issueSubCode: {
+    type: String
+  },
   type: {
     type: String
   },
@@ -76,6 +79,9 @@ var FactSchema = new Schema({
     type:String
   },
   value: {
+    type: String
+  },  
+  error_value: {
     type: String
   },  
   description: {

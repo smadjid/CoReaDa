@@ -1,4 +1,3 @@
-
 main <- function (jsonObj) {
 options(stringsAsFactors=FALSE)
 #options(warn=-1)
@@ -111,6 +110,11 @@ do_fct = sessionization(data,structure)
 data = do_fct$data
 structure = do_fct$structure
 
+################ Taille manuelle : size
+#write.csv_f(structure, file='structure.csv')
+#manuellement puis
+#structure = read.csv2('structure.csv')
+#save(structrue, file='structure.rdata')
 indicators = indicators_calculation(data,structure)
 data = indicators$data
 structure = indicators$structure
@@ -133,7 +137,7 @@ CourseData=CourseDataCalc$CourseData
 PartData = CourseDataCalc$PartData
 TransitionsData =  CourseDataCalc$TransitionsData
 
-
+save(PartData,file='PartData.rdata')
 
 meltParts=melt(PartData, id.vars = 'id')
   meltedCourseStats = melt(CourseData,  id.vars ="id")  
@@ -1075,8 +1079,7 @@ course_issues_calculation <- function(data, structure,PartData){
     resumeLinearity = 	# resume_abnormal_tx  		<----------
   recoveryPast = 	# resume_past
     recoveryFuture =	#resume_future
-    data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),content=character(),delta=numeric(),
-               description=character(),suggestion_title=character(),suggestion_content=character()) 
+    data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),delta=numeric(),norm_value=numeric(),error_value=numeric()) 
   
   
   chaptersData = PartData[which(PartData$type=='chapitre'),]
@@ -1086,18 +1089,11 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$interest)>2)&(chaptersData$interest<median(chaptersData$interest) ),c('part_id','interest')]
   if(nrow(byChaps)>0){
     byChaps$classe="interest"
-    byChaps$issueCode="RminInterest"
-    byChaps$content="Trop peu d'intérêt"
-    byChaps$delta  = median(chaptersData$interest,na.rm = TRUE)- byChaps$interest
-    val = round(median(chaptersData$interest,na.rm = TRUE)/ byChaps$interest,2)
-    byChaps$description=paste("Le taux d'intéret calculé pour ce chapitre est très réduit. Il est", val,"fois moins que le le taux médian des autres chapitres")
-    byChaps$suggestion_title="Revoir le titre et le contenu"
-    byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
-    Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
-    être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. 
-    Le cas échéant, il faudrait penser à le reformuler"
+    byChaps$issueCode="min"    
+    byChaps$delta  = median(chaptersData$interest,na.rm = TRUE)- byChaps$interest       
+    byChaps$norm_value = median(chaptersData$interest,na.rm = TRUE)
+    byChaps$error_value = round(median(chaptersData$interest,na.rm = TRUE)/ byChaps$interest,2)
     
-    #minVisits = rbind(byParts,byChaps)
     minInterest = byChaps
   }
   
@@ -1106,18 +1102,9 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$Actions_tx)>2)&(chaptersData$Actions_tx<median(chaptersData$Actions_tx) ),c('part_id','Actions_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="Actions_tx"
-    byChaps$issueCode="RminVisit"
-    byChaps$content="Trop peu de visites"
+    byChaps$issueCode="min"
     byChaps$delta  = median(chaptersData$Actions_tx,na.rm = TRUE)- byChaps$Actions_tx
-    val = round(median(chaptersData$Actions_tx,na.rm = TRUE)/ byChaps$Actions_tx,2)
-    byChaps$description=paste("Ce chapitre est visité", val,"fois moins que le nombre médian de visites des autres chapitres")
-    byChaps$suggestion_title="Revoir le titre et le contenu"
-    byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
-    Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
-    être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. 
-    Le cas échéant, il faudrait penser à le reformuler"
-    
-    #minVisits = rbind(byParts,byChaps)
+    byChaps$error_value = round(median(chaptersData$Actions_tx,na.rm = TRUE)/ byChaps$Actions_tx,2)   
     minVisits = byChaps
   }
   
@@ -1126,88 +1113,31 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$readers_tx)>2)&(chaptersData$readers_tx<median(chaptersData$readers_tx) ),c('part_id','readers_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="readers_tx"
-    byChaps$issueCode="RminReaders"
-    byChaps$content="Trop peu de lecteurs"
+    byChaps$issueCode="min"    
     byChaps$delta  = median(chaptersData$readers_tx,na.rm = TRUE)- byChaps$readers_tx
-    val = round(median(chaptersData$readers_tx,na.rm = TRUE)/ byChaps$readers_tx,2)
-    byChaps$description=paste("Ce chapitre est lu par", val,"fois moins de lecteurs que le nombre médian de lecteurs des autres chapitres")
-    byChaps$suggestion_title="Revoir le titre et le contenu"
-    byChaps$suggestion_content="Est-ce que le titre du chapitre  résume bien son contenu ? 
-    Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il
-    être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. 
-    Le cas échéant, il faudrait penser à le reformuler"
-    
-    #minVisits = rbind(byParts,byChaps)
+    byChaps$error_value = round(median(chaptersData$readers_tx,na.rm = TRUE)/ byChaps$readers_tx,2)   
     minReaders = byChaps
   }
   
+    ####### NOMBRE DE RS TROP PEU   
   
-  ####### DUREE MIN
-  #NO DUration
-  if(FALSE){
-    DurationData = PartData[which(PartData$type=='section'),c('part_id','mean.duration')]
-    
-    byParts = DurationData[which(DurationData$mean.duration<=quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
-    byParts$classe="mean.duration"
-    byParts$issueCode="RminDuration"
-    byParts$content="Temps de lecture trop court"
-    val = round(median(DurationData$mean.duration,na.rm = TRUE) / byParts$mean.duration,0)
-    byParts$description=paste("Cette section est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
-    byParts$suggestion_title="Réviser ou supprimer la section"
-    byParts$suggestion_content="La section doit apporter plus d'informations nouvelles / intéressantes : 
-    Si cette section est réellement nécessaire : peut-elle être reformulée, voire intégrée dans un autre chapitre ou une autre section du cours ?
-    Sinon, la supprimer et revoir le plan du chapitre et du cours."
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$rs_tx)>2)&(chaptersData$rs_tx<median(chaptersData$rs_tx) ),c('part_id','rs_tx')]
+  if(nrow(byChaps)>0){
+    byChaps$classe="rs_tx"
+    byChaps$issueCode="min"
+    byChaps$delta  = median(chaptersData$rs_tx,na.rm = TRUE)- byChaps$rs_tx
+     byChaps$error_value = round(median(chaptersData$rs_tx,na.rm = TRUE)/ byChaps$rs_tx,2)    
+    minRS = byChaps
   }
   
-  DurationData = PartData[which(PartData$type=='chapitre'),c('part_id','mean.duration')]
-  
-  byChaps = DurationData[which(DurationData$mean.duration<=quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
-  if(nrow(byChaps)>0){  byChaps$classe="mean.duration"
-                        byChaps$issueCode="RminDuration"
-                        byChaps$content="Temps de lecture trop court"
-                        val = round(median(DurationData$mean.duration,na.rm = TRUE) / byChaps$mean.duration,0)
-                        byChaps$description=paste("Ce chapitre est plutôt survolé : son temps de lecture est",val,"fois inférieur au temps médian")
-                        byChaps$suggestion_title="Réviser ou supprimer le chapitre"
-                        byChaps$suggestion_content="Le chapitre doit apporter plus d'informations nouvelles / intéressantes : 
-                        Si  le chapitre est réellement nécessaire : peut-il être reformulé, voire intégré dans un autre chapitre ou  partie du cours ?
-                        Sinon, le supprimer et revoir le plan de la partie chapitre et du cours."
-                        
-                        if(FALSE){
-                          DurationData = PartData[which(PartData$type=='partie'),c('part_id','mean.duration')]
-                          
-                          byTomes = DurationData[which(DurationData$mean.duration<=quantile(DurationData$mean.duration,0.10,na.rm = TRUE) ),]
-                          byTomes$classe="mean.duration"
-                          byTomes$issueCode="RminDuration"
-                          byTomes$content="Temps de lecture trop court"
-                          val = round(median(DurationData$mean.duration,na.rm = TRUE) / byTomes$mean.duration,0)
-                          byTomes$description=paste("Cette partie est plutôt survolée : son temps de lecture est",val,"fois inférieur au temps médian")
-                          byTomes$suggestion_title="Réviser ou supprimer la partie"
-                          byTomes$suggestion_content="La partie doit apporter plus d'informations nouvelles / intéressantes : 
-                          Si la partie est réellement nécessaire : peut-elle être reformulée, voire intégrée dans une partie du cours ?
-                          Sinon, la supprimer et revoir le plan du cours."  
-                        }
-                        
-                        #minDuration =  rbind(byParts,byChaps,byTomes)
-                        minDuration =  byChaps
-                        }
   ################## Vitesse MAX  
   if(min(PartData$speed>0)){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>2)&(chaptersData$speed>median(chaptersData$speed) ),c('part_id','speed')]  
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
-    byChaps$issueCode="RmaxSpeed"
-    byChaps$content="Lecture trop rapide"
+    byChaps$issueCode="max"
     byChaps$delta = byChaps$speed - median(chaptersData$speed,na.rm = TRUE) 
-    val = round(byChaps$speed / median(chaptersData$speed,na.rm = TRUE) ,2)
-    byChaps$description=paste("Ce chapitre  comporte probablement trop peu d'éléments nouveaux, intéressants : la vitesse moyenne de lecture étant",val,"fois supéreire à la vitesse moyenne de lecture des autres chapitres")
-    byChaps$suggestion_title="Réviser ou supprimer le chapitre"
-    byChaps$suggestion_content="Le chapitre doit être plus simple à lire/comprendre : 
-    - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-    - vérifier l'enchaînement logique des propos
-    - ajouter des exemples/analogies pour améliorer la compréhension
-    - éviter les dispersions : aller à l'essentiel."
-    
-    #minSpeed =  rbind(byParts,byChaps)
+    byChaps$error_value = round(byChaps$speed / median(chaptersData$speed,na.rm = TRUE) ,2)
     minSpeed =  byChaps
   }
   }
@@ -1216,19 +1146,9 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>2)&(chaptersData$speed<median(chaptersData$speed) ),c('part_id','speed')]
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
-    byChaps$issueCode="RminSpeed"
-    byChaps$content="Lecture trop rapide"
+    byChaps$issueCode="min"
     byChaps$delta = median(chaptersData$speed,na.rm = TRUE) /byChaps$speed
-    val = round(median(chaptersData$speed,na.rm = TRUE) /byChaps$speed  ,2)
-    byChaps$description=paste("Cette section est probablement trop longue ou contient beaucoup de notions complexes ou nouvelles, sa vitesse moyenne de lecture étant", val,"fois inférieure à la vitesse moyenne de lecture des autres section")
-    byChaps$suggestion_title="Réviser le chapitre"
-    byChaps$suggestion_content="Le chapitre doit être plus simple à lire/comprendre : 
-    - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-    - vérifier l'enchaînement logique des propos
-    - ajouter des exemples/analogies pour améliorer la compréhension
-    - éviter les dispersions : aller à l'essentiel."
-    
-    #  maxSpeed =  rbind(byParts,byChaps)
+    byChaps$error_value = round(median(chaptersData$speed,na.rm = TRUE) /byChaps$speed  ,2)
     maxSpeed =  byChaps
   }
   }
@@ -1237,21 +1157,9 @@ course_issues_calculation <- function(data, structure,PartData){
                            (chaptersData$rereads_tx>median(chaptersData$rereads_tx) ),c('part_id','rereads_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="rereads_tx"
-    byChaps$issueCode="RRmax"
-    byChaps$content="Trop de relectures"
+    byChaps$issueCode="max"   
     byChaps$delta=byChaps$rereads_tx-median(chaptersData$rereads_tx)
-    val = round(byChaps$rereads_tx/median(chaptersData$rereads_tx),2)
-    byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues",val,"fois plus que le nombre moyen de relectures des sections des autres chapitres")
-    byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
-    byChaps$suggestion_content="Le chapitre et ses sections doivent être plus simples à  lire et comprendre : 
-    - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-    - vérifier l'enchaînement logique des propos
-    - ajouter des exemples/analogies pour améliorer la compréhension
-    - éviter les dispersions : aller à  l'essentiel.
-    Sinon, regarder l'indicateur de relecture plus spécifique (même séance ou séances disjointes) pour suggestion"
-    
-    
-    #maxRereadings =  rbind(byParts,byChaps)
+    byChaps$error_value = round(byChaps$rereads_tx/median(chaptersData$rereads_tx),2)
     maxRereadings =  byChaps
   }
   
@@ -1261,15 +1169,9 @@ course_issues_calculation <- function(data, structure,PartData){
   if(nrow(byChaps)>0){
     byChaps=byChaps[,c('part_id','rereads_seq_tx')]
     byChaps$classe="rereads_seq_tx"
-    byChaps$issueCode="rereads_seq_tx"
-    byChaps$content="Beaucoup de relectures conjointes (i.e. dans les mêmes séances de lecture)"
+    byChaps$issueCode="max"    
     byChaps$delta=byChaps$rereads_seq_tx-median(chaptersData$rereads_seq_tx)
-    val = round(byChaps$rereads_seq_tx/median(chaptersData$rereads_seq_tx),2)
-    byChaps$description=paste("Ce chapitre est en moyenne relu successivement dans les mêmes séances de lecture",val,"fois plus que les autres chapitres")
-    byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
-    byChaps$suggestion_content="Ce chapitre est un préquis ou contient des sections qui snt des prérquis à la lecture d’autre(s) chapitre(s)/partie(s). 
-    N’y a t-il pas une restructuration du cours, du chapitre et de la partie le contenant plus intéressante pour éviter ce phénomène (par exemple, déplacer le chapitre ou l’englober dans une autre chapitre ou partie) ?
-    "
+    byChaps$error_value = round(byChaps$rereads_seq_tx/median(chaptersData$rereads_seq_tx),2)    
     maxConjRereadings =  byChaps 
   }
   
@@ -1279,47 +1181,29 @@ course_issues_calculation <- function(data, structure,PartData){
   if(nrow(byChaps)>0){
     byChaps=byChaps[,c('part_id','rereads_dec_tx')]
     byChaps$classe="rereads_dec_tx"
-    byChaps$issueCode="rereads_dec_tx"
-    byChaps$content="Beaucoup de relectures disjointes (i.e. dans des séances de lecture distinctes)"
+    byChaps$issueCode="max"
     byChaps$delta=byChaps$rereads_dec_tx-median(chaptersData$rereads_dec_tx)
-    val = round(byChaps$rereads_dec_tx/median(chaptersData$rereads_dec_tx),2)
-    byChaps$description=paste("Les sections de ce chapitre sont en moyenne relues dans des sections différentes",val,"fois plus que le nombre moyen de relectures disjointes des sections des autres chapitres")
-    byChaps$suggestion_title="Simplifier l'écriture du chapitre et vérifier l'enchainement des sections"
-    byChaps$suggestion_content="Ce chapitre est un préquis ou contient des sections qui snt des prérquis à la lecture d’autre(s) chapitre(s)/partie(s). 
-    N’y a t-il pas une restructuration du cours, du chapitre et de la partie le contenant plus intéressante pour éviter ce phénomène (par exemple, déplacer le chapitre ou l’englober dans une autre chapitre ou partie) ?
-    "
+    byChaps$error_value = round(byChaps$rereads_dec_tx/median(chaptersData$rereads_dec_tx),2)
+    
     maxDijRereadings =  byChaps
   }
   ####### Reading Linearity
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$reading_not_linear)>2)&
-                           (chaptersData$reading_not_linear>median(chaptersData$reading_not_linear) ),c('part_id','reading_not_linear')]
-  
+                           (chaptersData$reading_not_linear>median(chaptersData$reading_not_linear) ),c('part_id','reading_not_linear')]  
   if(nrow(byChaps)>0){
     byChaps$classe="reading_not_linear"
-    byChaps$issueCode="TransProvShift"
-    byChaps$content="Trop de navigation non linéaires (non consécutives) impliquant se chapitre"
+    byChaps$issueCode="max"    
     byChaps$delta = byChaps$reading_not_linear
-    byChaps$description=paste("Dans",round(100*byChaps$reading_not_linear,2),"% des cas, le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans la structure du cours.")
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"
-    
-    
+    byChaps$error_value =round(100*byChaps$reading_not_linear,2)
     readingLinearity = byChaps
   }
   ####### Provenance Linearity
   byChaps=subset(chaptersData, chaptersData$provenance_not_linear>0.5 , select=c('part_id','provenance_not_linear')) 
   if(nrow(byChaps)>0){
     byChaps$classe="provenance_not_linear"
-    byChaps$issueCode="TransProvShift"
-    byChaps$content="Trop d\'arrivées non linéaires (non consécutives) sur se chapitre"
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$provenance_not_linear,2)    
     byChaps$delta = byChaps$provenance_not_linear
-    byChaps$description=paste("Dans",round(100*byChaps$provenance_not_linear,2),"% des cas, le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans la structure du cours.")
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?
-    Si vous remarquez beaucoup de retour vers ce chapitre depuis des chapitres bien avant, il se peut que 
-    ce  chapitre soitun pré-requis à la lecture d'autre(s) chapitre(s) ou partie(s), n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
-    
-    
     provenanceLinearity = byChaps
   }
   
@@ -1327,15 +1211,9 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps=subset(chaptersData, (chaptersData$provenance_future>0.5) && (chaptersData$id!=1) , select=c('part_id','provenance_future')) 
   if(nrow(byChaps)>0){
     byChaps$classe="provenance_future"
-    byChaps$issueCode="TransProvFuture"
-    byChaps$content="Trop d\'arrivées non linéaires depuis des chapitres plus en avant"
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$provenance_future,2)
     byChaps$delta = byChaps$provenance_future
-    byChaps$description=paste("Dans",round(100*byChaps$provenance_not_linear,2),"% des cas, le chapitre lu avant celui-ci  est un chapitre situé après ce chapitre dans le plan du cours")
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?
-    Il se peut que  ce chapitre soit un pré-requis important à la lecture d'autre(s) chapitre(s) ou partie(s), n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?"
-    
-    
     provenanceFuture = byChaps
   }
   
@@ -1344,12 +1222,8 @@ course_issues_calculation <- function(data, structure,PartData){
   if(nrow(byChaps)>0){
     byChaps$classe="provenance_past"
     byChaps$issueCode="TransProvShift"
-    byChaps$content="Trop d\'arrivées non linéaires depuis des chapitres plus en arrière"
+    byChaps$error_value=round(100*byChaps$provenance_past,2)    
     byChaps$delta = byChaps$provenance_past
-    byChaps$description=paste("Dans",round(100*byChaps$provenance_past,2),"% des cas, le chapitre lu avant celui-ci se situe bien avant le chapitre précédent dans la structure du cours.")
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"  
-    
     provenancePast = byChaps
   }
   
@@ -1358,42 +1232,26 @@ course_issues_calculation <- function(data, structure,PartData){
   if(nrow(byChaps)>0){
     byChaps$classe="destination_not_linear"
     byChaps$issueCode="TransDestShift"
-    byChaps$content="Trop de sauts vers des chapitres lointains"
-    byChaps$description=paste("Dans",round(100*byChaps$destination_not_linear,2),"% des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la structure du cours mais est un chapitre distant.")
+    byChaps$error_value=round(100*byChaps$destination_not_linear,2)
     byChaps$delta=byChaps$destination_not_linear
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?
-    Est-ce que ce chapitre et ceux voisins qui le suivent sont réellement pertinents ? Essayez de revoir ce contenu afin que les lecteurs n'aient plus besoin d'aller sur d'autres chapitres pour comprendre ce dernier."
-    
     destinationLinearity = byChaps
   }
   ####### Destination Future
   byChaps=subset(chaptersData, chaptersData$destination_future >0.3 , select=c('part_id','destination_future')) 
   if(nrow(byChaps)>0){
     byChaps$classe="destination_future"
-    byChaps$issueCode="TransDestFuture"
-    byChaps$content="Trop de sauts vers des chapitres lointains"
-    byChaps$description=paste("Dans",round(100*byChaps$destination_future,2),"% des cas, 
-                              le chapitre lu après ce chapitre n'est pas celui qui le suit dans la structure du cours mais se siture plus en avant.")
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$destination_future,2)    
     byChaps$delta=byChaps$destination_future
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?
-    Est-ce que ce chapitre et ceux voisins qui le suivent sont réellement pertinents ? Essayez de revoir ce contenu afin que les lecteurs n'aient plus besoin d'aller sur d'autres chapitres pour comprendre ce dernier."
-    
     destinationFuture = byChaps
   }
   ####### Destination Past
   byChaps=subset(chaptersData, chaptersData$destination_past >0.5 , select=c('part_id','destination_past')) 
   if(nrow(byChaps)>0){
     byChaps$classe="destination_past"
-    byChaps$issueCode="TransDestPast"
-    byChaps$content="Trop de sauts vers des chapitres plus en arrière"
-    byChaps$description=paste("Dans",round(100*byChaps$destination_past,2),"% des cas, le chapitre lu après ce chapitre se situe avant celui-ci dans la structure du cours")
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$destination_past,2)    
     byChaps$delta=byChaps$destination_past
-    byChaps$suggestion_title="Revoir le contenu et la position du chapitre dans le plan du cours"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?
-    Est-ce que ce chapitre et ceux voisins qui le suivent sont réellement pertinents ? Essayez de revoir ce contenu afin que les lecteurs n'aient plus besoin d'aller sur d'autres chapitres pour comprendre ce dernier."
-    
     destinationPast = byChaps
   }
   ########### Session end
@@ -1401,16 +1259,9 @@ course_issues_calculation <- function(data, structure,PartData){
                            (chaptersData$rupture_tx>median(chaptersData$rupture_tx) ),c('part_id','rupture_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="rupture_tx"
-    byChaps$issueCode="StopRSEnd"
-    byChaps$content="Trop de séances de lecture se terminent sur ce chapitre"
-    byChaps$description=paste(round(100*byChaps$rupture_tx,2),"% des séances de lecture se terminent sur ce chapitre.")
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$rupture_tx,2)    
     byChaps$delta=round(100*byChaps$rupture_tx,2)
-    byChaps$suggestion_title="Réécrire et simplifier ce chapitre"
-    byChaps$suggestion_content="Ce chapitre a besoin d\'être plus simple à lire et à comprendre : 
-    - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-    - vérifier l'enchaînement logique des propos
-    - ajouter des exemples/analogies pour améliorer la compréhension
-    - éviter les dispersions : aller à l\'essentiel"
     maxRSStops =   byChaps
   }
   
@@ -1420,18 +1271,9 @@ course_issues_calculation <- function(data, structure,PartData){
   
   if(nrow(byChaps)>0){
     byChaps$classe="norecovery_tx"
-    byChaps$issueCode="StopRSExit"
-    byChaps$content=paste("Trop d'arrêts définitifs de la lecture sur ce chapitre")
+    byChaps$issueCode="max"    
     byChaps$delta=byChaps$norecovery_tx - median(chaptersData$norecovery_tx)
-    val = round(100*byChaps$norecovery_tx,2)
-    byChaps$description=paste(val, "% des fins définitives de la lecture  (sans reprises ultérieures) se passent sur ce chapitre.")
-    byChaps$suggestion_title="Réécrire et simplifier ce chapitre"
-    byChaps$suggestion_content="Ce chapitre a besoin d\'être plus simple à lire et à comprendre : 
-    - utiliser un vocabulaire plus commun ou directement défini dans le texte, 
-    - vérifier l'enchaînement logique des propos
-    - ajouter des exemples/analogies pour améliorer la compréhension
-    - éviter les dispersions : aller à l\'essentiel"
-    
+    byChaps$error_value = round(100*byChaps$norecovery_tx,2)
     maxFinalStops =   byChaps
   }
   
@@ -1439,14 +1281,9 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps = subset(chaptersData, chaptersData$resume_abnormal_tx > 0.5 , select=c('part_id','resume_abnormal_tx')) 
   if(nrow(byChaps)>0){
     byChaps$classe="resume_abnormal_tx"
-    byChaps$issueCode="StopResumeBack"
-    byChaps$content="Après arrêt de la lecture sur ce chapitre, trop de de reprise sur des chapitres lointains (en avant ou en arrière)"
-    byChaps$delta = byChaps$resume_abnormal_tx
-    byChaps$description=paste(round(100*byChaps$resume_abnormal_tx,2),"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres précédents.")
-    byChaps$suggestion_title="Revoir ce chapitre et les chapitres voisins directs"
-    byChaps$suggestion_content="Les chapitres précédents voisins de  ce chapitre doivent probablement être des pré-requis importants pour continuer la lecture. 
-    Dans le cas contraire, ces chapitres-là doivent peut-être être plus simple à lire/comprendre (cf. problèmes éventuels de relecture pour les chapitres en question)."
-    
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$resume_abnormal_tx,2)
+    byChaps$delta = byChaps$resume_abnormal_tx;
     resumeLinearity =   byChaps
   }
   
@@ -1454,34 +1291,24 @@ course_issues_calculation <- function(data, structure,PartData){
   byChaps = subset(chaptersData, chaptersData$resume_past > 0.33 , select=c('part_id','resume_past')) 
   if(nrow(byChaps)>0){
     byChaps$classe="resume_past"
-    byChaps$issueCode="StopResumeBack"
-    byChaps$content="Après fait de lecture sur ce chapitre, trop de de reprise se font sur des chapitres précédents"
-    byChaps$delta = byChaps$resume_past
-    byChaps$description=paste(round(100*byChaps$resume_past,2),"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres précédents.")
-    byChaps$suggestion_title="Revoir ce chapitre et les chapitres voisins directs"
-    byChaps$suggestion_content="Les chapitres précédents voisins de  ce chapitre doivent probablement être des pré-requis importants pour continuer la lecture. 
-    Dans le cas contraire, ces chapitres-là doivent peut-être être plus simple à lire/comprendre (cf. problèmes éventuels de relecture pour les chapitres en question)."
-    
+    byChaps$issueCode="max"
+    byChaps$error_value=round(100*byChaps$resume_past,2)
+    byChaps$delta = byChaps$resume_past    
     recoveryPast =   byChaps
   }
   
-  ####### Recovery Past
+  ####### Recovery Future
   byChaps = subset(chaptersData, chaptersData$resume_future > 0.33 , select=c('part_id','resume_future')) 
   if(nrow(byChaps)>0){
     byChaps$classe="resume_future"
-    byChaps$issueCode="StopResumeBack"
-    byChaps$content="Après fait de lecture sur ce chapitre, trop de de reprise se font sur des chapitres suivants éloignés"
+    byChaps$issueCode="max"
     byChaps$delta = byChaps$resume_future
-    byChaps$description=paste(round(100*byChaps$resume_future,2),"% des reprises de la lecture après arrêt sur ce chapitre se font sur des chapitres suivants éloignés (au-dela du prochain chapitre")
-    byChaps$suggestion_title="Revoir ce chapitre et les chapitres voisins directs"
-    byChaps$suggestion_content="Est-ce que ce chapitre est bien positionné dans le plan du cours ?
-    Est-ce que ce chapitre et ceux voisines suivants sont réellement pertinents ?"
-    
+    byChaps$error_value=round(100*byChaps$resume_future,2)
     recoveryFuture =   byChaps
   }
   
   ##############CONCATENATE EVERYTHING##############
-  
+  names(minInterest)[c(1,2)]=
   names(minVisits)[c(1,2)]=
     names(minReaders)[c(1,2)]=   
     names(maxRereadings)[c(1,2)]=
@@ -1506,6 +1333,7 @@ course_issues_calculation <- function(data, structure,PartData){
   
   facts = 
     rbind(
+    minInterest,
       minVisits,
       minReaders,
       maxRereadings,
