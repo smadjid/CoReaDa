@@ -1,0 +1,24 @@
+,id,part_id,parent_id,title,type,slug,element_id,course_id,size,nb_img,vid_length
+1,0,3522386,0,Découvrez les bases de la gestion de projet,course,decouvrez-les-bases-de-la-gestion-de-projet,6053711,3522386,0,0,0
+2,-99,3522394,3522386,Quels types de projets web allez-vous gérer?,title-1,quels-types-de-projets-web-allez-vous-gerer,5718983,3522386,0,0,0
+3,1,3522393,3522394,Qu’est-ce qu’un projet web?,title-2,qu-est-ce-qu-un-projet-web,5718982,3522386,10,0,344
+4,2,3523056,3522394,Appréhendez les différents types de produits web,title-2,apprehendez-les-differents-types-de-produits-web,5711902,3522386,10,0,440
+5,3,3523057,3522394,Identifiez les acteurs d’un projet web,title-2,identifiez-les-acteurs-d-un-projet-web,5711312,3522386,10,0,480
+6,4,3523058,3522394,Découvrez les méthodologies de gestion de projet,title-2,decouvrez-les-methodologies-de-gestion-de-projet,5711872,3522386,10,0,491
+7,-99,3523064,3522386,Maîtrisez les 5 phases d’un projet en cascade,title-1,maitrisez-les-5-phases-d-un-projet-en-cascade,5811065,3522386,0,0,0
+8,5,3523059,3523064,Initialisation : étudiez la faisabilité d’un projet,title-2,initialisation-etudiez-la-faisabilite-d-un-projet,5777905,3522386,98,0,357
+9,6,3633204,3523059,En résumé,title-3,,5777904,3522386,0,0,0
+10,7,3523060,3523064,Lancement : démarrez le projet,title-2,lancement-demarrez-le-projet,5811064,3522386,10,0,466
+11,8,3633199,3523060,En résumé,title-3,,5811063,3522386,0,0,0
+12,9,3523061,3523064,Conception : formalisez le produit,title-2,conception-formalisez-le-produit,5777886,3522386,195,0,571
+13,10,3633187,3523061,En résumé,title-3,,5777885,3522386,0,0,0
+14,11,3523062,3523064,Production : réalisez le produit en conformité avec le cahier des charges,title-2,production-realisez-le-produit-en-conformite-avec-le-cahier-des-charges,5777849,3522386,180,0,255
+15,12,3633180,3523062,En résumé,title-3,,5777848,3522386,0,0,0
+16,13,3523063,3523064,Exploitation : maintenez le projet,title-2,exploitation-maintenez-le-projet,5777834,3522386,45,0,145
+17,14,3633173,3523063,En résumé,title-3,,5777833,3522386,0,0,0
+18,-99,3523070,3522386,Devenez un bon chef de projet,title-1,devenez-un-bon-chef-de-projet,5719033,3522386,0,0,0
+19,15,3523065,3523070,Comment délimiter votre projet ?,title-2,comment-delimiter-votre-projet,5711352,3522386,10,0,328
+20,16,3523066,3523070,Comment concevoir votre projet ?,title-2,comment-concevoir-votre-projet,5711272,3522386,10,0,334
+21,17,3523067,3523070,Comment piloter votre projet ?,title-2,comment-piloter-votre-projet,5711002,3522386,10,0,467
+22,18,3523068,3523070,Quels livrables devez-vous collecter sans les réaliser ?,title-2,quels-livrables-devez-vous-collecter-sans-les-realiser,5719032,3522386,10,0,513
+23,19,3523069,3523070,Menez votre projet avec succès,title-2,menez-votre-projet-avec-succes,5718954,3522386,10,0,537

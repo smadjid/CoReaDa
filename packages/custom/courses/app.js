@@ -69,7 +69,7 @@ Courses.aggregateAsset('js',"../lib/angular-file-upload/dist/angular-file-upload
  Courses.aggregateAsset('js',"../lib/d3/box.js");
   
   //Courses.angularDependencies(['xeditable','perfect_scrollbar','selector','ngAnimate']);
-  Courses.angularDependencies(['ngSanitize','xeditable','perfect_scrollbar','selector','nzTour','ngDialog','vAccordion','ngAnimate','angularFileUpload']);
+  Courses.angularDependencies(['ui.bootstrap','ngSanitize','xeditable','perfect_scrollbar','selector','nzTour','ngDialog','vAccordion','ngAnimate','angularFileUpload']);
 
 /*
 	Courses.menus.add({

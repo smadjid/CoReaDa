@@ -1,0 +1,44 @@
+,id,part_id,parent_id,title,type,slug,element_id,course_id,size,nb_img,vid_length
+1,0,2766951,0,Animez une communauté Twitter,course,animez-une-communaute-twitter,6508911,2766951,0,0,0
+2,-99,3174107,2766951,Démarrez avec Twitter,title-1,bien-demarrer-avec-twitter,6508910,2766951,0,0,0
+3,1,3174093,3174107,Qu’est-ce que Twitter ?,title-2,qu-est-ce-que-twitter-1,6508909,2766951,1807,0,0
+4,2,2768491,3174093,"Twitter, un réseau social parmi tant d'autres",title-3,,4942187,2766951,0,0,0
+5,3,2777208,3174093,Pourquoi Twitter ?,title-3,,6334442,2766951,0,0,0
+6,4,3662142,3174093,Comprendre Twitter,title-3,,6508908,2766951,0,0,0
+7,5,3174098,3174107,Préparez votre profil,title-2,preparez-votre-profil,5210989,2766951,716,2,0
+8,6,3141991,3174098,Choisissez votre nom d'utilisateur,title-3,,5210983,2766951,0,0,0
+9,7,3174097,3174098,Gérez votre image de marque,title-3,,5210988,2766951,0,0,0
+10,8,3174106,3174107,Rédigez vos premiers tweets,title-2,redigez-vos-premiers-tweets,6335307,2766951,1460,3,0
+11,9,3331520,3174106,Que peut-on mettre dans un tweet ?,title-3,,6335302,2766951,0,0,0
+12,10,3331523,3174106,Discutez avec les mentions,title-3,,6335305,2766951,0,0,0
+13,11,2794568,3174106,Utilisez les hashtags,title-3,,6335306,2766951,0,0,0
+14,12,2795118,3174106,Quand tweeter ?,title-3,,4942762,2766951,0,0,0
+15,-99,3174124,2766951,Administrez votre compte Twitter,title-1,administrez-votre-compte-twitter,6334598,2766951,0,0,0
+16,13,3174112,3174124,"Créez, modérez et développez votre communauté",title-2,creez-moderez-et-developpez-votre-communaute,6334597,2766951,2160,1,0
+17,14,3139453,3174112,Créez votre communauté,title-3,,4945780,2766951,0,0,0
+18,15,3878365,3174112,Animez votre communauté,title-3,,6334596,2766951,0,0,0
+19,16,3141063,3174112,Développez votre communauté,title-3,,4946580,2766951,0,0,0
+20,17,3878368,3174112,En résumé,title-3,,6334587,2766951,0,0,0
+21,18,3174116,3174124,Maîtrisez les buzz,title-2,maitrisez-les-buzz,4947142,2766951,985,1,0
+22,19,3127036,3174116,Pourquoi et comment générer un buzz ?,title-3,,4947122,2766951,0,0,0
+23,20,3135919,3174116,Gérez un bad buzz,title-3,,4947141,2766951,0,0,0
+24,21,3174123,3174124,Évitez les impairs,title-2,evitez-les-impairs,5859741,2766951,766,2,0
+25,22,3174122,3174123,Les messages,title-3,,5859736,2766951,0,0,0
+26,23,3142038,3174123,La gestion du compte,title-3,,4950489,2766951,0,0,0
+27,24,3142043,3174123,Le comportement vis-à-vis des autres,title-3,,4945966,2766951,0,0,0
+28,25,3143512,3174123,En résumé,title-3,,5859740,2766951,0,0,0
+29,-99,3174126,2766951,Utilisez Twitter de façon professionnelle,title-1,utilisez-twitter-de-facon-professionnelle,6408838,2766951,0,0,0
+30,26,2785906,3174126,Mesurez votre ampleur avec Twitter Analytics,title-2,mesurez-votre-ampleur-avec-twitter-analytics,6408837,2766951,1125,1,0
+31,27,3281015,2785906,Le nombre d'impressions,title-3,,4937144,2766951,0,0,0
+32,28,2785918,2785906,Le taux d'engagement,title-3,,5859662,2766951,0,0,0
+33,29,2785924,2785906,Autres indicateurs,title-3,,4939824,2766951,0,0,0
+34,30,3135933,2785906,Autres outils,title-3,,6408836,2766951,0,0,0
+35,31,3144591,3174126,Gérez un compte de support,title-2,gerez-un-compte-de-support,5859753,2766951,730,0,0
+36,32,3144601,3144591,Pourquoi utiliser un compte support ?,title-3,,4937170,2766951,0,0,0
+37,33,3144605,3144591,Comment utiliser un compte support ?,title-3,,5008393,2766951,0,0,0
+38,34,3662211,3144591,"Tutoyer, vouvoyer ?",title-3,,5859752,2766951,0,0,0
+39,35,3174125,3174126,Servez-vous des outils externes,title-2,servez-vous-des-outils-externes,5859797,2766951,1564,0,0
+40,36,3192327,3174125,Hootsuite : gérez tous vos réseaux à la fois !,title-3,,5859789,2766951,0,0,0
+41,37,3192330,3174125,IFTTT : programmez des actions automatiques,title-3,,5859793,2766951,0,0,0
+42,38,3192332,3174125,Des outils alternatifs,title-3,,5859796,2766951,0,0,0
+43,39,3281202,3174125,Conclusion,title-3,,4938325,2766951,0,0,0

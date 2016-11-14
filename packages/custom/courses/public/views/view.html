@@ -24,7 +24,7 @@
 
   <perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   model="indicatorsSelectionModel"> 
   
- <table id="data-table"  class="table data-table"   ng-include src="'courses/views/table.html'" ></table>
+ <table id="data-table"  class="table data-table" style='overflow:auto'  ng-include src="'courses/views/table.html'" ></table>
 
 
   <div id="divOverlay"> </div> 
@@ -35,25 +35,6 @@
   <div style='margin:0px;margin-bottom:5px;  padding:0;  display: flex; '>
  
 
- <div id='tableConfg' class="btn-group" uib-dropdown is-open="status.isopen">
- <button id="single-button" type="button" class="indicatorSelectorButton" ng-click="allFactsDisplay=!allFactsDisplay">
- <span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allFactsDisplay, 'glyphicon glyphicon-plus-sign pull-left': !allFactsDisplay}"  style="margin-right:5px"></span>
- {{allFactsDisplay ? "Afficher moins de problèmes" : "Afficher plus de problèmes"}}</button>
-
-<!--
- <button id="single-button" type="button" class="glyphicon glyphicon glyphicon-option-horizontal indicatorSelectorButton" uib-dropdown-toggle ng-disabled="disabled"></button>
-      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-        <li role="menuitem"><a href="#" ng-click="allFactsDisplay=!allFactsDisplay">
-{{allFactsDisplay ? "Afficher moins de problèmes" : "Afficher plus de problèmes"}}
-
-        </a></li>
-               <li class="divider"></li>
-        <li role="menuitem" ng-click="indicatorSelectorShow=!indicatorSelectorShow"><a href="#">
-{{indicatorSelectorShow ? "Cacher le sélecteur d'indicateurs" : "Afficher le sélecteur d'indicateurs"}}</a></li>
-        <li role="menuitem" ng-click="allIndicatorSelectorShow=!allIndicatorSelectorShow"><a href="#">Afficher tous les indicateurs</a></li>
-      </ul>
-      -->
-    </div>
  
 <div ng-show="indicatorSelectorShow" style='display: inline-flex'>
 
@@ -92,13 +73,14 @@
           <li class="tab-content vcenter tab-stats col-lg-12 inspector-content clearfix" >
          <div id='chartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
 
-         <div class='row' style="margin-right:3px; text-align:right"> 
-         <em role='button' style="color:#ed6245" ng-click='transitionsDlg(inspectorStats.indicatorCode)' ng-if="(['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)>-1)  "><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Table de transition</em>
+       <!--  <div class='row' style="margin-right:3px; text-align:right"> 
+          <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span></em>
+       <em role='button' style="color:#ed6245" ng-click='transitionsDlg(inspectorStats.indicatorCode)' ng-if="(['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)>-1)  "><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Table de transition</em>
          <em role='button' style="color:#ed6245" ng-click='zoomGraph()' ng-if="['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)<=-1"><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em>
-         </div>
+         </div>-->
 
             <d3-chart data='context.d3' ng-show='pageCount()>=0' indicator-code="inspectorStats.indicatorCode"  d3opts='{elementType:inspectorStats.type,elementId:inspectorStats.id,currentId:currentElement.id,issueCode:inspectorStats.indicatorCode,indicatorCode:inspectorStats.indicatorCode,courseId:course._id}' on-transitions=transitionsDlg(type) style="height:0;margin-left: 20px"></d3-chart>
-            <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}} </div>             
+            <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}} <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span></em> </div>             
         </div>
 
         <div class="col-lg-12" style="width:100%; font-size: 16px;   padding-top:5px">
@@ -131,9 +113,9 @@
           
           <li class="tab-content vcenter tab-facts col-lg-12 inspector-content clearfix "> 
               <div id='factChartPanel' class='col-lg-6 pull-right' style='position: absolute;    bottom: 5px;    right: 5px;    padding-right: 0;    padding: 0;'>
-              <div class='row' style="margin-right:3px; text-align:right"> <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em></div>
+              
               <d3-chart data='context.d3' ng-show='pageCount()>=0'  d3opts='{elementType:inspectorStats.type,elementId:currentElement.id,indicatorCode:inspectorFacts.indicatorCode,courseId:course._id}' on-transitions=transitionsDlg(type) style="height:0; margin-left: 20px"></d3-chart>
-              <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}}</div>             
+              <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorFacts.indicatorCode)}} <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span></em></div>             
             </div>
 
            <div ng-show='pageCount()<0' >

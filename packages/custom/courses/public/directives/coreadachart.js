@@ -46,7 +46,7 @@ if(elementType=='section') elementType='part';
             .attr("transform", "translate(" + margin.left + "," + 2*margin.top + ")");
 
         var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-        var y = d3.scale.linear().range([height, 0]);
+        var y = d3.scale.linear().range([height - margin.bottom, 0]);
 
 var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
           data = data.filter(function(e){ return e.elementType == elementType });
@@ -56,6 +56,7 @@ var  data = $.grep(globalData, function(e){ return e.type == classe; })[0].data;
               
         if(elementType!=='part') 
             xAxis.tickFormat(function(d) { return data.filter(function(e){ return e.part == d })[0].title; });
+
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
@@ -79,7 +80,7 @@ if(classe=="Readers" | classe=="speed")
           //X axis
           var xax = svgElt.append("g")
               .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
+              .attr("transform", "translate(0," + (height - margin.bottom) + ")")
               .call(xAxis);
 
 if(elementType!=='part') 
@@ -157,7 +158,7 @@ if(elementType!=='part')
                 .duration(0)
                 .delay(0)
                 .attr("y", function(d) { return y(d.value); })
-                .attr("height", function(d) { return height - y(d.value); });
+                .attr("height", function(d) { return height - margin.bottom - y(d.value); });
  
     var xmedian = d3.scale.ordinal()
         .rangeBands([0, width], 0); 
@@ -348,6 +349,9 @@ svg.append("defs").selectAll('marker')
     .attr("d", "M 0 0 L 10 5 L 0 10 z") //this is actual shape for arrowhead
     .attr('fill', "#1FB1E6");
 
+
+
+
   var circle = svg.append("g").selectAll(".circle")
             .data(graph.nodes)
             .enter()
@@ -378,13 +382,13 @@ svg.append("defs").selectAll('marker')
        var x1 = d.source.x,
           y1 = d.source.y - 40,
           x2 = d.target.x ,
-          y2 = d.target.y - 50,
+          y2 = d.target.y - 40,
           dx = x2 - x1,
           dy = y2 - y1,
           dr = Math.sqrt(dx * dx + dy * dy),
 
           // Defaults for normal edge.
-          drx = dr,
+          drx = dr ,
           dry = dr - 35,
           xRotation = 90, // degrees
           largeArc = 0, // 1 or 0
@@ -430,7 +434,7 @@ var path = svg.append("g").selectAll("path")
     .data(graph.links)
   .enter().append("path")
     .attr("class", function(d) { return "link"; })
-    .attr("marker-end", function(d) { return "url("+url+"#marker)"; });
+    .attr("marker-mid", function(d) { return "url("+url+"#marker)"; });
  path.attr("d", linkArc);
 
 svg.append("g").selectAll("g.linklabelholder")

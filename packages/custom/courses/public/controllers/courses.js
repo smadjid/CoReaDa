@@ -21,7 +21,7 @@ var compilFact = function(fact){
         fact.suggestion_content = ;
         */
   switch(fact.issueCode)
-  switch(code) {
+  {
     case "interest":
         fact.name ="Trop peu d'intérêt";
         fact.description ="Ce chapitre suscite peu d’intérêt chez les lecteurs, le taux d'intérêt calculé étant très réduit: il est"+fact.error_value+
@@ -541,6 +541,8 @@ var completeCourseParts = function(){
   computeColours();
 
   updateMainFacts();
+
+
 
   $scope.ChaptersFacts = $scope.MainChaptersFacts;
   $scope.SectionsFacts = $scope.MainSectionsFacts;
@@ -2272,6 +2274,7 @@ selection.selected ='selectedTask';
   
   $('.td_issue[data-path ="'+url+'"]').addClass('chosenPart');
   $scope.context.route = url;     
+
   var element = resolveRoute(url);
   
       
@@ -2281,6 +2284,7 @@ selection.selected ='selectedTask';
  
 
   var factID = $scope.inspectorFacts.Facts.indexOf(fact);
+
   if(factID > -1 )    
       $scope.setPage(factID);
   
@@ -3002,7 +3006,7 @@ setTimeout(function() {
 
       $scope.formData ='';
       $scope.textBtnForm ='';
-      $scope.indicatorsSelectionModel=['interest','Actions_tx','speed','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx',
+      $scope.indicatorsSelectionModel=['interest','Actions_tx','speed','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx','reading_not_linear',
 'provenance_not_linear','provenance_past','provenance_future','destination_not_linear','destination_past','destination_future'];
       $scope.chartType = $scope.indicatorsSelectionModel[0];
       $scope.globalChartSelector = $scope.indicatorsSelectionModel[0];

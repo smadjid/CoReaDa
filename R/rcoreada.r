@@ -10,8 +10,11 @@ library('plyr')
 BaseURL = ('/home/madjid/Dropbox/rcoreada')
 #BaseURL="C:/Users/MADJID/Desktop/rcoreada"
 coreaDataURL = "/home/madjid/dev/CoReaDa/coursesdata"
+#coreaDataURL = "C:/Users/MADJID/Desktop/CoReaDa/coursesdata"
 home='/home/madjid/Dropbox/rcoreada/Dataset'
+#home="C:/Users/MADJID/Desktop/rcoreada/Dataset"
 coursesdata_home='/home/madjid/dev/CoReaDa/rawdata'
+#coursesdata_home='C:/Users/MADJID/Desktop/CoReaDa/rawdata'
 
 DataBaseURL = paste(BaseURL,'R', sep='/')
  #o = fromJSON(jsonObj)
@@ -70,9 +73,11 @@ DataBaseURL = paste(BaseURL,'R', sep='/')
 ###################################################### FUNCTIONS DECLARATION
 tmp<- function(){
 home="/home/madjid/Dropbox/rcoreada/Dataset"
+#home="C:/Users/MADJID/Desktop/rcoreada/Dataset"
+
 allF = list.dirs(home)
-for(i in 2: length(allF)){
-print(paste(i-1,length(allF)-1,sep=' / ')) 
+for(i in 7: length(allF)){
+print(paste('COURSE :',i-1,length(allF)-1,sep=' / ')) 
 
 do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='/'))
 
@@ -81,9 +86,39 @@ do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='
 }
 ###############  MAIN CALL FUNCTION 
 
-#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/1946386/data.csv"
-#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/1946386/structure.json"
+#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/2984401/data.csv"
+#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/2984401/structure.json"
+
+#csv_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/2984401/data.csv"
+#json_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/2984401/structure.json"
+
 #do_course(csv_f,json_f)
+do_size <- function(){
+raw_home="/home/madjid/dev/CoReaDa/rawdata/"
+allF = list.dirs(raw_home)
+
+### Export en CSV
+for(i in 2: length(allF)){
+print(paste('COURS :',i-1,length(allF)-1,sep=' / ')) 
+setwd(paste(allF[i],sep='/'))
+load('structure.rdata')
+write.csv2(structure, file='structure.csv')
+}
+setwd(raw_home)
+
+
+### Import du CSV
+for(i in 2: length(allF)){
+print(paste(i-1,length(allF)-1,sep=' / ')) 
+
+print(paste(i-1,length(allF)-1,sep=' / ')) 
+setwd(paste(home,allF[i],sep='/'))
+structure = read.csv2('size.structure.csv')
+save(structure,file='structure.rdata')
+
+}
+
+}
 
 do_course <- function(csv_f,json_f){
 data = extract_course(csv_f)
@@ -94,7 +129,7 @@ structure$nb_img = 0
 structure$vid_length = 0
 #print('STRUCTURE OK')
 
-#data = head(data, n=800)
+#data = head(data, n=2000)
 courseId = unique(data$course_id)
 setwd(coursesdata_home)
 dir.create(file.path(coursesdata_home, courseId), showWarnings = FALSE)
@@ -145,17 +180,19 @@ meltParts=melt(PartData, id.vars = 'id')
   if(nrow(meltedCourseData[is.nan(meltedCourseData$value),])>0) meltedCourseData[is.nan(meltedCourseData$value),]$value=0
   if(nrow(meltedCourseData[is.na(meltedCourseData$value),])>0) meltedCourseData[is.na(meltedCourseData$value),]$value=0
   
+facts = course_issues_calculation(data, structure,PartData)
+save(facts, file="facts.rdata")
+
 CourseData.json = toJSON(meltedCourseData) 
 cat(CourseData.json, file=paste(courseDataURL,"data.json",sep='/'))
 
 TransitionsData.json = toJSON(TransitionsData)
 cat(TransitionsData.json, file=paste(courseDataURL,"navigation.json",sep='/'))
 
-facts = course_issues_calculation(data, structure,PartData)
 facts.json = toJSON(facts)
-save(facts, file="facts.rdata")
 cat(facts.json, file=paste(courseDataURL,"facts.json",sep='/'))
-print('COREADA')
+
+print('COREADA OK!')
 }
 ###############  CSV + Structure ###########################
 
@@ -271,7 +308,7 @@ sessionization <- function(data,structure){
       duration =  as.numeric(difftime(time$date[j+1],time$date[j], units = "secs"))
       data[which(data$id==time$id[j]),c('end','duration')]=list(time$date[j+1],duration)
       
-     print(paste(i,'/',nusers))
+     
       
     }   
   }
@@ -297,7 +334,7 @@ sessionization <- function(data,structure){
   nparts = length(parts)
   for (i in 1:nparts)
   {
-   print(i)
+   
     part_data = subset(data_with_duration, data_with_duration$part_id==parts[i])
     part_data=Peirce(part_data$duration);
     maxD = round(as.numeric(max(part_data)  ),2);
@@ -323,7 +360,7 @@ sessionization <- function(data,structure){
   
   for (i in 1:nusers)
   {
-   print(i)
+  
     user = subset(data ,data$user_id==users[i],  select=c(id,part_id, date, end, duration, seance))
     
     user=user[order(user$date),]
@@ -508,7 +545,7 @@ indicators_calculation <- function(data,structure){
   
   for (i in 1:nusers)
   {
-   print(paste("USER: ",i,'/', nusers))
+ 
     user.seances = subset(data, data$user_id==users[i], select=c(seance,part_index,date))
     user.seances=user.seances[order(user.seances$date),]
     nseances=length(unique(user.seances[["seance"]]))
@@ -558,7 +595,7 @@ indicators_calculation <- function(data,structure){
   nusers=length(users)
   for (i in 1:nusers)
   {
-   print(paste("USER: ",i,'/', nusers))
+   
     
     user = data[which(data$user_id==users[i]),]
     user=user[order(user$date),]
@@ -986,8 +1023,6 @@ course_data_calculation <- function(data,structure,indicators){
   ####################FIN####################
   PartData[PartData$type=='course',]$speed =
     mean(PartData[PartData$type=='chapitre',]$speed)
-  PartData[PartData$type=='course',]$rereadings_tx =
-    mean(PartData[PartData$type=='chapitre',]$rereadings_tx)
   PartData[PartData$type=='course',]$Actions_tx =
     mean(PartData[PartData$type=='chapitre',]$Actions_tx)
   PartData[PartData$type=='course',]$readers_tx =
@@ -1056,30 +1091,29 @@ course_data_calculation <- function(data,structure,indicators){
 course_issues_calculation <- function(data, structure,PartData){
   
   ######################INDICATORS INIT.###############################
-  minInterest =
+  minInterest =    # interest
   minVisits =   	# Actions_tx
-    minReaders = 		# readers_tx 			<----------
+  minReaders = 		# readers_tx 			<----------
   minRS = 		# rs_tx  			<----------
   maxSpeed = 		# speed
+  maxRereadings = 	# rereads_tx
+  maxDijRereadings = 	# rereads_dec_tx
+  maxConjRereadings = 	# rereads_seq_tx
     
-    maxRereadings = 	# rereads_tx
-    maxDijRereadings = 	# rereads_dec_tx
-    maxConjRereadings = 	# rereads_seq_tx
-    
-    readingLinearity = 	# reading_not_linear  		<----------
+  readingLinearity = 	# reading_not_linear  		<----------
   provenanceLinearity = 	# provenance_not_linear
-    provenanceFuture = 	# provenance_future
-    provenancePast = 	# provenance_past
-    destinationLinearity = # destination_not_linear
-    destinationFuture = 	# destination_future
-    destinationPast = 	# destination_past
+  provenanceFuture = 	# provenance_future
+  provenancePast = 	# provenance_past
+  destinationLinearity = # destination_not_linear
+  destinationFuture = 	# destination_future
+  destinationPast = 	# destination_past
     
-    maxRSStops = 		# rupture_tx
-    maxFinalStops = 	# norecovery_tx
-    resumeLinearity = 	# resume_abnormal_tx  		<----------
+  maxRSStops = 		# rupture_tx
+  maxFinalStops = 	# norecovery_tx
+  resumeLinearity = 	# resume_abnormal_tx  		<----------
   recoveryPast = 	# resume_past
-    recoveryFuture =	#resume_future
-    data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),delta=numeric(),norm_value=numeric(),error_value=numeric()) 
+  recoveryFuture =	#resume_future
+          data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),delta=numeric(),norm_value=numeric(),error_value=numeric()) 
   
   
   chaptersData = PartData[which(PartData$type=='chapitre'),]
@@ -1308,7 +1342,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ##############CONCATENATE EVERYTHING##############
-  names(minInterest)[c(1,2)]=
+  names(minInterest)[c(1,2)]= 
   names(minVisits)[c(1,2)]=
     names(minReaders)[c(1,2)]=   
     names(maxRereadings)[c(1,2)]=
@@ -1351,6 +1385,7 @@ course_issues_calculation <- function(data, structure,PartData){
       resumeLinearity,
       recoveryFuture,
       recoveryPast)
+ rownames(facts)=NULL
  if(min(PartData$speed>0)){
   names(minSpeed)[c(1,2)]=
     names(maxSpeed)[c(1,2)]=c("part_id","value")
