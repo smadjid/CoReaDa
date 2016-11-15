@@ -18,7 +18,7 @@
       <!-- Course control -->
           <li class="tab-content vcenter tab-courses col-lg-12  clearfix" style="height:75vh">
        <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10"> 
-<h3>Cours disponibles <span class='red' style='font-size:16px;margin-left:40px'   role='button' ng-click='dropAllCourses()'><span class="glyphicon glyphicon-remove"></span><em>Tout supprimer</em></span></h3>
+<h3>Cours disponibles ({{courses.length}} courses)<span class='red' style='font-size:16px;margin-left:40px'   role='button' ng-click='dropAllCourses()'><span class="glyphicon glyphicon-remove"></span><em>Tout supprimer</em></span></h3>
 <hr/>
          <ol class='course_li'>
             <li data-ng-repeat="course in courses">
@@ -43,7 +43,7 @@
 <!-- Source control -->
         <li class="tab-content vcenter tab-sources col-lg-12  clearfix" style="height:75vh">
        <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10">
-       <h3>Ressources disponibles <span class='blue' style='font-size:16px;margin-left:40px' role='button' ng-click='seedAllCourses()'><span class="glyphicon glyphicon-plus"  ></span><em>Tout ajouter</em></span></h3>
+       <h3>Ressources disponibles ({{resources.length}} courses) <span class='blue' style='font-size:16px;margin-left:40px' role='button' ng-click='seedAllCourses()'><span class="glyphicon glyphicon-plus"  ></span><em>Tout ajouter</em></span></h3>
      <hr/>
        <ol class='course_li'>
             <li data-ng-repeat="course in resources">
