@@ -238,7 +238,8 @@ var compilFact = function(fact){
 var resetIndicators = function(){
       return [      
         {'class':'reading','code':'interest', 'value':'interest', 'label':'Intérêt', 'inspectorText':'aux visites', 
-        'issueCode':'interest','category':'Indicateurs de lecture','title':'Le taux de vitesse enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
+        'issueCode':'interest','category':'Indicateurs de lecture',
+        'title':'L\'intérêt est un indicateur qui résume l\'attractivité du chapitre et le niveau d\'engagement des lecteurs à lire et à interagir avec  ce dernier. ',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true, 'show':true,'parent':null, 'level':'level0', 'details':false},
         {'class':'reading','code':'Actions_tx', 'value':'Actions_tx', 'label':'Visite', 'inspectorText':'aux visites', 
         'issueCode':'Actions_tx','category':'Indicateurs de lecture','title':'Le taux de visites enregistré sur un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visites sur le cours qui ont eu pour cible cet élément',
@@ -247,7 +248,7 @@ var resetIndicators = function(){
         'issueCode':'readers_tx','category':'Indicateurs de lecture','title':'Le taux de lecteurs du cours ayant visité un élément du cours (partie, chapitre, section) est calculé comme étant le percentage de visiteurs de l\'élément par rapport aux visiteurs du cours',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'interest', 'level':'level1', 'details':false},
         {'class':'reading','code':'rs_tx', 'value':'rs_tx', 'label':'Séances', 'inspectorText':'aux séances', 
-        'issueCode':'rs_tx','category':'Indicateurs de lecture','title':'Le taux de séances de lecture contenant l\'élément sélectionné',
+        'issueCode':'rs_tx','category':'Indicateurs de lecture','title':'Le taux de séances de lecture contenant l\'élément sélectionné représente le pourcentage de toutes les séances du cours contenant cet élément ',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'interest', 'level':'level1', 'details':false},
         {'class':'reading','code':'speed', 'value':'speed', 'label':'Vitesse de lecture','inspectorText':'à la vitesse de lecture', 
         'issueCode':'speed','category':'Indicateurs de lecture','title':'La vitesse de lecture observée sur le cours ou sur un de ses éléments (partie, chapitre, section) est calculée comme étant le nombre de mots lue par minute pour les lectures observée sur le cours ou sur l\'élément en question',
@@ -264,7 +265,7 @@ var resetIndicators = function(){
          'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'rereads_tx', 'level':'level1', 'details':false},
    
         {'class':'navigation','code':'reading_not_linear', 'value':'reading_not_linear', 'label':'Navigation','inspectorText':'...', 
-        'issueCode':'reading_not_linear','category':'Indicateurs de navigation','title':'...',
+        'issueCode':'reading_not_linear','category':'Indicateurs de navigation','title':'Le taux de navigation linéaire représente le pourcentage des arrivées et des départs vers et depuis l\'élément en question suivant l\'ordre linéaire défini par l\'auteur du cours',
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':true,'parent':null, 'show':true, 'level':'level0', 'details':false},
         {'class':'navigation','code':'provenance_not_linear', 'value':'provenance_not_linear', 'label':'Provenance non linéaire','inspectorText':'...', 
         'issueCode':'provenance_not_linear','category':'Indicateurs de navigation','title':'...',
@@ -2966,8 +2967,8 @@ setTimeout(function() {
   $scope.currentFact = n;
   var components = parseURL(window.location.hash)
   if(components == null)    
-   		loadURL($scope.inspectorFacts.Facts[n].route);
-   	else
+      loadURL($scope.inspectorFacts.Facts[n].route);
+    else
  if(components.hasOwnProperty('factid')) 
     if(components.factid != $scope.inspectorFacts.Facts[n]._id)
       loadURL($scope.inspectorFacts.Facts[n].route);

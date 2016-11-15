@@ -1,0 +1,41 @@
+,id,part_id,parent_id,title,type,slug,element_id,course_id,size,nb_img,vid_length
+1,0,3449001,0,Utilisez des API REST dans vos projets web,course,utilisez-des-api-rest-dans-vos-projets-web,6359894,3449001,0,0,0
+2,-99,3449009,3449001,Introduction aux API,title-1,introduction-aux-apis,6359072,3449001,0,0,0
+3,1,3449008,3449009,Qu'est-ce qu'une API ?,title-2,qu-est-ce-qu-une-api,6358892,3449001,795,5,155
+4,2,3449142,3449008,API : Application Programming Interface,title-3,,5565462,3449001,0,0,0
+5,3,3449152,3449008,Mais qu’est-ce qu’une interface ?,title-3,,6358888,3449001,0,0,0
+6,4,3449165,3449008,Utiliser une API,title-3,,6358891,3449001,0,0,0
+7,5,3449168,3449008,Construire sa propre API,title-3,,5565500,3449001,0,0,0
+8,6,3501901,3449009,Pourquoi REST ?,title-2,pourquoi-rest,6358930,3449001,706,2,309
+9,7,3502142,3501901,La fondation d’HTTP,title-3,,6358926,3449001,0,0,0
+10,8,3502160,3501901,Les critères REST,title-3,,6358929,3449001,0,0,0
+11,9,3502161,3501901,Les autres API,title-3,,5565735,3449001,0,0,0
+12,10,3501906,3449009,Quelques exemples d’API REST,title-2,quelques-exemples-d-api-rest,6358962,3449001,1158,2,310
+13,11,3501968,3501906,Instagram,title-3,,5579803,3449001,0,0,0
+14,12,3501977,3501906,Gmail,title-3,,5565849,3449001,0,0,0
+15,13,3501984,3501906,Github,title-3,,6358953,3449001,0,0,0
+16,14,3501992,3501906,Weather Underground,title-3,,6358955,3449001,0,0,0
+17,15,3518556,3449009,Pratiquer avec l'intelligence artificielle,title-2,pratiquer-avec-l-intelligence-artificielle,6359071,3449001,923,5,0
+18,-99,3501911,3449001,Dissection d’une API REST,title-1,dissection-d-une-api-rest,6359613,3449001,0,0,0
+19,16,3501916,3501911,Les ressources,title-2,les-ressources-9,6359085,3449001,419,0,170
+20,17,3540571,3501916,Accéder aux ressources,title-3,,6359084,3449001,0,0,0
+21,18,3540579,3501916,Imbrication,title-3,,5566362,3449001,0,0,0
+22,19,3501921,3501911,Les requêtes,title-2,les-requetes-3,6359186,3449001,620,1,164
+23,20,3537760,3501921,Première ligne (HTTP),title-3,,5579845,3449001,0,0,0
+24,21,3537852,3501921,Les en-têtes,title-3,,6359185,3449001,0,0,0
+25,22,3537856,3501921,Corps,title-3,,6359145,3449001,0,0,0
+26,23,3501926,3501911,Les méthodes,title-2,les-methodes-27,6359325,3449001,555,0,270
+27,24,3501941,3501911,Les réponses,title-2,les-reponses-4,6359384,3449001,446,1,185
+28,25,3538048,3501941,La version HTTP,title-3,,5566696,3449001,0,0,0
+29,26,3538050,3501941,Le code réponse HTTP,title-3,,6359375,3449001,0,0,0
+30,27,3538057,3501941,Les en-têtes,title-3,,5566700,3449001,0,0,0
+31,28,3538061,3501941,Le corps,title-3,,5567975,3449001,0,0,0
+32,29,3501946,3501911,Les codes HTTP,title-2,les-codes-http,6359612,3449001,511,0,244
+33,30,3538242,3501946,2xx :,title-3,,5568076,3449001,0,0,0
+34,31,3538245,3501946,3xx : ,title-3,,5568079,3449001,0,0,0
+35,32,3538252,3501946,4xx :,title-3,,6359604,3449001,0,0,0
+36,33,3538257,3501946,5xx :,title-3,,5568087,3449001,0,0,0
+37,-99,3502966,3449001,Mise en pratique de REST,title-1,mise-en-pratique-de-rest,6359893,3449001,0,0,0
+38,34,3504206,3502966,Faire des requêtes GET,title-2,quelques-exercices-10,5586793,3449001,20,0,222
+39,35,3518486,3502966,Faire des requêtes PUT et POST,title-2,faire-des-requetes-put-et-post,6359872,3449001,25,0,165
+40,36,3518496,3502966,Faires des requêtes DELETE,title-2,faires-des-requetes-delete,6359892,3449001,18,0,159

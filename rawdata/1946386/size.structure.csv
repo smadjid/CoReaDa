@@ -1,0 +1,24 @@
+,id,part_id,parent_id,title,type,slug,element_id,course_id,size,nb_img,vid_length
+1,0,1946386,0,Comprendre le Web,course,comprendre-le-web,6260124,1946386,0,0,0
+2,-99,2212829,1946386,Qu'est-ce que le Web ?,title-1,qu-est-ce-que-le-web-2,6259953,1946386,0,0,0
+3,1,2212820,2212829,Introduction,title-2,introduction-143,2460655,1946386,0,0,166
+4,2,2212822,2212829,Qu'est-ce que le Web ?,title-2,qu-est-ce-que-le-web-3,2460657,1946386,0,0,121
+5,3,2212824,2212829,"Web, services et Cloud",title-2,web-services-et-cloud-1,6259932,1946386,0,0,236
+6,4,2212826,2212829,Comment est né le Web ?,title-2,comment-est-ne-le-web-1,2460661,1946386,0,0,289
+7,5,2212828,2212829,En résumé,title-2,en-resume-122,6259952,1946386,0,0,51
+8,-99,2212840,1946386,Les langages du Web,title-1,les-langages-du-web-4,6260013,1946386,0,0,0
+9,6,2212831,2212840,Les langages client,title-2,les-langages-client-1,6259972,1946386,0,0,262
+10,7,2212833,2212840,Les langages serveur,title-2,les-langages-serveur-1,2460668,1946386,0,0,458
+11,8,2212835,2212840,Les bases de données,title-2,les-bases-de-donnees-7,6259992,1946386,0,0,242
+12,9,2212837,2212840,Les sites responsive et mobile,title-2,les-sites-responsive-et-mobile-1,2460672,1946386,0,0,107
+13,10,2212839,2212840,En résumé,title-2,en-resume-121,6260012,1946386,0,0,93
+14,-99,2212850,1946386,Les réseaux derrière le Web,title-1,les-reseaux-derriere-le-web-1,6260053,1946386,0,0,0
+15,11,2212842,2212850,Les serveurs,title-2,les-serveurs-3,6260032,1946386,0,0,298
+16,12,2212844,2212850,IP et noms d'hôtes,title-2,ip-et-noms-d-hotes-1,2460679,1946386,0,0,147
+17,13,2212846,2212850,Les protocoles,title-2,les-protocoles-7,6260052,1946386,0,0,352
+18,14,2212849,2212850,En résumé,title-2,en-resume-120,2460684,1946386,0,0,75
+19,-99,2212859,1946386,Qui sont les développeurs ?,title-1,qui-sont-les-developpeurs-1,6260123,1946386,0,0,0
+20,15,2212852,2212859,Qu'est-ce qu'un développeur ?,title-2,qu-est-ce-qu-un-developpeur-1,6260072,1946386,0,0,357
+21,16,2212854,2212859,Comment devenir développeur Web ?,title-2,comment-devenir-developpeur-web-1,6260092,1946386,0,0,257
+22,17,2212856,2212859,Les secrets bien gardés pour devenir développeur,title-2,les-secrets-bien-gardes-pour-devenir-developpeur-1,6260102,1946386,0,0,243
+23,18,2212858,2212859,En résumé,title-2,en-resume-119,6260122,1946386,0,0,85

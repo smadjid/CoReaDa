@@ -1,0 +1,79 @@
+,id,part_id,parent_id,title,type,slug,element_id,course_id,size,nb_img,vid_length
+1,0,2984401,0,Apprenez à coder avec JavaScript,course,apprenez-a-coder-avec-javascript,6957182,2984401,0,0,0
+2,-99,2984407,2984401,Écrivez vos premières lignes de code,title-1,ecrivez-vos-premieres-lignes-de-code,6957181,2984401,0,0,0
+3,1,2984411,2984407,Introduction à la programmation,title-2,introduction-a-la-programmation-1,5812387,2984401,1290,2,0
+4,2,3012712,2984411,"Un programme, c'est quoi ?",title-3,,5812382,2984401,0,0,0
+5,3,2986236,2984411,Comment créer des programmes ?,title-3,,4240313,2984401,0,0,0
+6,4,3012716,2984411,Apprendre à programmer,title-3,,5812386,2984401,0,0,0
+7,5,3007043,2984407,Quel langage pour débuter ?,title-2,quel-langage-pour-debuter,5210088,2984401,520,1,0
+8,6,3035856,3007043,Présentation de JavaScript,title-3,,5210085,2984401,0,0,0
+9,7,3007053,3007043,Version de JavaScript utilisée,title-3,,5210087,2984401,0,0,0
+10,8,2984416,2984407,Configurez votre environnement de travail,title-2,configurez-votre-environnement-de-travail,6258141,2984401,1553,6,126
+11,9,3012842,2984416,Coder avec JavaScript en ligne,title-3,,4240922,2984401,0,0,0
+12,10,3012924,2984416,Coder avec JavaScript sur sa machine,title-3,,6258140,2984401,0,0,0
+13,11,2984431,2984407,"1, 2, 3, codez !",title-2,1-2-3-codez,4908640,2984401,14666,5,191
+14,12,3037149,2984431,Valeurs et types,title-3,,4908634,2984401,0,0,0
+15,13,3037306,2984431,Structure d'un programme,title-3,,4908637,2984401,0,0,0
+16,14,3037326,2984431,A vous de jouer !,title-3,,4908639,2984401,0,0,0
+17,15,3039191,2984407,Jouez avec les variables,title-2,jouez-avec-les-variables,6957180,2984401,2252,8,110
+18,16,3039317,3039191,La notion de variable,title-3,,6957134,2984401,0,0,0
+19,17,3039794,3039191,La notion d'expression,title-3,,6258163,2984401,0,0,0
+20,18,3235056,3039191,Conversions de types,title-3,,6957137,2984401,0,0,0
+21,19,3039805,3039191,Interactions avec l'utilisateur,title-3,,6957152,2984401,0,0,0
+22,20,3039826,3039191,Importance du nommage des variables,title-3,,6957162,2984401,0,0,0
+23,21,3039829,3039191,À vous de jouer !,title-3,,6957179,2984401,0,0,0
+24,22,3043921,2984407,Ajoutez des conditions,title-2,ajoutez-des-conditions,4892107,2984401,2670,4,0
+25,23,3059754,3043921,Exprimer une condition,title-3,,4866063,2984401,0,0,0
+26,24,3193945,3043921,Exprimer une alternative,title-3,,4892104,2984401,0,0,0
+27,25,3069918,3043921,Créer des conditions composées,title-3,,4704838,2984401,0,0,0
+28,26,3060748,3043921,Exprimer un choix,title-3,,4846727,2984401,0,0,0
+29,27,3060792,3043921,A vous de jouer !,title-3,,4892106,2984401,0,0,0
+30,28,3074396,2984407,Répétez des instructions,title-2,repetez-des-instructions,6258344,2984401,1869,10,257
+31,29,3074565,3074396,Introduction,title-3,,6258333,2984401,0,0,0
+32,30,3074597,3074396,La boucle while,title-3,,6258336,2984401,0,0,0
+33,31,3074777,3074396,La boucle for,title-3,,6258339,2984401,0,0,0
+34,32,3074923,3074396,Erreurs fréquentes,title-3,,6258343,2984401,0,0,0
+35,33,3075127,3074396,Choix entre un while et un for,title-3,,6258315,2984401,0,0,0
+36,34,3075177,3074396,A vous de jouer !,title-3,,6258318,2984401,0,0,0
+37,-99,3079816,2984401,Évoluez vers des programmes plus complexes,title-1,evoluez-vers-des-programmes-plus-complexes,6809565,2984401,0,0,0
+38,35,3079821,3079816,Modularisez votre code grâce aux fonctions,title-2,modularisez-votre-code-grace-aux-fonctions,6258404,2984401,2459,5,257
+39,36,3752956,3079821,Introduction : le rôle des fonctions,title-3,,6258391,2984401,0,0,0
+40,37,3752981,3079821,Découverte des fonctions,title-3,,6258397,2984401,0,0,0
+41,38,3753022,3079821,Possibilités des fonctions,title-3,,6258400,2984401,0,0,0
+42,39,3753039,3079821,Comment (bien) programmer avec les fonctions,title-3,,6050899,2984401,0,0,0
+43,40,3753061,3079821,A vous de jouer !,title-3,,6258403,2984401,0,0,0
+44,41,3195501,3079816,Manipulez les chaînes de caractères,title-2,manipulez-les-chaines-de-caracteres,4892267,2984401,1800,11,0
+45,42,3202236,3195501,Rappels sur les chaînes de caractères,title-3,,4872804,2984401,0,0,0
+46,43,3202632,3195501,Obtenir la longueur d'une chaîne,title-3,,4874896,2984401,0,0,0
+47,44,3202811,3195501,Convertir une chaîne en minuscules ou en majuscules,title-3,,4874934,2984401,0,0,0
+48,45,3207206,3195501,Comparer deux chaînes,title-3,,4748423,2984401,0,0,0
+49,46,3207244,3195501,Accéder à un caractère d'une chaîne,title-3,,4749664,2984401,0,0,0
+50,47,3208054,3195501,Parcourir une chaîne caractère par caractère,title-3,,4859152,2984401,0,0,0
+51,48,3202729,3195501,Conclusion,title-3,,4755723,2984401,0,0,0
+52,49,3202731,3195501,A vous de jouer !,title-3,,4892266,2984401,0,0,0
+53,50,3196326,3079816,Créez vos premiers objets,title-2,creez-vos-premiers-objets,6085067,2984401,2440,11,0
+54,51,3217877,3196326,Introduction,title-3,,4877353,2984401,0,0,0
+55,52,3255631,3196326,JavaScript et les objets,title-3,,6085063,2984401,0,0,0
+56,53,3255808,3196326,Exemple : un mini-jeu de rôle,title-3,,6085066,2984401,0,0,0
+57,54,3230097,3196326,Création d'un personnage,title-3,,6080788,2984401,0,0,0
+58,55,3230124,3196326,La notion de méthode,title-3,,6080794,2984401,0,0,0
+59,56,3230158,3196326,Les objets prédéfinis de JavaScript,title-3,,4891774,2984401,0,0,0
+60,57,3218823,3196326,Bilan,title-3,,6080796,2984401,0,0,0
+61,58,3255810,3196326,A vous de jouer !,title-3,,6080803,2984401,0,0,0
+62,59,3196336,3079816,"Trop classe, la POO !",title-2,trop-classe-la-poo,6423189,2984401,2582,8,0
+63,60,3224076,3196336,"Un mini-jeu de rôle, version multijoueurs",title-3,,6423152,2984401,0,0,0
+64,61,3224622,3196336,Objets et prototypes en JavaScript,title-3,,6423156,2984401,0,0,0
+65,62,3230241,3196336,Un prototype pour nos personnages,title-3,,6423170,2984401,0,0,0
+66,63,3224662,3196336,Des adversaires pour nos héros,title-3,,6423177,2984401,0,0,0
+67,64,3227748,3196336,"3, 2, 1... Fight !",title-3,,6423180,2984401,0,0,0
+68,65,3227802,3196336,Conclusion,title-3,,4877599,2984401,0,0,0
+69,66,3257101,3196336,A vous de jouer !,title-3,,6423188,2984401,0,0,0
+70,67,3196346,3079816,Stockez vos données dans des tableaux,title-2,stockez-vos-donnees-dans-des-tableaux,6809564,2984401,1746,12,0
+71,68,3230491,3196346,Introduction : le rôle des tableaux,title-3,,6809512,2984401,0,0,0
+72,69,3230529,3196346,Manipulation des tableaux en JavaScript,title-3,,6809534,2984401,0,0,0
+73,70,3230642,3196346,Tableaux d'objets,title-3,,6809539,2984401,0,0,0
+74,71,3230643,3196346,A vous de jouer !,title-3,,6809563,2984401,0,0,0
+75,72,3197856,3079816,Conclusion et perspectives,title-2,conclusion-et-perspectives,6258463,2984401,768,0,0
+76,73,3258108,3197856,Bilan récapitulatif,title-3,,4891794,2984401,0,0,0
+77,74,3746708,3197856,Et maintenant ?,title-3,,6258462,2984401,0,0,0
+78,75,3257540,3197856,Remerciements,title-3,,6258453,2984401,0,0,0

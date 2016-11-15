@@ -13,7 +13,7 @@ angular.module('mean.courses')
 
 var inspectorCharts = function(scope, element){  
        var margin = {top: 15, right: 10, bottom: 40, left: 40},
-          width =  $(element[0]).parent().width() - margin.left - margin.right,
+          width =  $(element[0]).parent().width() - margin.left - margin.right - 20,
           height = 270 - margin.top - margin.bottom;
           var svg = d3.select(element[0])
           .append("svg")          
@@ -35,7 +35,8 @@ var elementId = Array.isArray(scope.d3opts.elementId)?scope.d3opts.elementId: [s
 
 if(elementType=='section') elementType='part';
   d3.select(element[0]).selectAll("*").remove();
-  width = $(element[0]).parent().width() - margin.left - margin.right ;
+  console.log(width)
+  width = $(element[0]).parent().width() - margin.left - margin.right - 20;
   
           svg = d3.select(element[0])
           .append("svg")          
@@ -190,7 +191,7 @@ if(typeof dataMediane !='undefined')
       svgElt.append("line")
                      .attr("x1", 0)
                      .attr("y1", y(dataMediane))
-                     .attr("x2", width)
+                     .attr("x2", width - margin.right )
                      .attr("y2", y(dataMediane))
                      .attr("class", "medianeLine");
  var legend = svg.selectAll(".legend")
@@ -542,7 +543,7 @@ legend.append("text")
 }
 scope.$watch(function(){
    
-            width = $(element[0]).parent().width();     
+            width = $(element[0]).parent().width() - 20;     
             
  
             return width 

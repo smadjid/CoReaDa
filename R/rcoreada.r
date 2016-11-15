@@ -3,10 +3,14 @@ options(stringsAsFactors=FALSE)
 #options(warn=-1)
 library('jsonlite')
 library('reshape2')
+
 library('Peirce')
 library('plyr')
 #library('data.table')
 
+ 
+  
+  
 BaseURL = ('/home/madjid/Dropbox/rcoreada')
 #BaseURL="C:/Users/MADJID/Desktop/rcoreada"
 coreaDataURL = "/home/madjid/dev/CoReaDa/coursesdata"
@@ -76,51 +80,42 @@ home="/home/madjid/Dropbox/rcoreada/Dataset"
 #home="C:/Users/MADJID/Desktop/rcoreada/Dataset"
 
 allF = list.dirs(home)
-for(i in 7: length(allF)){
+for(i in 2: length(allF)){
 print(paste('COURSE :',i-1,length(allF)-1,sep=' / ')) 
 
-do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='/'))
+do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='/'),paste(allF[i],'size.structure.csv',sep='/'))
 
 }
 
 }
 ###############  MAIN CALL FUNCTION 
 
-#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/2984401/data.csv"
-#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/2984401/structure.json"
+#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv"
+#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json"
+#size_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/size.structure.csv"
 
-#csv_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/2984401/data.csv"
-#json_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/2984401/structure.json"
+#csv_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/1885491/data.csv"
+#json_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/1885491/structure.json"
 
 #do_course(csv_f,json_f)
-do_size <- function(){
-raw_home="/home/madjid/dev/CoReaDa/rawdata/"
-allF = list.dirs(raw_home)
+#do_size <- function(){
+#src_home="/home/madjid/Dropbox/rcoreada/Dataset"
+
+#allF = list.dirs(src_home)
 
 ### Export en CSV
-for(i in 2: length(allF)){
-print(paste('COURS :',i-1,length(allF)-1,sep=' / ')) 
-setwd(paste(allF[i],sep='/'))
-load('structure.rdata')
-write.csv2(structure, file='structure.csv')
-}
-setwd(raw_home)
+#for(i in 2: length(allF)){
+#print(paste('COURS :',i-1,length(allF)-1,sep=' / ')) 
+#setwd(paste(allF[i],sep='/'))
+#load('structure.rdata')
+#write.csv2(structure, file='size.structure.csv')
+#}
+#setwd(raw_home)
 
 
-### Import du CSV
-for(i in 2: length(allF)){
-print(paste(i-1,length(allF)-1,sep=' / ')) 
+#}
 
-print(paste(i-1,length(allF)-1,sep=' / ')) 
-setwd(paste(home,allF[i],sep='/'))
-structure = read.csv2('size.structure.csv')
-save(structure,file='structure.rdata')
-
-}
-
-}
-
-do_course <- function(csv_f,json_f){
+do_course <- function(csv_f,json_f, size_f){
 data = extract_course(csv_f)
 #print('DATA OK')
 structure = extract_structure(json_f)
@@ -145,12 +140,20 @@ do_fct = sessionization(data,structure)
 data = do_fct$data
 structure = do_fct$structure
 
+save(data,file='data.rdata')
+save(structure,file='structure.rdata')
+
 ################ Taille manuelle : size
 #write.csv_f(structure, file='structure.csv')
 #manuellement puis
-#structure = read.csv2('structure.csv')
-#save(structrue, file='structure.rdata')
-indicators = indicators_calculation(data,structure)
+sz = read.csv(size_f)
+sz=sz[,c("part_id","size"    ,   "nb_img"     ,"vid_length")]
+drops <-c("size"    ,   "nb_img"     ,"vid_length")
+structure = structure[ , !(names(structure) %in% drops)]
+structure=merge(structure,sz,by='part_id', all.x = TRUE)
+save(structure, file='structure.rdata')
+
+indicators = indicators_calculation(data,structure) 
 data = indicators$data
 structure = indicators$structure
 RS = indicators$RS
@@ -165,8 +168,9 @@ save(Ruptures,file="Ruptures.rdata")
 save(partFollow, file="partFollow.rdata")
 
 dir.create(file.path(coreaDataURL,courseId), showWarnings = FALSE)
-courseDataURL=paste(coreaDataURL,courseId,sep='/')
-CourseDataCalc = course_data_calculation(data,structure, indicators)
+courseDataURL=paste(coreaDataURL,courseId,sep='/') 
+
+CourseDataCalc = course_data_calculation(data,structure, indicators) 
 
 CourseData=CourseDataCalc$CourseData
 PartData = CourseDataCalc$PartData
@@ -180,7 +184,7 @@ meltParts=melt(PartData, id.vars = 'id')
   if(nrow(meltedCourseData[is.nan(meltedCourseData$value),])>0) meltedCourseData[is.nan(meltedCourseData$value),]$value=0
   if(nrow(meltedCourseData[is.na(meltedCourseData$value),])>0) meltedCourseData[is.na(meltedCourseData$value),]$value=0
   
-facts = course_issues_calculation(data, structure,PartData)
+facts = course_issues_calculation(data, structure,PartData) 
 save(facts, file="facts.rdata")
 
 CourseData.json = toJSON(meltedCourseData) 
@@ -1113,7 +1117,7 @@ course_issues_calculation <- function(data, structure,PartData){
   resumeLinearity = 	# resume_abnormal_tx  		<----------
   recoveryPast = 	# resume_past
   recoveryFuture =	#resume_future
-          data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),delta=numeric(),norm_value=numeric(),error_value=numeric()) 
+          data.frame(part_id=integer(),value=character(),classe=character(),issueCode=character(),delta=numeric(),error_value=numeric()) 
   
   
   chaptersData = PartData[which(PartData$type=='chapitre'),]
@@ -1125,7 +1129,6 @@ course_issues_calculation <- function(data, structure,PartData){
     byChaps$classe="interest"
     byChaps$issueCode="min"    
     byChaps$delta  = median(chaptersData$interest,na.rm = TRUE)- byChaps$interest       
-    byChaps$norm_value = median(chaptersData$interest,na.rm = TRUE)
     byChaps$error_value = round(median(chaptersData$interest,na.rm = TRUE)/ byChaps$interest,2)
     
     minInterest = byChaps
