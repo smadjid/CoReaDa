@@ -90,9 +90,9 @@ do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='
 }
 ###############  MAIN CALL FUNCTION 
 
-#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/data.csv"
-#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/structure.json"
-#size_f = "/home/madjid/Dropbox/rcoreada/Dataset/1885491/size.structure.csv"
+#csv_f = "/home/madjid/Dropbox/rcoreada/Dataset/3449001/data.csv"
+#json_f = "/home/madjid/Dropbox/rcoreada/Dataset/3449001/structure.json"
+#size_f = "/home/madjid/Dropbox/rcoreada/Dataset/3449001/size.structure.csv"
 
 #csv_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/1885491/data.csv"
 #json_f = "C:/Users/MADJID/Desktop/rcoreada/Dataset/1885491/structure.json"
