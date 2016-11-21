@@ -2660,21 +2660,21 @@ $scope.nztour = {
             "<span>Permet de planifier des actions sur l'élément sélectionné depuis sa zone d'édition. </span>"
         },
         
-        {
+    /*    {
             target:'#granuleSwitchTH',
             content: "<h4><em>Changement Granule</em></h4>"+
             "Permet de sélectionner le niveau de granularité sur lequel les indicateurs sont calculés :"+
             "<ul><li><b>Chapitre</b> : les indicateurs sont calculés par rapport aux chapitres <li> <b>Section</b>: les indicateurs sont calculés par rapport aux sections</ul>"
-        },
+        },*/
         {
             target:'.inspectorChosenPart',
             content: "<h4>Problème potentiel détecté</h4>"+
             "<span>Ce symbole indique qu'un problème potentiel pour l’indicateur (en-tête de ligne) a été détecté pour l'élément (en-tête de colonne).</span>"
         },
         {
-            target: '#tableConfg',
-            content: "<h4>Mode d'affichage des problème</h4>"+
-            "Ce menu permet de sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif"
+            target: '#single-button',
+            content: "<h4>Configuration d'affichage</h4>"+
+            "<span>Ce menu permet de sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif</span>"
         }
         ,
        
@@ -2718,7 +2718,7 @@ $scope.nztour = {
         {
             target: '#titleBar',
             content: " <h4>Barre de titre</h4>"+
-            "<span>.</span>"
+            "<span>Donne l'aroborescence de l'élément sélectionné avec possibilité de navigation</span>"
         },
         {
             target: '#gotoOC',
