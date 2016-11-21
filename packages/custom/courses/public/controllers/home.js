@@ -40,8 +40,8 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
             if (inputValue === "") {     swal.showInputError("Merci d'indiquer le code administrateur!");     return false   }      
           $scope.dataLoading = true;
             
-            //$http.post('/api/coreada/admin',{'code':inputValue})
-          $http.post('/api/coreada/admin',{'code':'resyd2008'})
+           $http.post('/api/coreada/admin',{'code':inputValue})
+         // $http.post('/api/coreada/admin',{'code':'resyd2008'})
           .success(function(data){  
           $scope.adminShow = true;          
             $scope.courses = data.courses;
@@ -52,7 +52,7 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
             })   
           .error(function(data) {             
               
-              swal("Oops!", "Code incorrect. Ceci va être reporté à l'administrateur");
+              swal("Oops!", "Code incorrect. Merci de contacter l'administrateur");
               $scope.dataLoading = false;
             }); 
 
@@ -370,7 +370,7 @@ $scope.expandCallback = function (index, id) {
             })   
           .error(function(data) {             
               
-              swal("Oops!", "Code incorrect. Ceci va être reporté à l'administrateur");
+              swal("Oops!", "Code incorrect. Merci de contacter l'administrateur");
             }); 
 
 
