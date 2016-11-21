@@ -59,7 +59,7 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
 
            });
     }
-    $scope.editCourseCode = function(id,code){
+    var editCourseCode = function(id,code){
       swal({
         title: "Code du cours",
         text: "Le nouveau code à affecter au cours est:",
@@ -77,7 +77,7 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
         if (inputValue === "") 
           swal("Code NON modifié", "Le code du cours est toujours le même : " + code);
         else  {
-          $http.post('/api/coreada/updatecode/'+id,{'newcode':inputValue})
+          $http.post('/api/coreada/updatecode/'+id,{'code':inputValue})
             .success(function(data){ 
               console.log(data)
               $scope.courses = data;
@@ -89,6 +89,44 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
               
           
       });
+    }
+    var editCourseSurveyURL = function(id,url){
+      swal({
+        title: "URL questionnaire du cours",
+        text: "La nouvelle adresse du questionnaire à affecter au cours est:",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top",
+        inputPlaceholder: url
+      },
+      function(inputValue){
+        if (inputValue === false) return false;
+        inputValue = inputValue.replace(/ /g,"");
+        
+        
+        if (inputValue === "") 
+          swal("URL du questionnaire", "L'adresse du questionnaire concernant le cours est toujours le même : " + url);
+        else  {
+          $http.post('/api/coreada/updatesurvey/'+id,{'survey':inputValue})
+            .success(function(data){ 
+              console.log(data)
+              $scope.courses = data;
+            swal("URL modifiée", "La nouvelle adresse du questionnaire concernant le cours est : " + inputValue);
+            return true;
+             })
+            .error(function(err){swal("Oops!", "Une erreur interne s'est produite");return false;});
+        }
+              
+          
+      });
+    }
+    $scope.editCourse= function(type,id,val){
+      if(type==='code')
+        return editCourseCode(id,val);
+      else
+        return editCourseSurveyURL(id,val)
+
     }
 
     $scope.seedCourse = function(code){
@@ -341,7 +379,7 @@ $scope.expandCallback = function (index, id) {
         
     }
 
-    $scope.getLogs();
+    //$scope.getLogs();
     $scope.structFileName='';
     $scope.dataFileName = '';
      $scope.uploadFile = function(){

@@ -27,12 +27,13 @@
                <a class="glyphicon glyphicon-eye-open pull-right" style='margin-right:40px'  data-ng-href="/courses/{{course._id}}" target='_blank'></a></h4>
             
               <ul>
-                <li><em>Code du cours</em> : <span class='red'>[{{course.code}}]</span> <span role="button" ng-click="editCourseCode(course._id,course.code)" class='glyphicon glyphicon-pencil blue'></span>
+                <li><em>Code du cours</em> : <span class='red'>[{{course.code}}]</span> <span role="button" ng-click="editCourse('code',course._id,course.code)" class='glyphicon glyphicon-pencil blue'></span>
                 <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}</li>
                 <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}</li>
               <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
                 <li>Nombre de problèmes potentiels : <b>{{course.nbsources}}</b></li>
                 <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b></li>
+                <li><b>Questionnaire : </b><a href={{course.survey}} target="_blank">{{course.survey}}</a> <span role="button" ng-click="editCourse('survey',course._id,course.survey)" class='glyphicon glyphicon-pencil blue'></span></li>
                 </ul>
                 <hr/>
               </li>

@@ -161,12 +161,13 @@
        <h4><a data-ng-href="/courses/{{course._id}}"><strong>{{course.title}}</strong></a></h4>
     
       <ul>
-      <li>Code du cours : <b>{{course.code}}</b></li>
+      <li >Code du cours : <b><span class='red'>{{course.code}}</span></b></li>
         <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}</li>
         <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}</li>
       <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
         <li>Nombre de problèmes potentiels : <b>{{course.nbfacts}}</b></li>
         <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b></li>
+        <li><b><u>Questionnaire :</u> <a href={{course.survey}} target="_blank">{{course.survey}}</a> </b></li>
       </ul>
     </li>
   </ul>                    

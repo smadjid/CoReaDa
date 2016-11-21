@@ -557,7 +557,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     'ob_end':courses[i].ob_end,
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
             };
@@ -602,7 +603,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
             };
@@ -630,13 +632,14 @@ transporter.sendMail(mailOptions, function(error, info){
                 var course={
                     '_id':_course._id,
                     'title':_course.title,
-                    'code':course.courseCode,
+                    'code':_course.courseCode,
                     'nbfacts':_course.nbfacts,
                     'ob_begin':new Date(Date.parse(_course.ob_begin)),
                     'ob_end':new Date(Date.parse(_course.ob_end)),
                     'nbtasks':_course.nbtasks,
                     'created':_course.created,
-                    'updated':_course.updated
+                    'updated':_course.updated,
+                    'survey':_course.survey
                 }
                 result.push(course);
                 return res.status(200).json(result);
@@ -1402,7 +1405,8 @@ transporter.sendMail(mailOptions, function(error, info){
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
             };
@@ -1498,7 +1502,8 @@ console.log("\n *FINISHED SEEDING* \n");
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
                indexes.push(courses[i].courseCode);
@@ -1632,7 +1637,8 @@ console.log("\n *FINISHED SEEDING* \n");
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
                indexes.push(courses[i].courseCode)
@@ -1692,7 +1698,7 @@ console.log("\n *FINISHED SEEDING* \n");
        Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
             if(err) return next("Error finding the course.");   
             var oldcode = _course.courseCode
-           _course.courseCode = req.body.newcode;
+           _course.courseCode = req.body.code;
            console.log('course code:'+_course.courseCode);
            _course.save();
 
@@ -1704,7 +1710,7 @@ console.log("\n *FINISHED SEEDING* \n");
                                         {'paramName':'courseId','paramValue':req.params.courseId},
                                         {'paramName':'course','paramValue':_course.title},
                                         {'paramName':'oldcode','paramValue':_course.title},
-                                        {'paramName':'content','paramValue':req.body.newcode}
+                                        {'paramName':'content','paramValue':req.body.code}
                                         ]}); 
                         _coreada.save();             
                     }
@@ -1725,12 +1731,65 @@ console.log("\n *FINISHED SEEDING* \n");
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 };
                 if(course._id == req.params.courseId)
-                    course.code = req.body.newcode
+                    course.code = req.body.code
                 else
                     course.code = courses[i].courseCode
+               result.push(course);
+            };
+           return res.status(200).json(result)
+           }) 
+    },
+    // update a  course survey URL
+    updateCourseSurveyURL:function(req, res) {
+        console.log('updating a course')
+        
+       Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");   
+            var oldsurvey = _course.survey
+           _course.survey = req.body.survey;
+           console.log('course survey url:'+_course.survey);
+           _course.save();
+
+            CoReaDa.findOne({}).exec(function(err, _coreada){      
+                 if(_coreada){
+                        _coreada.logs.unshift({'accessType':'Admin','name':'updateCourseSurveyURL',
+                                    'params':[
+                                        {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                        {'paramName':'courseId','paramValue':req.params.courseId},
+                                        {'paramName':'course','paramValue':_course.title},
+                                        {'paramName':'oldurl','paramValue':oldsurvey},
+                                        {'paramName':'content','paramValue':req.body.survey}
+                                        ]}); 
+                        _coreada.save();             
+                    }
+            });
+        });
+     var result = []
+     Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+
+         var result = [];
+        for (var i = 0; i< courses.length; i++){   
+            var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'code':courses[i].courseCode,
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated,
+                    'survey':''
+                };
+                if(course._id == req.params.courseId)
+                    course.survey = req.body.survey
+                else
+                    course.survey = courses[i].survey
                result.push(course);
             };
            return res.status(200).json(result)
@@ -1760,7 +1819,8 @@ console.log("\n *FINISHED SEEDING* \n");
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
             };
@@ -1793,7 +1853,8 @@ console.log("\n *FINISHED SEEDING* \n");
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':courses[i].survey
                 }
                result.push(course);
                indexes.push(courses[i].courseCode);

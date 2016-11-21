@@ -531,6 +531,10 @@ var NewCourseSchema = new Schema({
   url: {
     type: String
   },
+  survey: {
+    type: String,
+     default:''
+  },
   content: {
     type: String,
     trim: true
