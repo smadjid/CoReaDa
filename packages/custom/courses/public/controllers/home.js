@@ -59,6 +59,37 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
 
            });
     }
+    $scope.editCourseCode = function(id,code){
+      swal({
+        title: "Code du cours",
+        text: "Le nouveau code à affecter au cours est:",
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top",
+        inputPlaceholder: code
+      },
+      function(inputValue){
+        if (inputValue === false) return false;
+        inputValue = inputValue.replace(/ /g,"");
+        
+        
+        if (inputValue === "") 
+          swal("Code NON modifié", "Le code du cours est toujours le même : " + code);
+        else  {
+          $http.post('/api/coreada/updatecode/'+id,{'newcode':inputValue})
+            .success(function(data){ 
+              console.log(data)
+              $scope.courses = data;
+            swal("Code modifié", "Le nouveau code du cours est : " + inputValue);
+            return true;
+             })
+            .error(function(err){swal("Oops!", "Une erreur interne s'est produite");return false;});
+        }
+              
+          
+      });
+    }
 
     $scope.seedCourse = function(code){
        $scope.dataLoading = true;

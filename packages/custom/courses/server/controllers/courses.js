@@ -596,6 +596,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
+                    'code':courses[i].courseCode,
                     'nbfacts':courses[i].nbfacts,
                     'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
@@ -629,6 +630,7 @@ transporter.sendMail(mailOptions, function(error, info){
                 var course={
                     '_id':_course._id,
                     'title':_course.title,
+                    'code':course.courseCode,
                     'nbfacts':_course.nbfacts,
                     'ob_begin':new Date(Date.parse(_course.ob_begin)),
                     'ob_end':new Date(Date.parse(_course.ob_end)),
@@ -1624,6 +1626,7 @@ console.log("\n *FINISHED SEEDING* \n");
             var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
+                    'code':courses[i].courseCode,
                     'nbfacts':courses[i].nbfacts,
                     'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
@@ -1682,6 +1685,57 @@ console.log("\n *FINISHED SEEDING* \n");
     return;
     },
 
+    // update a  course code
+    updateCourseCode:function(req, res) {
+        console.log('updating a course')
+        
+       Course.findOne({}).where("_id").equals(req.params.courseId).exec(function(err, _course){
+            if(err) return next("Error finding the course.");   
+            var oldcode = _course.courseCode
+           _course.courseCode = req.body.newcode;
+           console.log('course code:'+_course.courseCode);
+           _course.save();
+
+            CoReaDa.findOne({}).exec(function(err, _coreada){      
+                 if(_coreada){
+                        _coreada.logs.unshift({'accessType':'Admin','name':'updateCourseCode',
+                                    'params':[
+                                        {'paramName':'ip','paramValue':req.connection.remoteAddress},
+                                        {'paramName':'courseId','paramValue':req.params.courseId},
+                                        {'paramName':'course','paramValue':_course.title},
+                                        {'paramName':'oldcode','paramValue':_course.title},
+                                        {'paramName':'content','paramValue':req.body.newcode}
+                                        ]}); 
+                        _coreada.save();             
+                    }
+            });
+        });
+     var result = []
+     Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+
+         var result = [];
+        for (var i = 0; i< courses.length; i++){   
+            var course={
+                    '_id':courses[i]._id,
+                    'title':courses[i].title,
+                    'code':'',
+                    'nbfacts':courses[i].nbfacts,
+                    'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
+                    'ob_end':new Date(Date.parse(courses[i].ob_end)),
+                    'nbtasks':courses[i].nbtasks,
+                    'created':courses[i].created,
+                    'updated':courses[i].updated
+                };
+                if(course._id == req.params.courseId)
+                    course.code = req.body.newcode
+                else
+                    course.code = courses[i].courseCode
+               result.push(course);
+            };
+           return res.status(200).json(result)
+           }) 
+    },
     // delete a  course
     removeCourse:function(req, res) {
         console.log('deleting a course')
