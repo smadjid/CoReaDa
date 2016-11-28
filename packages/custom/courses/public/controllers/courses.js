@@ -45,7 +45,7 @@ var compilFact = function(fact){
         break;
 
    
-    case "readers_tx":
+    case "readers_tx":    
         fact.name = "Trop peu de lecteurs";
         fact.description = "Ce chapitre est lu par"+fact.error_value+"fois moins de lecteurs que le nombre médian de lecteurs des autres chapitres";
         fact.suggestion_title = "Revoir le titre et le contenu";
@@ -1562,7 +1562,7 @@ var updateMainFacts = function(){
  $scope.MainChaptersFacts =  mainFacts;
  $scope.AllChaptersFacts = allFacts;
 
- console.log(allFacts)
+ 
 
  //////////////// SECTIONS
  
@@ -1984,9 +1984,11 @@ if($scope.inspectorStats.Indicators!=undefined){
 }
 
 var factSelector = function(currentElt){
-  if($scope.context.indicator == "ALL") $scope.context.indicator = $scope.indicatorsSelectionModel[0];
-  
+
+  //if($scope.context.indicator == "ALL") $scope.context.indicator = $scope.indicatorsSelectionModel[0];
+  console.log( $scope.context.indicator)
    var facts = $.grep($scope.inspectorFacts.Facts, function(e){ return  e.classof == $scope.context.indicator});
+
    if(facts==null) return;
    var fact = $.grep(facts, function(e){ return  e.partId == currentElt.id })[0]
    if(fact==null) fact = facts[0];
@@ -2062,6 +2064,7 @@ var loadContext = function(){
 
              if(indicator == "ALL") indicator = $scope.context.indicator;
 $scope.inspectorStats.indicatorCode = indicator;
+$scope.$apply();
    
   }
   
@@ -2328,7 +2331,7 @@ var selectIndictor = function(indicator){
     $('#divOverlay').css('visibility','visible');
     $('#divOverlay').slideDown('fast');    
   }  
-
+ $scope.$apply();
 }
 
 
@@ -3009,7 +3012,7 @@ setTimeout(function() {
 
       $scope.formData ='';
       $scope.textBtnForm ='';
-      $scope.indicatorsSelectionModel=['interest','Actions_tx','speed','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx','reading_not_linear',
+      $scope.indicatorsSelectionModel=['interest','Actions_tx','readers_tx','speed','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx','reading_not_linear',
 'provenance_not_linear','provenance_past','provenance_future','destination_not_linear','destination_past','destination_future'];
       $scope.chartType = $scope.indicatorsSelectionModel[0];
       $scope.globalChartSelector = $scope.indicatorsSelectionModel[0];

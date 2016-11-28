@@ -75,12 +75,12 @@
 
        <!--  <div class='row' style="margin-right:3px; text-align:right"> 
           <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span></em>
-       <em role='button' style="color:#ed6245" ng-click='transitionsDlg(inspectorStats.indicatorCode)' ng-if="(['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)>-1)  "><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Table de transition</em>
-         <em role='button' style="color:#ed6245" ng-click='zoomGraph()' ng-if="['destination_not_linear','provenance_not_linear'].indexOf(inspectorStats.indicatorCode)<=-1"><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em>
+       <em role='button' style="color:#ed6245" ng-click='transitionsDlg(context.indicator)' ng-if="(['destination_not_linear','provenance_not_linear'].indexOf(context.indicator)>-1)  "><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Table de transition</em>
+         <em role='button' style="color:#ed6245" ng-click='zoomGraph()' ng-if="['destination_not_linear','provenance_not_linear'].indexOf(context.indicator)<=-1"><span class=" glyphicon glyphicon-zoom-in"></span>&nbsp Agrandir</em>
          </div>-->
 
-            <d3-chart data='context.d3' ng-show='pageCount()>=0' indicator-code="inspectorStats.indicatorCode"  d3opts='{elementType:inspectorStats.type,elementId:inspectorStats.id,currentId:currentElement.id,issueCode:inspectorStats.indicatorCode,indicatorCode:inspectorStats.indicatorCode,courseId:course._id}' on-transitions=transitionsDlg(type) style="height:0;margin-left: 20px"></d3-chart>
-            <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(inspectorStats.indicatorCode)}} <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span></em> </div>             
+            <d3-chart data='context.d3' ng-show='pageCount()>=0' indicator-code="context.indicator"  d3opts='{elementType:inspectorStats.type,elementId:inspectorStats.id,currentId:currentElement.id,issueCode:context.indicator,indicatorCode:context.indicator,courseId:course._id}' on-transitions=transitionsDlg(type) style="height:0;margin-left: 20px"></d3-chart>
+            <div class='chart-title' ng-show='pageCount()>=0'>{{getGraphTitle(context.indicator)}} <em role='button' style="color:#ed6245" ng-click='zoomGraph()'><span class=" glyphicon glyphicon-zoom-in"></span></em> </div>             
         </div>
 
         <div class="col-lg-12" style="width:100%; font-size: 16px;   padding-top:5px">
