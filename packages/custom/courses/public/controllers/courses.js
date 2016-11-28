@@ -139,7 +139,7 @@ var compilFact = function(fact){
 
     case 'provenance_past':
         fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en arrière";
-        fact.description = paste("Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci se situe bien avant le chapitre précédent dans la structure du cours.");
+        fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci se situe bien avant le chapitre précédent dans la structure du cours.";
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"  ;
         break;

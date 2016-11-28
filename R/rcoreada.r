@@ -114,9 +114,18 @@ do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='
 
 
 #}
-do_verification <- function(){
-  rawd = "/home/madjid/dev/CoReaDa/rawdata/3522386"
-  cdurl = "/home/madjid/dev/CoReaDa/coursesdata/3522386"
+#3522386 1946386 1885491 3432066 3013711 2984401 2778161 2766951
+#do_verification('3522386')
+#do_verification('1946386')
+#do_verification('1885491')
+#do_verification('3432066')
+#do_verification('3013711')
+#do_verification('2984401')
+#do_verification('2778161')
+#do_verification('2766951')
+do_verification <- function(code){
+  rawd = paste("/home/madjid/dev/CoReaDa/rawdata",code,sep='/')
+  cdurl = paste("/home/madjid/dev/CoReaDa/coursesdata",code,sep='/')
   setwd(rawd)
   load('data.rdata')
   load('structure.rdata')
@@ -1139,7 +1148,7 @@ course_issues_calculation <- function(data, structure,PartData){
   
    ####### TROP PEU D'INTERET
   
-  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$interest)>2)&(chaptersData$interest<median(chaptersData$interest) ),c('part_id','interest')]
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$interest)>1)&(chaptersData$interest<median(chaptersData$interest) ),c('part_id','interest')]
   if(nrow(byChaps)>0){
     byChaps$classe="interest"
     byChaps$issueCode="min"    
@@ -1173,7 +1182,7 @@ course_issues_calculation <- function(data, structure,PartData){
   
     ####### NOMBRE DE RS TROP PEU   
   
-  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$rs_tx)>2)&(chaptersData$rs_tx<median(chaptersData$rs_tx) ),c('part_id','rs_tx')]
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$rs_tx)>1)&(chaptersData$rs_tx<median(chaptersData$rs_tx) ),c('part_id','rs_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="rs_tx"
     byChaps$issueCode="min"
@@ -1195,7 +1204,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   ################## Vitesse MIN
   if(min(PartData$speed>0)){
-  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>2)&(chaptersData$speed<median(chaptersData$speed) ),c('part_id','speed')]
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>1)&(chaptersData$speed<median(chaptersData$speed) ),c('part_id','speed')]
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
     byChaps$issueCode="min"
