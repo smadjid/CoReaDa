@@ -114,7 +114,21 @@ do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='
 
 
 #}
-
+do_verification <- function(){
+  rawd = "/home/madjid/dev/CoReaDa/rawdata/3522386"
+  cdurl = "/home/madjid/dev/CoReaDa/coursesdata/3522386"
+  setwd(rawd)
+  load('data.rdata')
+  load('structure.rdata')
+  load('PartData.rdata')
+  facts = course_issues_calculation(data, structure,PartData) 
+  save(facts, file="facts.rdata")
+  facts.json = toJSON(facts)
+  cat(facts.json, file=paste(cdurl,"facts.json",sep='/'))
+  
+  print('COREADA OK!')
+}
+############### END VERIFICATION ########################
 do_course <- function(csv_f,json_f, size_f){
 data = extract_course(csv_f)
 #print('DATA OK')
@@ -177,6 +191,7 @@ PartData = CourseDataCalc$PartData
 TransitionsData =  CourseDataCalc$TransitionsData
 
 save(PartData,file='PartData.rdata')
+save(CourseData,file='CourseData.rdata')
 
 meltParts=melt(PartData, id.vars = 'id')
   meltedCourseStats = melt(CourseData,  id.vars ="id")  
@@ -1136,7 +1151,7 @@ course_issues_calculation <- function(data, structure,PartData){
   
   ####### NOMBRE DE VISITES TROP PEU   
   
-  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$Actions_tx)>2)&(chaptersData$Actions_tx<median(chaptersData$Actions_tx) ),c('part_id','Actions_tx')]
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$Actions_tx)>1)&(chaptersData$Actions_tx<median(chaptersData$Actions_tx) ),c('part_id','Actions_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="Actions_tx"
     byChaps$issueCode="min"
@@ -1147,7 +1162,7 @@ course_issues_calculation <- function(data, structure,PartData){
   
   ####### NOMBRE DE LECTEURS TROP PEU   
   
-  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$readers_tx)>2)&(chaptersData$readers_tx<median(chaptersData$readers_tx) ),c('part_id','readers_tx')]
+  byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$readers_tx)>1)&(chaptersData$readers_tx<median(chaptersData$readers_tx) ),c('part_id','readers_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="readers_tx"
     byChaps$issueCode="min"    
@@ -1226,7 +1241,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   ####### Reading Linearity
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$reading_not_linear)>2)&
-                           (chaptersData$reading_not_linear>median(chaptersData$reading_not_linear) ),c('part_id','reading_not_linear')]  
+                           (chaptersData$reading_not_linear>median(chaptersData$reading_not_linear) &(chaptersData$id>min(chaptersData$id))&(chaptersData$id<max(chaptersData$id))),c('part_id','reading_not_linear')]  
   if(nrow(byChaps)>0){
     byChaps$classe="reading_not_linear"
     byChaps$issueCode="max"    
@@ -1235,7 +1250,7 @@ course_issues_calculation <- function(data, structure,PartData){
     readingLinearity = byChaps
   }
   ####### Provenance Linearity
-  byChaps=subset(chaptersData, chaptersData$provenance_not_linear>0.5 , select=c('part_id','provenance_not_linear')) 
+  byChaps=subset(chaptersData, (chaptersData$provenance_not_linear>0.5)&(chaptersData$id>min(chaptersData$id)) , select=c('part_id','provenance_not_linear')) 
   if(nrow(byChaps)>0){
     byChaps$classe="provenance_not_linear"
     byChaps$issueCode="max"
@@ -1245,7 +1260,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ####### Provenance Future
-  byChaps=subset(chaptersData, (chaptersData$provenance_future>0.5) && (chaptersData$id!=1) , select=c('part_id','provenance_future')) 
+  byChaps=subset(chaptersData, (chaptersData$provenance_future>0.5) &(chaptersData$id>min(chaptersData$id)) , select=c('part_id','provenance_future')) 
   if(nrow(byChaps)>0){
     byChaps$classe="provenance_future"
     byChaps$issueCode="max"
@@ -1255,7 +1270,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ####### Provenance Past
-  byChaps=subset(chaptersData, (chaptersData$provenance_past>0.3)&& (chaptersData$id!=1) , select=c('part_id','provenance_past')) 
+  byChaps=subset(chaptersData, (chaptersData$provenance_past>0.3)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','provenance_past')) 
   if(nrow(byChaps)>0){
     byChaps$classe="provenance_past"
     byChaps$issueCode="TransProvShift"
@@ -1265,7 +1280,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ####### Destination Linearity
-  byChaps=subset(chaptersData, chaptersData$destination_not_linear >0.5 , select=c('part_id','destination_not_linear')) 
+  byChaps=subset(chaptersData, (chaptersData$destination_not_linear >0.5)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','destination_not_linear')) 
   if(nrow(byChaps)>0){
     byChaps$classe="destination_not_linear"
     byChaps$issueCode="TransDestShift"
@@ -1274,7 +1289,7 @@ course_issues_calculation <- function(data, structure,PartData){
     destinationLinearity = byChaps
   }
   ####### Destination Future
-  byChaps=subset(chaptersData, chaptersData$destination_future >0.3 , select=c('part_id','destination_future')) 
+  byChaps=subset(chaptersData, (chaptersData$destination_future >0.3)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','destination_future')) 
   if(nrow(byChaps)>0){
     byChaps$classe="destination_future"
     byChaps$issueCode="max"
@@ -1283,7 +1298,7 @@ course_issues_calculation <- function(data, structure,PartData){
     destinationFuture = byChaps
   }
   ####### Destination Past
-  byChaps=subset(chaptersData, chaptersData$destination_past >0.5 , select=c('part_id','destination_past')) 
+  byChaps=subset(chaptersData, (chaptersData$destination_past >0.3)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','destination_past')) 
   if(nrow(byChaps)>0){
     byChaps$classe="destination_past"
     byChaps$issueCode="max"
@@ -1293,7 +1308,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   ########### Session end
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$rupture_tx)>2)&
-                           (chaptersData$rupture_tx>median(chaptersData$rupture_tx) ),c('part_id','rupture_tx')]
+                           (chaptersData$rupture_tx>median(chaptersData$rupture_tx)&(chaptersData$id<max(chaptersData$id)) ),c('part_id','rupture_tx')]
   if(nrow(byChaps)>0){
     byChaps$classe="rupture_tx"
     byChaps$issueCode="max"
@@ -1304,7 +1319,7 @@ course_issues_calculation <- function(data, structure,PartData){
   
   ####### Max Stops
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$norecovery_tx)>2)&
-                           (chaptersData$norecovery_tx>median(chaptersData$norecovery_tx) ),c('part_id','norecovery_tx')]
+                           (chaptersData$norecovery_tx>median(chaptersData$norecovery_tx) )&(chaptersData$id<max(chaptersData$id)),c('part_id','norecovery_tx')]
   
   if(nrow(byChaps)>0){
     byChaps$classe="norecovery_tx"
@@ -1315,7 +1330,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ####### Recovery ANormal
-  byChaps = subset(chaptersData, chaptersData$resume_abnormal_tx > 0.5 , select=c('part_id','resume_abnormal_tx')) 
+  byChaps = subset(chaptersData, (chaptersData$resume_abnormal_tx > 0.5)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','resume_abnormal_tx')) 
   if(nrow(byChaps)>0){
     byChaps$classe="resume_abnormal_tx"
     byChaps$issueCode="max"
@@ -1325,7 +1340,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ####### Recovery Past
-  byChaps = subset(chaptersData, chaptersData$resume_past > 0.33 , select=c('part_id','resume_past')) 
+  byChaps = subset(chaptersData, (chaptersData$resume_past > 0.33)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','resume_past')) 
   if(nrow(byChaps)>0){
     byChaps$classe="resume_past"
     byChaps$issueCode="max"
@@ -1335,7 +1350,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ####### Recovery Future
-  byChaps = subset(chaptersData, chaptersData$resume_future > 0.33 , select=c('part_id','resume_future')) 
+  byChaps = subset(chaptersData, (chaptersData$resume_future > 0.33)&(chaptersData$id<max(chaptersData$id)) , select=c('part_id','resume_future')) 
   if(nrow(byChaps)>0){
     byChaps$classe="resume_future"
     byChaps$issueCode="max"

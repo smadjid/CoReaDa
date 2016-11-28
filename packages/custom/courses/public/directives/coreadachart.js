@@ -35,7 +35,7 @@ var elementId = Array.isArray(scope.d3opts.elementId)?scope.d3opts.elementId: [s
 
 if(elementType=='section') elementType='part';
   d3.select(element[0]).selectAll("*").remove();
-  console.log(width)
+  
   width = $(element[0]).parent().width() - margin.left - margin.right - 20;
   
           svg = d3.select(element[0])
@@ -474,7 +474,7 @@ var r = (height + margin.top )/2;
 
 
  var data = [];
- console.log(globalData);
+ 
 if((classe=="rereads_seq_tx")||(classe=="rereads_dec_tx"))
   data = [{"label":"Relectures conjointes", "value":Math.round(parseFloat(100*globalData.indicators.rereads_seq_tx),2)}, 
               {"label":"Relectures disjointes", "value":Math.round(parseFloat(100*globalData.indicators.rereads_dec_tx),2)}];

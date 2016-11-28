@@ -1562,6 +1562,8 @@ var updateMainFacts = function(){
  $scope.MainChaptersFacts =  mainFacts;
  $scope.AllChaptersFacts = allFacts;
 
+ console.log(allFacts)
+
  //////////////// SECTIONS
  
 
