@@ -913,16 +913,16 @@ table {
 }
 
 
-.reading th{
+.oldreading th{
  border-left: 6px solid #FDE3A7;
 }
-.rereading th{
+.oldrereading th{
 border-left: 6px solid orange;
 }
-.navigation th{
+.oldnavigation th{
 border-left: 6px solid #F27935;
 }
-.stop th{
+.oldstop th{
 border-left: 6px solid #c0392b;
 }
 

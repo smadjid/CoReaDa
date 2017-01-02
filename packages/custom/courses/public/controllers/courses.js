@@ -30,7 +30,7 @@ var compilFact = function(fact){
         fact.suggestion_title ="Revoir le contenu du chapitre, son titre et sa position dans le cours";
         fact.suggestion_content ="Est-ce que le titre du chapitre  résume bien son contenu ?"+ 
     "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
-    "être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan de la partie chapitre et du cours. "+
+    "être reformulé, voire intégré ailleurs dans le cours ?  Sinon, la supprimer et revoir le plan du chapitre et du cours. "+
     "Le cas échéant, il faudrait penser à le reformuler";
         break;
 
@@ -122,14 +122,14 @@ var compilFact = function(fact){
         break;
 
     case 'reading_not_linear':
-        fact.name = "Trop de navigation non linéaires (non consécutives) impliquant se chapitre";
+        fact.name = "Trop de navigation non linéaires (non consécutives) impliquant ce chapitre";
         fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans la structure du cours.";
         fact.suggestion_title ="Revoir le contenu et la position du chapitre dans le plan du cours" ;
         fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?";
         break;
 
      case 'provenance_not_linear':
-        fact.name = "Trop d\'arrivées non linéaires (non consécutives) sur se chapitre";
+        fact.name = "Trop d\'arrivées non linéaires (non consécutives) sur ce chapitre";
         fact.description = "Dans"+ fact.error_value +"% des cas, le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans la structure du cours.";
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"+
@@ -150,7 +150,7 @@ var compilFact = function(fact){
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content =     "Est-ce que ce chapitre est bien positionné dans le plan de la partie et du cours ?"+
     "Il se peut que  ce chapitre soit un pré-requis important à la lecture d'autre(s) chapitre(s) ou partie(s), "+
-    "n'y a t-il pas une restructuration du cours/chapitre/partie plus intéressante pour éviter ce phénomène ?";;
+    "n'y a t-il pas une restructuration du cours/partie/chapitre plus intéressante pour éviter ce phénomène ?";;
         break;
 
     case 'destination_not_linear':
@@ -1490,6 +1490,7 @@ var getTasks = function(courseId, partId, todoData) {
              {'paramName':'url','paramValue':window.location.hash}] 
           });
       //////////////////////////////
+      return;
    if((tab == 'facts')&($scope.inspectorFacts.Facts.length>0)){ //return;
     if(components == null)    
       loadURL($scope.inspectorFacts.Facts[$scope.currentFact].route);
@@ -2045,13 +2046,18 @@ var loadContext = function(){
     var part  = components.hasOwnProperty('sectionid')?$.grep(chap.parts, function(e){ return  e._id == components.sectionid })[0]:-1;     
     var partElt = -1;
     var tab=components.hasOwnProperty('tab')?components.tab:'facts';
-    var fact  = components.hasOwnProperty('factid')?
+    var fact  = components.hasOwnProperty('factid')? 
                 (
                   (part==-1)?($.grep(chap.facts, function(e){ return  e._id == components.factid })[0]):
                              ($.grep(part.facts, function(e){ return  e._id == components.factid })[0])
                   ): -1;
+    if(fact!=-1) 
+        {
+            indicator = fact.classof;
+            $scope.context.indicator = fact.classof;
+        }
 
-    
+    console.log(indicator)
 
     task = components.hasOwnProperty('taskid')?   $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
     indicator = components.hasOwnProperty('indicator')? 
@@ -2065,6 +2071,7 @@ var loadContext = function(){
              if(indicator == "ALL") indicator = $scope.context.indicator;
 $scope.inspectorStats.indicatorCode = indicator;
 $scope.$apply();
+
    
   }
   
