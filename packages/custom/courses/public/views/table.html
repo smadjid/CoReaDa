@@ -9,7 +9,7 @@
 
  <button id="single-button" type="button" class="glyphicon glyphicon glyphicon-option-vertical indicatorSelectorButton dropdown-toggle" uib-dropdown-toggle ng-disabled="disabled" ng-click="isOpen = !isOpen; $event.stopPropagation();"></button>
       <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-        <li role="menuitem" style="padding:3px"><a href="#" ng-click="allFactsDisplay=!allFactsDisplay"><span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allFactsDisplay, 'glyphicon glyphicon-plus-sign pull-left': !allFactsDisplay}"  style="margin-right:5px"></span>
+        <li role="menuitem" style="padding:3px"><a  style="cursor: pointer;" ng-click="toggleFactsDisplay()"><span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allFactsDisplay, 'glyphicon glyphicon-plus-sign pull-left': !allFactsDisplay}"  style="margin-right:5px"></span>
  {{allFactsDisplay ? "Afficher moins de problèmes" : "Afficher plus de problèmes"}}
 
         </a></li>
@@ -18,8 +18,8 @@
 
 
 
-<a href="#" ng-click="allIndicatorSelectorShow=!allIndicatorSelectorShow"><span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allIndicatorSelectorShow, 'glyphicon glyphicon-plus-sign pull-left': !allIndicatorSelectorShow}"  style="margin-right:5px"></span>
- {{allIndicatorSelectorShow ? "Afficher tous les indicateurs" : "Afficher les principaux indicateurs"}}
+<a   style="cursor: pointer;"  ng-click="show_or_hideChildren()"><span  ng-class="{'glyphicon glyphicon-minus-sign pull-left': allIndicatorSelectorShow, 'glyphicon glyphicon-plus-sign pull-left': !allIndicatorSelectorShow}"  style="margin-right:5px"></span>
+ {{allIndicatorSelectorShow ? "Afficher les principaux indicateurs" : "Afficher tous les indicateurs"}}
 
         </a>
 

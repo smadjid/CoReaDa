@@ -324,6 +324,24 @@ var toggleChildren = function(parent){
   })
 }
 
+var show_or_hideChildren = function(parent, show){
+  
+  
+  
+
+   angular.forEach($scope.indicatorsHeader, function(ch) { 
+   if(ch.parent==parent.code){
+    parent.details = true;
+      ch.show = show;
+     
+    
+    if(ch.details)
+     show_or_hideChildren(show);
+   }
+     
+  })
+}
+
 var getGraphTitle = function(code){
   switch(code) {
     case "interest":
@@ -743,11 +761,15 @@ var indicatorsSelectionModelHandler = function(newValue, oldValue){
   else{
      if($scope.allFactsDisplay){
       $scope.ChaptersFacts = $scope.AllChaptersFacts;
+      $scope.inspectorFacts.Facts = $scope.AllChaptersFacts;
      }
       else{
         $scope.ChaptersFacts = $scope.MainChaptersFacts;
+        $scope.inspectorFacts.Facts = $scope.MainChaptersFacts;
       }
-    $scope.inspectorFacts.Facts = $scope.ChaptersFacts;
+
+      
+    
   }
 } //////////////////////////////
 
@@ -3063,14 +3085,21 @@ $scope.indicatorsHeader = resetIndicators();
 $scope.selectedIndicators=$scope.indicatorsHeader;
 
 
+$scope.show_or_hideChildren = function(){
+    $scope.allIndicatorSelectorShow=!$scope.allIndicatorSelectorShow;
+    
+angular.forEach($scope.indicatorsHeader, function(indicator) {      
+    show_or_hideChildren(indicator,$scope.allIndicatorSelectorShow);
+})
+       goHome(); 
+   inspectorCourseData('facts');
+}
+
 $scope.toggleChildren = function(parent){
  
    toggleChildren(parent);
    goHome(); 
    inspectorCourseData('facts');
-   
- 
- 
 }
 $scope.isIndicatorVisible = function(indicator){
 
@@ -3178,30 +3207,6 @@ $scope.zoomGraph = function(){
 /*********** Prepare Global Transitions ********************/
 /*********** Compute colours ********************/
 
-$scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
-  if(newValue == oldValue) return;
-  $scope.currentFact = 0;
- if(newValue){
-  $scope.ChaptersFacts = $scope.AllChaptersFacts;
-  $scope.SectionsFacts = $scope.AllSectionsFacts;
-
-
- }
- else{
-    $scope.ChaptersFacts = $scope.MainChaptersFacts;
-    $scope.SectionsFacts = $scope.MainSectionsFacts;
-  };
-   
-
-    window.setTimeout(function() {
-      
-     $scope.goHome();     
-    inspectorCourseData('facts');
-    selectTab('facts'); 
-    $scope.$apply();
-  }, 0);
-
-});
 
 
 
@@ -3517,6 +3522,43 @@ if (course){
   about();
 $scope.$watch('tabSelect', function(newValue, oldValue) { return tabSelectHandler(newValue, oldValue)}  );/////////// END watch 'tabSelect'
 $scope.$watch('indicatorsSelectionModel', function(newValue, oldValue) {   return indicatorsSelectionModelHandler(newValue, oldValue)}  ); /////////// END watch 'indicatorsSelectionModel'
+$scope.toggleFactsDisplay = function(){
+    $scope.allFactsDisplay = !$scope.allFactsDisplay
+ 
+}
+$scope.$watch('allFactsDisplay', function(newValue, oldValue) {  
+  if(newValue == oldValue) return;
+
+  var selected = $scope.indicatorsHeader.filter(function(value){ return value.show === true});
+  console.log(selected)
+
+   $scope.selectedIndicators =  $.grep(selected, function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
+  updateMainFacts();
+  
+  $scope.currentFact = 0;
+  
+ if(newValue){
+  $scope.ChaptersFacts = $scope.AllChaptersFacts; 
+  
+
+ }
+ else{
+    $scope.ChaptersFacts = $scope.MainChaptersFacts;  
+    
+  };
+
+  //goHome(); 
+   inspectorCourseData('facts');
+   
+
+
+
+
+
+ 
+
+});
+
 $(window).bind('hashchange',function(e){   loadContext(); });  
 
      //////////// INIT VARS
