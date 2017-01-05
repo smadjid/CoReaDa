@@ -327,19 +327,21 @@ var toggleChildren = function(parent){
 var show_or_hideChildren = function(parent, show){
   
   
-  
+  parent.details = show;
 
    angular.forEach($scope.indicatorsHeader, function(ch) { 
    if(ch.parent==parent.code){
-    parent.details = true;
-      ch.show = show;
-     
+    
+      ch.show = show;    
+
     
     if(ch.details)
-     show_or_hideChildren(show);
+     show_or_hideChildren(ch,show);
    }
      
   })
+
+
 }
 
 var getGraphTitle = function(code){
