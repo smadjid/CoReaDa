@@ -201,7 +201,7 @@ TransitionsData =  CourseDataCalc$TransitionsData
 
 save(PartData,file='PartData.rdata')
 save(CourseData,file='CourseData.rdata')
-
+ 
 meltParts=melt(PartData, id.vars = 'id')
   meltedCourseStats = melt(CourseData,  id.vars ="id")  
   meltedCourseData = rbind(meltParts,meltedCourseStats)
@@ -977,18 +977,22 @@ course_data_calculation <- function(data,structure,indicators){
   PartData[PartData$speed>0,]$invspeed =range01(PartData[PartData$speed>0,]$invspeed, na.rm=TRUE)
   }
   
-  PartData$interest =PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx 
+  PartData$interest =(PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx )/3
+  
+  #chaptersData$Actions_tx + chaptersData$readers_tx + chaptersData$rs_tx 
+  
   #+ PartData$invspeed
   
-  PartData[PartData$interest>0,]$interest = range01(PartData[PartData$interest>0,]$interest, na.rm=TRUE)
+  #PartData[PartData$interest>0,]$interest = range01(PartData[PartData$interest>0,]$interest, na.rm=TRUE)
   
   #################FIN####################
   
   
   PartData = merge(PartData, Provenances_stats,  by = 'part_index',all.x = TRUE)
   PartData = merge(PartData, Destinations_stats,  by = 'part_index',all.x = TRUE)
-  PartData$reading_not_linear = PartData$provenance_not_linear+ PartData$destination_not_linear 
-  PartData$reading_not_linear = range01(PartData$reading_not_linear, na.rm=TRUE)
+  PartData$reading_not_linear = (PartData$provenance_not_linear+ PartData$destination_not_linear )/3
+  #PartData$reading_not_linear = range01(PartData$reading_not_linear, na.rm=TRUE)
+  
   
   PartData = merge(PartData, Ruptures[,-c(1)], all.x = TRUE)
   

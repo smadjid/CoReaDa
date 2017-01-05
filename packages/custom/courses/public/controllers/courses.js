@@ -24,8 +24,8 @@ var compilFact = function(fact){
   {
     case "interest":
         fact.name ="Trop peu d'intérêt";
-        fact.description ="Ce chapitre suscite peu d’intérêt chez les lecteurs, le taux d'intérêt calculé étant très réduit: il est"+fact.error_value+
-    "fois moins que le le taux médian des autres chapitres.  Cet indicateur résumé l'intérêt en termes de nombre de visites, de nombre de lecteurs,"+ 
+        fact.description ="Ce chapitre suscite peu d’intérêt chez les lecteurs, le taux d'intérêt calculé étant très réduit: il est "+fact.error_value+
+    " fois moins que le le taux médian des autres chapitres.  Cet indicateur résumé l'intérêt en termes de nombre de visites, de nombre de lecteurs,"+ 
     "de nombre de séances de lecture et la vitesse de lecture du chapitre.    Il serait intéressant de regarder ces indicateurs.";
         fact.suggestion_title ="Revoir le contenu du chapitre, son titre et sa position dans le cours";
         fact.suggestion_content ="Est-ce que le titre du chapitre  résume bien son contenu ?"+ 
@@ -36,7 +36,7 @@ var compilFact = function(fact){
 
      case "Actions_tx":
        fact.name = "Trop peu de visites";
-        fact.description = "Ce chapitre est visité"+fact.error_value+"fois moins que le nombre médian de visites des autres chapitres";
+        fact.description = "Ce chapitre est visité "+fact.error_value+" fois moins que le nombre médian de visites des autres chapitres";
         fact.suggestion_title ="Revoir le titre et le contenu" ;
         fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ?"+ 
     "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
@@ -47,7 +47,7 @@ var compilFact = function(fact){
    
     case "readers_tx":    
         fact.name = "Trop peu de lecteurs";
-        fact.description = "Ce chapitre est lu par"+fact.error_value+"fois moins de lecteurs que le nombre médian de lecteurs des autres chapitres";
+        fact.description = "Ce chapitre est lu par "+fact.error_value+" fois moins de lecteurs que le nombre médian de lecteurs des autres chapitres";
         fact.suggestion_title = "Revoir le titre et le contenu";
         fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ? "+
     "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
@@ -57,7 +57,7 @@ var compilFact = function(fact){
 
     case "rs_tx":
         fact.name = "Trop peu de séances";
-        fact.description = "Ce chapitre est lû dans très peu de séances : "+fact.error_value+"fois moins que le nombre médian de séances appraissent les autres chapitres";
+        fact.description = "Ce chapitre est lû dans très peu de séances :  "+fact.error_value+" fois moins que le nombre médian de séances appraissent les autres chapitres";
         fact.suggestion_title = "Revoir le titre et le contenu";
         fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ? "+
     "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
@@ -93,7 +93,7 @@ var compilFact = function(fact){
    
     case 'rereads_tx':
         fact.name = "Trop de relectures";
-        fact.description ="Ce chapitre est en moyenne relue"+fact.error_value+"fois plus que le nombre moyen de relectures des autres chapitres" ;
+        fact.description ="Ce chapitre est en moyenne relue "+fact.error_value+" fois plus que le nombre moyen de relectures des autres chapitres" ;
         fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchainement des idées";
         fact.suggestion_content = "Le chapitre et les sections qui le composent doivent être plus simples à  lire et comprendre : "+
     "- utiliser un vocabulaire plus commun ou directement défini dans le texte, "
