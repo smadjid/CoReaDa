@@ -289,6 +289,9 @@ import_course();*/
                                                             else
                                                                 if(part_data[i]['variable']=='ob_end')
                                                                     part.ob_end=part_data[i]['value']
+                                                                else
+                                                                if(part_data[i]['variable']=='dospeed')
+                                                                    part.dospeed=part_data[i]['value']
 
                             
             };
@@ -320,6 +323,7 @@ import_course();*/
             courseData.properties = part.properties; 
             courseData.ob_begin = part.ob_begin;
             courseData.ob_end = part.ob_end;
+            if(part.dospeed=='FALSE') courseData.dospeed = false;
 
             courseData.indicators = part.indicators;
             courseData.indicators.nactions = part.nactions;
@@ -442,6 +446,7 @@ import_course();*/
             nbtasks : 0,
             nbfacts : jsonFacts.length,
             parts:courseParts,
+            dospeed:courseData.dospeed,
            // properties:courseData.properties,//jsonCoursedata,
            // stats:coursestats,
           //  rs:coursers,
@@ -454,7 +459,9 @@ import_course();*/
             facts: [],  
             todos: [],
             logs:[]
-        });
+        }); 
+        console.log('DO SPEED: '+courseData.dospeed+' and '+course.dospeed)
+
 
         course.save(function(err){
             if (err){

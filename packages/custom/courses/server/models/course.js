@@ -557,6 +557,10 @@ var NewCourseSchema = new Schema({
   ob_end:{
     type:String
   },
+  dospeed:{
+    type: Boolean, 
+    default: true
+  },
   nbfacts: {
     type: Number,
     default: 0

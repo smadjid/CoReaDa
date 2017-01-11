@@ -126,14 +126,50 @@ do_course(paste(allF[i],'data.csv',sep='/'),paste(allF[i],'structure.json',sep='
 do_verification <- function(code){
   rawd = paste("/home/madjid/dev/CoReaDa/rawdata",code,sep='/')
   cdurl = paste("/home/madjid/dev/CoReaDa/coursesdata",code,sep='/')
+  coreaDataURL = "/home/madjid/dev/CoReaDa/coursesdata" 
   setwd(rawd)
   load('data.rdata')
   load('structure.rdata')
   load('PartData.rdata')
-  facts = course_issues_calculation(data, structure,PartData) 
+  load('RS.rdata')
+  load('Interest.rdata')
+  load('Reads.rdata')
+  load('Ruptures.rdata')
+  load('partFollow.rdata')
+  indicators = list(data=data, structure=structure, RS=RS , Interest=Interest,Reads=Reads,Ruptures=Ruptures,partFollow=partFollow)
+  
+  dir.create(file.path(coreaDataURL,code), showWarnings = FALSE)
+  courseDataURL=paste(coreaDataURL,code,sep='/') 
+  
+  CourseDataCalc = course_data_calculation(data,structure, indicators) 
+  
+  CourseData=CourseDataCalc$CourseData
+  PartData = CourseDataCalc$PartData
+  TransitionsData =  CourseDataCalc$TransitionsData
+  
+  save(PartData,file='PartData.rdata')
+  save(CourseData,file='CourseData.rdata')
+  
+  meltParts=melt(PartData, id.vars = 'id')
+  meltedCourseStats = melt(CourseData,  id.vars ="id")  
+  meltedCourseData = rbind(meltParts,meltedCourseStats)
+  if(nrow(meltedCourseData[is.nan(meltedCourseData$value),])>0) meltedCourseData[is.nan(meltedCourseData$value),]$value=0
+  if(nrow(meltedCourseData[is.na(meltedCourseData$value),])>0) meltedCourseData[is.na(meltedCourseData$value),]$value=0
+  
+  facts = course_issues_calculation(data, structure,PartData, CourseData$dospeed) 
   save(facts, file="facts.rdata")
+  
+  
+  
+  CourseData.json = toJSON(meltedCourseData) 
+  cat(CourseData.json, file=paste(courseDataURL,"data.json",sep='/'))
+  
+  TransitionsData.json = toJSON(TransitionsData)
+  cat(TransitionsData.json, file=paste(courseDataURL,"navigation.json",sep='/'))
+  
   facts.json = toJSON(facts)
-  cat(facts.json, file=paste(cdurl,"facts.json",sep='/'))
+  cat(facts.json, file=paste(courseDataURL,"facts.json",sep='/'))
+  
   
   print('COREADA OK!')
 }
@@ -175,7 +211,7 @@ drops <-c("size"    ,   "nb_img"     ,"vid_length")
 structure = structure[ , !(names(structure) %in% drops)]
 structure=merge(structure,sz,by='part_id', all.x = TRUE)
 save(structure, file='structure.rdata')
-
+  
 indicators = indicators_calculation(data,structure) 
 data = indicators$data
 structure = indicators$structure
@@ -184,6 +220,7 @@ Interest = indicators$Interest
 Reads = indicators$Reads
 Ruptures = indicators$Ruptures
 partFollow = indicators$partFollow
+
 save(RS, file="RS.rdata")
 save(Interest, file="Interest.rdata")
 save(Reads, file="Reads.rdata")
@@ -208,7 +245,7 @@ meltParts=melt(PartData, id.vars = 'id')
   if(nrow(meltedCourseData[is.nan(meltedCourseData$value),])>0) meltedCourseData[is.nan(meltedCourseData$value),]$value=0
   if(nrow(meltedCourseData[is.na(meltedCourseData$value),])>0) meltedCourseData[is.na(meltedCourseData$value),]$value=0
   
-facts = course_issues_calculation(data, structure,PartData) 
+facts = course_issues_calculation(data, structure,PartData,CourseData$dospeed) 
 save(facts, file="facts.rdata")
 
 CourseData.json = toJSON(meltedCourseData) 
@@ -848,12 +885,16 @@ course_data_calculation <- function(data,structure,indicators){
   if(nrow(PartData[which(PartData$type=='title-3'),])>0)
     PartData[which(PartData$type=='title-3'),]$type='section'
   
+  dospeed=TRUE
   ############## SIZE : 1s video --> 2 mots. 1 image --> 30 mots
   
-  if("vid_length" %in% colnames(PartData))
+  if("vid_length" %in% colnames(structure))
   {
-   print("vids exist")
-    PartData$size = PartData$size + PartData$vid_length * 2
+   print(max(structure$vid_length))
+    #PartData$size = PartData$size + PartData$vid_length * 2
+    if(max(structure$vid_length)>0)
+      dospeed=FALSE;
+    print(paste('Vitesse: ',dospeed))
   }
   if("nb_img" %in% colnames(PartData))
   {
@@ -868,9 +909,10 @@ course_data_calculation <- function(data,structure,indicators){
     
   }
   
+  if(dospeed){
   PartData$speed=round(PartData$size/(PartData$mean.duration/60),2)
   PartData[is.na(PartData$speed),]$speed <- -1
-  
+  }
   
   
   
@@ -967,17 +1009,24 @@ course_data_calculation <- function(data,structure,indicators){
   PartData$Actions_tx = PartData$Actions_nb / nrow(data)
   PartData$readers_tx = PartData$Readers / nusers
   PartData$rs_tx = PartData$RS_nb / rs_nb
+  PartData$interest = 0
+  
+  if(dospeed){
   PartData$invspeed = 0
-  if(min(PartData$speed>0)){
+  
   minspeed = min(PartData[PartData$speed>0,]$speed)
   maxspeed = max(PartData[PartData$speed>0,]$speed)
   PartData$invspeed = -1
   PartData[PartData$speed>0,]$invspeed = maxspeed- PartData[PartData$speed>0,]$speed
   
   PartData[PartData$speed>0,]$invspeed =range01(PartData[PartData$speed>0,]$invspeed, na.rm=TRUE)
-  }
   
-  PartData$interest =(PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx )/3
+  PartData$interest =(PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx + PartData$invspeed)/4
+  }
+  if(!dospeed)
+  {
+    PartData$interest =(PartData$Actions_tx + PartData$readers_tx + PartData$rs_tx )/3
+  }
   
   #chaptersData$Actions_tx + chaptersData$readers_tx + chaptersData$rs_tx 
   
@@ -1053,8 +1102,7 @@ course_data_calculation <- function(data,structure,indicators){
   
   
   ####################FIN####################
-  PartData[PartData$type=='course',]$speed =
-    mean(PartData[PartData$type=='chapitre',]$speed)
+ if(dospeed) PartData[PartData$type=='course',]$speed =    mean(PartData[PartData$type=='chapitre',]$speed)
   PartData[PartData$type=='course',]$Actions_tx =
     mean(PartData[PartData$type=='chapitre',]$Actions_tx)
   PartData[PartData$type=='course',]$readers_tx =
@@ -1068,6 +1116,7 @@ course_data_calculation <- function(data,structure,indicators){
   PartData[PartData$type=='course',]$rereads_tx =
     mean(PartData[PartData$type=='chapitre',]$rereads_tx)
   
+  if(dospeed)
   PartData=PartData[,c("part_index","part_id","parent_id","title","type", "slug", "max.duration"  ,  "mean.duration"  ,
                        "median.duration" ,"q1.duration" , "q3.duration", "size", "speed" ,"interest" , "Actions_nb",
                        "Readers", "Rereaders" , "Readings","readers_tx", "Actions_tx","rs_tx",
@@ -1077,7 +1126,15 @@ course_data_calculation <- function(data,structure,indicators){
                        "destination_next", "destination_not_linear","destination_past" ,"destination_future"  ,
                        "rupture_tx", "norecovery_tx","resume_abnormal_tx" ,"resume_past","resume_future")]
   
-  
+  if(!dospeed)
+    PartData=PartData[,c("part_index","part_id","parent_id","title","type", "slug", "max.duration"  ,  "mean.duration"  ,
+                         "median.duration" ,"q1.duration" , "q3.duration", "size", "interest" , "Actions_nb",
+                         "Readers", "Rereaders" , "Readings","readers_tx", "Actions_tx","rs_tx",
+                         "Rereadings", "rereads_tx", "rereads_seq_tx" ,  "rereads_dec_tx", 
+                         "Sequential_rereadings" ,"Decaled_rereadings",  "reading_not_linear",
+                         "provenance_prev" , "provenance_not_linear", "provenance_past",  "provenance_future" ,
+                         "destination_next", "destination_not_linear","destination_past" ,"destination_future"  ,
+                         "rupture_tx", "norecovery_tx","resume_abnormal_tx" ,"resume_past","resume_future")]
   
   colnames(PartData)[1]="id"
   
@@ -1110,9 +1167,7 @@ course_data_calculation <- function(data,structure,indicators){
   CourseData$RS_meanperuser = nrow(RS)/nusers
   CourseData$ob_begin=as.character(min(data$date))
   CourseData$ob_end=as.character(max(data$date))
-  
-  
-  
+  CourseData$dospeed=dospeed
   
   res = list(PartData=PartData,CourseData=CourseData, TransitionsData=TransitionsData)
   return(res) 
@@ -1120,13 +1175,14 @@ course_data_calculation <- function(data,structure,indicators){
 }
 
 ###############  COURSE ISSUES
-course_issues_calculation <- function(data, structure,PartData){
+course_issues_calculation <- function(data, structure,PartData, dospeed){
   
   ######################INDICATORS INIT.###############################
   minInterest =    # interest
   minVisits =   	# Actions_tx
   minReaders = 		# readers_tx 			<----------
   minRS = 		# rs_tx  			<----------
+  minSpeed = 		# speed
   maxSpeed = 		# speed
   maxRereadings = 	# rereads_tx
   maxDijRereadings = 	# rereads_dec_tx
@@ -1196,7 +1252,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   
   ################## Vitesse MAX  
-  if(min(PartData$speed>0)){
+  if(dospeed){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>2)&(chaptersData$speed>median(chaptersData$speed) ),c('part_id','speed')]  
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
@@ -1207,7 +1263,7 @@ course_issues_calculation <- function(data, structure,PartData){
   }
   }
   ################## Vitesse MIN
-  if(min(PartData$speed>0)){
+  if(dospeed){
   byChaps = chaptersData[(DoubleMADsFromMedian(chaptersData$speed)>1)&(chaptersData$speed<median(chaptersData$speed) ),c('part_id','speed')]
   if(nrow(byChaps)>0){
     byChaps$classe="speed"
@@ -1417,7 +1473,7 @@ course_issues_calculation <- function(data, structure,PartData){
       recoveryFuture,
       recoveryPast)
  rownames(facts)=NULL
- if(min(PartData$speed>0)){
+ if(dospeed){
   names(minSpeed)[c(1,2)]=
     names(maxSpeed)[c(1,2)]=c("part_id","value")
     facts =  rbind(facts,minSpeed,maxSpeed)

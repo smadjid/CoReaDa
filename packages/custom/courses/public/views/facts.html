@@ -30,10 +30,10 @@
 
 <div style="padding-top:2px" id="fact-div">
    <p  style='font-size:14px;     margin-bottom: 5px'> <b>Explication</b></p>
-  <p style='text-align:justify;  font-size:14px'>{{fact.description}}</p>
+  <p style='text-align:justify;  font-size:14px' ng-bind-html="fact.description"></p>
 
   <p  style='font-size:14px;     margin-bottom: 5px'> <b>Suggestion</b>: <em>{{fact.suggestion_title}} </em></p>
-  <p style='text-align:justify; font-size:14px'>{{fact.suggestion_content}}</p>
+  <p style='text-align:justify; font-size:14px'  ng-bind-html="fact.suggestion_content"></p>
 
 </div>
 
