@@ -4,7 +4,7 @@
           </div>-->
 <div class="fact-dispaly"  ng-repeat="fact in inspectorFacts.Facts | pagination : currentFact*itemsPerPage | limitTo: 1" data-fact={{fact._id}} multiple  data-path={{fact.route}}@{{fact.classof}} >
 
-<div  style=" padding:12px; width:100%; font-size: 16px; padding-top:5px">
+<div  style=" padding:12px; padding-left:0px; width:100%; font-size: 16px; padding-top:5px">
 <button  type="button" style="padding:0; margin:0; background: none" class="btn" ng-class="DisablePrevPage()" ng-click="prevPage()">
 <span class="glyphicon glyphicon-menu-left pull-left" style='font-weight: bolder' aria-hidden="true"></span>
 </button>
@@ -21,14 +21,11 @@
 
 
 
-<div class='col-lg-6' style='padding-right:0'>
-<perfect-scrollbar class="factScroller" suppress-scroll-x="true" scrollY-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="10"    style=" border: 0px solid grey;width:100%; padding: 0px; position: relative">
+<div class='col-lg-6' style='padding-left: 10px;padding-right: 0px'>
+<perfect-scrollbar class="factScroller" suppress-scroll-x="true" scrollY-margin-offset='0' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="10"    style=" border: 0px solid grey;width:100%; padding: 0px; position: relative">
 
 
-
-
-
-<div style="padding-top:2px" id="fact-div">
+<div style="padding-top:2px; padding-right: 10px" id="fact-div">
    <p  style='font-size:14px;     margin-bottom: 5px'> <b>Explication</b></p>
   <p style='text-align:justify;  font-size:14px' ng-bind-html="fact.description"></p>
 

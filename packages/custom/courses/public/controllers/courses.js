@@ -1824,7 +1824,9 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                     'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
+                    {'name':'interest','value':  d3.round(100*mainStats.interest,2)+'%',
+                      'comment':'est le taux d\'intérêt moyen des chapitres de cette partie'},
+                       {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
                       'comment':'est le taux moyen de visite des chapitres de cette partie'},
                     {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
                       'comment':'est le taux moyen de lecteurs des chapitres de cette partie'} ,
@@ -1833,6 +1835,8 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                       {'name':'speed','value':   d3.round(mainStats.speed)+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'},
 
+                    {'name':'reading_not_linear','value':  d3.round(100*mainStats.reading_not_linear,2)+'%',
+                      'comment':'est le taux moyen de linéarité de la lecture des chapitres de la partie'},
                     {'name':'provenance_not_linear','value':   d3.round(100 * (1-tome.transitions.provenance.normal))+'%',
                       'comment':'est le taux moyen des provenances non linéaires des chapitres de la partie'},
                     {'name':'provenance_past','value':   d3.round(100 * tome.transitions.provenance.past)+'%',
@@ -1852,6 +1856,7 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                       'comment':'est le taux moyen des relectures des chapitres de cette partie et qui ont lieu  se font au sein des mêmes séances de lecture'},
                     {'name':'rereads_dec_tx','value':  d3.round(100*mainStats.rereads_dec_tx)+'%',
                       'comment':'est le taux moyen des relectures des chapitres de cette partie et qui ont lieu  se font dans des séances de lecture distinctes'},
+                    
                     {'name':'rupture_tx', 'value':  d3.round(100*mainStats.rupture_tx)+'%',
                       'comment':'est le taux moyen des fins de séances de lecture ayant lieu sur les chapitres de cette partie'}  ,
                    {'name':'norecovery_tx', 'value':  d3.round(100*mainStats.norecovery_tx)+'%',
@@ -1920,7 +1925,12 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'Actions_tx','value':d3.round(100*chapter.indicators.Actions_tx,2)+'%',
+                    {'name':'interest','value':d3.round(100*chapter.indicators.interest,2)+'%',
+                      'comment':' est le taux d\'intérêt normalisé calculé sur ce chapitre',
+                       'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'interest')}).length > 0)?
+            chapter.facts.filter(function(f){ return f.classof === 'interest'})[0].route:null},
+
+            {'name':'Actions_tx','value':d3.round(100*chapter.indicators.Actions_tx,2)+'%',
                       'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.indicators.nbactions+' actions)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'Actions_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'Actions_tx'})[0].route:null},

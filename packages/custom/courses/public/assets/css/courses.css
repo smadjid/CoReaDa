@@ -610,7 +610,7 @@ a.list-warning-item:hover {
 
 .always-visible.ps-container > .ps-scrollbar-x-rail,
       .always-visible.ps-container > .ps-scrollbar-y-rail {
-        opacity: 0.6;
+        opacity: 1;
         z-index:1000;
       }
 .adminScroller {    
