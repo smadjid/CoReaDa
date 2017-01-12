@@ -96,7 +96,7 @@ var compilFact = function(fact){
         fact.name = "Trop de relectures";
         fact.description ="Ce chapitre est en moyenne relue <b>"+fact.error_value+"</b> fois plus que les autres" ;
         fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchainement des propos";
-        fact.suggestion_content = "Ce chapitre doit être plus simple à lire, à comprendre et à mémoriser. Pouvez-vous le réécrire en:"+
+        fact.suggestion_content = "Ce chapitre doit être plus simple à lire, à comprendre et à mémoriser. Pouvez-vous le réécrire en :"+
         "<ul><li>le simplifiant par exemple en utilisant un vocabulaire plus commun ou directement défini dans le contenu, en évitant les dispersions en allant à l'essentiel</li>"+
         "<li>vérifiant l'enchaînement logique des propos</li>"+    
         "<li>ajoutant des exemples/analogies pour faciliter la compréhension</li>"+  
@@ -199,7 +199,7 @@ var compilFact = function(fact){
 
     case 'destination_future':
         fact.name ="Trop de sauts vers des chapitres lointains plus en aval " ;
-        fact.description ="Dans <b>",+fact.error_value+"%</b> des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la plan du cours mais se situe plus aval." ;
+        fact.description ="Dans <b>"+fact.error_value+"%</b> des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la plan du cours mais se situe plus aval." ;
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il est probable que les chapitres suivants ne soient pas très intéressants. Est-ce que les titres de ces chapitres résument bien leur contenu ? "+
         "Si ce n’est pas le cas, il faudrait penser à reformuler ces titres.<br/>"+
@@ -212,12 +212,12 @@ var compilFact = function(fact){
         fact.description ="<b>"+fact.error_value+"%</b> des séances de lecture se terminent sur ce chapitre.";
         fact.suggestion_title = "Réécrire et simplifier ce chapitre";
         fact.suggestion_content = "Si ce chapitre ne correspond pas au dernier d’une partie, il est probable que celui-ci soit difficile à comprendre."+ 
-        "Le cas échéant, ce chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en"+
+        "Le cas échéant, ce chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en :"+
         "<ul><li>le simplifiant par exemple en utilisant un vocabulaire plus commun ou directement défini dans le contenu, en évitant les dispersions en allant à l'essentiel</li>"+
         "<li>vérifiant l'enchaînement logique des propos</li>"+    
         "<li>ajoutant des exemples/analogies pour faciliter la compréhension</li>"+  
         "<li>revoyant son contenu pour une éventuelle mise à jour, d’éventuelles corrections</li></ul>"+
-        "Il serait peut être également intéressant d’ajouter dans ce chapitre des références vers d’autres chapitres et des liens vers d’autres ressources pour en faciliter sa compréhension.</br>"+
+        "Il serait peut être également intéressant d’ajouter dans ce chapitre des références vers d’autres chapitres et des liens vers d’autres ressources pour en faciliter sa compréhension.<br/>"+
         "<i>Pour plus d’information, nous vous recommandons de consulter les indicateurs spécifiques se rapportant aux arrêts de la lecture sur ce chapitre.</i>";
         break;
 
@@ -267,7 +267,7 @@ var compilFact = function(fact){
 }
 var resetIndicators = function(dospeed){
 
-    if(dospeed)
+    //if(dospeed)
       return [      
         {'class':'reading','code':'interest', 'value':'interest', 'label':'Intérêt', 'inspectorText':'aux visites', 
         'issueCode':'interest','category':'Indicateurs de lecture',
@@ -336,7 +336,7 @@ var resetIndicators = function(dospeed){
         'sectionValue':0.0,'chapterValue':0.0,'sectionFactID':null, 'chapterFactId':null,'hasChildren':false, 'show':false,'parent': 'resume_abnormal_tx', 'level':'level2', 'details':false}
         
       ]
-      else
+      //else
         return [      
         {'class':'reading','code':'interest', 'value':'interest', 'label':'Intérêt', 'inspectorText':'aux visites', 
         'issueCode':'interest','category':'Indicateurs de lecture',
@@ -2120,7 +2120,7 @@ if($scope.inspectorStats.Indicators!=undefined){
 var factSelector = function(currentElt){
 
   //if($scope.context.indicator == "ALL") $scope.context.indicator = $scope.indicatorsSelectionModel[0];
-  console.log( $scope.context.indicator)
+  //console.log( $scope.context.indicator)
    var facts = $.grep($scope.inspectorFacts.Facts, function(e){ return  e.classof == $scope.context.indicator});
 
    if(facts==null) return;

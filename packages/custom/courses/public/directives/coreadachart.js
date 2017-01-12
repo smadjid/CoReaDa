@@ -266,7 +266,7 @@ if(elementType=='section') elementType='part';
 //
 
  globalData = globalData.filter(function(e){ return e.part == elementID })[0];
-//console.log(globalData); 
+
 //alert(elementID)
   var data={};
 
@@ -474,17 +474,25 @@ var r = (height + margin.top )/2;
 
 
  var data = [];
- 
-if((classe=="rereads_seq_tx")||(classe=="rereads_dec_tx"))
+ console.log(globalData)
+if((classe=="old.rereads_seq_tx")||(classe=="old.rereads_dec_tx"))
   data = [{"label":"Relectures conjointes", "value":Math.round(parseFloat(100*globalData.indicators.rereads_seq_tx),2)}, 
               {"label":"Relectures disjointes", "value":Math.round(parseFloat(100*globalData.indicators.rereads_dec_tx),2)}];
 
-if((classe=="resume_past")||(classe=="resume_future"))
+
+if((classe=="resume_past"))
   data = [
-              {"label":"Reprise en arrière", "value":Math.round(parseFloat(100*globalData.indicators.resume_past),2)}, 
-              {"label":"Reprise normale", "value":Math.round(100 - parseFloat(100*globalData.indicators.resume_past),2)}, 
-              {"label":"Reprise en avant", "value":Math.round(parseFloat(100*globalData.indicators.resume_future),2)}
+              {"label":"Reprise en arrière", "value":Math.round(parseFloat(100*globalData.indicators.resume_past),2), "color":'#ff0000'}, 
+              {"label":"Reprise normale", "value":Math.round(100 - parseFloat(100*(globalData.indicators.resume_past+globalData.indicators.resume_future)),2),"color":'#9999ff'}, 
+              {"label":"Reprise en avant", "value":Math.round(parseFloat(100*globalData.indicators.resume_future),2),"color":'#7f7fff'}
            ];
+if((classe=="resume_future"))
+  data = [
+              {"label":"Reprise en arrière", "value":Math.round(parseFloat(100*globalData.indicators.resume_past),2), "color":'#7f7fff'}, 
+              {"label":"Reprise normale", "value":Math.round(100 - parseFloat(100*(globalData.indicators.resume_past+globalData.indicators.resume_future)),2),"color":'#9999ff'}, 
+              {"label":"Reprise en avant", "value":Math.round(parseFloat(100*globalData.indicators.resume_future),2),"color":'#ff0000'}
+           ];
+
 
 if(elementType=='section') elementType='part';
   d3.select(element[0]).selectAll("*").remove();
@@ -507,7 +515,8 @@ var arc = d3.svg.arc().outerRadius(r);
 var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
 arcs.append("svg:path")
     .attr("fill", function(d, i){
-        return color(i);
+      
+        return d.data.color;
     })
     .attr("d", function (d) {
         // log the result of the arc generator to show how cool it is :)
@@ -521,7 +530,7 @@ arcs.append("svg:text").attr("transform", function(d){
       d.outerRadius = r;
     return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "left").text( function(d, i) {
     return (data[i].value+'%');}
-    );
+    ).attr("fill", "white");;
 
 var legend = svg.append("g").selectAll("g")
 .data(data)
@@ -531,7 +540,7 @@ var legend = svg.append("g").selectAll("g")
 legend.append("rect")
   .attr("width", 30)
   .attr("height", 20)
-  .style("fill", function(d, i) { return color(i); });
+  .style("fill", function(d, i) {return d.color; });
 
 legend.append("text")
   .attr("x", 95)
@@ -557,7 +566,7 @@ scope.$watch(function(){
               if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
               scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else
-                  if(scope.d3opts.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                  if(scope.d3opts.indicatorCode in {/*'rereads_seq_tx':'','rereads_dec_tx':'',*/'resume_past':'','resume_future':''})
                     scope.inspectorRenderPie(scope.data, scope.d3opts.indicatorCode)
                   else
                     scope.inspectorRenderBars(scope.data, scope.d3opts.indicatorCode)
@@ -573,7 +582,7 @@ scope.$watch('data', function(){
             if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
               scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else
-                  if(scope.d3opts.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                  if(scope.d3opts.indicatorCode in {/*'rereads_seq_tx':'','rereads_dec_tx':'',*/'resume_past':'','resume_future':''})
                     scope.inspectorRenderPie(scope.data, scope.d3opts.indicatorCode)
                   else
                     scope.inspectorRenderBars(scope.data, scope.d3opts.indicatorCode)
@@ -588,7 +597,7 @@ scope.$watch('d3opts', function(){
 if(scope.d3opts.indicatorCode in {'provenance_past':'','provenance_future':'','destination_past':'','destination_future':''})   
               scope.inspectorRenderTransitionNodes(scope.data, scope.d3opts.indicatorCode)           
                 else
-                  if(scope.d3opts.indicatorCode in {'rereads_seq_tx':'','rereads_dec_tx':'','resume_past':'','resume_future':''})
+                  if(scope.d3opts.indicatorCode in {/*'rereads_seq_tx':'','rereads_dec_tx':'',*/'resume_past':'','resume_future':''})
                     scope.inspectorRenderPie(scope.data, scope.d3opts.indicatorCode)
                   else
                     scope.inspectorRenderBars(scope.data, scope.d3opts.indicatorCode)
