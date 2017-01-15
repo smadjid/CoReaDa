@@ -1808,19 +1808,19 @@ console.log("\n *FINISHED SEEDING* \n");
         Course.findByIdAndRemove(req.params.courseId,function(err){
             if(err) return next("Error finding the course.");
         });
-        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
-                if (err) {
-                    return res.status(500).json({
-                        error: 'Cannot list the courses'
-                    });
-                }
+        var result = [],
+            indexes = [],
+            fs = require("fs"),
+            allF = fs.readdirSync("coursesdata/"),
+            codes = [];
 
-                var result = [];
-                for (var i = 0; i< courses.length; i++){   
-                 
-                var course={
+        Course.find({}).sort('-created').populate('user', 'name username').exec(function(err, courses) {
+           if (err) {return res.status(500).json({error: 'Cannot list the courses'})}
+        for (var i = 0; i< courses.length; i++){   
+            var course={
                     '_id':courses[i]._id,
                     'title':courses[i].title,
+                    'code':courses[i].courseCode,
                     'nbfacts':courses[i].nbfacts,
                     'ob_begin':new Date(Date.parse(courses[i].ob_begin)),
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
@@ -1830,10 +1830,22 @@ console.log("\n *FINISHED SEEDING* \n");
                     'survey':courses[i].survey
                 }
                result.push(course);
+               indexes.push(courses[i].courseCode)
             };
 
+        for (var i = 0; i < allF.length ; i++){
+            var intoDir = fs.readdirSync("coursesdata/"+allF[i])
+            if((intoDir.indexOf('data.json')>=0)&&
+                (intoDir.indexOf('facts.json')>=0))
+                {
+                 var r = lsResource(allF[i]);
+                 if(indexes.indexOf(r.code)>=0) r.exist = true;
+                    codes.push(r);
+                }
+        }
 
-               return res.json(result)
+
+               return res.status(200).type('application/json').json({'courses':result,'resources':codes})
             });
         
     },

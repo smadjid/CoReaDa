@@ -44,10 +44,10 @@
 <!-- Source control -->
         <li class="tab-content vcenter tab-sources col-lg-12  clearfix" style="height:75vh">
        <perfect-scrollbar class="adminScroller always-visible" suppress-scroll-x="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="2" min-scrollbar-length="10">
-       <h3>Ressources disponibles ({{resources.length}} courses) <span class='blue' style='font-size:16px;margin-left:40px' role='button' ng-click='seedAllCourses()'><span class="glyphicon glyphicon-plus"  ></span><em>Tout ajouter</em></span></h3>
+       <h3>Ressources disponibles  <span class='blue' style='font-size:16px;margin-left:40px' role='button' ng-click='seedAllCourses()'><span class="glyphicon glyphicon-plus"  ></span><em>Tout ajouter</em></span></h3>
      <hr/>
        <ol class='course_li'>
-            <li data-ng-repeat="course in resources">
+            <li data-ng-repeat="course in resources" ng-if="!(course.exist)">
                <h4><strong>{{course.title}}</strong> 
                <a ng-if='!course.exist' class="glyphicon glyphicon-plus pull-right" style='margin-right:50px' role='button' ng-click='seedCourse(course.code)'></a></h4>
             

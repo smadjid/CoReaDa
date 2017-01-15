@@ -192,7 +192,6 @@ angular.module('mean.courses').controller('HomeController', ['$scope',  '$locati
        $scope.dataLoading = true;
       $http.delete('/api/coreada/delete/'+id)
       .success(function(data){  
-        
         $scope.courses = data.courses;
          $scope.resources = data.resources;
                  swal("OK !", "Le cours et ses données ont bien été supprimés");

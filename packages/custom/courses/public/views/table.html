@@ -69,7 +69,7 @@
         
         
        
-       <tr table-td by-parts='false' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay'  ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData"  course-id="course._id" class="{{indicator.class}}" ng-show="indicator.show && !sectionDisplay" >
+       <tr table-td by-parts='false' selected-fact='inspectorFacts.selectedFact' all-facts='allFactsDisplay'  ng-repeat='indicator in indicatorsHeader'  indicator-code="indicator.code" issue-code="indicator.issueCode" data="tableData"  course-id="course._id" class="{{indicator.class}}" ng-show="indicator.available && indicator.show && !sectionDisplay" >
             <th class="indicators-header" data-indicator={{indicator.name}}  data-path='indicator='+{{indicator.name}}>
             
             
