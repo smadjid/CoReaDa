@@ -877,8 +877,14 @@ course_data_calculation <- function(data,structure,indicators){
   
   ################################# PARTDATA ########################################################
   PartData = structure
+  
+  titleOnes = PartData[PartData$type=='title-2',]
+  titleOnes=unique(titleOnes[order(titleOnes$part_index),]$parent_id)
+  
+  PartData=PartData[order(PartData$part_index),]  
+  PartData[PartData$type=='title-1',]$part_index = -1 * (match(PartData[PartData$type=='title-1',]$part_id,titleOnes))
   nParties = nrow(PartData[which(PartData$part_index==0),])
-  PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))
+  PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))-(length(titleOnes)+1)
   
   PartData[which(PartData$type=='title-1'),]$type='partie'
   PartData[which(PartData$type=='title-2'),]$type='chapitre'
