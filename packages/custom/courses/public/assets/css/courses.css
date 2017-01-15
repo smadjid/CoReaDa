@@ -3410,7 +3410,7 @@ fieldset[disabled] .bs_btn {
     height:100%;
     top:0px;
     left:0px;
-    opacity: .05;
+    opacity: .1;
     transition: all 1s;
 }
 .q1:hover{
