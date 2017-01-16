@@ -2819,7 +2819,7 @@ $scope.nztour = {
         {
             target: '#single-button',
             content: "<h4>Configuration d'affichage</h4>"+
-            "<span>Ce menu permet de sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif</span>"
+            "<span>Ce menu permet de : 1/ sélectionner le seuil de détection des problèmes potentiels : afficher uniquement les principaux problèmes ou avoir un affichage plus exhaustif; 2/ sélectionner les indicateurs à afficher : tous les indicateurs ou les principaux indicateurs.</span>"
         }
         ,
        
