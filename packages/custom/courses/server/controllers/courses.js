@@ -589,9 +589,9 @@ transporter.sendMail(mailOptions, function(error, info){
                     'created':_course.created,
                     'updated':_course.updated,
                     'survey':_course.survey,
-                    'url':courses[i].url,
-                    'author':courses[i].author,
-                    'authorprofile':courses[i].authorprofile,
+                    'url':_course.url,
+                    'author':_course.author,
+                    'authorprofile':_course.authorprofile,
                 }
                 result.push(course);
                 return res.status(200).json(result);
@@ -1410,7 +1410,7 @@ transporter.sendMail(mailOptions, function(error, info){
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated,
-                    'survey':_course.survey,
+                    'survey':courses[i].survey,
                     'url':courses[i].url,
                     'author':courses[i].author,
                     'authorprofile':courses[i].authorprofile,
