@@ -20,6 +20,12 @@ home='/home/madjid/Dropbox/rcoreada/Dataset'
 coursesdata_home='/home/madjid/dev/CoReaDa/rawdata'
 #coursesdata_home='C:/Users/MADJID/Desktop/CoReaDa/rawdata'
 
+ids =c(3522386,1946386,1885491,3432066,3013711,2984401,2778161,2766951)
+authos=c('Pauline Prevot','Mathieu Nebra','Maurice Chavelli','Julien Grillot','Stéphanie Moallic','Baptiste Pesquet','Jean-Noël Rousseau','Fabien Delattre')
+profiles=c('https://openclassrooms.com/membres/paulineprevot','https://openclassrooms.com/membres/mateo21','https://openclassrooms.com/membres/bestmomo-15600','https://openclassrooms.com/membres/bahanix-90772',
+          'https://openclassrooms.com/membres/stephaniemoallic','https://openclassrooms.com/membres/bpesquet','https://openclassrooms.com/membres/nanomaitre','https://openclassrooms.com/membres/neabfi' )
+coursesdb = data.frame(course_id=ids, author=authos, profile=profiles)
+
 DataBaseURL = paste(BaseURL,'R', sep='/')
  #o = fromJSON(jsonObj)
  #o$a
@@ -883,8 +889,11 @@ course_data_calculation <- function(data,structure,indicators){
   
   PartData=PartData[order(PartData$part_index),]  
   PartData[PartData$type=='title-1',]$part_index = -1 * (match(PartData[PartData$type=='title-1',]$part_id,titleOnes))
+  
+  PartData[which(PartData$type=='course'),]$part_index=99999
   nParties = nrow(PartData[which(PartData$part_index==0),])
-  PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))-(length(titleOnes)+1)
+  if(nParties>0) PartData[which(PartData$part_index==0),]$part_index=-1*(0:(nParties-1))-(length(titleOnes)+1)
+  PartData[which(PartData$type=='course'),]$part_index = 0
   
   PartData[which(PartData$type=='title-1'),]$type='partie'
   PartData[which(PartData$type=='title-2'),]$type='chapitre'
@@ -1174,6 +1183,9 @@ course_data_calculation <- function(data,structure,indicators){
   CourseData$ob_begin=as.character(min(data$date))
   CourseData$ob_end=as.character(max(data$date))
   CourseData$dospeed=dospeed
+  courseid= unique(data$course_id)
+  CourseData$author = coursesdb[coursesdb$course_id==courseid,]$author
+  CourseData$authorprofile = coursesdb[coursesdb$course_id==courseid,]$profile
   
   res = list(PartData=PartData,CourseData=CourseData, TransitionsData=TransitionsData)
   return(res) 

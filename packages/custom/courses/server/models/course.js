@@ -525,6 +525,14 @@ var NewCourseSchema = new Schema({
     required: true,
     trim: true
   },
+  author: {
+    type: String,
+    default: '...'
+  },
+  authorprofile: {
+    type: String,
+    default: '...'
+  },
   courseCode: {
     type: String
   },

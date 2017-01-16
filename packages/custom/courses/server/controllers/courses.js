@@ -164,7 +164,10 @@ import_course();*/
                 'properties':[],
                 'url':'',
                 'facts':[],
-                'indicators':{}
+                'indicators':{},
+                'dospeed':true,
+                'author':'',
+                'authorprofile':''
             
             };
              
@@ -176,122 +179,49 @@ import_course();*/
                 } 
                 if(prop.property==='mean.duration') prop.value = parseInt(prop.value/60)
                 part.properties.push(prop);
+            if(part_data[i]['variable']=='author')
+                console.log(part_data[i]['variable'])
                 
-                    if(part_data[i]['variable']=='part_id') 
-                        part.part_id=part_data[i]['value']
-                    else
-                    if(part_data[i]['variable']=='title') 
-                        part.title=part_data[i]['value']
-                    else
-                        if(part_data[i]['variable']=='slug') 
-                        {part.slug=part_data[i]['value'];part.url=part_data[i]['value'];}
-                        else
-                        if(part_data[i]['variable']=='type')
-                            part.type=part_data[i]['value']
-                        else
-                            if(part_data[i]['variable']=='parent_id')
-                                part.parent_id=part_data[i]['value']
-                            else
-                            if(part_data[i]['variable']=='speed')
-                                part.indicators.speed=parseInt(part_data[i]['value'])
-                            else
-                                if(part_data[i]['variable']=='Readers') 
-                                    part.indicators.Readers=part_data[i]['value']
-                                else
-                                    if(part_data[i]['variable']=='destination_next') 
-                                        part.indicators.destination_next=part_data[i]['value']
-                                    else
-                                         if(part_data[i]['variable']=='provenance_prev') 
-                                            part.indicators.provenance_prev=part_data[i]['value']
-                                        else
-                            if(part_data[i]['variable']=='interest')
-                                part.indicators.interest=parseFloat(part_data[i]['value'])
-                            else
-                            if(part_data[i]['variable']=='Actions_tx')
-                                part.indicators.Actions_tx=parseFloat(part_data[i]['value'])
-                            else
-                            if(part_data[i]['variable']=='readers_tx')
-                                part.indicators.readers_tx=parseFloat(part_data[i]['value'])
-                            else
-                            if(part_data[i]['variable']=='rs_tx')
-                                part.indicators.rs_tx=parseFloat(part_data[i]['value'])
-                            else
-                            if(part_data[i]['variable']=='rereads_tx')
-                                part.indicators.rereads_tx=parseFloat(part_data[i]['value'])
-                            else
-                            if(part_data[i]['variable']=='norecovery_tx')
-                                part.indicators.norecovery_tx=parseFloat(part_data[i]['value'])
-                            else
-                                if(part_data[i]['variable']=='resume_past')
-                                    part.indicators.resume_past=parseFloat(part_data[i]['value'])                            
-                                else
-                                if(part_data[i]['variable']=='resume_abnormal_tx')
-                                    part.indicators.resume_abnormal_tx=parseFloat(part_data[i]['value'])
-                             else
-                                if(part_data[i]['variable']=='resume_future')
-                                    part.indicators.resume_future=parseFloat(part_data[i]['value'])                            
-                             else
-                            if(part_data[i]['variable']=='Actions_nb')
-                                part.indicators.nbactions=parseInt(part_data[i]['value'])
-                            else
-                                if(part_data[i]['variable']=='rereads_seq_tx')
-                                    part.indicators.rereads_seq_tx=parseFloat(part_data[i]['value'])
-                                 else
-                                if(part_data[i]['variable']=='rereads_seq_globratio')
-                                    part.indicators.rereads_seq_globratio=parseFloat(part_data[i]['value'])
-                                else
-                                if(part_data[i]['variable']=='rereads_dec_tx')
-                                    part.indicators.rereads_dec_tx=parseFloat(part_data[i]['value'])
-                                else
-                                    if(part_data[i]['variable']=='rereads_dec_globaratio')
-                                        part.indicators.rereads_dec_globaratio=parseFloat(part_data[i]['value'])
-                                    else
-                                    if(part_data[i]['variable']=='rupture_tx')
-                                        part.indicators.rupture_tx=parseFloat(part_data[i]['value'])
-                                    else 
-                                        
-                                        if(part_data[i]['variable']=='provenance_past')
-                                            part.indicators.provenance_past=parseFloat(part_data[i]['value'])                                
-                                        else 
-                                        if(part_data[i]['variable']=='provenance_future')
-                                            part.indicators.provenance_future=parseFloat(part_data[i]['value'])                                
-                                        else
-                                            
-                                            if(part_data[i]['variable']=='destination_past')
-                                                part.indicators.destination_past=parseFloat(part_data[i]['value'])                                
-                                            else
-                                            if(part_data[i]['variable']=='destination_future')
-                                                part.indicators.destination_future=parseFloat(part_data[i]['value'])                                
-                                            else
-                                            if(part_data[i]['variable']=='destination_not_linear')
-                                                part.indicators.destination_not_linear=parseFloat(part_data[i]['value'])                                
-                                            else
-                                            if(part_data[i]['variable']=='provenance_not_linear')
-                                                part.indicators.provenance_not_linear=parseFloat(part_data[i]['value'])                                
-                                            else
-                                                if(part_data[i]['variable']=='reading_not_linear')
-                                                part.indicators.reading_not_linear=parseFloat(part_data[i]['value'])                                
-                                            else
-                                            if(part_data[i]['variable']=='tome_index')
-                                                part.tome_index=parseInt(part_data[i]['value'])   
-                                            else
-                                                 if(part_data[i]['variable']=='nactions') 
-                                                    part.nactions=part_data[i]['value']
-                                                else
-                                                    if(part_data[i]['variable']=='nusers') 
-                                                        part.nusers=part_data[i]['value']
-                                                    else
-                                                        if(part_data[i]['variable']=='nRS') 
-                                                            part.nRS=part_data[i]['value']
-                                                        else
-                                                            if(part_data[i]['variable']=='ob_begin')
-                                                                part.ob_begin=part_data[i]['value']
-                                                            else
-                                                                if(part_data[i]['variable']=='ob_end')
-                                                                    part.ob_end=part_data[i]['value']
-                                                                else
-                                                                if(part_data[i]['variable']=='dospeed')
-                                                                    part.dospeed=part_data[i]['value']
+            if(part_data[i]['variable']=='part_id')  part.part_id=part_data[i]['value'];
+            if(part_data[i]['variable']=='title')    part.title=part_data[i]['value'];
+            if(part_data[i]['variable']=='slug')    {part.slug=part_data[i]['value'];part.url=part_data[i]['value']};
+            if(part_data[i]['variable']=='type')    part.type=part_data[i]['value'];
+            if(part_data[i]['variable']=='parent_id') part.parent_id=part_data[i]['value'];
+            if(part_data[i]['variable']=='speed')   part.indicators.speed=parseInt(part_data[i]['value']);
+            if(part_data[i]['variable']=='Readers')  part.indicators.Readers=part_data[i]['value'];
+            if(part_data[i]['variable']=='destination_next') part.indicators.destination_next=part_data[i]['value'];
+            if(part_data[i]['variable']=='provenance_prev') part.indicators.provenance_prev=part_data[i]['value'];
+            if(part_data[i]['variable']=='interest')    part.indicators.interest=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='Actions_tx') part.indicators.Actions_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='readers_tx') part.indicators.readers_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='rs_tx') part.indicators.rs_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='rereads_tx') part.indicators.rereads_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='norecovery_tx') part.indicators.norecovery_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='resume_past') part.indicators.resume_past=parseFloat(part_data[i]['value'])   ;                         
+            if(part_data[i]['variable']=='resume_abnormal_tx') part.indicators.resume_abnormal_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='resume_future') part.indicators.resume_future=parseFloat(part_data[i]['value']) ;                           
+            if(part_data[i]['variable']=='Actions_nb') part.indicators.nbactions=parseInt(part_data[i]['value']);
+            if(part_data[i]['variable']=='rereads_seq_tx') part.indicators.rereads_seq_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='rereads_seq_globratio') part.indicators.rereads_seq_globratio=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='rereads_dec_tx') part.indicators.rereads_dec_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='rereads_dec_globaratio') part.indicators.rereads_dec_globaratio=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='rupture_tx') part.indicators.rupture_tx=parseFloat(part_data[i]['value']);
+            if(part_data[i]['variable']=='provenance_past') part.indicators.provenance_past=parseFloat(part_data[i]['value'])    ;                            
+            if(part_data[i]['variable']=='provenance_future') part.indicators.provenance_future=parseFloat(part_data[i]['value'])  ;                              
+            if(part_data[i]['variable']=='destination_past') part.indicators.destination_past=parseFloat(part_data[i]['value']);                                
+            if(part_data[i]['variable']=='destination_future') part.indicators.destination_future=parseFloat(part_data[i]['value']) ;                               
+            if(part_data[i]['variable']=='destination_not_linear') part.indicators.destination_not_linear=parseFloat(part_data[i]['value']) ;                               
+            if(part_data[i]['variable']=='provenance_not_linear') part.indicators.provenance_not_linear=parseFloat(part_data[i]['value']) ;                               
+            if(part_data[i]['variable']=='reading_not_linear') part.indicators.reading_not_linear=parseFloat(part_data[i]['value']) ;  
+            if(part_data[i]['variable']=='tome_index') part.tome_index=parseInt(part_data[i]['value'])   ;
+            if(part_data[i]['variable']=='nactions') part.nactions=part_data[i]['value'];
+            if(part_data[i]['variable']=='nusers') part.nusers=part_data[i]['value'];
+            if(part_data[i]['variable']=='nRS') part.nRS=part_data[i]['value'];
+            if(part_data[i]['variable']=='ob_begin') part.ob_begin=part_data[i]['value'];
+            if(part_data[i]['variable']=='ob_end') part.ob_end=part_data[i]['value'];
+            if(part_data[i]['variable']=='dospeed') part.dospeed=part_data[i]['value'];
+            if(part_data[i]['variable']=='author') part.author=part_data[i]['value'];
+            if(part_data[i]['variable']=='authorprofile') part.authorprofile=part_data[i]['value'];
 
                             
             };
@@ -315,10 +245,13 @@ import_course();*/
 
                 part.facts.push(fact);
             };
-        if(part.type==='course') {             
+        if(part.type==='course') {    
+        console.log(part)         ;
 
             
             courseData.title = part.title;
+            courseData.author = part.author;
+            courseData.authorprofile = part.authorprofile;
             courseData.url = base_url+'/'+part.slug;
             courseData.properties = part.properties; 
             courseData.ob_begin = part.ob_begin;
@@ -437,6 +370,8 @@ import_course();*/
         
         var course = new Course( {
             title : courseData.title,
+            author : courseData.author,
+            authorprofile : courseData.authorprofile,
             url:courseData.url,
             version : 1.0,
             courseCode:courseCode,            
@@ -447,9 +382,6 @@ import_course();*/
             nbfacts : jsonFacts.length,
             parts:courseParts,
             dospeed:courseData.dospeed,
-           // properties:courseData.properties,//jsonCoursedata,
-           // stats:coursestats,
-          //  rs:coursers,
             tomes:courseTomes,
             navigation:navigation,
             indicators:courseData.indicators,
@@ -565,6 +497,9 @@ transporter.sendMail(mailOptions, function(error, info){
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated,
+                    'url':courses[i].url,
+                    'author':courses[i].author,
+                    'authorprofile':courses[i].authorprofile,
                     'survey':courses[i].survey
                 }
                result.push(course);
@@ -611,6 +546,9 @@ transporter.sendMail(mailOptions, function(error, info){
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated,
+                    'url':courses[i].url,
+                    'author':courses[i].author,
+                    'authorprofile':courses[i].authorprofile,
                     'survey':courses[i].survey
                 }
                result.push(course);
@@ -646,7 +584,10 @@ transporter.sendMail(mailOptions, function(error, info){
                     'nbtasks':_course.nbtasks,
                     'created':_course.created,
                     'updated':_course.updated,
-                    'survey':_course.survey
+                    'survey':_course.survey,
+                    'url':courses[i].url,
+                    'author':courses[i].author,
+                    'authorprofile':courses[i].authorprofile,
                 }
                 result.push(course);
                 return res.status(200).json(result);
@@ -1464,7 +1405,11 @@ transporter.sendMail(mailOptions, function(error, info){
                     'ob_end':new Date(Date.parse(courses[i].ob_end)),
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
-                    'updated':courses[i].updated
+                    'updated':courses[i].updated,
+                    'survey':_course.survey,
+                    'url':courses[i].url,
+                    'author':courses[i].author,
+                    'authorprofile':courses[i].authorprofile,
                 }
                result.push(course);
             };
