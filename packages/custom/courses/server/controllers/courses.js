@@ -167,7 +167,8 @@ import_course();*/
                 'indicators':{},
                 'dospeed':true,
                 'author':'',
-                'authorprofile':''
+                'authorprofile':'',
+                'survey':'',
             
             };
              
@@ -222,6 +223,7 @@ import_course();*/
             if(part_data[i]['variable']=='dospeed') part.dospeed=part_data[i]['value'];
             if(part_data[i]['variable']=='author') part.author=part_data[i]['value'];
             if(part_data[i]['variable']=='authorprofile') part.authorprofile=part_data[i]['value'];
+            if(part_data[i]['variable']=='questionnaire') part.survey=part_data[i]['value'];
 
                             
             };
@@ -252,6 +254,7 @@ import_course();*/
             courseData.title = part.title;
             courseData.author = part.author;
             courseData.authorprofile = part.authorprofile;
+            courseData.survey = part.survey;
             courseData.url = base_url+'/'+part.slug;
             courseData.properties = part.properties; 
             courseData.ob_begin = part.ob_begin;
@@ -372,6 +375,7 @@ import_course();*/
             title : courseData.title,
             author : courseData.author,
             authorprofile : courseData.authorprofile,
+            survey : courseData.survey,
             url:courseData.url,
             version : 1.0,
             courseCode:courseCode,            
@@ -1736,7 +1740,7 @@ console.log("\n *FINISHED SEEDING* \n");
                     'nbtasks':courses[i].nbtasks,
                     'created':courses[i].created,
                     'updated':courses[i].updated,
-                    'survey':''
+                    'survey':courses[i].survey
                 };
                 if(course._id == req.params.courseId)
                     course.survey = req.body.survey
