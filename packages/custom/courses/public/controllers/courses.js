@@ -24,7 +24,7 @@ var compilFact = function(fact){
   {
     case "interest":
         fact.name ="Trop peu d'intérêt";
-        fact.description ="Ce chapitre suscite trop peu d’intérêt chez les lecteurs. Son taux d’intérêt est <b>"+fact.error_value+"</b> fois plus bas que les autres."
+        fact.description ="Ce chapitre suscite trop peu d’intérêt chez les lecteurs. Son taux d’intérêt est <b>"+d3.round(100 * fact.delta, 1) +" %</b> plus bas que les autres."
 
         fact.suggestion_title ="Revoir le contenu du chapitre, son titre et sa position dans le cours";
         fact.suggestion_content ="Est-ce que le titre du chapitre résume bien son contenu ? Si ce n’est pas le cas, il faudrait penser à reformuler ce titre. "+ 
@@ -35,7 +35,7 @@ var compilFact = function(fact){
 
      case "Actions_tx":
        fact.name = "Trop peu de visites";
-        fact.description = "Ce chapitre est visité <b>"+fact.error_value+"</b> fois moins que les autres.";
+        fact.description = "Ce chapitre est visité <b>"+d3.round(100 * fact.delta, 1) +" %</b> moins que les autres.";
         fact.suggestion_title ="Revoir le titre ou supprimer le chapitre" ;
         fact.suggestion_content = "Est-ce que le titre du chapitre résume bien son contenu ? "+
         "Si ce n’est pas le cas, il faudrait penser à reformuler ce titre. "+
@@ -46,7 +46,7 @@ var compilFact = function(fact){
    
     case "readers_tx":    
         fact.name = "Trop peu de lecteurs";
-        fact.description = "Ce chapitre est lu par <b>"+fact.error_value+"</b> fois moins de lecteurs que les autres.";
+        fact.description = "Ce chapitre est lu par <b>"+d3.round(100 * fact.delta, 1) +" %</b> moins de lecteurs que les autres.";
         fact.suggestion_title ="Revoir le titre ou supprimer le chapitre" ;
         fact.suggestion_content = "Est-ce que le titre du chapitre résume bien son contenu ? "+
         "Si ce n’est pas le cas, il faudrait penser à reformuler ce titre. "+
@@ -56,7 +56,7 @@ var compilFact = function(fact){
 
     case "rs_tx":
         fact.name = "Trop peu de séances";
-        fact.description = "Ce chapitre est lû dans <b>"+fact.error_value+"</b> fois moins de séances de lecture que les autres.";
+        fact.description = "Ce chapitre est lû dans <b>"+d3.round(100 * fact.delta, 1) +" %</b> moins de séances de lecture que les autres.";
         fact.suggestion_title = "Revoir le titre et le contenu";
         fact.suggestion_content = "Est-ce que le titre du chapitre  résume bien son contenu ? "+
     "Si oui :  Est-ce que ce chapitre est  réellement intéressant par rapport au cours ? Si c'est le cas, peut-il"+
@@ -67,7 +67,7 @@ var compilFact = function(fact){
     case "speed":
     if(fact.issueSubCode=='max'){
         fact.name = "Lecture trop rapide";
-        fact.description = "La vitesse moyenne de lecture de ce chapitre est <b>"+fact.error_value+"</b> fois supérieure à celle des autres.";
+        fact.description = "La vitesse moyenne de lecture de ce chapitre est <b>"+d3.round(100 * fact.delta, 1) +" %</b> supérieure à celle des autres.";
         fact.suggestion_title = "Réviser ou supprimer le chapitre";
         fact.suggestion_content = "Est-ce que ce chapitre comporte des éléments nouveaux, intéressants ? "+ 
         "Si ce n’est pas le cas, il faudrait peut être penser à le supprimer ou à l’intégrer dans un autre endroit du cours pour ensuite revoir le plan de ce dernier. "+
@@ -79,7 +79,7 @@ var compilFact = function(fact){
     }
     else{
         fact.name = "Lecture trop lente";
-        fact.description = "La vitesse moyenne de lecture de ce chapitre est <b>"+fact.error_value+"</b> fois inférieure à celle des autres.";
+        fact.description = "La vitesse moyenne de lecture de ce chapitre est <b>"+d3.round(100 * fact.delta, 1) +" %</b> inférieure à celle des autres.";
         fact.suggestion_title = "Réviser le chapitre";
         fact.suggestion_content = "Ce chapitre contient probablement beaucoup de notions complexes ou nouvelles. "+
         "Le chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en :"+
@@ -94,7 +94,7 @@ var compilFact = function(fact){
    
     case 'rereads_tx':
         fact.name = "Trop de relectures";
-        fact.description ="Ce chapitre est en moyenne relue <b>"+fact.error_value+"</b> fois plus que les autres" ;
+        fact.description ="Ce chapitre est en moyenne relue <b>"+d3.round(100 * fact.delta, 1) +" %</b> plus que les autres" ;
         fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchainement des propos";
         fact.suggestion_content = "Ce chapitre doit être plus simple à lire, à comprendre et à mémoriser. Pouvez-vous le réécrire en :"+
         "<ul><li>le simplifiant par exemple en utilisant un vocabulaire plus commun ou directement défini dans le contenu, en évitant les dispersions en allant à l'essentiel</li>"+
@@ -109,7 +109,7 @@ var compilFact = function(fact){
 
     case 'rereads_seq_tx':
         fact.name = "Trop de relectures successives (i.e. dans des mêmes séances de lecture)";
-        fact.description = "Il y a <b>"+ fact.error_value +"</b> fois plus de relectures conjointes sur ce chapitre que sur les autres. "+
+        fact.description = "Il y a <b>"+ d3.round(100 * fact.delta, 1) +" %</b> plus de relectures conjointes sur ce chapitre que sur les autres. "+
         "<i>Les relectures conjointes sont des relectures effectuées au cours d’une même séance de lecture.</i>";
         fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchaînement des propos";
         fact.suggestion_content ="Le chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en :"+
@@ -122,7 +122,7 @@ var compilFact = function(fact){
 
     case 'rereads_dec_tx':
         fact.name = "Trop de relectures distantes (i.e. dans des séances de lecture distinctes)";
-        fact.description = "Il y a <b>"+ fact.error_value +"</b> fois plus de relectures disjointes sur ce chapitre que sur les autres. "+
+        fact.description = "Il y a <b>"+ d3.round(100 * fact.delta, 1) +" %</b> plus de relectures disjointes sur ce chapitre que sur les autres. "+
         "<i>Les relectures disjointes sont des relectures effectuées dans des séances de lecture distinctes.</i>";
         fact.suggestion_title = "Simplifier l'écriture du chapitre et vérifier l'enchaînement des propos";
         fact.suggestion_content = "Ce chapitre est probablement difficile à mémoriser ou contient des éléments qui sont des prérequis à la lecture d’autre(s) chapitre(s). "+
@@ -135,7 +135,7 @@ var compilFact = function(fact){
 
     case 'reading_not_linear':
         fact.name = "Trop de navigation non linéaires vers/depuis ce chapitre";
-        fact.description = "<b>"+ fact.error_value +"%</b> des chapitres lus juste avant/après ne sont pas ceux prévus dans le plan du cours (ce ne sont pas les voisins directs).";
+        fact.description = "<b>"+ fact.error_value +" %</b> des chapitres lus juste avant/après ne sont pas ceux prévus dans le plan du cours (ce ne sont pas les voisins directs).";
         fact.suggestion_title ="Revoir le contenu et la position du chapitre dans le plan du cours" ;
         fact.suggestion_content = "Ce phénomène peut survenir quand le chapitre est mal positionné dans la structure du cours. "+
         "Il se peut aussi que ce chapitre soit un prérequis pour d’autres chapitres et/ou que d’autres chapitres soient des prérequis à ce dernier.<br/>"+
@@ -144,7 +144,7 @@ var compilFact = function(fact){
 
      case 'provenance_not_linear':
         fact.name = "Trop d\'arrivées non linéaires sur ce chapitre";
-        fact.description = "Dans <b>"+fact.error_value+"%</b> des cas,  le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans le plan du cours";
+        fact.description = "Dans <b>"+fact.error_value+" %</b> des cas,  le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans le plan du cours";
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content ="Il se peut que ce chapitre soit un prérequis important pour plusieurs autres chapitres distants. "+
         "Le cas échéant, est-ce que le cours peut être restructuré (déplacer ce chapitre, ramener d’autres chapitres dans le voisinage directs de ce chapitre) ? <br/>"+
@@ -155,7 +155,7 @@ var compilFact = function(fact){
 
     case 'provenance_past':
         fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en arrière";
-        fact.description = "Dans <b>"+ fact.error_value +"%</b> des cas, le chapitre lu avant celui-ci se situe en amont du chapitre précédent dans le plan du cours.";
+        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu avant celui-ci se situe en amont du chapitre précédent dans le plan du cours.";
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Ce phénomène peut survenir quand le chapitre est mal positionné dans la structure du cours. "+
         "Il est probablement référencé par des chapitres plus en amont parce que contenant des éléments qui aident la compréhension de ces derniers. "+
@@ -165,7 +165,7 @@ var compilFact = function(fact){
 
     case 'provenance_future':
         fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en avant";
-        fact.description = "Dans <b>"+ fact.error_value +"%</b> des cas, le chapitre lu avant celui-ci  est un chapitre situé en aval dans le plan du cours.";
+        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu avant celui-ci  est un chapitre situé en aval dans le plan du cours.";
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il se peut que ce chapitre soit un prérequis important pour plusieurs autres chapitres distants. "+
         "Le cas échéant, est-ce que le cours peut être restructuré (déplacer ce chapitre, ramener d’autres chapitres dans le voisinage directs de ce chapitre) ? "+
@@ -176,7 +176,7 @@ var compilFact = function(fact){
 
     case 'destination_not_linear':
         fact.name = "Trop de sauts vers des chapitres lointains";
-        fact.description ="Dans <b>"+ fact.error_value +"%</b> des cas,  le chapitre lu après ce chapitre n'est pas celui qui le suit dans le plan du cours." ;
+        fact.description ="Dans <b>"+ fact.error_value +" %</b> des cas,  le chapitre lu après ce chapitre n'est pas celui qui le suit dans le plan du cours." ;
         fact.suggestion_title ="Revoir le contenu et la position du chapitre dans le plan du cours" ;
         fact.suggestion_content = "Ce phénomène peut survenir quand la compréhension de ce chapitre requiert des informations situées sur des chapitres lointains. "+
         "Le cas échéant, est-ce que le cours peut être restructuré (déplacer ce chapitre, ramener d’autres chapitres dans le voisinage directs de ce chapitre) ? "+
@@ -186,7 +186,7 @@ var compilFact = function(fact){
 
     case 'destination_past':
         fact.name = "Trop de sauts vers des chapitres en amont";
-        fact.description = "Dans <b>"+ fact.error_value +"%</b> des cas, le chapitre lu après ce chapitre se situe avant celui-ci dans le plan du cours";
+        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu après ce chapitre se situe avant celui-ci dans le plan du cours";
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il est probable que ce chapitre fasse appel à des notions vues auparavant mal/non assimilées. Le cas échéant, pouvez-vous réécrire les chapitres contenant ces notions en :"+
         "<ul><li>le simplifiant par exemple en utilisant un vocabulaire plus commun ou directement défini dans le contenu, en évitant les dispersions en allant à l'essentiel</li>"+
@@ -199,7 +199,7 @@ var compilFact = function(fact){
 
     case 'destination_future':
         fact.name ="Trop de sauts vers des chapitres lointains plus en aval " ;
-        fact.description ="Dans <b>"+fact.error_value+"%</b> des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la plan du cours mais se situe plus aval." ;
+        fact.description ="Dans <b>"+fact.error_value+" %</b> des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la plan du cours mais se situe plus aval." ;
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il est probable que les chapitres suivants ne soient pas très intéressants. Est-ce que les titres de ces chapitres résument bien leur contenu ? "+
         "Si ce n’est pas le cas, il faudrait penser à reformuler ces titres.<br/>"+
@@ -209,7 +209,7 @@ var compilFact = function(fact){
 
     case 'rupture_tx':
         fact.name = "Trop de séances de lecture se terminent sur ce chapitre";
-        fact.description ="<b>"+fact.error_value+"%</b> des séances de lecture se terminent sur ce chapitre.";
+        fact.description ="<b>"+fact.error_value+" %</b> des séances de lecture se terminent sur ce chapitre.";
         fact.suggestion_title = "Réécrire et simplifier ce chapitre";
         fact.suggestion_content = "Si ce chapitre ne correspond pas au dernier d’une partie, il est probable que celui-ci soit difficile à comprendre."+ 
         "Le cas échéant, ce chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en :"+
@@ -223,7 +223,7 @@ var compilFact = function(fact){
 
     case 'norecovery_tx':
         fact.name = "Trop d\'arrêts définitifs de la lecture sur ce chapitre";
-        fact.description ="<b>"+fact.error_value+ "%</b> des arrêts définitifs de la lecture du cours  se passent sur ce chapitre.";
+        fact.description ="<b>"+fact.error_value+ " %</b> des arrêts définitifs de la lecture du cours  se passent sur ce chapitre.";
         fact.suggestion_title = "Réécrire et simplifier ce chapitre";
         fact.suggestion_content = "Si ce chapitre ne correspond pas au dernier du cours, il est probable que celui-ci soit difficile à comprendre. "+
         "Le cas échéant, ce chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en :"+
@@ -236,7 +236,7 @@ var compilFact = function(fact){
 
     case 'resume_abnormal_tx':
         fact.name = "Après arrêt de la lecture sur ce chapitre, trop de reprises sur des chapitres lointains";
-        fact.description ="Après arrêt sur ce chapitre, <b>"+fact.error_value+"%</b> des reprises se font sur un chapitre autre  que le chapitre en question ou celui qui le suit dans le plan du cours." ;
+        fact.description ="Après arrêt sur ce chapitre, <b>"+fact.error_value+" %</b> des reprises se font sur un chapitre autre  que le chapitre en question ou celui qui le suit dans le plan du cours." ;
         fact.suggestion_title ="Revoir les chapitres voisins"
         fact.suggestion_content = "Il est probable que ce chapitre fasse appel à des notions vues auparavant mal/non assimilées. Le cas échéant, pouvez-vous réécrire les chapitres contenant ces notions. "+
         "Il est également probable que les chapitres suivants ne soient pas très intéressants. <br/>"+
@@ -245,7 +245,7 @@ var compilFact = function(fact){
 
     case 'resume_past':
         fact.name ="Après arrêt de la lecture sur ce chapitre, trop de reprises sur des chapitres en amont";
-        fact.description ="Après arrêt sur ce chapitre, <b>"+fact.error_value+"%</b> des reprises se font sur des chapitres précédents."
+        fact.description ="Après arrêt sur ce chapitre, <b>"+fact.error_value+" %</b> des reprises se font sur des chapitres précédents."
         fact.suggestion_title = "Revoir certains chapitres situés en amont";
         fact.suggestion_content = "Il est probable que ce chapitre fasse appel à des notions vues auparavant mal/non assimilées. Le cas échéant, pouvez-vous réécrire les chapitres contenant ces notions en :"+
         "<ul><li>le simplifiant par exemple en utilisant un vocabulaire plus commun ou directement défini dans le contenu, en évitant les dispersions en allant à l'essentiel</li>"+
@@ -257,7 +257,7 @@ var compilFact = function(fact){
 
     case 'resume_future':
         fact.name = "Après arrêt de la lecture sur ce chapitre, trop de reprises sur des chapitres en aval";
-        fact.description ="Après arrêt sur ce chapitre, <b>"+fact.error_value+"%</b> des reprises se font sur des chapitres trop en aval (au-delà du chapitre suivant prévu dans le plan du cours)."
+        fact.description ="Après arrêt sur ce chapitre, <b>"+fact.error_value+" %</b> des reprises se font sur des chapitres trop en aval (au-delà du chapitre suivant prévu dans le plan du cours)."
         fact.suggestion_title = "Revoir les chapitres sautés";
         fact.suggestion_content = "Il est probable que les chapitres suivants ne soient pas très intéressants. Est-ce que les titres de ces chapitres résument bien leur contenu ? Si ce n’est pas le cas, il faudrait penser à reformuler ces titres. <br/>"+
         "Est-ce que ces chapitres sont réellement intéressants par rapport au cours ? Le cas échéant, il faudrait reconsidérer le plan du cours en déplaçant ces chapitres vers un endroit plus approprié. Sinon, peuvent-il être fusionnés avec d’autres chapitres du cours voire supprimés ?";
@@ -667,7 +667,7 @@ var completeCourseParts = function(){
   $scope.ChaptersFacts = $scope.MainChaptersFacts;
   $scope.SectionsFacts = $scope.MainSectionsFacts;
   
-
+console.log($scope.course.indicators)
 }
 var dropFactLocally = function(route){
 
@@ -1793,11 +1793,11 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
+                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,1)+'%',
                       'comment':'est le taux moyen de visite des sections de cette partie'} ,
-                    {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
+                    {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,1)+'%',
                       'comment':'est le taux moyen de lecteurs des sections de cette partie'} ,
-                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,2)+'%',
+                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,1)+'%',
                       'comment':'est le taux moyen des séances de lecture contenant les sections de cette partie'} ,
                       {'name':'speed','value':   d3.round(mainStats.speed)+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des sections de cette partie'},  
@@ -1824,18 +1824,18 @@ var inspectorTomeData = function(tome, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                     'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'interest','value':  d3.round(100*mainStats.interest,2)+'%',
+                    {'name':'interest','value':  d3.round(100*mainStats.interest,1)+'%',
                       'comment':'est le taux d\'intérêt moyen des chapitres de cette partie'},
-                       {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
+                       {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,1)+'%',
                       'comment':'est le taux moyen de visite des chapitres de cette partie'},
-                    {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
+                    {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,1)+'%',
                       'comment':'est le taux moyen de lecteurs des chapitres de cette partie'} ,
-                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,2)+'%',
+                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,1)+'%',
                       'comment':'est le taux moyen des séances de lecture contenant les chapitres de cette partie'} ,
                       {'name':'speed','value':   d3.round(mainStats.speed)+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des chapitres de cette partie'},
 
-                    {'name':'reading_not_linear','value':  d3.round(100*mainStats.reading_not_linear,2)+'%',
+                    {'name':'reading_not_linear','value':  d3.round(100*mainStats.reading_not_linear,1)+'%',
                       'comment':'est le taux moyen de linéarité de la lecture des chapitres de la partie'},
                     {'name':'provenance_not_linear','value':   d3.round(100 * (1-tome.transitions.provenance.normal))+'%',
                       'comment':'est le taux moyen des provenances non linéaires des chapitres de la partie'},
@@ -1897,11 +1897,11 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,2)+'%',
+                    {'name':'Actions_tx','value':  d3.round(100*mainStats.Actions_tx,1)+'%',
                       'comment':'est le taux moyen de visite des sections de ce chapitre'},
-                      {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,2)+'%',
+                      {'name':'readers_tx','value':  d3.round(100*mainStats.readers_tx,1)+'%',
                       'comment':'est le taux moyen des lecteurs de ce chapitre'} ,
-                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,2)+'%',
+                    {'name':'rs_tx','value':  d3.round(100*mainStats.rs_tx,1)+'%',
                       'comment':'est le taux moyen des séances de lecture contenant ce chapitre'} ,
                     {'name':'speed','value':   mainStats.speed+' mots par minutes',
                       'comment':'est la vitesse moyenne de lecture des sections de ce chapitre'},
@@ -1925,22 +1925,22 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,                  
                     'Indicators' :[
-                    {'name':'interest','value':d3.round(100*chapter.indicators.interest,2)+'%',
+                    {'name':'interest','value':d3.round(100*chapter.indicators.interest,1)+'%',
                       'comment':' est le taux d\'intérêt normalisé calculé sur ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'interest')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'interest'})[0].route:null},
 
-            {'name':'Actions_tx','value':d3.round(100*chapter.indicators.Actions_tx,2)+'%',
+            {'name':'Actions_tx','value':d3.round(100*chapter.indicators.Actions_tx,1)+'%',
                       'comment':' des visites sur le cours ont été observées sur ce chapitre ('+chapter.indicators.nbactions+' actions)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'Actions_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'Actions_tx'})[0].route:null},
 
-                   {'name':'readers_tx','value':d3.round(100*chapter.indicators.readers_tx,2)+'%',
+                   {'name':'readers_tx','value':d3.round(100*chapter.indicators.readers_tx,1)+'%',
                       'comment':' des lecteurs du cours ont visité ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'readers_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'readers_tx'})[0].route:null},
             
-            {'name':'rs_tx','value':d3.round(100*chapter.indicators.rs_tx,2)+'%',
+            {'name':'rs_tx','value':d3.round(100*chapter.indicators.rs_tx,1)+'%',
                       'comment':' des séances de lecture contiennent ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id &f.classof === 'rs_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'rs_tx'})[0].route:null},
@@ -1950,62 +1950,62 @@ var inspectorChapterData = function(chapter, indicator, fact, tab){
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'speed')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null},
 
-                    {'name':'rereads_tx','value':d3.round(100*chapter.indicators.rereads_tx,2)+'%',
+                    {'name':'rereads_tx','value':d3.round(100*chapter.indicators.rereads_tx,1)+'%',
                       'comment':'des lectures de ce chapitre sont des relectures',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'rereads_tx'})[0].route:null},
-                    {'name':'rereads_seq_tx','value':d3.round(100*chapter.indicators.rereads_seq_tx,2)+'%',
+                    {'name':'rereads_seq_tx','value':d3.round(100*chapter.indicators.rereads_seq_tx,1)+'%',
                       'comment':'des relectures de ce chapitre se font au cours des mêmes séances de lecture',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_seq_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'rereads_seq_tx'})[0].route:null},
-                    {'name':'rereads_dec_tx','value':d3.round(100*chapter.indicators.rereads_dec_tx,2)+'%',
+                    {'name':'rereads_dec_tx','value':d3.round(100*chapter.indicators.rereads_dec_tx,1)+'%',
                       'comment':'des relectures de ce chapitre se font dans des séances de lecture distinctes',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rereads_dec_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'rereads_dec_tx'})[0].route:null},
 
-                    {'name':'reading_not_linear','value':d3.round(100*chapter.indicators.reading_not_linear,2)+'%',
+                    {'name':'reading_not_linear','value':d3.round(100*chapter.indicators.reading_not_linear,1)+'%',
                       'comment':'des chapitres lus avant et/ou après sont des chapitres lointains',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'reading_not_linear')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'reading_not_linear'})[0].route:null},
-                      {'name':'provenance_not_linear','value':d3.round(100*chapter.indicators.provenance_not_linear,2)+'%',
+                      {'name':'provenance_not_linear','value':d3.round(100*chapter.indicators.provenance_not_linear,1)+'%',
                       'comment':'des chapitres lus avant celui-ci se situent loin du chapitre qui précède ce dernier (provenance non linéaire)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_not_linear')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'provenance_not_linear'})[0].route:null},
-                    {'name':'provenance_past','value':d3.round(100*chapter.indicators.provenance_past,2)+'%',
+                    {'name':'provenance_past','value':d3.round(100*chapter.indicators.provenance_past,1)+'%',
                       'comment':'des chapitres lus avant celui-ci se situent avant ce chapitre et celui qui le précède',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_past')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'provenance_past'})[0].route:null},
-                    {'name':'provenance_future','value':d3.round(100*chapter.indicators.provenance_future,2)+'%',
+                    {'name':'provenance_future','value':d3.round(100*chapter.indicators.provenance_future,1)+'%',
                       'comment':'des chapitres lus avant celui-ci se situent après ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'provenance_future')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'provenance_future'})[0].route:null},
-                    {'name':'destination_not_linear','value':d3.round(100*chapter.indicators.destination_not_linear,2)+'%',
+                    {'name':'destination_not_linear','value':d3.round(100*chapter.indicators.destination_not_linear,1)+'%',
                       'comment':'des chapitres lus après celui-ci se situent loin du chapitre qui suit ce dernier (destination non linéaire)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'destination_not_linear')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'destination_not_linear'})[0].route:null},
-                    {'name':'destination_past','value':d3.round(100*chapter.indicators.destination_past,2)+'%',
+                    {'name':'destination_past','value':d3.round(100*chapter.indicators.destination_past,1)+'%',
                       'comment':'des chapitres lus après celui-ci se situent avant ce chapitre (retour en arrière)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'destination_past')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'destination_past'})[0].route:null},
-                    {'name':'destination_future','value':d3.round(100*chapter.indicators.destination_future,2)+'%',
+                    {'name':'destination_future','value':d3.round(100*chapter.indicators.destination_future,1)+'%',
                       'comment':'des chapitres lus après celui-ci se situent bien après ce chapitre et celui qui le suit (avance importante)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'destination_future')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'destination_future'})[0].route:null},
 
 
-                    {'name':'norecovery_tx','value':d3.round(100*chapter.indicators.norecovery_tx,2)+'%',
+                    {'name':'norecovery_tx','value':d3.round(100*chapter.indicators.norecovery_tx,1)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'norecovery_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'norecovery_tx'})[0].route:null},
-                    {'name':'rupture_tx','value':d3.round(100*chapter.indicators.rupture_tx,2)+'%',
+                    {'name':'rupture_tx','value':d3.round(100*chapter.indicators.rupture_tx,1)+'%',
                       'comment':'des fins de séances de lecture se passent sur ce chapitre',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'rupture_tx')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'rupture_tx'})[0].route:null},
-                    {'name':'resume_past','value':d3.round(100*chapter.indicators.resume_past,2)+'%',
+                    {'name':'resume_past','value':d3.round(100*chapter.indicators.resume_past,1)+'%',
                       'comment':'des reprises de lecture après un fin de séance sur ce chapitre se passent sur des chapitres en arrière, situés avant ce dernier dans la structure du cours',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'resume_past')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'resume_past'})[0].route:null},
-                    {'name':'resume_future','value':d3.round(100*chapter.indicators.resume_future,2)+'%',
+                    {'name':'resume_future','value':d3.round(100*chapter.indicators.resume_future,1)+'%',
                       'comment':'des reprises de lecture après un fin de séance sur ce chapitre se passent sur des chapitres plus en avant, situés après ce dernier et celui qui suit dans la structure du cours',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==chapter.id & f.classof === 'resume_future')}).length > 0)?
             chapter.facts.filter(function(f){ return f.classof === 'resume_future'})[0].route:null}
@@ -2068,7 +2068,7 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                    'indicatorTxt': 'tous les indicateurs',
                    'indicatorCode':code,
                     'Indicators' :[
-                    {'name':'Actions_tx','value':d3.round(100*section.indicators.Actions_tx,2)+'%',
+                    {'name':'Actions_tx','value':d3.round(100*section.indicators.Actions_tx,1)+'%',
                       'comment':' des visites sur le cours ont été observées sur cette section('+section.indicators.nbactions+' actions)',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id &f.classof === 'Actions_tx')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'Actions_tx'})[0].route:null},
@@ -2076,11 +2076,11 @@ var inspectorSectionData = function(section, indicator, fact, tab){
                       'comment':'est la vitesse moyenne de lecture sur cette section',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'speed')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'speed'})[0].route:null},
-                    {'name':'rereads_tx','value':d3.round(100*section.indicators.rereads_tx,2)+'%',
+                    {'name':'rereads_tx','value':d3.round(100*section.indicators.rereads_tx,1)+'%',
                       'comment':'des lectures de cette section sont des relectures',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'rereads_tx')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'rereads_tx'})[0].route:null},
-                    {'name':'norecovery_tx','value':d3.round(100*section.indicators.norecovery_tx,2)+'%',
+                    {'name':'norecovery_tx','value':d3.round(100*section.indicators.norecovery_tx,1)+'%',
                       'comment':'des arrêts définitifs de la lecture se passent sur cette section',
                        'isFact':($scope.inspectorFacts.Facts.filter(function(f){ return (f.partId==section.id & f.classof === 'norecovery_tx')}).length > 0)?
             section.facts.filter(function(f){ return f.classof === 'norecovery_tx'})[0].route:null}
@@ -3275,9 +3275,9 @@ $scope.transitionValue = function(type,id1,id2){
   val = $scope.course.navigation.filter(function(value){ return ((value.x == id1) & (value.y == id2))})[0]
   
   if(type=='Provenance')  
-    return(d3.round(100*val.provenance,2))
+    return(d3.round(100*val.provenance,1))
   else
-    return(d3.round(100*val.destination,2))
+    return(d3.round(100*val.destination,1))
 }
 $scope.getPartByIndex = function(i){
   var found = false;
@@ -3632,6 +3632,7 @@ Courses.get({
 
 if (course){
   about();
+  
   if(!course.dospeed)
     $scope.indicatorsSelectionModel = ['interest','Actions_tx','readers_tx','rereads_tx','norecovery_tx','rereads_seq_tx','rereads_dec_tx','resume_past','resume_future','rupture_tx','reading_not_linear',
 'provenance_not_linear','provenance_past','provenance_future','destination_not_linear','destination_past','destination_future'];
