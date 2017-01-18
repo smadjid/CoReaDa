@@ -67,7 +67,7 @@ var compilFact = function(fact){
     case "speed":
     if(fact.issueSubCode=='max'){
         fact.name = "Lecture trop rapide";
-        fact.description = "La vitesse moyenne de lecture de ce chapitre est <b>"+d3.round(100 * fact.delta, 1) +" %</b> supérieure à celle des autres.";
+        fact.description = "La vitesse moyenne de lecture de ce chapitre est  supérieure à celle des autres de <b>"+d3.round(100 * fact.delta, 1) +" mots par minutes</b>";
         fact.suggestion_title = "Réviser ou supprimer le chapitre";
         fact.suggestion_content = "Est-ce que ce chapitre comporte des éléments nouveaux, intéressants ? "+ 
         "Si ce n’est pas le cas, il faudrait peut être penser à le supprimer ou à l’intégrer dans un autre endroit du cours pour ensuite revoir le plan de ce dernier. "+
@@ -79,7 +79,7 @@ var compilFact = function(fact){
     }
     else{
         fact.name = "Lecture trop lente";
-        fact.description = "La vitesse moyenne de lecture de ce chapitre est <b>"+d3.round(100 * fact.delta, 1) +" %</b> inférieure à celle des autres.";
+        fact.description = "La vitesse moyenne de lecture de ce chapitre est inférieure à celle des autres de <b>"+d3.round(100 * fact.delta, 1) +" mots par minutes</b>";
         fact.suggestion_title = "Réviser le chapitre";
         fact.suggestion_content = "Ce chapitre contient probablement beaucoup de notions complexes ou nouvelles. "+
         "Le chapitre doit être plus simple à lire, à comprendre. Pouvez-vous le réécrire en :"+
