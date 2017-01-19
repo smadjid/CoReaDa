@@ -1714,6 +1714,29 @@ span.blue {
     vertical-align: middle;  
     
 }
+span.otherblue {
+  background: #2f526f;
+    border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  color: #ffffff;
+  font-weight: bold;
+  line-height: 1.4em;
+  margin-left: 5px;
+  text-align: center;
+  
+    display: inline-block;
+    min-width: 10px;
+    padding: 2px 10px;
+  
+    line-height: 1;
+    font-size: 12px;
+   
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;  
+    
+}
 span.red {
   background: #D7301F;
     border-radius: 10px;

@@ -13,24 +13,63 @@ var app =angular.module('mean.courses').controller('CoursesController', ['$scope
   function($scope, $rootScope, $stateParams, $location, $http, ngDialog, Global, Courses, nzTour) {
     $scope.global = Global;
 
-var compilFact = function(fact){
+var compileChaptersFact = function(currentdata){
+    var c="<div><ol>";
+    angular.forEach(currentdata, function(v) {
+
+        c= c + 
+        "<li>Chapitre "+$scope.getPartById(v.part).id+" : <a role='button' ng-click='triggerClick($event)' data-path="+$scope.getPartById(v.part).route+">"+$scope.getPartById(v.part).title+"</a>  <span class='otherblue'>"+d3.round(100*v.value,1)+"%</span></li>";
+
+     });
+
+c=c+"</li></ol>";
+return c;
+}
+var compilFact = function(fact,id){
 /*
         fact.name = ;
         fact.description = ;
         fact.suggestion_title = ;
         fact.suggestion_content = ;
         */
+
+        
+        var part = $scope.getPartByIndex(id);
+        var partid = $scope.getPartById(part.part_id);
+        
+
+       
+        var tmpCurrentDataProv ={
+            'all' : part.alltransitions.provenances,
+            'past': part.alltransitions.provenances.filter(function(v){ return v.id <id-1 }),
+            'future': part.alltransitions.provenances.filter(function(v){ return v.id >id })
+
+        }    
+
+        
+
+        
+        var tmpCurrentDataDest = {
+            'all' : part.alltransitions.destinations,
+            'past': part.alltransitions.destinations.filter(function(v){ return v.id <id }),
+            'future': part.alltransitions.destinations.filter(function(v){ return v.id >id+1 })
+
+        }
+             
+
   switch(fact.issueCode)
   {
     case "interest":
         fact.name ="Trop peu d'intérêt";
-        fact.description ="Ce chapitre suscite trop peu d’intérêt chez les lecteurs. Son taux d’intérêt est <b>"+d3.round(100 * fact.delta, 1) +" %</b> plus bas que les autres."
+        fact.description ="Ce chapitre suscite trop peu d’intérêt chez les lecteurs. Son taux d’intérêt est <b>"+d3.round(100 * fact.delta, 1) + " %</b> plus bas que les autres." ;
+       
+        
 
         fact.suggestion_title ="Revoir le contenu du chapitre, son titre et sa position dans le cours";
         fact.suggestion_content ="Est-ce que le titre du chapitre résume bien son contenu ? Si ce n’est pas le cas, il faudrait penser à reformuler ce titre. "+ 
         "Le cas échéant, ce chapitre peut-il être fusionné et intégré ailleurs dans le cours, voire supprimé ? "+
         "Si ce n’est pas possible, il faudrait alors penser à le reformuler. <br/>"+
-        "<i>Pour plus d’information, nous vous recommandons de consulter les indicateurs spécifiques se rapportant à l’intérêt du chapitre.</i>"
+        "<i>Pour plus d’information, nous vous recommandons de consulter les indicateurs spécifiques se rapportant à l’intérêt du chapitre.</i>";
         break;
 
      case "Actions_tx":
@@ -140,11 +179,15 @@ var compilFact = function(fact){
         fact.suggestion_content = "Ce phénomène peut survenir quand le chapitre est mal positionné dans la structure du cours. "+
         "Il se peut aussi que ce chapitre soit un prérequis pour d’autres chapitres et/ou que d’autres chapitres soient des prérequis à ce dernier.<br/>"+
         "<i>Pour plus d’information, nous vous recommandons de consulter les indicateurs spécifiques se rapportant aux reprises de la lecture</i>";
+        
+    
         break;
 
      case 'provenance_not_linear':
         fact.name = "Trop d\'arrivées non linéaires sur ce chapitre";
-        fact.description = "Dans <b>"+fact.error_value+" %</b> des cas,  le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans le plan du cours";
+        fact.description = "Dans <b>"+fact.error_value+" %</b> des cas,  le chapitre lu avant celui-ci n'est pas le chapitre qui le précède directement dans le plan du cours. Les chapitres les plus souvent lus avant ce chapitres sont dans l'ordre :"+
+        compileChaptersFact(tmpCurrentDataProv.all.slice(0,3));
+        
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content ="Il se peut que ce chapitre soit un prérequis important pour plusieurs autres chapitres distants. "+
         "Le cas échéant, est-ce que le cours peut être restructuré (déplacer ce chapitre, ramener d’autres chapitres dans le voisinage directs de ce chapitre) ? <br/>"+
@@ -155,7 +198,8 @@ var compilFact = function(fact){
 
     case 'provenance_past':
         fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en arrière";
-        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu avant celui-ci se situe en amont du chapitre précédent dans le plan du cours.";
+        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu avant celui-ci se situe en amont du chapitre précédent dans le plan du cours.  Les chapitres plus en arrière les plus souvent lus avant ce chapitres sont dans l'ordre :"+
+        compileChaptersFact(tmpCurrentDataProv.past.slice(0,3));
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Ce phénomène peut survenir quand le chapitre est mal positionné dans la structure du cours. "+
         "Il est probablement référencé par des chapitres plus en amont parce que contenant des éléments qui aident la compréhension de ces derniers. "+
@@ -165,7 +209,8 @@ var compilFact = function(fact){
 
     case 'provenance_future':
         fact.name = "Trop d\'arrivées non linéaires depuis des chapitres plus en avant";
-        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu avant celui-ci  est un chapitre situé en aval dans le plan du cours.";
+        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu avant celui-ci  est un chapitre situé en aval dans le plan du cours.  Les chapitres plus en avant les plus souvent lus avant ce chapitres sont dans l'ordre :"+
+        compileChaptersFact(tmpCurrentDataProv.future.slice(0,3));
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il se peut que ce chapitre soit un prérequis important pour plusieurs autres chapitres distants. "+
         "Le cas échéant, est-ce que le cours peut être restructuré (déplacer ce chapitre, ramener d’autres chapitres dans le voisinage directs de ce chapitre) ? "+
@@ -176,7 +221,8 @@ var compilFact = function(fact){
 
     case 'destination_not_linear':
         fact.name = "Trop de sauts vers des chapitres lointains";
-        fact.description ="Dans <b>"+ fact.error_value +" %</b> des cas,  le chapitre lu après ce chapitre n'est pas celui qui le suit dans le plan du cours." ;
+        fact.description ="Dans <b>"+ fact.error_value +" %</b> des cas,  le chapitre lu après ce chapitre n'est pas celui qui le suit dans le plan du cours.  Les chapitres les plus souvent lus après ce chapitres sont dans l'ordre :"+
+        compileChaptersFact(tmpCurrentDataDest.all.slice(0,3));        
         fact.suggestion_title ="Revoir le contenu et la position du chapitre dans le plan du cours" ;
         fact.suggestion_content = "Ce phénomène peut survenir quand la compréhension de ce chapitre requiert des informations situées sur des chapitres lointains. "+
         "Le cas échéant, est-ce que le cours peut être restructuré (déplacer ce chapitre, ramener d’autres chapitres dans le voisinage directs de ce chapitre) ? "+
@@ -186,7 +232,8 @@ var compilFact = function(fact){
 
     case 'destination_past':
         fact.name = "Trop de sauts vers des chapitres en amont";
-        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu après ce chapitre se situe avant celui-ci dans le plan du cours";
+        fact.description = "Dans <b>"+ fact.error_value +" %</b> des cas, le chapitre lu après ce chapitre se situe avant celui-ci dans le plan du cours. Les chapitres plus en arrière les plus souvent lus après ce chapitres sont dans l'ordre:"+
+        compileChaptersFact(tmpCurrentDataDest.past.slice(0,3));        
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il est probable que ce chapitre fasse appel à des notions vues auparavant mal/non assimilées. Le cas échéant, pouvez-vous réécrire les chapitres contenant ces notions en :"+
         "<ul><li>le simplifiant par exemple en utilisant un vocabulaire plus commun ou directement défini dans le contenu, en évitant les dispersions en allant à l'essentiel</li>"+
@@ -198,8 +245,10 @@ var compilFact = function(fact){
         break;
 
     case 'destination_future':
+
         fact.name ="Trop de sauts vers des chapitres lointains plus en aval " ;
-        fact.description ="Dans <b>"+fact.error_value+" %</b> des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la plan du cours mais se situe plus aval." ;
+        fact.description ="Dans <b>"+fact.error_value+" %</b> des cas, le chapitre lu après ce chapitre n'est pas celui qui le suit dans la plan du cours mais se situe plus aval. Les chapitres plus en avant les plus souvent lus après ce chapitres sont dans l'ordre:" +
+        compileChaptersFact(tmpCurrentDataDest.future.slice(0,3));
         fact.suggestion_title = "Revoir le contenu et la position du chapitre dans le plan du cours";
         fact.suggestion_content = "Il est probable que les chapitres suivants ne soient pas très intéressants. Est-ce que les titres de ces chapitres résument bien leur contenu ? "+
         "Si ce n’est pas le cas, il faudrait penser à reformuler ces titres.<br/>"+
@@ -552,6 +601,7 @@ var completeCourseParts = function(){
           'future':chapter.indicators.destination_future
         }
       };
+      chapter.alltransitions = $scope.allTransitions(chapter.part_id);
       transitions.provenance.normal.push(chapter.transitions.provenance.normal);
       transitions.provenance.past.push(chapter.transitions.provenance.past);
       transitions.provenance.future.push(chapter.transitions.provenance.future);
@@ -559,10 +609,13 @@ var completeCourseParts = function(){
       transitions.destination.past.push(chapter.transitions.destination.past);
       transitions.destination.future.push(chapter.transitions.destination.future);
 
+      
+    
+
 
       chapter.url = $scope.course.url+'/'+chapter.url;
       angular.forEach(chapter.facts,function(fact){ 
-          compilFact(fact);
+          compilFact(fact, chapter.id);
           fact.route = $.param({'partid':tome._id, 'chapid':chapter._id, 'factid':fact._id});
           fact.tome=tome._id;
           fact.partId=chapter.id;
@@ -667,7 +720,7 @@ var completeCourseParts = function(){
   $scope.ChaptersFacts = $scope.MainChaptersFacts;
   $scope.SectionsFacts = $scope.MainSectionsFacts;
   
-console.log($scope.course.indicators)
+
 }
 var dropFactLocally = function(route){
 
@@ -2190,7 +2243,7 @@ var loadContext = function(){
             $scope.context.indicator = fact.classof;
         }
 
-    console.log(indicator)
+    
 
     task = components.hasOwnProperty('taskid')?   $.grep(course.todos, function(e){ return  e._id == components.taskid })[0]:null;
     indicator = components.hasOwnProperty('indicator')? 
@@ -3269,6 +3322,27 @@ $scope.toggleSectionDisplay = function(){
 
 }
 
+$scope.popoverTransitions = function(id){
+    swal({   title: "Chapitres lus avant ce chapitre!",   
+            text: "Une nouvelle tâche a été ajoutée avec succès pour l'élément sélectionné.", 
+             animation: "false",
+              showConfirmButton: false });
+}
+
+$scope.allTransitions = function(id){
+    
+  var  transits = {'provenances':[],'destinations':[]};
+  var vals = $scope.course.navigation.filter(function(value){ return ((value.x == id) )});
+  angular.forEach(vals,function(v){   
+        transits.provenances.push({'part':v.y, 'id':$scope.getPartById(v.y).id, 'value':v.provenance});
+        transits.destinations.push({'part':v.y,'id':$scope.getPartById(v.y).id, 'value':v.destination});
+
+
+  })
+  transits.provenances = $filter('orderBy')(transits.provenances, 'value', true) 
+  transits.destinations = $filter('orderBy')(transits.destinations, 'value', true) 
+  return transits;
+}
 
 $scope.transitionValue = function(type,id1,id2){
   if(id1==id2) return '';
@@ -3297,6 +3371,32 @@ $scope.getPartByIndex = function(i){
     
       angular.forEach(chapter.parts, function(section) { 
         if(section.id==i) 
+         { result = section;
+                 return result;}
+    
+      })
+    })
+  });
+  
+  return result;
+}
+$scope.getPartById = function(id){
+  var found = false;
+  var result = $scope.course;
+  angular.forEach($scope.course.tomes, function(tome) { 
+
+    if(tome.part_id==id) 
+    {  result = tome;
+        return result;}
+    
+    angular.forEach(tome.chapters, function(chapter) { 
+      
+      if(chapter.part_id==id) 
+      {result = chapter;
+          return result;}
+    
+      angular.forEach(chapter.parts, function(section) { 
+        if(section.part_id==id) 
          { result = section;
                  return result;}
     
@@ -3646,7 +3746,7 @@ $scope.$watch('allFactsDisplay', function(newValue, oldValue) {
   if(newValue == oldValue) return;
 
   var selected = $scope.indicatorsHeader.filter(function(value){ return value.show === true});
-  console.log(selected)
+  
 
    $scope.selectedIndicators =  $.grep(selected, function(e){return ($.inArray(e.value, $scope.indicatorsSelectionModel)>-1)}); 
   updateMainFacts();

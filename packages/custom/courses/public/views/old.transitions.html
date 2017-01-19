@@ -1,14 +1,4 @@
-<h3 style="margin-top: 0"> {{context.inspector_title}} --- <em><b>Statistiques de {{transitionDisplay}}</b></em></h3>
-<ul>
-<li ng-repeat="v in getPartByIndex(inspectorStats.id).topTransitions"></li>
-</ul>
-
-getPartByIndex(inspectorStats.id).title
-
-
-
-
-
+<h3 style="margin-top: 0"> {{context.inspector_title}} --- <em><b>Table de {{transitionDisplay}}</b></em></h3>
 <perfect-scrollbar class="tableScroller   always-visible" suppress-scroll-y="true" scrollX-margin-offset='5' wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20"   model="indicatorsSelectionModel">  
 <table  class="table data-table" >
     <thead>
