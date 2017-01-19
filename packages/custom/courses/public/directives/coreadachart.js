@@ -358,8 +358,8 @@ svg.append("defs").selectAll('marker')
             .enter()
             .append("g")
             .attr("class", "circle")
-            .attr("fill",  function(d) {return d.color})
-            .on("click", function(d) { scope.onTransitions({type:scope.d3opts.elementType,elementId:elementID})});
+            .attr("fill",  function(d) {return d.color});
+            //.on("click", function(d) { scope.onTransitions({type:scope.d3opts.elementType,elementId:elementID})});
     var el = circle.append("circle")
             .attr("cx", function(d) {return d.x})
             .attr("cy", function(d) {return d.y})
