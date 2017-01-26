@@ -1,0 +1,1917 @@
+{
+  "id": 2078536,
+  "elementId": 5806401,
+  "title": "Développez votre site web avec le framework Symfony2 (ancienne version)",
+  "slug": "developpez-votre-site-web-avec-le-framework-symfony2",
+  "subtype": "course",
+  "status": "published",
+  "createdAt": "2014-05-09T15:14:24+0000",
+  "updatedAt": "2016-03-24T14:51:05+0000",
+  "metadatas": {
+    "description": "Symfony2 est l'un des frameworks de développement PHP les plus populaires et les plus dynamiques au monde (et il a été créé par un français !). Apprenez à l'utiliser pas à pas.",
+    "difficulty": "Moyen",
+    "image": "//oc-static.com/prod/courses/icons/icon_developpez-votre-site-web-avec-le-framework-symfony2.png",
+    "duration": "P5W",
+    "license": "BY-NC-SA"
+  },
+  "children": [
+    {
+      "id": 2078931,
+      "elementId": 4559284,
+      "title": "Vue d'ensemble de Symfony2",
+      "slug": "vue-d-ensemble-de-symfony2",
+      "subtype": "title-1",
+      "createdAt": "2014-05-09T15:14:44+0000",
+      "updatedAt": "2015-08-05T04:26:18+0000",
+      "metadatas": {
+        "duration": "P1W",
+        "difficulty": "Facile",
+        "license": "BY-NC-SA"
+      },
+      "children": [
+        {
+          "id": 2078666,
+          "elementId": 4559283,
+          "title": "Symfony2, un framework PHP",
+          "slug": "symfony2-un-framework-php",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:43+0000",
+          "updatedAt": "2015-08-05T04:26:18+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "duration": "PT1H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478657.png"
+          },
+          "children": [
+            {
+              "id": 2078593,
+              "elementId": 2695194,
+              "title": "Qu'est-ce qu'un framework ?",
+              "slug": "qu-est-ce-qu-un-framework-1",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:43+0000",
+              "updatedAt": "2014-07-28T14:25:33+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2078601,
+              "elementId": 4393834,
+              "title": "Qu'est-ce que Symfony2 ?",
+              "slug": "qu-est-ce-que-symfony2",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:43+0000",
+              "updatedAt": "2015-07-18T04:27:27+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2078665,
+              "elementId": 4559282,
+              "title": "Télécharger Symfony2",
+              "slug": "telecharger-symfony2",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:43+0000",
+              "updatedAt": "2015-08-05T04:26:18+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2078813,
+          "elementId": 4427506,
+          "title": "Vous avez dit Symfony2 ?",
+          "slug": "vous-avez-dit-symfony2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:43+0000",
+          "updatedAt": "2015-07-22T03:05:18+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478676.png",
+            "duration": "PT1H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2078725,
+              "elementId": 4427498,
+              "title": "L'architecture des fichiers",
+              "slug": "l-architecture-des-fichiers",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:43+0000",
+              "updatedAt": "2015-07-22T03:05:18+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2078755,
+              "elementId": 4427502,
+              "title": "L'architecture conceptuelle",
+              "slug": "l-architecture-conceptuelle",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:43+0000",
+              "updatedAt": "2015-07-22T03:05:18+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2170025,
+              "elementId": 4427505,
+              "title": "Symfony2 et ses bundles",
+              "slug": "symfony2-et-ses-bundles-1",
+              "subtype": "title-3",
+              "createdAt": "2014-06-02T10:05:12+0000",
+              "updatedAt": "2015-07-22T03:05:18+0000",
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2078930,
+          "elementId": 4427568,
+          "title": "Utilisons la console pour créer un bundle",
+          "slug": "utilisons-la-console-pour-creer-un-bundle",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:44+0000",
+          "updatedAt": "2015-07-22T03:28:32+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "image": "//uploads.siteduzero.com/icones/587001_588000/587645.png",
+            "duration": "PT2H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2078843,
+              "elementId": 4427516,
+              "title": "Utilisation de la console",
+              "slug": "utilisation-de-la-console",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:43+0000",
+              "updatedAt": "2015-07-22T03:11:26+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2262123,
+              "elementId": 2557126,
+              "title": "Le fil rouge de notre cours : une plateforme d'échange",
+              "slug": "le-fil-rouge-de-notre-cours-une-plateforme-d-echange",
+              "subtype": "title-3",
+              "createdAt": "2014-06-29T08:59:00+0000",
+              "updatedAt": "2014-06-29T08:59:00+0000",
+              "children": []
+            },
+            {
+              "id": 2170111,
+              "elementId": 4427567,
+              "title": "Créons notre bundle",
+              "slug": "creons-notre-bundle-1",
+              "subtype": "title-3",
+              "createdAt": "2014-06-02T10:32:36+0000",
+              "updatedAt": "2015-07-22T03:28:32+0000",
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        },
+        {
+          "id": 2451056,
+          "elementId": 2950072,
+          "title": "Aux origines de Symfony (interview)",
+          "slug": "aux-origines-de-symfony-interview",
+          "subtype": "title-2",
+          "createdAt": "2014-09-05T08:56:53+0000",
+          "updatedAt": "2014-09-15T16:43:24+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2080363,
+      "elementId": 5102254,
+      "title": "Les bases de Symfony2",
+      "slug": "les-bases-de-symfony2",
+      "subtype": "title-1",
+      "createdAt": "2014-05-09T15:14:47+0000",
+      "updatedAt": "2015-11-19T10:54:30+0000",
+      "metadatas": {
+        "duration": "P1W",
+        "difficulty": "Moyen",
+        "license": "BY-NC-SA"
+      },
+      "children": [
+        {
+          "id": 2079149,
+          "elementId": 4427657,
+          "title": "Mon premier « Hello World ! » avec Symfony2",
+          "slug": "mon-premier-hello-world-avec-symfony2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:44+0000",
+          "updatedAt": "2015-07-22T03:45:55+0000",
+          "metadatas": {
+            "difficulty": "Difficile",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478682.png",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2078987,
+              "elementId": 4427646,
+              "title": "Créons notre route",
+              "slug": "creons-notre-route",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:44+0000",
+              "updatedAt": "2015-07-22T03:45:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079025,
+              "elementId": 4427651,
+              "title": "Créons notre contrôleur",
+              "slug": "creons-notre-controleur",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:44+0000",
+              "updatedAt": "2015-07-22T03:45:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079068,
+              "elementId": 4427656,
+              "title": "Créons notre template Twig",
+              "slug": "creons-notre-template-twig",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:44+0000",
+              "updatedAt": "2015-07-22T03:45:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079148,
+              "elementId": 4427631,
+              "title": "Notre objectif : créer une plateforme d'annonces",
+              "slug": "notre-objectif-creer-un-blog",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:44+0000",
+              "updatedAt": "2015-07-22T03:44:16+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 2079345,
+          "elementId": 4429462,
+          "title": "Le routeur de Symfony2",
+          "slug": "le-routeur-de-symfony2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:45+0000",
+          "updatedAt": "2015-07-22T09:54:55+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "duration": "PT2H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478717.png"
+          },
+          "children": [
+            {
+              "id": 2079206,
+              "elementId": 4429457,
+              "title": "Le fonctionnement",
+              "slug": "le-fonctionnement-7",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:44+0000",
+              "updatedAt": "2015-07-22T09:54:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079245,
+              "elementId": 2784429,
+              "title": "Les routes de base",
+              "slug": "les-routes-de-base",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:44+0000",
+              "updatedAt": "2014-08-11T06:49:46+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079277,
+              "elementId": 4429461,
+              "title": "Les routes avancées",
+              "slug": "les-routes-avancees",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-22T09:54:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079294,
+              "elementId": 4429382,
+              "title": "Générer des URL",
+              "slug": "generer-des-url",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-22T09:54:13+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079344,
+              "elementId": 4429388,
+              "title": "Application : les routes de notre plateforme",
+              "slug": "application-les-routes-de-notre-blog",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-22T09:54:13+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        },
+        {
+          "id": 2079563,
+          "elementId": 4439855,
+          "title": "Les contrôleurs avec Symfony2",
+          "slug": "les-controleurs-avec-symfony2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:45+0000",
+          "updatedAt": "2015-07-23T10:33:55+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478723.png",
+            "duration": "PT1H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2079362,
+              "elementId": 4439835,
+              "title": "Le rôle du contrôleur",
+              "slug": "le-role-du-controleur",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-23T10:33:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079456,
+              "elementId": 4429936,
+              "title": "Manipuler l'objet Request",
+              "slug": "manipuler-l-objet-request",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-22T10:20:28+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079477,
+              "elementId": 4439840,
+              "title": "Manipuler l'objet Response",
+              "slug": "manipuler-l-objet-response",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-23T10:33:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079528,
+              "elementId": 4439848,
+              "title": "Manipuler la session",
+              "slug": "les-differents-services",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-23T10:33:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079562,
+              "elementId": 4439854,
+              "title": "Application : le contrôleur de notre plateforme",
+              "slug": "application-le-controleur-de-notre-blog",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2015-07-23T10:33:55+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2080035,
+          "elementId": 4495067,
+          "title": "Le moteur de templates Twig",
+          "slug": "le-moteur-de-templates-twig",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:46+0000",
+          "updatedAt": "2015-07-28T10:20:01+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "duration": "PT1H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478731.png"
+          },
+          "children": [
+            {
+              "id": 2079604,
+              "elementId": 2614648,
+              "title": "Les templates Twig",
+              "slug": "les-templates-twig",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:45+0000",
+              "updatedAt": "2014-07-06T08:34:33+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079784,
+              "elementId": 4448426,
+              "title": "Afficher des variables",
+              "slug": "afficher-des-variables",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:46+0000",
+              "updatedAt": "2015-07-24T04:10:11+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079865,
+              "elementId": 4448431,
+              "title": "Structures de contrôle et expressions",
+              "slug": "structures-de-controle-et-expressions",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:46+0000",
+              "updatedAt": "2015-07-24T04:10:11+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2079942,
+              "elementId": 4495055,
+              "title": "Hériter et inclure des templates",
+              "slug": "heriter-et-inclure-des-templates",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:46+0000",
+              "updatedAt": "2015-07-28T10:20:01+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080034,
+              "elementId": 4495066,
+              "title": "Application : les templates de notre plateforme",
+              "slug": "application-les-templates-de-notre-blog",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:46+0000",
+              "updatedAt": "2015-07-28T10:20:01+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2080210,
+          "elementId": 2977437,
+          "title": "Installer un bundle grâce à Composer",
+          "slug": "installer-un-bundle-grace-a-composer",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:47+0000",
+          "updatedAt": "2014-09-24T08:57:17+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "duration": "PT2H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/724001_725000/724838.png"
+          },
+          "children": [
+            {
+              "id": 2080066,
+              "elementId": 2274566,
+              "title": "Composer, qu'est-ce que c'est ?",
+              "slug": "composer-qu-est-ce-que-c-est",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:46+0000",
+              "updatedAt": "2014-05-09T15:19:45+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2471221,
+              "elementId": 2976966,
+              "title": "Installer Composer et Git",
+              "slug": "installer-composer-et-git-1",
+              "subtype": "title-3",
+              "createdAt": "2014-09-24T04:08:55+0000",
+              "updatedAt": "2014-09-24T04:08:54+0000",
+              "children": []
+            },
+            {
+              "id": 2080209,
+              "elementId": 2977436,
+              "title": "Installer un bundle grâce à Composer",
+              "slug": "installer-un-bundle-grace-a-composer-1",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2014-09-24T08:57:17+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        },
+        {
+          "id": 2080362,
+          "elementId": 5102253,
+          "title": "Les services, théorie et création",
+          "slug": "les-services-theorie-et-creation",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:47+0000",
+          "updatedAt": "2015-11-19T10:54:30+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "duration": "PT2H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/584001_585000/584863.png"
+          },
+          "children": [
+            {
+              "id": 2080250,
+              "elementId": 5102227,
+              "title": "Pourquoi utiliser des services ?",
+              "slug": "pourquoi-utiliser-des-services",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2015-11-19T10:54:30+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080266,
+              "elementId": 5102232,
+              "title": "Utiliser un service en pratique",
+              "slug": "utiliser-un-service-en-pratique",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2015-11-19T10:54:30+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080304,
+              "elementId": 5102245,
+              "title": "Créer un service simple",
+              "slug": "creer-un-service-simple",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2015-11-19T10:54:30+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080361,
+              "elementId": 5102252,
+              "title": "Créer un service avec des arguments",
+              "slug": "creer-un-service-avec-des-arguments",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2015-11-19T10:54:30+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2081610,
+      "elementId": 4393667,
+      "title": "Gérer la base de données avec Doctrine2",
+      "slug": "gerer-la-base-de-donnees-avec-doctrine2",
+      "subtype": "title-1",
+      "createdAt": "2014-05-09T15:14:50+0000",
+      "updatedAt": "2015-07-18T03:08:21+0000",
+      "metadatas": {
+        "duration": "P1W",
+        "difficulty": "Difficile",
+        "license": "BY-NC-SA"
+      },
+      "children": [
+        {
+          "id": 2080675,
+          "elementId": 2950212,
+          "title": "La couche métier : les entités",
+          "slug": "la-couche-metier-les-entites",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:48+0000",
+          "updatedAt": "2014-09-15T16:46:30+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478701.png",
+            "duration": "PT3H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2080373,
+              "elementId": 2699844,
+              "title": "Notions d'ORM : fini les requêtes, utilisons des objets",
+              "slug": "notions-d-orm-fini-les-requetes-utilisons-des-objets",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2014-07-29T09:09:43+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080446,
+              "elementId": 2723918,
+              "title": "Créer une première entité avec Doctrine2",
+              "slug": "creer-une-premiere-entite-avec-doctrine2",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:47+0000",
+              "updatedAt": "2014-08-01T07:38:23+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080674,
+              "elementId": 2723925,
+              "title": "Tout sur le mapping !",
+              "slug": "tout-sur-le-mapping",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:48+0000",
+              "updatedAt": "2014-08-01T07:38:23+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT3H"
+        },
+        {
+          "id": 2080830,
+          "elementId": 2989718,
+          "title": "Manipuler ses entités avec Doctrine2",
+          "slug": "manipuler-ses-entites-avec-doctrine2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:48+0000",
+          "updatedAt": "2014-09-26T01:25:15+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "image": "//uploads.siteduzero.com/icones/584001_585000/584945.png",
+            "duration": "PT4H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2080715,
+              "elementId": 2989707,
+              "title": "Matérialiser les tables en base de données",
+              "slug": "materialiser-les-tables-en-base-de-donnees",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:48+0000",
+              "updatedAt": "2014-09-26T01:25:15+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080810,
+              "elementId": 2989717,
+              "title": "Enregistrer ses entités avec l'EntityManager",
+              "slug": "enregistrer-ses-entites-avec-l-entitymanager",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:48+0000",
+              "updatedAt": "2014-09-26T01:25:15+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2080829,
+              "elementId": 2723956,
+              "title": "Récupérer ses entités avec un EntityRepository",
+              "slug": "recuperer-ses-entites-avec-un-entityrepository",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:48+0000",
+              "updatedAt": "2014-08-01T07:39:25+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT4H"
+        },
+        {
+          "id": 2081094,
+          "elementId": 3504853,
+          "title": "Les relations entre entités avec Doctrine2",
+          "slug": "les-relations-entre-entites-avec-doctrine2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:49+0000",
+          "updatedAt": "2015-01-17T07:30:26+0000",
+          "metadatas": {
+            "difficulty": "Difficile",
+            "image": "//uploads.siteduzero.com/icones/582001_583000/582526.png",
+            "duration": "PT4H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2080854,
+              "elementId": 2703993,
+              "title": "Présentation",
+              "slug": "presentation-2",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:48+0000",
+              "updatedAt": "2014-07-30T07:21:26+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2315850,
+              "elementId": 3504840,
+              "title": "Relation One-To-One",
+              "slug": "relation-one-to-one-1",
+              "subtype": "title-3",
+              "createdAt": "2014-07-16T14:16:49+0000",
+              "updatedAt": "2015-01-17T07:30:26+0000",
+              "children": []
+            },
+            {
+              "id": 2315854,
+              "elementId": 3504844,
+              "title": "Relation Many-To-One",
+              "slug": "relation-many-to-one-1",
+              "subtype": "title-3",
+              "createdAt": "2014-07-16T14:16:49+0000",
+              "updatedAt": "2015-01-17T07:30:26+0000",
+              "children": []
+            },
+            {
+              "id": 2315858,
+              "elementId": 3504848,
+              "title": "Relation Many-To-Many",
+              "slug": "relation-many-to-many-1",
+              "subtype": "title-3",
+              "createdAt": "2014-07-16T14:16:49+0000",
+              "updatedAt": "2015-01-17T07:30:26+0000",
+              "children": []
+            },
+            {
+              "id": 2315862,
+              "elementId": 3504852,
+              "title": "Relation Many-To-Many avec attributs",
+              "slug": "relation-many-to-many-avec-attributs-1",
+              "subtype": "title-3",
+              "createdAt": "2014-07-16T14:16:49+0000",
+              "updatedAt": "2015-01-17T07:30:26+0000",
+              "children": []
+            },
+            {
+              "id": 2081093,
+              "elementId": 2705928,
+              "title": "Les relations bidirectionnelles",
+              "slug": "les-relations-bidirectionnelles",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:49+0000",
+              "updatedAt": "2014-07-30T09:56:50+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT4H"
+        },
+        {
+          "id": 2081287,
+          "elementId": 3539066,
+          "title": "Récupérer ses entités avec Doctrine2",
+          "slug": "recuperer-ses-entites-avec-doctrine2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:50+0000",
+          "updatedAt": "2015-01-26T02:52:03+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "image": "//uploads.siteduzero.com/icones/582001_583000/582527.png",
+            "duration": "PT3H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2081111,
+              "elementId": 2664014,
+              "title": "Le rôle des repositories",
+              "slug": "le-role-des-repositories",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:49+0000",
+              "updatedAt": "2014-07-22T05:11:19+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081148,
+              "elementId": 2723964,
+              "title": "Les méthodes de récupération de base",
+              "slug": "les-methodes-de-recuperation-de-base",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:49+0000",
+              "updatedAt": "2014-08-01T07:40:17+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081232,
+              "elementId": 3539065,
+              "title": "Les méthodes de récupération personnelles",
+              "slug": "les-methodes-de-recuperation-personnelles",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:49+0000",
+              "updatedAt": "2015-01-26T02:52:03+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081263,
+              "elementId": 2716637,
+              "title": "Utiliser les jointures dans nos requêtes",
+              "slug": "utiliser-les-jointures-dans-nos-requetes",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:50+0000",
+              "updatedAt": "2014-07-31T10:28:52+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081286,
+              "elementId": 2716640,
+              "title": "Application : les repositories de notre plateforme d'annonces",
+              "slug": "application-les-entites-de-notre-blog",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:50+0000",
+              "updatedAt": "2014-07-31T10:28:52+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT3H"
+        },
+        {
+          "id": 2081474,
+          "elementId": 4393666,
+          "title": "Les évènements et extensions Doctrine",
+          "slug": "les-evenements-et-extensions-doctrine",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:50+0000",
+          "updatedAt": "2015-07-18T03:08:21+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "image": "//uploads.siteduzero.com/icones/724001_725000/724943.png",
+            "duration": "PT3H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2350649,
+              "elementId": 2819981,
+              "title": "Les évènements Doctrine",
+              "slug": "les-evenements-doctrine-1",
+              "subtype": "title-3",
+              "createdAt": "2014-07-31T13:50:58+0000",
+              "updatedAt": "2014-08-17T08:51:57+0000",
+              "children": []
+            },
+            {
+              "id": 2081473,
+              "elementId": 4393665,
+              "title": "Les extensions Doctrine",
+              "slug": "les-extensions-doctrine",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:50+0000",
+              "updatedAt": "2015-07-18T03:08:21+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT3H"
+        },
+        {
+          "id": 2081609,
+          "elementId": 3085625,
+          "title": "TP : Consolidation de notre code",
+          "slug": "tp-les-entites-de-notre-blog",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:50+0000",
+          "updatedAt": "2014-10-13T03:33:03+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "duration": "PT1H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/615001_616000/615069.png"
+          },
+          "children": [
+            {
+              "id": 2081499,
+              "elementId": 2816611,
+              "title": "Synthèse des entités",
+              "slug": "synthese-des-entites",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:50+0000",
+              "updatedAt": "2014-08-16T08:37:44+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081509,
+              "elementId": 2841993,
+              "title": "Adaptation du contrôleur",
+              "slug": "adaptation-du-controleur",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:50+0000",
+              "updatedAt": "2014-08-20T04:09:10+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081608,
+              "elementId": 3040843,
+              "title": "Utilisation des jointures",
+              "slug": "amelioration-du-controleur",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:50+0000",
+              "updatedAt": "2014-10-05T03:39:46+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2388977,
+              "elementId": 3085624,
+              "title": "Pagination des annonces sur la page d'accueil",
+              "slug": "pagination-des-annonces-sur-la-page-d-accueil",
+              "subtype": "title-3",
+              "createdAt": "2014-08-16T11:10:18+0000",
+              "updatedAt": "2014-10-13T03:33:03+0000",
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2083805,
+      "elementId": 4394179,
+      "title": "Allons plus loin avec Symfony2",
+      "slug": "allons-plus-loin-avec-symfony2",
+      "subtype": "title-1",
+      "createdAt": "2014-05-09T15:14:56+0000",
+      "updatedAt": "2015-07-18T05:18:58+0000",
+      "metadatas": {
+        "duration": "P1W",
+        "difficulty": "Facile",
+        "license": "BY-NC-SA"
+      },
+      "children": [
+        {
+          "id": 2082079,
+          "elementId": 4174797,
+          "title": "Créer des formulaires avec Symfony2",
+          "slug": "creer-des-formulaires-avec-symfony2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:52+0000",
+          "updatedAt": "2015-06-08T12:29:21+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "duration": "PT1H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/478001_479000/478706.png"
+          },
+          "children": [
+            {
+              "id": 2081743,
+              "elementId": 4174771,
+              "title": "Gestion des formulaires",
+              "slug": "gestion-des-formulaires",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:51+0000",
+              "updatedAt": "2015-06-08T12:29:21+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081763,
+              "elementId": 2805727,
+              "title": "Externaliser la définition de ses formulaires",
+              "slug": "externaliser-la-definition-de-ses-formulaires",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:51+0000",
+              "updatedAt": "2014-08-13T16:49:24+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081890,
+              "elementId": 4174786,
+              "title": "Les formulaires imbriqués",
+              "slug": "les-formulaires-imbriques",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:51+0000",
+              "updatedAt": "2015-06-08T12:29:21+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2081939,
+              "elementId": 2807471,
+              "title": "Aller plus loin avec les formulaires",
+              "slug": "aller-plus-loin-avec-les-formulaires",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:52+0000",
+              "updatedAt": "2014-08-14T08:21:50+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082030,
+              "elementId": 4174791,
+              "title": "Le type de champ File pour envoyer des fichiers",
+              "slug": "le-type-de-champ-file-pour-envoyer-des-fichiers",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:52+0000",
+              "updatedAt": "2015-06-08T12:29:21+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082078,
+              "elementId": 4174796,
+              "title": "Application : les formulaires de notre site",
+              "slug": "application-les-formulaires-de-notre-blog",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:52+0000",
+              "updatedAt": "2015-06-08T12:29:21+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2082424,
+          "elementId": 4393605,
+          "title": "Validez vos données",
+          "slug": "validez-vos-donnees",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:53+0000",
+          "updatedAt": "2015-07-18T02:56:27+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "image": "//uploads.siteduzero.com/icones/593001_594000/593782.png",
+            "duration": "PT1H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2082088,
+              "elementId": 2791923,
+              "title": "Pourquoi valider des données ?",
+              "slug": "pourquoi-valider-des-donnees",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:52+0000",
+              "updatedAt": "2014-08-12T07:10:30+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082318,
+              "elementId": 3085739,
+              "title": "Définir les règles de validation",
+              "slug": "definir-les-regles-de-validation",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:53+0000",
+              "updatedAt": "2014-10-13T03:53:41+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082333,
+              "elementId": 2791985,
+              "title": "Déclencher la validation",
+              "slug": "declencher-la-validation",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:53+0000",
+              "updatedAt": "2014-08-12T07:10:30+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082363,
+              "elementId": 2805902,
+              "title": "Encore plus de règles de validation",
+              "slug": "encore-plus-de-regles-de-validation",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:53+0000",
+              "updatedAt": "2014-08-13T17:14:37+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082423,
+              "elementId": 4393604,
+              "title": "Valider selon nos propres contraintes",
+              "slug": "valider-selon-nos-propres-contraintes",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:53+0000",
+              "updatedAt": "2015-07-18T02:56:27+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2082939,
+          "elementId": 4394178,
+          "title": "Sécurité et gestion des utilisateurs",
+          "slug": "securite-et-gestion-des-utilisateurs",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:54+0000",
+          "updatedAt": "2015-07-18T05:18:58+0000",
+          "metadatas": {
+            "difficulty": "Difficile",
+            "duration": "PT6H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/564001_565000/564183.png"
+          },
+          "children": [
+            {
+              "id": 2082508,
+              "elementId": 4394155,
+              "title": "Authentification et autorisation",
+              "slug": "authentification-et-autorisation",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:53+0000",
+              "updatedAt": "2015-07-18T05:18:58+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082669,
+              "elementId": 4394168,
+              "title": "Première approche de la sécurité",
+              "slug": "premiere-approche-de-la-securite",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:54+0000",
+              "updatedAt": "2015-07-18T05:18:58+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082725,
+              "elementId": 4394173,
+              "title": "Gestion des autorisations avec les rôles",
+              "slug": "gestion-des-autorisations-avec-les-roles",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:54+0000",
+              "updatedAt": "2015-07-18T05:18:58+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082802,
+              "elementId": 4393803,
+              "title": "Utiliser des utilisateurs de la base de données",
+              "slug": "utiliser-des-utilisateurs-de-la-base-de-donnees",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:54+0000",
+              "updatedAt": "2015-07-18T03:59:06+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2082938,
+              "elementId": 4394177,
+              "title": "Utiliser FOSUserBundle",
+              "slug": "utiliser-fosuserbundle",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:54+0000",
+              "updatedAt": "2015-07-18T05:18:58+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT6H"
+        },
+        {
+          "id": 2083143,
+          "elementId": 3529926,
+          "title": "Les services, utilisation poussée",
+          "slug": "les-services-utilisation-poussee",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:55+0000",
+          "updatedAt": "2015-01-23T15:30:12+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "duration": "PT2H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/584001_585000/584867.png"
+          },
+          "children": [
+            {
+              "id": 2083007,
+              "elementId": 3529925,
+              "title": "Les tags sur les services",
+              "slug": "les-tags-sur-les-services",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:54+0000",
+              "updatedAt": "2015-01-23T15:30:12+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083030,
+              "elementId": 2956338,
+              "title": "Dépendances optionnelles : les appels de méthodes (ou calls en anglais)",
+              "slug": "dependances-optionnelles-les-calls",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:55+0000",
+              "updatedAt": "2014-09-17T14:05:04+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083142,
+              "elementId": 2956303,
+              "title": "Les services courants de Symfony2",
+              "slug": "les-services-courants-de-symfony2",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:55+0000",
+              "updatedAt": "2014-09-17T14:04:17+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        },
+        {
+          "id": 2083371,
+          "elementId": 3130015,
+          "title": "Le gestionnaire d'évènements de Symfony2",
+          "slug": "le-gestionnaire-d-evenements-de-symfony2",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:55+0000",
+          "updatedAt": "2014-10-23T06:29:44+0000",
+          "metadatas": {
+            "difficulty": "Moyen",
+            "duration": "PT4H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/724001_725000/724949.png"
+          },
+          "children": [
+            {
+              "id": 2379814,
+              "elementId": 3130005,
+              "title": "Des évènements ? Pour quoi faire ?",
+              "slug": "des-evenements-pour-quoi-faire-1",
+              "subtype": "title-3",
+              "createdAt": "2014-08-13T09:43:03+0000",
+              "updatedAt": "2014-10-23T06:29:44+0000",
+              "children": []
+            },
+            {
+              "id": 2379832,
+              "elementId": 3130014,
+              "title": "Écouter les évènements",
+              "slug": "ecouter-les-evenements-1",
+              "subtype": "title-3",
+              "createdAt": "2014-08-13T09:43:03+0000",
+              "updatedAt": "2014-10-23T06:29:44+0000",
+              "children": []
+            },
+            {
+              "id": 2379865,
+              "elementId": 2807826,
+              "title": "Les évènements Symfony2… et les nôtres !",
+              "slug": "les-evenements-symfony2-et-les-notres-1",
+              "subtype": "title-3",
+              "createdAt": "2014-08-13T09:43:03+0000",
+              "updatedAt": "2014-08-14T08:55:21+0000",
+              "children": []
+            },
+            {
+              "id": 2379876,
+              "elementId": 2804014,
+              "title": "Allons un peu plus loin",
+              "slug": "allons-un-peu-plus-loin-4",
+              "subtype": "title-3",
+              "createdAt": "2014-08-13T09:43:03+0000",
+              "updatedAt": "2014-08-13T14:10:18+0000",
+              "children": []
+            }
+          ],
+          "duration": "PT4H"
+        },
+        {
+          "id": 2083804,
+          "elementId": 2950462,
+          "title": "Traduire son site",
+          "slug": "traduire-son-site",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:56+0000",
+          "updatedAt": "2014-09-15T16:56:41+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "image": "//uploads.siteduzero.com/icones/756001_757000/756044.png",
+            "duration": "PT4H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2083435,
+              "elementId": 2812745,
+              "title": "Introduction à la traduction",
+              "slug": "introduction-a-la-traduction",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:56+0000",
+              "updatedAt": "2014-08-14T12:58:39+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083460,
+              "elementId": 2807859,
+              "title": "Bonjour le monde",
+              "slug": "bonjour-le-monde",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:56+0000",
+              "updatedAt": "2014-08-14T09:06:59+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083521,
+              "elementId": 2812755,
+              "title": "Le catalogue",
+              "slug": "le-catalogue-1",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:56+0000",
+              "updatedAt": "2014-08-14T13:02:22+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083562,
+              "elementId": 2805294,
+              "title": "Récupérer la locale de l'utilisateur",
+              "slug": "recuperer-la-locale-de-l-utilisateur",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:56+0000",
+              "updatedAt": "2014-08-13T15:27:02+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083640,
+              "elementId": 2812760,
+              "title": "Organiser vos catalogues",
+              "slug": "organiser-vos-catalogues",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:56+0000",
+              "updatedAt": "2014-08-14T13:02:22+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083803,
+              "elementId": 2807924,
+              "title": "Traductions dépendantes de variables",
+              "slug": "traductions-dependantes-de-variables",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:56+0000",
+              "updatedAt": "2014-08-14T09:32:51+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT4H"
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2084342,
+      "elementId": 5791276,
+      "title": "Préparer la mise en ligne",
+      "slug": "astuces-et-points-particuliers",
+      "subtype": "title-1",
+      "createdAt": "2014-05-09T15:14:58+0000",
+      "updatedAt": "2016-03-21T16:34:31+0000",
+      "metadatas": {
+        "duration": "P1W",
+        "difficulty": "Facile",
+        "license": "BY-NC-SA"
+      },
+      "children": [
+        {
+          "id": 2083951,
+          "elementId": 2885405,
+          "title": "Convertir les paramètres de requêtes",
+          "slug": "utiliser-des-paramconverters-pour-convertir-les-parametres-de-requetes",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:57+0000",
+          "updatedAt": "2014-08-25T08:51:02+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "image": "//uploads.siteduzero.com/icones/479001_480000/479615.png",
+            "duration": "PT2H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2083829,
+              "elementId": 2807943,
+              "title": "Théorie : pourquoi un ParamConverter ?",
+              "slug": "theorie-pourquoi-un-paramconverter",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-14T09:36:38+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083882,
+              "elementId": 2885404,
+              "title": "Pratique : utilisation des ParamConverters existants",
+              "slug": "pratique-utilisation-des-paramconverters-existants",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-25T08:51:02+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2083950,
+              "elementId": 2807990,
+              "title": "Aller plus loin : créer ses propres ParamConverters",
+              "slug": "aller-plus-loin-creer-ses-propres-paramconverters",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-14T09:45:33+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        },
+        {
+          "id": 2084012,
+          "elementId": 2885413,
+          "title": "Personnaliser les pages d'erreur",
+          "slug": "personnaliser-les-pages-d-erreur",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:57+0000",
+          "updatedAt": "2014-08-25T08:51:02+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "image": "//uploads.siteduzero.com/icones/480001_481000/480077.png",
+            "duration": "PT1H",
+            "license": "BY-NC-SA"
+          },
+          "children": [
+            {
+              "id": 2083988,
+              "elementId": 2885412,
+              "title": "Théorie : remplacer les vues d'un bundle",
+              "slug": "theorie-remplacer-les-vues-d-un-bundle",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-25T08:51:02+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2084011,
+              "elementId": 2806783,
+              "title": "Pratique : remplacer les templates Exception de TwigBundle",
+              "slug": "pratique-remplacer-les-templates-exception-de-twigbundle",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-14T04:28:37+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2084128,
+          "elementId": 2816535,
+          "title": "Utiliser Assetic pour gérer les codes CSS et JS de votre site",
+          "slug": "utiliser-assetic-pour-gerer-les-codes-css-et-js-de-votre-site",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:57+0000",
+          "updatedAt": "2014-08-16T02:51:48+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "duration": "PT2H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/486001_487000/486426.png"
+          },
+          "children": [
+            {
+              "id": 2084037,
+              "elementId": 2816530,
+              "title": "Théorie : entre vitesse et lisibilité, pourquoi choisir ?",
+              "slug": "theorie-entre-vitesse-et-lisibilite-pourquoi-choisir",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-16T02:51:48+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2388662,
+              "elementId": 2816534,
+              "title": "Pratique : Assetic à la rescousse !",
+              "slug": "pratique-assetic-a-la-rescousse-1",
+              "subtype": "title-3",
+              "createdAt": "2014-08-16T02:51:48+0000",
+              "updatedAt": "2014-08-16T02:51:48+0000",
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        },
+        {
+          "id": 2084194,
+          "elementId": 2885418,
+          "title": "Utiliser la console directement depuis le navigateur",
+          "slug": "utiliser-la-console-directement-depuis-le-navigateur",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:58+0000",
+          "updatedAt": "2014-08-25T08:51:02+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "duration": "PT1H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/592001_593000/592931.png"
+          },
+          "children": [
+            {
+              "id": 2084147,
+              "elementId": 2806836,
+              "title": "Théorie : le composant Console de Symfony2",
+              "slug": "theorie-le-composant-console-de-symfony2",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:57+0000",
+              "updatedAt": "2014-08-14T04:33:24+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2084193,
+              "elementId": 2885417,
+              "title": "Pratique : utiliser un ConsoleBundle",
+              "slug": "pratique-utiliser-un-consolebundle",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:58+0000",
+              "updatedAt": "2014-08-25T08:51:02+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            }
+          ],
+          "duration": "PT1H"
+        },
+        {
+          "id": 2084341,
+          "elementId": 5791275,
+          "title": "Déployer son site Symfony2 en production",
+          "slug": "deployer-son-site-symfony2-en-production",
+          "subtype": "title-2",
+          "createdAt": "2014-05-09T15:14:58+0000",
+          "updatedAt": "2016-03-21T16:34:31+0000",
+          "metadatas": {
+            "difficulty": "Facile",
+            "duration": "PT2H",
+            "license": "BY-NC-SA",
+            "image": "//uploads.siteduzero.com/icones/633001_634000/633331.png"
+          },
+          "children": [
+            {
+              "id": 2084229,
+              "elementId": 5791260,
+              "title": "Préparer son application en local",
+              "slug": "preparer-son-application-en-local",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:58+0000",
+              "updatedAt": "2016-03-21T16:34:31+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2084261,
+              "elementId": 5791265,
+              "title": "Vérifier et préparer le serveur de production",
+              "slug": "verifier-et-preparer-le-serveur-de-production",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:58+0000",
+              "updatedAt": "2016-03-21T16:34:31+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2084340,
+              "elementId": 5791270,
+              "title": "Déployer votre application",
+              "slug": "deployer-votre-application",
+              "subtype": "title-3",
+              "createdAt": "2014-05-09T15:14:58+0000",
+              "updatedAt": "2016-03-21T16:34:31+0000",
+              "metadatas": {
+                "difficulty": "Facile",
+                "license": "BY-NC-SA"
+              },
+              "children": []
+            },
+            {
+              "id": 2382931,
+              "elementId": 5791274,
+              "title": "Les derniers préparatifs",
+              "slug": "les-derniers-preparatifs",
+              "subtype": "title-3",
+              "createdAt": "2014-08-14T05:54:38+0000",
+              "updatedAt": "2016-03-21T16:34:31+0000",
+              "children": []
+            }
+          ],
+          "duration": "PT2H"
+        }
+      ],
+      "duration": "P1W"
+    }
+  ],
+  "duration": "P5W"
+}

@@ -1,0 +1,286 @@
+{
+  "id": 2342361,
+  "elementId": 4563861,
+  "title": "Gérer son code avec Git et GitHub",
+  "slug": "gerer-son-code-avec-git-et-github",
+  "subtype": "course",
+  "status": "published",
+  "createdAt": "2014-07-29T07:50:22+0000",
+  "updatedAt": "2015-08-06T15:14:56+0000",
+  "metadatas": {
+    "license": "BY-NC-SA",
+    "difficulty": "Facile",
+    "duration": "P3W",
+    "description": "Fini les heures passées à vous noyer dans l'historique de votre code et à réécrire du code que vous aviez perdu. Avec ce cours sur Git et GitHub, vous allez pouvoir gérer efficacement les versions de votre code et le partager en ligne pour collaborer !",
+    "image": "//oc-static.com/prod/courses/icons/icon_gerer-son-code-avec-git-et-github.png"
+  },
+  "children": [
+    {
+      "id": 2342367,
+      "elementId": 3043077,
+      "title": "Premiers pas avec Git",
+      "slug": "premiers-pas-avec-git",
+      "subtype": "title-1",
+      "createdAt": "2014-07-29T07:50:22+0000",
+      "updatedAt": "2014-10-06T07:51:59+0000",
+      "metadatas": {
+        "duration": "P1W"
+      },
+      "children": [
+        {
+          "id": 2433586,
+          "elementId": 2944532,
+          "title": "Qu'est-ce que versionner son code ?",
+          "slug": "qu-est-ce-que-versionner-son-code",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:38:07+0000",
+          "updatedAt": "2014-09-12T09:48:34+0000",
+          "children": []
+        },
+        {
+          "id": 2433591,
+          "elementId": 2944522,
+          "title": "Git par rapport aux autres solutions de versioning",
+          "slug": "git-par-rapport-aux-autres-solutions-de-versioning",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:39:03+0000",
+          "updatedAt": "2014-09-12T09:48:07+0000",
+          "children": []
+        },
+        {
+          "id": 2433596,
+          "elementId": 2952898,
+          "title": "Installer Git",
+          "slug": "installer-git",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:39:34+0000",
+          "updatedAt": "2014-09-16T12:27:56+0000",
+          "children": [
+            {
+              "id": 2448448,
+              "elementId": 2952893,
+              "title": "Rappel sur la console",
+              "slug": "rappel-sur-la-console",
+              "subtype": "title-3",
+              "createdAt": "2014-09-03T09:54:31+0000",
+              "updatedAt": "2014-09-16T12:27:56+0000",
+              "children": []
+            },
+            {
+              "id": 2448449,
+              "elementId": 2952897,
+              "title": "Installer Git",
+              "slug": "installer-git-1",
+              "subtype": "title-3",
+              "createdAt": "2014-09-03T09:54:31+0000",
+              "updatedAt": "2014-09-16T12:27:56+0000",
+              "children": []
+            },
+            {
+              "id": 2457832,
+              "elementId": 2952121,
+              "title": "L'éditeur de texte",
+              "slug": "l-editeur-de-texte-8",
+              "subtype": "title-3",
+              "createdAt": "2014-09-12T14:37:40+0000",
+              "updatedAt": "2014-09-16T07:30:11+0000",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 2433601,
+          "elementId": 3043076,
+          "title": "Faire son premier commit",
+          "slug": "faire-son-premier-commit",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:39:56+0000",
+          "updatedAt": "2014-10-06T07:51:59+0000",
+          "children": []
+        },
+        {
+          "id": 2433606,
+          "elementId": 2944482,
+          "title": "Lire l'historique",
+          "slug": "lire-l-historique",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:40:25+0000",
+          "updatedAt": "2014-09-12T09:45:59+0000",
+          "children": []
+        },
+        {
+          "id": 2433626,
+          "elementId": 2944732,
+          "title": "Se positionner sur un commit donné",
+          "slug": "se-positionner-sur-un-commit-donne",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:40:58+0000",
+          "updatedAt": "2014-09-12T09:56:29+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2342371,
+      "elementId": 2949593,
+      "title": "Apprendre à utiliser GitHub",
+      "slug": "apprendre-a-utiliser-github",
+      "subtype": "title-1",
+      "createdAt": "2014-07-29T07:51:16+0000",
+      "updatedAt": "2014-09-15T13:11:20+0000",
+      "metadatas": {
+        "duration": "P1W"
+      },
+      "children": [
+        {
+          "id": 2433631,
+          "elementId": 2944832,
+          "title": "Comprendre les remotes",
+          "slug": "comprendre-les-remotes",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:41:34+0000",
+          "updatedAt": "2014-09-12T10:15:33+0000",
+          "children": []
+        },
+        {
+          "id": 2433636,
+          "elementId": 2949522,
+          "title": "GitHub, qu'est-ce que c'est ?",
+          "slug": "github-qu-est-ce-que-c-est",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:41:57+0000",
+          "updatedAt": "2014-09-15T13:00:30+0000",
+          "children": []
+        },
+        {
+          "id": 2433661,
+          "elementId": 2949533,
+          "title": "Récupérer du code d'un autre repository",
+          "slug": "recuperer-du-code-d-un-autre-repository",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:42:41+0000",
+          "updatedAt": "2014-09-15T13:01:05+0000",
+          "children": []
+        },
+        {
+          "id": 2433666,
+          "elementId": 2949542,
+          "title": "Créer son premier repository",
+          "slug": "creer-son-premier-repository",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:43:14+0000",
+          "updatedAt": "2014-09-15T13:01:57+0000",
+          "children": []
+        },
+        {
+          "id": 2433681,
+          "elementId": 2949582,
+          "title": "Envoyer son code sur GitHub",
+          "slug": "envoyer-son-code-sur-github",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:43:42+0000",
+          "updatedAt": "2014-09-15T13:10:57+0000",
+          "children": []
+        },
+        {
+          "id": 2433686,
+          "elementId": 2949592,
+          "title": "Récupérer des modifications",
+          "slug": "recuperer-des-modifications",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:44:08+0000",
+          "updatedAt": "2014-09-15T13:11:20+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2342376,
+      "elementId": 2950263,
+      "title": "Collaborer et maîtriser son historique",
+      "slug": "collaborer-et-maitriser-son-historique",
+      "subtype": "title-1",
+      "createdAt": "2014-07-29T07:51:46+0000",
+      "updatedAt": "2014-09-15T16:47:58+0000",
+      "metadatas": {
+        "duration": "P1W"
+      },
+      "children": [
+        {
+          "id": 2433691,
+          "elementId": 2949933,
+          "title": "Créer des branches",
+          "slug": "creer-des-branches",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:44:40+0000",
+          "updatedAt": "2014-09-15T16:08:59+0000",
+          "children": []
+        },
+        {
+          "id": 2433696,
+          "elementId": 2949942,
+          "title": "Fusionner des branches",
+          "slug": "fusionner-des-branches",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:45:17+0000",
+          "updatedAt": "2014-09-15T16:09:32+0000",
+          "children": []
+        },
+        {
+          "id": 2433711,
+          "elementId": 2949962,
+          "title": "Résoudre un conflit",
+          "slug": "resoudre-un-conflit",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:45:48+0000",
+          "updatedAt": "2014-09-15T16:10:15+0000",
+          "children": []
+        },
+        {
+          "id": 2433716,
+          "elementId": 2949972,
+          "title": "Savoir qui a fait une modification",
+          "slug": "savoir-qui-a-fait-une-modification",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:46:19+0000",
+          "updatedAt": "2014-09-15T16:22:53+0000",
+          "children": []
+        },
+        {
+          "id": 2433721,
+          "elementId": 2949983,
+          "title": "Ignorer des fichiers",
+          "slug": "ignorer-des-fichiers-1",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:46:53+0000",
+          "updatedAt": "2014-09-15T16:24:05+0000",
+          "children": []
+        },
+        {
+          "id": 2433726,
+          "elementId": 2949992,
+          "title": "Éviter des commits superflus",
+          "slug": "eviter-des-commits-superflus",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:47:15+0000",
+          "updatedAt": "2014-09-15T16:27:02+0000",
+          "children": []
+        },
+        {
+          "id": 2433731,
+          "elementId": 2950262,
+          "title": "Contribuer à des projets open source",
+          "slug": "contribuer-a-des-projets-open-source",
+          "subtype": "title-2",
+          "createdAt": "2014-08-28T08:47:51+0000",
+          "updatedAt": "2014-09-15T16:47:58+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    }
+  ],
+  "duration": "P3W"
+}

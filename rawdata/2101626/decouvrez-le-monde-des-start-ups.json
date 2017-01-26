@@ -1,0 +1,275 @@
+{
+  "id": 2101626,
+  "elementId": 4564511,
+  "title": "Découvrez le monde des start-ups",
+  "slug": "decouvrez-le-monde-des-start-ups",
+  "subtype": "course",
+  "status": "published",
+  "createdAt": "2014-05-15T14:06:57+0000",
+  "updatedAt": "2015-08-06T18:08:36+0000",
+  "metadatas": {
+    "license": "BY-NC-SA",
+    "difficulty": "Facile",
+    "description": "Vous vous demandez ce qu'est une start-up ? Vous aimeriez en savoir plus avant d'envisager de créer votre propre entreprise ? \r\n\r\nCe cours a pour objectif de vous présenter le monde des start-ups et de vous aider à vous lancer.",
+    "duration": "P3W",
+    "image": "//oc-static.com/prod/courses/icons/icon_decouvrez-le-monde-des-start-ups.png"
+  },
+  "children": [
+    {
+      "id": 2102667,
+      "elementId": 2931345,
+      "title": "Qu’est-ce qu’une start-up ?",
+      "slug": "qu-est-ce-qu-une-start-up",
+      "subtype": "title-1",
+      "createdAt": "2014-05-16T09:04:37+0000",
+      "updatedAt": "2014-09-05T16:54:35+0000",
+      "metadatas": {
+        "duration": "P1W"
+      },
+      "children": [
+        {
+          "id": 2102661,
+          "elementId": 2931344,
+          "title": "Découvrez les caractéristiques principales d'une start-up",
+          "slug": "decouvrez-les-caracteristiques-principales-d-une-start-up",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:04:37+0000",
+          "updatedAt": "2014-09-05T16:54:35+0000",
+          "children": []
+        },
+        {
+          "id": 2102662,
+          "elementId": 2930529,
+          "title": "Les start-ups, une économie purement numérique ?",
+          "slug": "les-start-ups-une-economie-purement-numerique",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:04:37+0000",
+          "updatedAt": "2014-09-05T08:21:30+0000",
+          "children": []
+        },
+        {
+          "id": 2102663,
+          "elementId": 2929442,
+          "title": "Qu'est-ce que la culture start-up ?",
+          "slug": "qu-est-ce-que-la-culture-start-up",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:04:37+0000",
+          "updatedAt": "2014-09-04T15:08:16+0000",
+          "children": []
+        },
+        {
+          "id": 2102664,
+          "elementId": 2930552,
+          "title": "Les start-ups et l’échec",
+          "slug": "les-start-ups-et-l-echec",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:04:37+0000",
+          "updatedAt": "2014-09-05T08:22:11+0000",
+          "children": []
+        },
+        {
+          "id": 2102665,
+          "elementId": 2931153,
+          "title": "Qui sont les startuppers ?",
+          "slug": "qui-sont-les-startuppers",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:04:37+0000",
+          "updatedAt": "2014-09-05T14:04:49+0000",
+          "children": []
+        },
+        {
+          "id": 2102666,
+          "elementId": 2929482,
+          "title": "Résumé",
+          "slug": "resume-74",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:04:37+0000",
+          "updatedAt": "2014-09-04T15:09:46+0000",
+          "children": []
+        },
+        {
+          "id": 2212421,
+          "elementId": 2931193,
+          "title": "Activité",
+          "slug": "activite-non-notee-1",
+          "subtype": "title-2",
+          "createdAt": "2014-06-10T14:40:13+0000",
+          "updatedAt": "2014-09-05T14:13:04+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2102696,
+      "elementId": 2935484,
+      "title": "Qu’est-ce que l’écosystème start-up ?",
+      "slug": "qu-est-ce-que-l-ecosysteme-start-up",
+      "subtype": "title-1",
+      "createdAt": "2014-05-16T09:06:21+0000",
+      "updatedAt": "2014-09-08T08:48:43+0000",
+      "metadatas": {
+        "duration": "P1W"
+      },
+      "children": [
+        {
+          "id": 2102701,
+          "elementId": 2930635,
+          "title": "À la découverte de l’écosystème startup",
+          "slug": "a-la-decouverte-de-l-ecosysteme-startup",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:08:14+0000",
+          "updatedAt": "2014-09-05T09:00:08+0000",
+          "children": []
+        },
+        {
+          "id": 2102706,
+          "elementId": 2930659,
+          "title": "Où s'informer ?",
+          "slug": "ou-s-informer-et-comment-structurer-sa-veille",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:08:53+0000",
+          "updatedAt": "2014-09-05T09:16:51+0000",
+          "children": []
+        },
+        {
+          "id": 2102711,
+          "elementId": 2930675,
+          "title": "Comment structurer sa veille ?",
+          "slug": "comment-se-former",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:10:04+0000",
+          "updatedAt": "2014-09-05T09:28:44+0000",
+          "children": []
+        },
+        {
+          "id": 2102716,
+          "elementId": 2931225,
+          "title": "Comment se former ?",
+          "slug": "en-immersion-dans-un-incubateur",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:10:04+0000",
+          "updatedAt": "2014-09-05T14:16:57+0000",
+          "children": []
+        },
+        {
+          "id": 2102721,
+          "elementId": 2935483,
+          "title": "En immersion dans un incubateur",
+          "slug": "resume-68",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:11:05+0000",
+          "updatedAt": "2014-09-08T08:48:43+0000",
+          "children": []
+        },
+        {
+          "id": 2423061,
+          "elementId": 2929532,
+          "title": "Résumé",
+          "slug": "resume-41",
+          "subtype": "title-2",
+          "createdAt": "2014-08-20T15:53:40+0000",
+          "updatedAt": "2014-09-04T15:12:40+0000",
+          "children": []
+        },
+        {
+          "id": 2423066,
+          "elementId": 2929542,
+          "title": "Activité",
+          "slug": "activite-1",
+          "subtype": "title-2",
+          "createdAt": "2014-08-20T15:54:14+0000",
+          "updatedAt": "2014-09-04T15:13:00+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    },
+    {
+      "id": 2102756,
+      "elementId": 2931244,
+      "title": "Les premiers pas vers l'entrepreneuriat",
+      "slug": "les-premiers-pas-vers-l-entrepreneuriat",
+      "subtype": "title-1",
+      "createdAt": "2014-05-16T09:12:21+0000",
+      "updatedAt": "2014-09-05T14:19:45+0000",
+      "metadatas": {
+        "duration": "P1W"
+      },
+      "children": [
+        {
+          "id": 2102761,
+          "elementId": 2930703,
+          "title": "Et l'idée dans tout ça ?",
+          "slug": "et-l-idee-dans-tout-ca",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:13:05+0000",
+          "updatedAt": "2014-09-05T09:37:35+0000",
+          "children": []
+        },
+        {
+          "id": 2102766,
+          "elementId": 2930742,
+          "title": "Testez votre idée de start-up !",
+          "slug": "testez-votre-idee-de-start-up",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:13:48+0000",
+          "updatedAt": "2014-09-05T09:45:19+0000",
+          "children": []
+        },
+        {
+          "id": 2102771,
+          "elementId": 2930782,
+          "title": "Donnez vie à votre idée",
+          "slug": "quel-entrepreneur-etes-vous",
+          "subtype": "title-2",
+          "createdAt": "2014-05-16T09:14:51+0000",
+          "updatedAt": "2014-09-05T10:01:56+0000",
+          "children": []
+        },
+        {
+          "id": 2212426,
+          "elementId": 2931243,
+          "title": "Quel entrepreneur êtes-vous ?",
+          "slug": "qu-est-ce-qui-vous-attend-dans-les-six-prochains-mois",
+          "subtype": "title-2",
+          "createdAt": "2014-06-10T14:44:18+0000",
+          "updatedAt": "2014-09-05T14:19:45+0000",
+          "children": []
+        },
+        {
+          "id": 2212431,
+          "elementId": 2930802,
+          "title": "Qu'est-ce qui vous attend dans les 6 prochains mois ?",
+          "slug": "resume-20",
+          "subtype": "title-2",
+          "createdAt": "2014-06-10T14:45:10+0000",
+          "updatedAt": "2014-09-05T10:16:45+0000",
+          "children": []
+        },
+        {
+          "id": 2212466,
+          "elementId": 2929582,
+          "title": "Résumé",
+          "slug": "activite-non-notee",
+          "subtype": "title-2",
+          "createdAt": "2014-06-10T14:46:00+0000",
+          "updatedAt": "2014-09-04T15:14:47+0000",
+          "children": []
+        },
+        {
+          "id": 2423071,
+          "elementId": 2929592,
+          "title": "Activité",
+          "slug": "activite",
+          "subtype": "title-2",
+          "createdAt": "2014-08-20T15:58:38+0000",
+          "updatedAt": "2014-09-04T15:15:05+0000",
+          "children": []
+        }
+      ],
+      "duration": "P1W"
+    }
+  ],
+  "duration": "P3W"
+}

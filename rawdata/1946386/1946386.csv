@@ -1,0 +1,24 @@
+"";"id";"part_id";"parent_id";"title";"type";"course_id";"obsels";"max.duration";"size";"nb_img";"vid_length"
+"1";0;1946386;0;"Comprendre le Web";"course";1946386;0;NA;0;0;0
+"2";1;2212820;2212829;"Introduction";"title-2";1946386;0;545;0;0;166
+"3";2;2212822;2212829;"Qu'est-ce que le Web ?";"title-2";1946386;0;404;0;0;121
+"4";3;2212824;2212829;"Web, services et Cloud";"title-2";1946386;0;648,6;0;0;236
+"5";4;2212826;2212829;"Comment est né le Web ?";"title-2";1946386;0;788;0;0;289
+"6";5;2212828;2212829;"En résumé";"title-2";1946386;0;1943;0;0;51
+"7";-1;2212829;1946386;"Qu'est-ce que le Web ?";"title-1";1946386;0;NA;0;0;0
+"8";6;2212831;2212840;"Les langages client";"title-2";1946386;0;1000;0;0;262
+"9";7;2212833;2212840;"Les langages serveur";"title-2";1946386;0;1132;0;0;458
+"10";8;2212835;2212840;"Les bases de données";"title-2";1946386;0;770,9;0;0;242
+"11";9;2212837;2212840;"Les sites responsive et mobile";"title-2";1946386;0;365;0;0;107
+"12";10;2212839;2212840;"En résumé";"title-2";1946386;0;568,7;0;0;93
+"13";-2;2212840;1946386;"Les langages du Web";"title-1";1946386;0;NA;0;0;0
+"14";11;2212842;2212850;"Les serveurs";"title-2";1946386;0;906;0;0;298
+"15";12;2212844;2212850;"IP et noms d'hôtes";"title-2";1946386;0;482,4;0;0;147
+"16";13;2212846;2212850;"Les protocoles";"title-2";1946386;0;889,4;0;0;352
+"17";14;2212849;2212850;"En résumé";"title-2";1946386;0;449,9;0;0;75
+"18";-3;2212850;1946386;"Les réseaux derrière le Web";"title-1";1946386;0;NA;0;0;0
+"19";15;2212852;2212859;"Qu'est-ce qu'un développeur ?";"title-2";1946386;0;976,9;0;0;357
+"20";16;2212854;2212859;"Comment devenir développeur Web ?";"title-2";1946386;0;572;0;0;257
+"21";17;2212856;2212859;"Les secrets bien gardés pour devenir développeur";"title-2";1946386;0;451,8;0;0;243
+"22";18;2212858;2212859;"En résumé";"title-2";1946386;0;418;0;0;85
+"23";-4;2212859;1946386;"Qui sont les développeurs ?";"title-1";1946386;0;NA;0;0;0
