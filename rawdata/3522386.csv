@@ -1,0 +1,24 @@
+"";"id";"part_index";"parent_id";"title";"type";"course_id";"obsels";"max.duration";"size";"nb_img";"vid_length";"Readers"
+"1";3522386;0;0;"Découvrez les bases de la gestion de projet";"course";3522386;0;NA;0;0;0;3156
+"2";3522393;1;3522394;"Qu’est-ce qu’un projet web?";"title-2";3522386;0;1101,5;10;0;344;2721
+"3";3522394;-1;3522386;"Quels types de projets web allez-vous gérer?";"title-1";3522386;0;NA;0;0;0;0
+"4";3523056;2;3522394;"Appréhendez les différents types de produits web";"title-2";3522386;0;1069;10;0;440;2148
+"5";3523057;3;3522394;"Identifiez les acteurs d’un projet web";"title-2";3522386;0;1237;10;0;480;1883
+"6";3523058;4;3522394;"Découvrez les méthodologies de gestion de projet";"title-2";3522386;0;1233;10;0;491;1833
+"7";3523059;5;3523064;"Initialisation : étudiez la faisabilité d’un projet";"title-2";3522386;0;1283,9;98;0;357;1678
+"8";3523060;6;3523064;"Lancement : démarrez le projet";"title-2";3522386;0;1093,7;10;0;466;1488
+"9";3523061;7;3523064;"Conception : formalisez le produit";"title-2";3522386;0;1325;195;0;571;1352
+"10";3523062;8;3523064;"Production : réalisez le produit en conformité avec le cahier des charges";"title-2";3522386;0;833,3;180;0;255;1277
+"11";3523063;9;3523064;"Exploitation : maintenez le projet";"title-2";3522386;0;2031;45;0;145;1226
+"12";3523064;-2;3522386;"Maîtrisez les 5 phases d’un projet en cascade";"title-1";3522386;0;NA;0;0;0;0
+"13";3523065;10;3523070;"Comment délimiter votre projet ?";"title-2";3522386;0;2204;10;0;328;1191
+"14";3523066;11;3523070;"Comment concevoir votre projet ?";"title-2";3522386;0;1045,3;10;0;334;1098
+"15";3523067;12;3523070;"Comment piloter votre projet ?";"title-2";3522386;0;1406;10;0;467;1092
+"16";3523068;13;3523070;"Quels livrables devez-vous collecter sans les réaliser ?";"title-2";3522386;0;1369;10;0;513;1057
+"17";3523069;14;3523070;"Menez votre projet avec succès";"title-2";3522386;0;2170,4;10;0;537;1042
+"18";3523070;-3;3522386;"Devenez un bon chef de projet";"title-1";3522386;0;NA;0;0;0;0
+"19";3633173;0;3523063;"En résumé";"title-3";3522386;0;NA;0;0;0;0
+"20";3633180;0;3523062;"En résumé";"title-3";3522386;0;NA;0;0;0;0
+"21";3633187;0;3523061;"En résumé";"title-3";3522386;0;NA;0;0;0;0
+"22";3633199;0;3523060;"En résumé";"title-3";3522386;0;NA;0;0;0;0
+"23";3633204;0;3523059;"En résumé";"title-3";3522386;0;NA;0;0;0;0

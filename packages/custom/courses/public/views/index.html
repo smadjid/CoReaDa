@@ -146,13 +146,15 @@
   </div>
    
   <div class="col-md-5 feedbackbox" id="box">
-  <h3><span class="glyphicon glyphicon-lock"></span> Code de votre cours</h3>
+  <h3><span class="glyphicon glyphicon-lock"></span> Code de votre cours (Your course code)</h3>
+  
+  <h4>Please enter your course code</h4>
   <form   id="coursecodeform" name="coursecodeform" ng-submit="courseCoder(coursecodeform)" style="width:100%">
   <div class="form-group" >
     <input type="text" class="form-control" placeholder="Code d'accès du cours à afficher" ng-model="courseCode" style="width:70%; display:inline-block" required>
     <button id="loadCourseBtn" type="submit" class="bs_btn btn-action" >Charger</button>
   </div>
-  
+  <h4>The code for the TCP/IP sample course is <b><span class='red'>857447</span></b> </h4>
 </form>
   <em ng-show="!(courses.length)">Le code d'accès d'un cours est un identifiant unique qui permet d'afficher dans cet espace des données sur le cours ainsi qu'un lien d'accès à son tableau de bord. Si vous avez oublié le code de votre cours, veuillez nous contacter à l'adresse <a href="coreada.project@gmail.com">coreada.project@gmail.com</a> ou d'utiliser le formulaire de contact présent à gauche (section "Équipe du projet et contact")</a></em>
   
@@ -167,9 +169,9 @@
         <li>Analyse créée le : {{course.created | date:'dd-MM-yyyy'}}</li>
         <li>Données de lecture : du {{course.ob_begin| date:'dd-MM-yyyy'}} au {{course.ob_end| date:'dd-MM-yyyy'}}</li>
       <!--  <li>Dernière mise à jour : {{course.updated | date:'medium'}}-->
-        <li>Nombre total de problèmes potentiels : <b>{{course.nbfacts}}</b></li>
+      <!--  <li>Nombre total de problèmes potentiels : <b>{{course.nbfacts}}</b></li>-->
         <li>Nombre de tâches planifiées : <b>{{course.nbtasks}}</b></li>
-        <li><b><u>Questionnaire :</u> <a href={{course.survey}} target="_blank">Questionnaire Google Forms (Merci de cliquer)</a> </b></li>
+      <!--  <li><b><u>Questionnaire :</u> <a href={{course.survey}} target="_blank">Questionnaire Google Forms (Merci de cliquer)</a> </b></li>-->
       </ul>
     </li>
   </ul>                    

@@ -40,19 +40,27 @@ antoine2 = function(){
   }
 }
 antoine = function(){
-  ids =c(3522386,1946386,1885491,3432066,3013711,2984401,2778161,2766951 )
+  ids =c(3522386,1946386,1885491,3432066,3013711,2984401,2778161,2766951,3449001)
   antoinedata = data.frame()
   coreaDataURL = "/home/madjid/dev/CoReaDa/coursesdata" 
   for(i in 1:length(ids)){
     code=ids[i]
+    #code=2342361
     rawd = paste("/home/madjid/dev/CoReaDa/rawdata",code,sep='/')
     setwd(rawd)
     load('data.rdata')
     load('structure.rdata')
     
-    data$sequence_number = 1
+   # nrow(structure[structure$type=='title-2',])
+  #  nrow(data)
+  #  length(unique(data$user_id))
+    
     users = unique(data$user_id)
     nusers = length(users)
+    
+    
+    data$sequence_number = 1
+    
     
     for(i in 1:nusers)
     {
@@ -427,6 +435,58 @@ preprocess <- function(data, structure){
 }
 
 ###############  RS COMPUTATION 
+tmp_rs <- function(data,structure){
+  # On exclut : durees nulles et -1
+  data_with_duration = data[which(data$duration>=10 & data$duration<2*3600),]#;c('part_id','duration')]
+  # On exclut les derniers de chaque session
+  #data_with_duration = data_with_duration[which(data_with_duration$end > data_with_duration$date),]
+  #data_with_duration = data_with_duration[which(data_with_duration$duration < 3*3600),]
+  #Premiere winsorization a 4 heures
+  
+  # Seance calculation
+  print('Seance calculation')
+  data$seance = 1
+  users = unique(data$user_id)
+  users=sort(users)
+  nusers = length(users)
+  for (i in 1:nusers)
+  {
+    
+    print(paste('user ',i,' on ',nusers))
+    
+    user = subset(data ,data$user_id==users[i],  select=c(id,part_id, date, end, duration, seance))
+    
+    user=user[order(user$date),]
+    
+    nums =1
+    user$seance=nums
+    data$seance[which(data$user_id==users[i])]=nums
+    l=length(user$date)-1
+    
+    if(l==0) next
+    for(j in 1:l)
+    {
+      
+      tDiff = as.numeric(difftime(user$end[j],user$date[j], units = "secs"))
+      maxD=structure$max.duration[which(structure$part_id==user$part_id[j])] 
+      if(is.na(user$date[j+1])) next
+      if(tDiff> maxD )    nums=nums+1
+      else
+      {
+        sessionDiff = as.numeric(difftime(user$date[j+1],user$date[j], units = "secs"))
+        if((tDiff==0)&&(sessionDiff>maxD))  nums=nums+1
+        
+      }
+      user$seance[j+1]=nums
+      data$seance[which(data$id==user$id[j+1])]=user$seance[j+1]
+      
+    }
+    
+  }
+  
+  res = list(data=data,structure = structure)
+  return(res)
+}
 sessionization <- function(data,structure){
   parts=unique(data$part_id)
   nparts=length(parts)

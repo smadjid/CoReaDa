@@ -1,0 +1,30 @@
+"";"id";"part_index";"parent_id";"title";"type";"course_id";"obsels";"max.duration";"size";"nb_img";"vid_length";"Readers"
+"1";3432066;0;0;"Continuez avec Ruby on Rails";"course";3432066;0;NA;0;0;0;306
+"2";3432073;15;3432074;"Let’s get started!";"title-2";3432066;0;2075,2;506;0;0;93
+"3";3432074;-1;3432066;"Internationalisation";"title-1";3432066;0;NA;0;0;0;0
+"4";3432161;16;3432074;"Traduisez vos formulaires";"title-2";3432066;0;914,4;340;0;0;82
+"5";3432181;17;3432074;"Changez de langue";"title-2";3432066;0;509,7;312;0;0;82
+"6";3432226;-2;3432066;"Faites des formulaires encore plus efficaces";"title-1";3432066;0;NA;0;0;0;0
+"7";3432381;-3;3432066;"Sécurisez vos sites avec l'authentifications et les autorisations";"title-1";3432066;0;NA;0;0;0;0
+"8";3432386;-4;3432066;"Enrichissez vos formulaires";"title-1";3432066;0;NA;0;0;0;0
+"9";3432391;2;3432386;"Ajoutez des notifications avec les messages flash";"title-2";3432066;0;882,6;253;0;0;150
+"10";3432396;1;3432386;"Introduction";"title-2";3432066;0;848,5;248;0;0;189
+"11";3432401;3;3432386;"Simplifiez la configuration de vos routes";"title-2";3432066;0;553,8;172;0;0;134
+"12";3432406;4;3432386;"Réutilisez vos vues";"title-2";3432066;0;1276,6;602;0;0;128
+"13";3432411;5;3432386;"Bonus : affichez des images";"title-2";3432066;0;711,1;276;0;0;118
+"14";3432476;6;3432381;"Authentification : introduction";"title-2";3432066;0;1056,7;223;0;0;122
+"15";3432501;11;3432381;"Aérez votre code grâce aux modèles";"title-2";3432066;0;702,7;121;0;0;96
+"16";3432506;10;3432381;"Assignez différents droits à vos utilisateurs";"title-2";3432066;0;2045,5;456;0;0;97
+"17";3432511;9;3432381;"Allégez vos contrôleurs avec before_action";"title-2";3432066;0;756,4;427;0;0;101
+"18";3432516;8;3432381;"Maintenez la connexion avec les sessions";"title-2";3432066;0;1496;237;0;0;113
+"19";3432521;7;3432381;"Permettez à vos utilisateurs de se connecter";"title-2";3432066;0;1467,6;406;0;0;120
+"20";3432611;13;3432226;"Consolidez vos contrôleurs avec strong parameters";"title-2";3432066;0;545,3;418;0;0;93
+"21";3432616;12;3432226;"Démarrez votre projet en une commande avec le scaffolding";"title-2";3432066;0;1227,1;578;0;0;105
+"22";3432861;18;3432074;"Mot de la fin";"title-2";3432066;0;1441,4;150;0;0;98
+"23";3501311;14;3432226;"Faites un clone de Twitter en 1 minute";"title-2";3432066;0;461;128;0;0;134
+"24";3599563;0;3432521;"Créez votre contrôleur";"title-3";3432066;0;NA;0;0;0;0
+"25";3599564;0;3432521;"Protégez les mots de passe de vos utilisateurs";"title-3";3432066;0;NA;0;0;0;0
+"26";3615898;0;3432616;"Première escale : le scaffolding";"title-3";3432066;0;NA;0;0;0;0
+"27";3705694;0;3432073;"Explications";"title-3";3432066;0;NA;0;0;0;0
+"28";3845237;0;3432181;"Un cookie ?";"title-3";3432066;0;NA;0;0;0;0
+"29";3845238;0;3432181;"Via le navigateur";"title-3";3432066;0;NA;0;0;0;0

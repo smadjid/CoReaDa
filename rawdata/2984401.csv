@@ -1,0 +1,79 @@
+"";"id";"part_index";"parent_id";"title";"type";"course_id";"obsels";"max.duration";"size";"nb_img";"vid_length";"Readers"
+"1";2984401;0;0;"Apprenez à coder avec JavaScript";"course";2984401;0;NA;0;0;0;12829
+"2";2984407;-1;2984401;"Écrivez vos premières lignes de code";"title-1";2984401;0;NA;0;0;0;0
+"3";2984411;1;2984407;"Introduction à la programmation";"title-2";2984401;0;1073,4;1290;2;0;9956
+"4";2984416;3;2984407;"Configurez votre environnement de travail";"title-2";2984401;0;2022;1553;6;126;8788
+"5";2984431;4;2984407;"1, 2, 3, codez !";"title-2";2984401;0;1811,1;14666;5;191;8111
+"6";2986236;0;2984411;"Comment créer des programmes ?";"title-3";2984401;0;NA;0;0;0;0
+"7";3007043;2;2984407;"Quel langage pour débuter ?";"title-2";2984401;0;580;520;1;0;8967
+"8";3007053;0;3007043;"Version de JavaScript utilisée";"title-3";2984401;0;NA;0;0;0;0
+"9";3012712;0;2984411;"Un programme, c'est quoi ?";"title-3";2984401;0;NA;0;0;0;0
+"10";3012716;0;2984411;"Apprendre à programmer";"title-3";2984401;0;NA;0;0;0;0
+"11";3012842;0;2984416;"Coder avec JavaScript en ligne";"title-3";2984401;0;NA;0;0;0;0
+"12";3012924;0;2984416;"Coder avec JavaScript sur sa machine";"title-3";2984401;0;NA;0;0;0;0
+"13";3035856;0;3007043;"Présentation de JavaScript";"title-3";2984401;0;NA;0;0;0;0
+"14";3037149;0;2984431;"Valeurs et types";"title-3";2984401;0;NA;0;0;0;0
+"15";3037306;0;2984431;"Structure d'un programme";"title-3";2984401;0;NA;0;0;0;0
+"16";3037326;0;2984431;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"17";3039191;5;2984407;"Jouez avec les variables";"title-2";2984401;0;2528,7;2252;8;110;7122
+"18";3039317;0;3039191;"La notion de variable";"title-3";2984401;0;NA;0;0;0;0
+"19";3039794;0;3039191;"La notion d'expression";"title-3";2984401;0;NA;0;0;0;0
+"20";3039805;0;3039191;"Interactions avec l'utilisateur";"title-3";2984401;0;NA;0;0;0;0
+"21";3039826;0;3039191;"Importance du nommage des variables";"title-3";2984401;0;NA;0;0;0;0
+"22";3039829;0;3039191;"À vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"23";3043921;6;2984407;"Ajoutez des conditions";"title-2";2984401;0;2704;2670;4;0;6086
+"24";3059754;0;3043921;"Exprimer une condition";"title-3";2984401;0;NA;0;0;0;0
+"25";3060748;0;3043921;"Exprimer un choix";"title-3";2984401;0;NA;0;0;0;0
+"26";3060792;0;3043921;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"27";3069918;0;3043921;"Créer des conditions composées";"title-3";2984401;0;NA;0;0;0;0
+"28";3074396;7;2984407;"Répétez des instructions";"title-2";2984401;0;2717;1869;10;257;5565
+"29";3074565;0;3074396;"Introduction";"title-3";2984401;0;NA;0;0;0;0
+"30";3074597;0;3074396;"La boucle while";"title-3";2984401;0;NA;0;0;0;0
+"31";3074777;0;3074396;"La boucle for";"title-3";2984401;0;NA;0;0;0;0
+"32";3074923;0;3074396;"Erreurs fréquentes";"title-3";2984401;0;NA;0;0;0;0
+"33";3075127;0;3074396;"Choix entre un while et un for";"title-3";2984401;0;NA;0;0;0;0
+"34";3075177;0;3074396;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"35";3079816;-2;2984401;"Évoluez vers des programmes plus complexes";"title-1";2984401;0;NA;0;0;0;0
+"36";3079821;8;3079816;"Modularisez votre code grâce aux fonctions";"title-2";2984401;0;2622,8;2459;5;257;5403
+"37";3193945;0;3043921;"Exprimer une alternative";"title-3";2984401;0;NA;0;0;0;0
+"38";3195501;9;3079816;"Manipulez les chaînes de caractères";"title-2";2984401;0;2740;1800;11;0;4649
+"39";3196326;10;3079816;"Créez vos premiers objets";"title-2";2984401;0;2752,7;2440;11;0;4960
+"40";3196336;11;3079816;"Trop classe, la POO !";"title-2";2984401;0;2901,9;2582;8;0;5015
+"41";3196346;12;3079816;"Stockez vos données dans des tableaux";"title-2";2984401;0;2815;1746;12;0;4327
+"42";3197856;13;3079816;"Conclusion et perspectives";"title-2";2984401;0;1790,8;768;0;0;4270
+"43";3202236;0;3195501;"Rappels sur les chaînes de caractères";"title-3";2984401;0;NA;0;0;0;0
+"44";3202632;0;3195501;"Obtenir la longueur d'une chaîne";"title-3";2984401;0;NA;0;0;0;0
+"45";3202729;0;3195501;"Conclusion";"title-3";2984401;0;NA;0;0;0;0
+"46";3202731;0;3195501;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"47";3202811;0;3195501;"Convertir une chaîne en minuscules ou en majuscules";"title-3";2984401;0;NA;0;0;0;0
+"48";3207206;0;3195501;"Comparer deux chaînes";"title-3";2984401;0;NA;0;0;0;0
+"49";3207244;0;3195501;"Accéder à un caractère d'une chaîne";"title-3";2984401;0;NA;0;0;0;0
+"50";3208054;0;3195501;"Parcourir une chaîne caractère par caractère";"title-3";2984401;0;NA;0;0;0;0
+"51";3217877;0;3196326;"Introduction";"title-3";2984401;0;NA;0;0;0;0
+"52";3218823;0;3196326;"Bilan";"title-3";2984401;0;NA;0;0;0;0
+"53";3224076;0;3196336;"Un mini-jeu de rôle, version multijoueurs";"title-3";2984401;0;NA;0;0;0;0
+"54";3224622;0;3196336;"Objets et prototypes en JavaScript";"title-3";2984401;0;NA;0;0;0;0
+"55";3224662;0;3196336;"Des adversaires pour nos héros";"title-3";2984401;0;NA;0;0;0;0
+"56";3227748;0;3196336;"3, 2, 1... Fight !";"title-3";2984401;0;NA;0;0;0;0
+"57";3227802;0;3196336;"Conclusion";"title-3";2984401;0;NA;0;0;0;0
+"58";3230097;0;3196326;"Création d'un personnage";"title-3";2984401;0;NA;0;0;0;0
+"59";3230124;0;3196326;"La notion de méthode";"title-3";2984401;0;NA;0;0;0;0
+"60";3230158;0;3196326;"Les objets prédéfinis de JavaScript";"title-3";2984401;0;NA;0;0;0;0
+"61";3230241;0;3196336;"Un prototype pour nos personnages";"title-3";2984401;0;NA;0;0;0;0
+"62";3230491;0;3196346;"Introduction : le rôle des tableaux";"title-3";2984401;0;NA;0;0;0;0
+"63";3230529;0;3196346;"Manipulation des tableaux en JavaScript";"title-3";2984401;0;NA;0;0;0;0
+"64";3230642;0;3196346;"Tableaux d'objets";"title-3";2984401;0;NA;0;0;0;0
+"65";3230643;0;3196346;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"66";3235056;0;3039191;"Conversions de types";"title-3";2984401;0;NA;0;0;0;0
+"67";3255631;0;3196326;"JavaScript et les objets";"title-3";2984401;0;NA;0;0;0;0
+"68";3255808;0;3196326;"Exemple : un mini-jeu de rôle";"title-3";2984401;0;NA;0;0;0;0
+"69";3255810;0;3196326;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"70";3257101;0;3196336;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0
+"71";3257540;0;3197856;"Remerciements";"title-3";2984401;0;NA;0;0;0;0
+"72";3258108;0;3197856;"Bilan récapitulatif";"title-3";2984401;0;NA;0;0;0;0
+"73";3746708;0;3197856;"Et maintenant ?";"title-3";2984401;0;NA;0;0;0;0
+"74";3752956;0;3079821;"Introduction : le rôle des fonctions";"title-3";2984401;0;NA;0;0;0;0
+"75";3752981;0;3079821;"Découverte des fonctions";"title-3";2984401;0;NA;0;0;0;0
+"76";3753022;0;3079821;"Possibilités des fonctions";"title-3";2984401;0;NA;0;0;0;0
+"77";3753039;0;3079821;"Comment (bien) programmer avec les fonctions";"title-3";2984401;0;NA;0;0;0;0
+"78";3753061;0;3079821;"A vous de jouer !";"title-3";2984401;0;NA;0;0;0;0

@@ -1,0 +1,109 @@
+"";"id";"part_index";"parent_id";"title";"type";"course_id";"obsels";"max.duration";"size";"nb_img";"vid_length";"Readers"
+"1";2778161;0;0;"Programmez vos premiers montages avec Arduino";"course";2778161;0;NA;0;0;0;4864
+"2";2778402;0;3285107;"À qui s'adresse ce cours ?";"title-3";2778161;0;NA;0;0;0;0
+"3";2778891;0;3285107;"Organisation du cours";"title-3";2778161;0;NA;0;0;0;0
+"4";2782510;0;3285131;"Sauvegarde et transfert de votre programme";"title-3";2778161;0;NA;0;0;0;0
+"5";2784589;0;3285142;"Portée des variables ou ""scope""";"title-3";2778161;0;NA;0;0;0;0
+"6";2784678;0;3285131;"En résumé";"title-3";2778161;0;NA;0;0;0;0
+"7";2806610;0;3285193;"Quelles variables, quelles boucles ?";"title-3";2778161;0;NA;0;0;0;0
+"8";2806807;0;3285193;"Le point machine à café";"title-3";2778161;0;NA;0;0;0;0
+"9";2807086;0;3285193;"Projet 2 : Une GuirLED";"title-3";2778161;0;NA;0;0;0;0
+"10";3166746;0;3285224;"Les entrées numériques";"title-3";2778161;0;NA;0;0;0;0
+"11";3167004;0;3285142;"Programme ""Hello Arduino World !""";"title-3";2778161;0;NA;0;0;0;0
+"12";3167020;0;3285146;"Programme ""Arduino compte seul""";"title-3";2778161;0;NA;0;0;0;0
+"13";3167024;0;3285146;"La boucle ""for""";"title-3";2778161;0;NA;0;0;0;0
+"14";3167030;0;3285146;"Le type boolean";"title-3";2778161;0;NA;0;0;0;0
+"15";3167034;0;3285146;"Code final du programme ""Arduino compte seul""";"title-3";2778161;0;NA;0;0;0;0
+"16";3167039;0;3285146;"Code pour le programme ""Table de multiplication""";"title-3";2778161;0;NA;0;0;0;0
+"17";3182136;0;3285235;"Alea jacta est";"title-3";2778161;0;NA;0;0;0;0
+"18";3182230;0;3285235;"Un programme pour tester nos LEDs";"title-3";2778161;0;NA;0;0;0;0
+"19";3182436;0;3285235;"Allumez vos diodes pour chaque face de dé";"title-3";2778161;0;NA;0;0;0;0
+"20";3182621;0;3285235;"Le programme final pour le dé à 5 LEDs";"title-3";2778161;0;NA;0;0;0;0
+"21";3192433;0;3285257;"Le clignotant à vitesse variable";"title-3";2778161;0;NA;0;0;0;0
+"22";3200808;0;3285142;"En résumé";"title-3";2778161;0;NA;0;0;0;0
+"23";3208169;0;3285186;"Résistance et loi d'ohm";"title-3";2778161;0;NA;0;0;0;0
+"24";3210336;0;3285287;"La bibliothèque Servo";"title-3";2778161;0;NA;0;0;0;0
+"25";3211199;0;3285287;"... La condition SWITCH !";"title-3";2778161;0;NA;0;0;0;0
+"26";3217177;0;3285193;"Les tableaux    ";"title-3";2778161;0;NA;0;0;0;0
+"27";3228331;0;3285193;"Projet 1 : “Blink à trois”";"title-3";2778161;0;NA;0;0;0;0
+"28";3236187;0;3285400;"Le matériel requis";"title-3";2778161;0;NA;0;0;0;0
+"29";3236745;0;3285400;"Les types de capteurs";"title-3";2778161;0;NA;0;0;0;0
+"30";3242299;0;3285257;"Le mappage de valeurs";"title-3";2778161;0;NA;0;0;0;0
+"31";3285089;0;3285107;"Qu'est-ce que l'Arduino ?";"title-3";2778161;0;NA;0;0;0;0
+"32";3285106;0;3285107;"Logiciels et matériel pour débuter";"title-3";2778161;0;NA;0;0;0;0
+"33";3285107;1;3285194;"Installez vos outils de travail";"title-2";2778161;0;1817,8;2864;2;0;3289
+"34";3285110;0;3285131;"La structure de base d'un programme Arduino";"title-3";2778161;0;NA;0;0;0;0
+"35";3285118;0;3285131;"Le menu du logiciel";"title-3";2778161;0;NA;0;0;0;0
+"36";3285123;0;3285131;"La LED 13";"title-3";2778161;0;NA;0;0;0;0
+"37";3285126;0;3285131;"Votre premier programme : «Blink Blink !» ";"title-3";2778161;0;NA;0;0;0;0
+"38";3285130;0;3285131;"Fréquence et période";"title-3";2778161;0;NA;0;0;0;0
+"39";3285131;2;3285194;"Créez votre premier programme sur Arduino";"title-2";2778161;0;2194,5;4670;6;0;2675
+"40";3285142;3;3285194;"Utilisez les constantes, les variables, les conditions et le moniteur série";"title-2";2778161;0;2178,3;4336;2;0;1945
+"41";3285145;0;3285146;"TP : Programme “Table de multiplication""";"title-3";2778161;0;NA;0;0;0;0
+"42";3285146;4;3285194;"Faites des boucles et des calculs";"title-2";2778161;0;2270,1;3045;1;0;1586
+"43";3285152;0;3285186;"La tension";"title-3";2778161;0;NA;0;0;0;0
+"44";3285155;0;3285186;"L'intensité";"title-3";2778161;0;NA;0;0;0;0
+"45";3285166;0;3285186;"Les LED";"title-3";2778161;0;NA;0;0;0;0
+"46";3285173;0;3285186;"La breadboard";"title-3";2778161;0;NA;0;0;0;0
+"47";3285176;0;3285186;"Calcul de la bonne valeur de résistance pour une LED";"title-3";2778161;0;NA;0;0;0;0
+"48";3285186;5;3285194;"Jeux de lumière avec une LED et la breadboard";"title-2";2778161;0;2231;4277;14;0;1685
+"49";3285189;0;3285193;"Le montage et le test";"title-3";2778161;0;NA;0;0;0;0
+"50";3285192;0;3285193;"Solution";"title-3";2778161;0;NA;0;0;0;0
+"51";3285193;6;3285194;"Tableaux et jeux de lumière avec plusieurs LED";"title-2";2778161;0;2756,6;3672;2;0;1489
+"52";3285194;-1;2778161;"Structurez un programme Arduino et contrôlez des lumières";"title-1";2778161;0;NA;0;0;0;0
+"53";3285203;0;3285224;"Le bouton poussoir";"title-3";2778161;0;NA;0;0;0;0
+"54";3285208;0;3285224;"Résistance pull-down";"title-3";2778161;0;NA;0;0;0;0
+"55";3285213;0;3285224;"Résistance Pull-Up";"title-3";2778161;0;NA;0;0;0;0
+"56";3285216;0;3285224;"Le mode INPUT_PULLUP";"title-3";2778161;0;NA;0;0;0;0
+"57";3285219;0;3285224;"Programme ""Jour/Nuit""";"title-3";2778161;0;NA;0;0;0;0
+"58";3285223;0;3285224;"Programme ""Interrupteur""";"title-3";2778161;0;NA;0;0;0;0
+"59";3285224;7;3285258;"Le bouton poussoir";"title-2";2778161;0;2854,7;3181;10;0;1388
+"60";3285231;0;3285235;"Préparer le montage";"title-3";2778161;0;NA;0;0;0;0
+"61";3285234;0;3285235;"Les fonctions";"title-3";2778161;0;NA;0;0;0;0
+"62";3285235;8;3285258;"Utilisez les fonctions et les nombres aléatoires";"title-2";2778161;0;2615,2;3600;3;0;944
+"63";3285242;0;3285257;"Le potentiomètre analogique";"title-3";2778161;0;NA;0;0;0;0
+"64";3285253;0;3285257;"Les entrées analogiques";"title-3";2778161;0;NA;0;0;0;0
+"65";3285256;0;3285257;"Le joystick";"title-3";2778161;0;NA;0;0;0;0
+"66";3285257;9;3285258;"Utilisez les potentiomètres, les entrées analogiques et la fonction de mappage";"title-2";2778161;0;2430,7;4232;9;0;1047
+"67";3285258;-2;2778161;"Les bases d'électronique pour programmer des robots avec des capteurs";"title-1";2778161;0;NA;0;0;0;0
+"68";3285270;0;3285287;"Le servo-moteur";"title-3";2778161;0;NA;0;0;0;0
+"69";3285275;0;3285287;"Connexion d'un servo-moteur à une carte Arduino";"title-3";2778161;0;NA;0;0;0;0
+"70";3285280;0;3285287;"Envoyez des ordres à un servo-moteur";"title-3";2778161;0;NA;0;0;0;0
+"71";3285283;0;3285287;"Potar et Servo";"title-3";2778161;0;NA;0;0;0;0
+"72";3285286;0;3285287;"L'accélérateur";"title-3";2778161;0;NA;0;0;0;0
+"73";3285287;10;3285356;"Donnez du mouvement à vos montages avec un servo-moteur (... et la fonction Switch)";"title-2";2778161;0;2192,2;5425;10;0;1109
+"74";3285295;0;3285333;"Le moteur à courant continu";"title-3";2778161;0;NA;0;0;0;0
+"75";3285304;0;3285333;"Connectez un moteur CC à votre carte Arduino";"title-3";2778161;0;NA;0;0;0;0
+"76";3285313;0;3285333;"Le transistor bipolaire";"title-3";2778161;0;NA;0;0;0;0
+"77";3285320;0;3285333;"Le transistor à effet de champs ou MOSFET";"title-3";2778161;0;NA;0;0;0;0
+"78";3285327;0;3285333;"Séparez votre circuit de commande de votre circuit de puissance";"title-3";2778161;0;NA;0;0;0;0
+"79";3285332;0;3285333;"Faites varier la vitesse du moteur";"title-3";2778161;0;NA;0;0;0;0
+"80";3285333;11;3285356;"Le moteur à courant continu (partie 1) : transistors et sorties PWM";"title-2";2778161;0;2000,2;4549;19;0;1027
+"81";3285355;12;3285356;"Le moteur à courant continu (partie 2) : le pont en H et les circuits intégrés";"title-2";2778161;0;1760;4144;9;0;935
+"82";3285356;-3;2778161;"Affinez vos montages avec des moteurs";"title-1";2778161;0;NA;0;0;0;0
+"83";3285400;13;3285405;"Les capteurs électroniques";"title-2";2778161;0;1732;5349;16;0;1185
+"84";3285404;14;3285405;"Solutions des exercices";"title-2";2778161;0;1214,5;526;0;0;1446
+"85";3285405;-4;2778161;"Annexes";"title-1";2778161;0;NA;0;0;0;0
+"86";3306932;0;3285404;"Exercice sur la LED 13";"title-3";2778161;0;NA;0;0;0;0
+"87";3306973;0;3285404;"Exercice sur le moniteur série";"title-3";2778161;0;NA;0;0;0;0
+"88";3307027;0;3285404;"Exercice sur le programme ""Arduino compte seul""";"title-3";2778161;0;NA;0;0;0;0
+"89";3307029;0;3285404;"Exercice sur la connexion d'une LED à un pin";"title-3";2778161;0;NA;0;0;0;0
+"90";3309334;0;3285400;"Le capteur de contact";"title-3";2778161;0;NA;0;0;0;0
+"91";3309337;0;3285400;"Le tiltsensor";"title-3";2778161;0;NA;0;0;0;0
+"92";3309342;0;3285400;"La photorésistance";"title-3";2778161;0;NA;0;0;0;0
+"93";3309355;0;3285400;"La photodiode infrarouge";"title-3";2778161;0;NA;0;0;0;0
+"94";3309360;0;3285400;"Le récepteur infrarouge";"title-3";2778161;0;NA;0;0;0;0
+"95";3309365;0;3285400;"Capteur de température";"title-3";2778161;0;NA;0;0;0;0
+"96";3309370;0;3285400;"Le capteur à ultrasons";"title-3";2778161;0;NA;0;0;0;0
+"97";3355269;0;3285142;"Constantes et variables";"title-3";2778161;0;NA;0;0;0;0
+"98";3355272;0;3285142;"Le typage des variables et constantes";"title-3";2778161;0;NA;0;0;0;0
+"99";3355276;0;3285142;"Le moniteur série";"title-3";2778161;0;NA;0;0;0;0
+"100";3355279;0;3285142;"La condition";"title-3";2778161;0;NA;0;0;0;0
+"101";3355329;0;3285186;"Connectez une LED sur un pin (1 à 13)";"title-3";2778161;0;NA;0;0;0;0
+"102";3368187;0;3285404;"Exercice : un programme pour tester vos LED";"title-3";2778161;0;NA;0;0;0;0
+"103";3653800;0;3285355;"Le pont en H";"title-3";2778161;0;NA;0;0;0;0
+"104";3653814;0;3285355;"Les circuits double ponts en H";"title-3";2778161;0;NA;0;0;0;0
+"105";3653816;0;3285355;"Programmez deux moteurs CC avec un circuit intégré L293D";"title-3";2778161;0;NA;0;0;0;0
+"106";3653818;0;3285355;"Silence… Moteurs CC… Ça tourne !";"title-3";2778161;0;NA;0;0;0;0
+"107";3653821;0;3285355;"Moteurs et interaction";"title-3";2778161;0;NA;0;0;0;0
+"108";3653825;0;3285355;"Ce n’est qu’un au revoir";"title-3";2778161;0;NA;0;0;0;0

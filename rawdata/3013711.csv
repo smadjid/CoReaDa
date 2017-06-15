@@ -1,0 +1,78 @@
+"";"id";"part_index";"parent_id";"title";"type";"course_id";"obsels";"max.duration";"size";"nb_img";"vid_length";"Readers"
+"1";3013711;0;0;"Développez une application mobile multi-plateforme avec Ionic";"course";3013711;0;NA;0;0;0;2020
+"2";3411286;-1;3013711;"Familiarisez-vous avec Ionic et son environnement";"title-1";3013711;0;NA;0;0;0;0
+"3";3657046;1;3411286;"Qu'est-ce que Ionic ?";"title-2";3013711;0;981;674;1;391;1541
+"4";3657051;2;3411286;"Installez et configurez votre environnement";"title-2";3013711;0;1993,4;504;3;0;1234
+"5";3657056;3;3411286;"Maîtrisez la ligne de commande";"title-2";3013711;0;1587,9;558;4;442;966
+"6";3657061;4;3411286;"Organisez un projet";"title-2";3013711;0;1523;1235;0;380;766
+"7";3657071;-2;3013711;"Créez votre première app";"title-1";3013711;0;NA;0;0;0;0
+"8";3657076;-3;3013711;"Créez une app de météo interactive";"title-1";3013711;0;NA;0;0;0;0
+"9";3657086;-4;3013711;"Ajoutez des services plus poussés à votre app";"title-1";3013711;0;NA;0;0;0;0
+"10";3657091;5;3657071;"C'est parti pour créer une application !";"title-2";3013711;0;469,4;215;2;137;703
+"11";3657096;6;3657071;"Ce qu'il faut connaître au sujet d'AngularJS";"title-2";3013711;0;1787,6;756;4;351;708
+"12";3657101;7;3657071;"Les composants";"title-2";3013711;0;1476,3;726;3;239;578
+"13";3657106;8;3657071;"Les services";"title-2";3013711;0;2433,4;858;4;345;508
+"14";3657111;9;3657071;"Les styles et les icônes";"title-2";3013711;0;1817;919;9;350;469
+"15";3657116;10;3657076;"Démarrez votre app météo";"title-2";3013711;0;1637,5;690;3;258;441
+"16";3657121;11;3657076;"Créez votre premier écran";"title-2";3013711;0;785;256;1;107;422
+"17";3657126;12;3657076;"Reliez l'application à un service web";"title-2";3013711;0;1169,2;480;0;232;440
+"18";3657131;13;3657076;"Personnalisez vos écrans";"title-2";3013711;0;801,8;390;3;243;367
+"19";3657136;14;3657076;"Testez et débuggez votre app";"title-2";3013711;0;1130,3;584;4;242;353
+"20";3657141;15;3657086;"Accédez à un périphérique de votre téléphone";"title-2";3013711;0;2223,5;484;2;208;345
+"21";3657146;16;3657086;"Rendez votre app plus visuelle avec un splashscreen et une icône";"title-2";3013711;0;783;360;3;137;340
+"22";3657151;17;3657086;"Traduisez votre application";"title-2";3013711;0;990;399;2;195;294
+"23";3657156;18;3657086;"Accédez aux données de votre app avec Firebase";"title-2";3013711;0;1846,2;530;2;194;369
+"24";3657161;19;3657086;"Utilisez les outils proposés par Ionic";"title-2";3013711;0;1921,6;560;1;234;356
+"25";3688277;0;3657046;"Plusieurs types d'applications mobiles";"title-3";3013711;0;NA;0;0;0;0
+"26";3688285;0;3657046;"Concepts de Ionic";"title-3";3013711;0;NA;0;0;0;0
+"27";3688670;0;3657056;"Création d'un nouveau projet";"title-3";3013711;0;NA;0;0;0;0
+"28";3690321;0;3657051;"Installation de l'environnement";"title-3";3013711;0;NA;0;0;0;0
+"29";3690362;0;3657051;"Android";"title-3";3013711;0;NA;0;0;0;0
+"30";3690451;0;3657051;"iOS";"title-3";3013711;0;NA;0;0;0;0
+"31";3690621;0;3657056;"Test";"title-3";3013711;0;NA;0;0;0;0
+"32";3691403;0;3657056;"Run / Emulate";"title-3";3013711;0;NA;0;0;0;0
+"33";3691406;0;3657056;"Icône et splashscreen";"title-3";3013711;0;NA;0;0;0;0
+"34";3860377;0;3657061;"Création d'un nouveau projet";"title-3";3013711;0;NA;0;0;0;0
+"35";3860380;0;3657061;"Arborescence du projet";"title-3";3013711;0;NA;0;0;0;0
+"36";3867535;0;3657061;"Les fichiers de configuration";"title-3";3013711;0;NA;0;0;0;0
+"37";3867540;0;3657061;"Dossiers créés par Ionic";"title-3";3013711;0;NA;0;0;0;0
+"38";3867699;0;3657061;"Où est définie notre application ?";"title-3";3013711;0;NA;0;0;0;0
+"39";3900537;0;3657091;"Rôle de l'application";"title-3";3013711;0;NA;0;0;0;0
+"40";3900551;0;3657091;"Démarrage de l'application";"title-3";3013711;0;NA;0;0;0;0
+"41";3900614;0;3657096;"La théorie";"title-3";3013711;0;NA;0;0;0;0
+"42";3902126;0;3657116;"Rôle de l’application";"title-3";3013711;0;NA;0;0;0;0
+"43";3902144;0;3657116;"Design";"title-3";3013711;0;NA;0;0;0;0
+"44";3902148;0;3657116;"Fonctionnement de l’application";"title-3";3013711;0;NA;0;0;0;0
+"45";3902151;0;3657116;"Utilisation de l’API OpenWeatherMap";"title-3";3013711;0;NA;0;0;0;0
+"46";3902157;0;3657116;"Création de l’application";"title-3";3013711;0;NA;0;0;0;0
+"47";3902252;0;3657121;"Définition de l'écran";"title-3";3013711;0;NA;0;0;0;0
+"48";3902256;0;3657121;"Construction de l'écran";"title-3";3013711;0;NA;0;0;0;0
+"49";3902355;0;3657126;"Déclenchement de l'action par un clic sur le bouton ";"title-3";3013711;0;NA;0;0;0;0
+"50";3902360;0;3657126;"Déclenchement de l'action par validation du champ de saisie";"title-3";3013711;0;NA;0;0;0;0
+"51";3902389;0;3657131;"Utilisation d'une image de fond";"title-3";3013711;0;NA;0;0;0;0
+"52";3902397;0;3657131;"Modification de la couleur du texte";"title-3";3013711;0;NA;0;0;0;0
+"53";3902399;0;3657131;"Définition des styles utilisés pour l'affichage des éléments de résultat";"title-3";3013711;0;NA;0;0;0;0
+"54";3902417;0;3657136;"Rappel du fonctionnement de l'application";"title-3";3013711;0;NA;0;0;0;0
+"55";3902427;0;3657136;"Utilisation des logs";"title-3";3013711;0;NA;0;0;0;0
+"56";3902473;0;3657136;"Testez votre application";"title-3";3013711;0;NA;0;0;0;0
+"57";3902638;0;3657141;"Un petit aperçu du résultat";"title-3";3013711;0;NA;0;0;0;0
+"58";3902851;0;3657101;"Les conteneurs - ion-content";"title-3";3013711;0;NA;0;0;0;0
+"59";3902862;0;3657101;"Les listes - ion-list";"title-3";3013711;0;NA;0;0;0;0
+"60";3902870;0;3657101;"Les onglets - ion-tabs";"title-3";3013711;0;NA;0;0;0;0
+"61";3902940;0;3657106;"Affichage d’un écran modal - $ionicModal";"title-3";3013711;0;NA;0;0;0;0
+"62";3902959;0;3657106;"Affichage d’une fenêtre pop-up - $ionicPopup";"title-3";3013711;0;NA;0;0;0;0
+"63";3902968;0;3657106;"Récupération des informations de ionic - ionic.Platform";"title-3";3013711;0;NA;0;0;0;0
+"64";3903050;0;3657111;"Changez le style de la barre d’onglet";"title-3";3013711;0;NA;0;0;0;0
+"65";3903072;0;3657111;"Ajoutez une icône à la liste de l’onglet Account";"title-3";3013711;0;NA;0;0;0;0
+"66";3903095;0;3657111;"Modifiez les cards de l’écran Test";"title-3";3013711;0;NA;0;0;0;0
+"67";3904163;0;3657161;"Éditez vos interfaces en ligne avec Ionic Creator";"title-3";3013711;0;NA;0;0;0;0
+"68";3904179;0;3657161;"Enrichissez votre app avec Ionic Platform";"title-3";3013711;0;NA;0;0;0;0
+"69";3904374;0;3657151;"Attribuez des fichiers dédiés pour chaque langue";"title-3";3013711;0;NA;0;0;0;0
+"70";3904383;0;3657151;"Installez les librairies pour gérer les traductions";"title-3";3013711;0;NA;0;0;0;0
+"71";3904403;0;3657151;"Passez à la traduction";"title-3";3013711;0;NA;0;0;0;0
+"72";3904435;0;3657146;"Créez votre icône personnalisée";"title-3";3013711;0;NA;0;0;0;0
+"73";3904447;0;3657146;"Créez votre splashscreen personnalisé";"title-3";3013711;0;NA;0;0;0;0
+"74";3904647;0;3657141;"Ajoutez le plugin Cordova cordova-plugin-camera";"title-3";3013711;0;NA;0;0;0;0
+"75";3904662;0;3657141;"Intégrez le plugin Camera";"title-3";3013711;0;NA;0;0;0;0
+"76";3904687;0;3657156;"Créez votre compte sur Firebase";"title-3";3013711;0;NA;0;0;0;0
+"77";3904705;0;3657156;"Intégrez Firebase dans votre application";"title-3";3013711;0;NA;0;0;0;0
