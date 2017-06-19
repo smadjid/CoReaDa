@@ -2199,7 +2199,6 @@ var loadContext = function(){
   var left = $('.data-table').offset().left;
 
    var url = location.hash.slice(1);
-   console.log(url);
    
  
    var element = resolveRoute(url);
