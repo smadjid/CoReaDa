@@ -1679,7 +1679,7 @@ marker#arrow {
    width:100%;    
    margin:0;
    border: 1px solid rgba(0,0,0,.15);
-   cursor: default;
+   cursor: pointer;
 }
 .componentIssue{  
   width:100%;
